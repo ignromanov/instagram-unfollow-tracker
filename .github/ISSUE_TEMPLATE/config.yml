@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: FAQ
+    url: https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq
+    about: Check if your question is already answered
+  - name: Data Download Guide
+    url: https://ignromanov.github.io/instagram-unfollow-tracker/docs/instagram-export
+    about: Learn how to download your Instagram data
+  - name: Privacy Policy
+    url: https://ignromanov.github.io/instagram-unfollow-tracker/docs/privacy
+    about: Understand how we handle your data
+  - name: Contributing Guide
+    url: https://github.com/ignromanov/instagram-unfollow-tracker/blob/master/CONTRIBUTING.md
+    about: Learn how to contribute to this project
