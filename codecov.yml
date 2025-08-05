@@ -1,0 +1,20 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 95%
+        threshold: 1%
+    patch:
+      default:
+        target: 90%
+        threshold: 1%
+
+comment:
+  layout: "header,diff,files,footer"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+github_checks:
+  annotations: true
