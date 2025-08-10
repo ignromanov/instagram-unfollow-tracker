@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
+  base: '/instagram-unfollow-tracker/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
