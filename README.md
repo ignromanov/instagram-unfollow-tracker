@@ -134,4 +134,12 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
+## 💖 Support Me
+
 ⭐ **Found this useful?** Star the repo and share it with others looking for a free Instagram unfollow tracker!
+
+<p align="left">
+  <a href="https://www.buymeacoffee.com/ignromanov" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+  </a>
+</p>
