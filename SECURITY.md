@@ -1,7 +1,7 @@
 ## Security Policy
 
 ### Supported Versions
-We support the latest commit on `master`.
+We support the latest commit on `main`.
 
 ### Reporting a Vulnerability
 Please avoid filing public issues for security vulnerabilities.

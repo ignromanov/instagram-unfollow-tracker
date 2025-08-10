@@ -1,4 +1,4 @@
-## Contributing to Unfollow Radar
+## Contributing to Instagram Unfollow Tracker
 
 Thank you for your interest in contributing! This project is privacy-first and fully client-side. We welcome bug reports, feature requests, documentation improvements, and pull requests.
 
@@ -15,7 +15,7 @@ npm run test
 ```
 
 ### Branching and PRs
-- Create a feature branch from `master`.
+- Create a feature branch from `main`.
 - Keep PRs focused and small when possible.
 - Include tests for new logic, and update docs when behavior changes.
 - Link related issues in the PR description.
