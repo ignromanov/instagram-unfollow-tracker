@@ -15,7 +15,7 @@ permalink: pretty
 # Custom layout (no theme)
 
 # Plugins
-gems:
+plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag

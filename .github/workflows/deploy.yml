@@ -7,7 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  # ===========================================
+  # Build React Application
+  # ===========================================
+  build-app:
+    name: Build React App
     runs-on: ubuntu-latest
     
     steps:
@@ -26,10 +30,28 @@ jobs:
     - name: Build application
       run: npm run build
       
+    - name: Upload app artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-build
+        path: dist/
+        retention-days: 1
+
+  # ===========================================
+  # Build Jekyll Documentation
+  # ===========================================
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.1'
+        ruby-version: '3.0'
         
     - name: Setup Jekyll
       working-directory: ./docs
@@ -41,9 +63,37 @@ jobs:
       run: |
         bundle exec jekyll build -d ../dist/docs
         
+    - name: Upload docs artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: docs-build
+        path: dist/docs/
+        retention-days: 1
+
+  # ===========================================
+  # Deploy to GitHub Pages
+  # ===========================================
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [build-app, build-docs]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Download app artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: app-build
+        path: dist/
+        
+    - name: Download docs artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: docs-build
+        path: dist/docs/
+        
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
