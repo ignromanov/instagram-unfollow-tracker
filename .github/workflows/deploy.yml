@@ -70,13 +70,13 @@ jobs:
     - name: Build Jekyll site
       working-directory: ./docs
       run: |
-        bundle exec jekyll build -d ../dist/docs
+        bundle exec jekyll build -d ../temp-docs
         
     - name: Upload docs artifacts
       uses: actions/upload-artifact@v4
       with:
         name: docs-build
-        path: dist/docs/
+        path: temp-docs/
         retention-days: 1
 
   # ===========================================
@@ -102,7 +102,13 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: docs-build
-        path: dist/docs/
+        path: temp-docs/
+        
+    - name: Move docs to correct location
+      run: |
+        # Move docs from temp-docs/ to dist/docs/ for proper URL structure
+        mkdir -p dist/docs
+        cp -r temp-docs/* dist/docs/
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
@@ -111,20 +117,7 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         path: ./dist
-
-  # ===========================================
-  # Deploy to GitHub Pages (Official)
-  # ===========================================
-  deploy-pages:
-    name: Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
-    steps:
+        
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
