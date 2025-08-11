@@ -1,3 +1,10 @@
+---
+layout: default
+title: Roadmap
+description: Future features and development plans
+permalink: /docs/roadmap/
+---
+
 # Roadmap - Instagram Unfollow Tracker
 
 ## Current Status (v0.1) ✅

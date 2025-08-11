@@ -1,3 +1,10 @@
+---
+layout: default
+title: Data Download Guide
+description: How to get your Instagram data for analysis
+permalink: /docs/instagram-export/
+---
+
 # How to Download Your Instagram Data
 
 This guide shows you how to get your Instagram data in the format that Unfollow Radar can process.

@@ -1,3 +1,10 @@
+---
+layout: default
+title: Troubleshooting
+description: Problem-solving guide for common issues
+permalink: /docs/troubleshooting/
+---
+
 # Troubleshooting Guide - Instagram Unfollow Tracker
 
 ## Common Issues & Solutions

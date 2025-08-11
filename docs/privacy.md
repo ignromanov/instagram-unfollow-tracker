@@ -1,3 +1,10 @@
+---
+layout: default
+title: Privacy Policy
+description: Data handling principles and privacy commitment
+permalink: /docs/privacy/
+---
+
 # Privacy Policy - Instagram Unfollow Tracker
 
 ## Our Privacy Commitment

@@ -1,3 +1,10 @@
+---
+layout: default
+title: FAQ
+description: Frequently asked questions about Instagram Unfollow Tracker
+permalink: /docs/faq/
+---
+
 # FAQ - Instagram Unfollow Tracker
 
 ## Privacy & Security
