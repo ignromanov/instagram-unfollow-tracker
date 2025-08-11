@@ -2,7 +2,7 @@
 layout: default
 title: User Guide
 description: Complete step-by-step tutorial for Instagram Unfollow Tracker
-permalink: /docs/user-guide/
+permalink: /user-guide/
 ---
 
 # User Guide - Instagram Unfollow Tracker

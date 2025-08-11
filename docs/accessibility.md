@@ -2,7 +2,7 @@
 layout: default
 title: Accessibility
 description: Accessibility features and support
-permalink: /docs/accessibility/
+permalink: /accessibility/
 ---
 
 # Accessibility Guide - Instagram Unfollow Tracker

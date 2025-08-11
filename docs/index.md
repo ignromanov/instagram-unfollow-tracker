@@ -2,7 +2,7 @@
 layout: default
 title: Documentation
 description: Complete documentation for Instagram Unfollow Tracker
-permalink: /docs/
+permalink: /
 ---
 
 # Documentation - Instagram Unfollow Tracker

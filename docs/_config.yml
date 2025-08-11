@@ -4,7 +4,7 @@
 # Site settings
 title: "Instagram Unfollow Tracker"
 description: "Free Instagram unfollow tracker - analyze your followers and following"
-baseurl: "/instagram-unfollow-tracker"
+baseurl: "/instagram-unfollow-tracker/docs"
 url: "https://ignromanov.github.io"
 
 # Build settings
@@ -35,22 +35,10 @@ exclude:
 include:
   - _redirects
 
-# Collections
-collections:
-  docs:
-    output: true
-    permalink: /:collection/:name/
-
 # Defaults
 defaults:
   - scope:
       path: ""
-      type: "pages"
-    values:
-      layout: "default"
-  - scope:
-      path: ""
-      type: "docs"
     values:
       layout: "default"
 

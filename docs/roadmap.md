@@ -2,7 +2,7 @@
 layout: default
 title: Roadmap
 description: Future features and development plans
-permalink: /docs/roadmap/
+permalink: /roadmap/
 ---
 
 # Roadmap - Instagram Unfollow Tracker

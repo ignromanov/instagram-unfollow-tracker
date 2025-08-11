@@ -2,7 +2,7 @@
 layout: default
 title: Technical Specs
 description: Technical details and architecture
-permalink: /docs/tech-spec/
+permalink: /tech-spec/
 ---
 
 # Technical Specification - Instagram Unfollow Tracker

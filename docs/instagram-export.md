@@ -2,7 +2,7 @@
 layout: default
 title: Data Download Guide
 description: How to get your Instagram data for analysis
-permalink: /docs/instagram-export/
+permalink: /instagram-export/
 ---
 
 # How to Download Your Instagram Data

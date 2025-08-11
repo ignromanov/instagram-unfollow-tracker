@@ -2,7 +2,7 @@
 layout: default
 title: Troubleshooting
 description: Problem-solving guide for common issues
-permalink: /docs/troubleshooting/
+permalink: /troubleshooting/
 ---
 
 # Troubleshooting Guide - Instagram Unfollow Tracker

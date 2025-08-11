@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 description: Frequently asked questions about Instagram Unfollow Tracker
-permalink: /docs/faq/
+permalink: /faq/
 ---
 
 # FAQ - Instagram Unfollow Tracker
