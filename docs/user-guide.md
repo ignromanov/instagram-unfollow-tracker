@@ -27,7 +27,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 4. Wait for Instagram to prepare your data (up to 48 hours)
 5. Download the ZIP file when you receive the email
 
-**📖 Detailed instructions**: See [Instagram Export Guide](/docs/instagram-export/)
+**📖 Detailed instructions**: See [Instagram Export Guide](instagram-export/)
 
 ### Step 2: Upload Your Data
 1. Open [Instagram Unfollow Tracker](https://ignromanov.github.io/instagram-unfollow-tracker)
@@ -103,7 +103,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 - **Missing accounts**: Instagram may split large follower lists into multiple files
 
 ### Getting Help
-- **FAQ**: Check [Frequently Asked Questions](/docs/faq/)
+- **FAQ**: Check [Frequently Asked Questions](faq/)
 - **Issues**: Report bugs on [GitHub Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
 - **Discussions**: Ask questions in [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
 
@@ -120,7 +120,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 - **Regular cleanup**: Delete old exports when no longer needed
 - **Browser security**: Use updated browsers and clear data regularly
 
-**📖 More details**: See [Privacy Policy](/docs/privacy/)
+**📖 More details**: See [Privacy Policy](privacy/)
 
 ## What's Next?
 
@@ -129,7 +129,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 - **PWA Support**: Install as mobile app (v1.0)
 - **Multi-language**: English and Russian support (v1.0)
 
-**📖 Full roadmap**: See [Project Roadmap](/docs/roadmap/)
+**📖 Full roadmap**: See [Project Roadmap](roadmap/)
 
 ### Contributing
 - **Report bugs**: Help improve the tool
@@ -140,4 +140,4 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 
 ---
 
-*This user guide is designed to help you get the most out of Instagram Unfollow Tracker. For technical details, see [Technical Specification](/docs/tech-spec/).*
+*This user guide is designed to help you get the most out of Instagram Unfollow Tracker. For technical details, see [Technical Specification](tech-spec/).*

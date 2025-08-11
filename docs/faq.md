@@ -105,7 +105,7 @@ This is normal and expected:
 - Contribute improvements back
 
 ### Is there a roadmap for new features?
-Yes! See [Project Roadmap](/docs/roadmap/) for planned features including CSV export, PWA support, and multi-language UI.
+Yes! See [Project Roadmap](roadmap/) for planned features including CSV export, PWA support, and multi-language UI.
 
 ## Advanced Usage
 
@@ -151,7 +151,7 @@ Yes! Join our [GitHub Discussions](https://github.com/ignromanov/instagram-unfol
 - Development updates
 
 ### How often is the app updated?
-Updates are released regularly based on community feedback and development progress. Check the [roadmap](/docs/roadmap/) for upcoming features.
+Updates are released regularly based on community feedback and development progress. Check the [roadmap](roadmap/) for upcoming features.
 
 ### Can I suggest new features?
 Absolutely! We welcome feature suggestions. Please use [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions) to share your ideas.
