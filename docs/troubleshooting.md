@@ -198,8 +198,8 @@ Report issues if:
 
 ### Community Support
 - **GitHub Discussions**: [Ask questions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
-- **FAQ**: Check [Frequently Asked Questions](faq.md)
-- **User Guide**: See [User Guide](user-guide.md)
+- **FAQ**: Check [Frequently Asked Questions](/docs/faq/)
+- **User Guide**: See [User Guide](/docs/user-guide/)
 
 ## Prevention Tips
 
