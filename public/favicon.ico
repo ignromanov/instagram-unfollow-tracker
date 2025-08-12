@@ -10,6 +10,6 @@
   <rect x="20" y="14" width="2" height="12" fill="#ffffff" rx="1" />
 
   <!-- Small magnifying glass icon for search/analysis -->
-  <circle cx="22" cy="10" r="3" fill="none" stroke="#ffffff" stroke-width="1.5" />
-  <line x1="24.5" y1="12.5" x2="27" y2="15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+  <circle cx="21" cy="9" r="3" fill="none" stroke="#ffffff" stroke-width="1.5" />
+  <line x1="23.5" y1="11.5" x2="26" y2="14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
 </svg>
