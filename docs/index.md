@@ -9,6 +9,8 @@ permalink: /
 
 Welcome to the complete documentation for Instagram Unfollow Tracker, a privacy-focused tool for analyzing your Instagram follower relationships.
 
+> **🚀 [Try the App](https://ignromanov.github.io/instagram-unfollow-tracker/)** | **📖 [GitHub Repository](https://github.com/ignromanov/instagram-unfollow-tracker)**
+
 ## Quick Start
 
 - **[User Guide](user-guide/)** - Complete step-by-step tutorial

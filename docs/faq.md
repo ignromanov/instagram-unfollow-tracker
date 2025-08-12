@@ -94,8 +94,8 @@ This is normal and expected:
 
 ### How to contribute or report a bug?
 - **Issues**: [GitHub Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Pull Requests**: See [CONTRIBUTING.md](../CONTRIBUTING.md)
-- **Security**: For security matters, see [SECURITY.md](../SECURITY.md)
+- **Pull Requests**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md)
+- **Security**: For security matters, see [SECURITY.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/SECURITY.md)
 
 ### Can I modify the code for my needs?
 **Absolutely!** The project is open source (MIT license). You can:
@@ -138,7 +138,7 @@ No, your Instagram data is never stored. It's processed in memory and disappears
 ## Community & Support
 
 ### How can I contribute to the project?
-- **Code contributions**: See [CONTRIBUTING.md](../CONTRIBUTING.md)
+- **Code contributions**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md)
 - **Bug reports**: [GitHub Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
 - **Feature requests**: [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
 - **Documentation**: Help improve guides and add examples

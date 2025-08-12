@@ -9,6 +9,7 @@ import { FileUpload } from '@/components/FileUpload';
 import { FilterChips } from '@/components/FilterChips';
 import { AccountList } from '@/components/AccountList';
 import { DataDownloadInstructions } from '@/components/DataDownloadInstructions';
+import { DocumentationLink } from '@/components/DocumentationLink';
 import { BADGE_ORDER } from '@/core/badges';
 import type { BadgeKey } from '@/core/types';
 
@@ -62,6 +63,7 @@ export const App: React.FC = () => {
               <Group gap="sm" align="center" mb="xs">
                 <Title order={3}>📊 Instagram Unfollow Tracker</Title>
                 <DataDownloadInstructions variant="button" size="xs" />
+                <DocumentationLink size="xs" />
               </Group>
               <Text size="sm" c="dimmed" mb="xs">
                 Analyze your Instagram connections and find who unfollowed you

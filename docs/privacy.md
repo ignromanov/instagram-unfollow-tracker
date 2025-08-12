@@ -113,7 +113,7 @@ If you deploy your own version:
 
 ### Privacy Questions
 - **GitHub Issues**: [Report privacy concerns](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Security**: See [SECURITY.md](../SECURITY.md) for security-related issues
+- **Security**: See [SECURITY.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/SECURITY.md) for security-related issues
 
 ### Verification
 - **Source Code**: [GitHub Repository](https://github.com/ignromanov/instagram-unfollow-tracker)

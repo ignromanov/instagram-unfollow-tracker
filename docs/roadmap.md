@@ -138,7 +138,7 @@ permalink: /roadmap/
 
 ## Contributing
 
-Want to help with development? See our [CONTRIBUTING.md](../CONTRIBUTING.md) guide.
+Want to help with development? See our [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md) guide.
 
 ### Priority Areas for Contributors
 1. **CSV export functionality** — High impact, well-defined scope

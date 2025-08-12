@@ -136,7 +136,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 - **Suggest features**: Share your ideas
 - **Contribute code**: Help develop new features
 
-**📖 How to contribute**: See [CONTRIBUTING.md](../CONTRIBUTING.md)
+**📖 How to contribute**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md)
 
 ---
 
