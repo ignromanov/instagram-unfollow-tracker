@@ -1,0 +1,45 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint:strict
+
+      - name: Run TypeScript type check
+        run: npm run type-check
+
+      - name: Check for unused code
+        run: node scripts/find-unused-code.js
+
+      - name: Check for unused dependencies
+        run: node scripts/find-unused-dependencies.js
+
+      - name: Run tests
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/clover.xml
+          fail_ci_if_error: false
