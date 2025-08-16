@@ -24,6 +24,13 @@ coverage/
 *.swo
 *~
 
+# Claude Code (keep configuration, ignore sensitive data)
+CLAUDE.md
+.claude
+.claude/.env
+.claude/cache/
+.claude/logs/
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -95,6 +102,16 @@ temp/
 # Testing
 coverage/
 .nyc_output
+# Compiled test files (Vitest should only run .ts/.tsx sources)
+src/**/*.test.js
+src/**/*.spec.js
+src/__tests__/**/*.js
 
 # Local development data (keep raw/ for development)
 raw/
+
+# Design folders (experimental designs)
+designs/
+
+# Scripts folders
+scripts/
