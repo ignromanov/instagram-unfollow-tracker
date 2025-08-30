@@ -1,39 +1,24 @@
-import React from 'react';
-import { Button } from '@mantine/core';
-import { IconBook } from '@tabler/icons-react';
+import { BookOpen, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-interface DocumentationLinkProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg';
-  variant?: 'subtle' | 'filled' | 'outline';
-  color?: string;
-}
-
-export const DocumentationLink: React.FC<DocumentationLinkProps> = ({
-  size = 'xs',
-  variant = 'subtle',
-  color = 'blue'
-}) => {
-  const handleClick = () => {
-    // Open documentation in new tab
-    window.open('https://ignromanov.github.io/instagram-unfollow-tracker/docs/', '_blank', 'noopener,noreferrer');
-  };
-
+export function DocumentationLink() {
   return (
     <Button
-      component="a"
-      variant={variant}
-      color={color}
-      size={size}
-      onClick={handleClick}
-      title="Open documentation in new tab"
-      aria-label="Open documentation in new tab"
-      style={{
-        fontWeight: 400,
-        fontSize: size === 'xs' ? '12px' : undefined,
-        padding: size === 'xs' ? '4px 8px' : undefined
-      }}
+      variant="ghost"
+      size="sm"
+      className="gap-2 transition-all duration-200 hover:scale-105"
+      asChild
     >
-      📚 {size === 'xs' ? 'Docs' : 'Documentation'}
+      <a
+        href="https://ignromanov.github.io/instagram-unfollow-tracker/docs/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open documentation in new tab"
+      >
+        <BookOpen className="h-4 w-4" />
+        Docs
+        <ExternalLink className="h-3 w-3" />
+      </a>
     </Button>
   );
-};
+}
