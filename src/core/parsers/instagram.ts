@@ -18,22 +18,33 @@ const extractUsernames = (entries: InstagramExportEntry[]): string[] => {
 };
 
 export async function parseFollowingJson(jsonText: string): Promise<string[]> {
-  const data = JSON.parse(jsonText) as { relationships_following?: InstagramExportEntry[] } | InstagramExportEntry[];
+  const data = JSON.parse(jsonText) as
+    | { relationships_following?: InstagramExportEntry[] }
+    | InstagramExportEntry[];
   if (Array.isArray(data)) {
     return extractUsernames(data);
   }
-  if (!data.relationships_following) throw new Error('Invalid following.json: missing relationships_following');
+  if (!data.relationships_following)
+    throw new Error('Invalid following.json: missing relationships_following');
   return extractUsernames(data.relationships_following);
 }
 
 export async function parseFollowersJson(jsonText: string): Promise<string[]> {
-  const data = JSON.parse(jsonText) as InstagramExportEntry[] | { relationships_followers?: InstagramExportEntry[] };
+  const data = JSON.parse(jsonText) as
+    | InstagramExportEntry[]
+    | { relationships_followers?: InstagramExportEntry[] };
   if (Array.isArray(data)) return extractUsernames(data);
-  if (Array.isArray((data as any).relationships_followers)) return extractUsernames((data as any).relationships_followers);
+  if (
+    Array.isArray(
+      (data as { relationships_followers?: InstagramExportEntry[] }).relationships_followers
+    )
+  )
+    return extractUsernames(
+      (data as { relationships_followers: InstagramExportEntry[] }).relationships_followers
+    );
   // Some archives name followers as followers_1.json with array root
   throw new Error('Invalid followers json format');
 }
-
 
 function listToRaw(entries: InstagramExportEntry[] | undefined): RawItem[] {
   const result: RawItem[] = [];
@@ -61,14 +72,13 @@ function listToMap(entries: InstagramExportEntry[] | undefined): Map<string, num
   return m;
 }
 
-
 export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
   const zip = await JSZip.loadAsync(file);
 
   // Try common paths
   const baseCandidates = ['connections/followers_and_following', 'followers_and_following'];
 
-  const readJsonFromZip = async (patterns: string[]): Promise<any | null> => {
+  const readJsonFromZip = async (patterns: string[]): Promise<unknown | null> => {
     for (const p of patterns) {
       const f = zip.file(new RegExp('^' + escapeRegExp(p) + '$', 'i'))[0];
       if (f) {
@@ -84,21 +94,29 @@ export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
   };
 
   // Following with timestamps
-  const followingFilePatterns = baseCandidates.map((b) => `${b}/following.json`).concat(['following.json']);
+  const followingFilePatterns = baseCandidates
+    .map(b => `${b}/following.json`)
+    .concat(['following.json']);
   const followingJson = await readJsonFromZip(followingFilePatterns);
   let followingRaw: RawItem[] = [];
   if (followingJson) {
-    const entries = Array.isArray(followingJson) ? followingJson : followingJson?.relationships_following;
+    const entries = Array.isArray(followingJson)
+      ? followingJson
+      : (followingJson as { relationships_following?: RawItem[] })?.relationships_following;
     followingRaw = listToRaw(entries);
   }
   const followingUsers = followingRaw.map(r => r.username);
-  const followingTimestamps = new Map(followingRaw.map(r => [r.username, r.timestamp ?? 0] as const));
+  const followingTimestamps = new Map(
+    followingRaw.map(r => [r.username, r.timestamp ?? 0] as const)
+  );
 
   // Followers with timestamps
-  const followersGlobs = baseCandidates.map((b) => `${b}/followers_.*\\.json`).concat(['followers_.*\\.json']);
+  const followersGlobs = baseCandidates
+    .map(b => `${b}/followers_.*\\.json`)
+    .concat(['followers_.*\\.json']);
   const followersRaw: RawItem[] = [];
   const followersSeen = new Set<string>();
-  const followersFilesByName = new Map<string, any>();
+  const followersFilesByName = new Map<string, JSZip.JSZipObject>();
   for (const g of followersGlobs) {
     const regex = new RegExp('^' + g + '$', 'i');
     for (const f of zip.file(regex)) {
@@ -113,8 +131,15 @@ export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
   for (const f of followersFilesByName.values()) {
     if (!f) continue;
     const text = await f.async('text');
-    let json: any; try { json = JSON.parse(text); } catch { continue; }
-    const entries = Array.isArray(json) ? json : json?.relationships_followers;
+    let json: unknown;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      continue;
+    }
+    const entries = Array.isArray(json)
+      ? json
+      : (json as { relationships_followers?: InstagramExportEntry[] })?.relationships_followers;
     const items = listToRaw(entries);
     for (const it of items) {
       if (followersSeen.has(it.username)) continue;
@@ -123,35 +148,62 @@ export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
     }
   }
   const followersUsers = followersRaw.map(r => r.username);
-  const followersTimestamps = new Map(followersRaw.map(r => [r.username, r.timestamp ?? 0] as const));
+  const followersTimestamps = new Map(
+    followersRaw.map(r => [r.username, r.timestamp ?? 0] as const)
+  );
 
   if (followingUsers.length === 0 && followersUsers.length === 0) {
-    throw new Error('Could not find required files in ZIP. Expected following.json and followers_*.json under connections/followers_and_following/.');
+    throw new Error(
+      'Could not find required files in ZIP. Expected following.json and followers_*.json under connections/followers_and_following/.'
+    );
   }
 
   // Other lists
-  const readFirstExistingJsonFromZip = async (fileNames: string[]): Promise<any | null> => {
+  const readFirstExistingJsonFromZip = async (fileNames: string[]): Promise<unknown | null> => {
     for (const name of fileNames) {
-      const json = await readJsonFromZip(baseCandidates.map((b) => `${b}/${name}`).concat([name]));
+      const json = await readJsonFromZip(baseCandidates.map(b => `${b}/${name}`).concat([name]));
       if (json) return json;
     }
     return null;
   };
 
-  const readListMapFlexible = async (fileNames: string[], propCandidates: string[]): Promise<Map<string, number>> => {
+  const readListMapFlexible = async (
+    fileNames: string[],
+    propCandidates: string[]
+  ): Promise<Map<string, number>> => {
     const json = await readFirstExistingJsonFromZip(fileNames);
     if (!json) return new Map();
-    const entries = Array.isArray(json) ? json : (propCandidates.map((p) => (json as any)?.[p]).find((e) => Array.isArray(e)) as any[] | undefined);
-    return listToMap(entries as any);
+    const entries = Array.isArray(json)
+      ? json
+      : (propCandidates
+          .map(p => (json as Record<string, unknown>)?.[p])
+          .find(e => Array.isArray(e)) as InstagramExportEntry[] | undefined);
+    return listToMap(entries);
   };
 
-  const [pendingSent, permanentRequests, restricted, closeFriends, unfollowed, dismissedSuggestions] = await Promise.all([
+  const [
+    pendingSent,
+    permanentRequests,
+    restricted,
+    closeFriends,
+    unfollowed,
+    dismissedSuggestions,
+  ] = await Promise.all([
     readListMapFlexible(['pending_follow_requests.json'], ['relationships_follow_requests_sent']),
-    readListMapFlexible(['recent_follow_requests.json', 'permanent_follow_requests.json'], ['relationships_permanent_follow_requests', 'relationships_follow_requests_permanent']),
+    readListMapFlexible(
+      ['recent_follow_requests.json', 'permanent_follow_requests.json'],
+      ['relationships_permanent_follow_requests', 'relationships_follow_requests_permanent']
+    ),
     readListMapFlexible(['restricted_profiles.json'], ['relationships_restricted_users']),
     readListMapFlexible(['close_friends.json', 'friends.json'], ['relationships_close_friends']),
-    readListMapFlexible(['recently_unfollowed_profiles.json', 'recently_unfollowed.json', 'unfollowed_profiles.json'], ['relationships_unfollowed_users']),
-    readListMapFlexible(['removed_suggestions.json', 'dismissed_suggestions.json'], ['relationships_dismissed_suggested_users']),
+    readListMapFlexible(
+      ['recently_unfollowed_profiles.json', 'recently_unfollowed.json', 'unfollowed_profiles.json'],
+      ['relationships_unfollowed_users']
+    ),
+    readListMapFlexible(
+      ['removed_suggestions.json', 'dismissed_suggestions.json'],
+      ['relationships_dismissed_suggested_users']
+    ),
   ]);
 
   return {
@@ -171,4 +223,3 @@ export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
 function escapeRegExp(literal: string): string {
   return literal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
-
