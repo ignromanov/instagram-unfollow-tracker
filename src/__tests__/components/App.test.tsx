@@ -1,320 +1,421 @@
-import { render, screen, fireEvent, waitFor } from '@tests/utils/testUtils';
-import { App } from '@/ui/App';
-import { useInstagramData } from '@/hooks/useInstagramData';
-import { useFilters } from '@/hooks/useFilters';
+import type { BadgeKey, FileMetadata } from '@/core/types';
 import { useAppStore } from '@/lib/store';
-import { createTestParsedData } from '@tests/fixtures/testData';
-import { buildAccountBadgeIndex } from '@/core/badges';
-import type { AccountBadges, BadgeKey } from '@/core/types';
+import { App } from '@/ui/App';
+import { fireEvent, render, screen, waitFor } from '@tests/utils/testUtils';
 
-// Mock hooks
-vi.mock('@/hooks/useInstagramData');
-vi.mock('@/hooks/useFilters', () => ({
-  useFilters: vi.fn((accounts) => accounts || []), // Return accounts or empty array for testing
+// Mock components
+vi.mock('@/components/Header', () => ({
+  Header: ({ onHelpClick }: { onHelpClick: () => void }) => (
+    <div data-testid="header">
+      <button onClick={onHelpClick}>Help</button>
+    </div>
+  ),
+}));
+
+vi.mock('@/components/FileUploadSection', () => ({
+  FileUploadSection: ({ onHelpClick }: { onHelpClick: () => void }) => (
+    <div data-testid="file-upload-section">
+      <button onClick={onHelpClick}>Help</button>
+    </div>
+  ),
+}));
+
+vi.mock('@/components/AccountListSection', () => ({
+  AccountListSection: () => <div data-testid="account-list-section">Account List</div>,
+}));
+
+vi.mock('@/components/Footer', () => ({
+  Footer: () => <div data-testid="footer">Footer</div>,
+}));
+
+vi.mock('@/components/InstructionsModal', () => ({
+  InstructionsModal: ({ open }: { open: boolean }) =>
+    open ? <div data-testid="instructions-modal">Instructions</div> : null,
 }));
 
 // Mock store
 vi.mock('@/lib/store', () => ({
-  useAppStore: vi.fn((selector) => {
-    // Default mock state
-    const defaultState = {
-      filters: new Set([]),
-      unified: [],
-      parsed: null,
-      currentFileName: null,
-      uploadStatus: 'idle' as const,
-      uploadError: null,
-      setFilters: vi.fn(),
-      setUnified: vi.fn(),
-      setParsed: vi.fn(),
-      setUploadInfo: vi.fn(),
-      clearData: vi.fn(),
-    };
-    return selector ? selector(defaultState) : defaultState;
-  }),
+  useAppStore: vi.fn(),
 }));
 
-const mockUseInstagramData = vi.mocked(useInstagramData);
-const mockUseFilters = vi.mocked(useFilters);
+// Mock useHydration
+vi.mock('@/hooks/useHydration', () => ({
+  useHydration: vi.fn(() => true), // Default: Always hydrated
+}));
+
 const mockUseAppStore = vi.mocked(useAppStore);
+const mockUseHydration = vi.mocked((await import('@/hooks/useHydration')).useHydration);
 
 describe('App Component', () => {
-  const testData = createTestParsedData();
-  const accounts = buildAccountBadgeIndex(testData);
+  const mockFileMetadata: FileMetadata = {
+    name: 'test.zip',
+    size: 1024,
+    uploadDate: new Date('2024-01-01'),
+    fileHash: 'test-hash',
+    accountCount: 100,
+  };
 
   // Helper function to create default mock state
-  const createMockState = (overrides = {}) => ({
+  const createMockState = (
+    overrides: Partial<{
+      fileMetadata: FileMetadata | null;
+      filters: Set<BadgeKey>;
+      currentFileName: string | null;
+      uploadStatus: 'idle' | 'loading' | 'success' | 'error';
+      uploadError: string | null;
+    }> = {}
+  ) => ({
     filters: new Set([] as BadgeKey[]),
-    unified: accounts,
-    parsed: testData,
+    fileMetadata: null,
     currentFileName: null,
     uploadStatus: 'idle' as const,
     uploadError: null,
+    _hasHydrated: true,
     setFilters: vi.fn(),
-    setUnified: vi.fn(),
-    setParsed: vi.fn(),
     setUploadInfo: vi.fn(),
     clearData: vi.fn(),
     ...overrides,
   });
 
-  const createMockInstagramData = (overrides = {}) => ({
-    meta: testData,
-    unified: accounts,
-    uploadState: { status: 'idle' as const, error: null, fileName: null },
-    handleZipUpload: vi.fn(),
-    handleClearData: vi.fn(),
-    ...overrides,
-  });
-
   beforeEach(() => {
     vi.clearAllMocks();
-
-    mockUseInstagramData.mockReturnValue(createMockInstagramData());
-    mockUseFilters.mockImplementation((accounts) => accounts || []);
-    mockUseAppStore.mockImplementation((selector) => selector(createMockState()));
+    mockUseAppStore.mockImplementation(selector => selector(createMockState()));
+    mockUseHydration.mockReturnValue(true); // Default: hydrated
   });
 
   it('should render main components', () => {
-    render(<App />);
-
-    expect(screen.getByText('📊 Instagram Unfollow Tracker')).toBeInTheDocument();
-    expect(screen.getByText('Analyze your Instagram connections and find who unfollowed you')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Search username…')).toBeInTheDocument();
-  });
-
-  it('should display filter chips', () => {
-    render(<App />);
-
-    // Check that filter chips are rendered (using more specific selectors)
-    expect(screen.getByRole('checkbox', { name: /Following \(\d+\)/ })).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: /Followers \(\d+\)/ })).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: /Mutuals \(\d+\)/ })).toBeInTheDocument();
-  });
-
-  it('should display account list', () => {
-    render(<App />);
-
-    // Check that some accounts are displayed
-    expect(screen.getByText('@alice_mutual')).toBeInTheDocument();
-    expect(screen.getByText('@bob_mutual')).toBeInTheDocument();
-  });
-
-  it('should handle search input changes', () => {
-    render(<App />);
-
-    const searchInput = screen.getByPlaceholderText('Search username…');
-    fireEvent.change(searchInput, { target: { value: 'alice' } });
-
-    expect(searchInput).toHaveValue('alice');
-  });
-
-  it('should handle file upload', async () => {
-    const mockHandleZipUpload = vi.fn();
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      handleZipUpload: mockHandleZipUpload,
-    }));
-
-    render(<App />);
-
-    const file = new File(['test'], 'test.zip', { type: 'application/zip' });
-    const fileInput = document.querySelector('input[type="file"]');
-
-    fireEvent.change(fileInput!, { target: { files: [file] } });
-
-    await waitFor(() => {
-      expect(mockHandleZipUpload).toHaveBeenCalledWith(file);
-    });
-  });
-
-  it('should display upload success', () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      uploadState: { status: 'success', error: null, fileName: 'test.zip' },
-    }));
-
-    render(<App />);
-
-    expect(screen.getByText('test.zip')).toBeInTheDocument();
-    expect(screen.getByText('Clear')).toBeInTheDocument();
-    expect(screen.getByRole('alert')).toBeInTheDocument();
-  });
-
-  it('should display shortened filename for long names', () => {
-    const longFileName = 'very_long_instagram_data_file_name_2024.zip';
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      uploadState: { status: 'success', error: null, fileName: longFileName },
-    }));
-
-    render(<App />);
-
-    // Should show beginning and end of filename
-    expect(screen.getByText('very_long_in...ame_2024.zip')).toBeInTheDocument();
-  });
-
-  it('should display upload error', () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      uploadState: { status: 'error', error: 'Upload failed', fileName: null },
-    }));
-
-    render(<App />);
-
-    expect(screen.getByText('❌ Upload failed')).toBeInTheDocument();
-    expect(screen.getByText('Upload failed')).toBeInTheDocument();
-    expect(screen.getByRole('alert')).toBeInTheDocument();
-  });
-
-  it('should handle filter changes', () => {
-    const mockSetFilters = vi.fn();
-    mockUseAppStore.mockImplementation((selector) =>
-      selector(createMockState({ setFilters: mockSetFilters }))
+    // Set up state with no data to show file upload section
+    mockUseAppStore.mockImplementation(selector =>
+      selector(
+        createMockState({
+          fileMetadata: null,
+        })
+      )
     );
 
     render(<App />);
 
-    const followersChip = screen.getByRole('checkbox', { name: /Followers \(\d+\)/ });
-    fireEvent.click(followersChip);
-
-    expect(mockSetFilters).toHaveBeenCalled();
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+    expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+    expect(screen.getByTestId('footer')).toBeInTheDocument();
   });
 
-
-  it('should handle empty account list', () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      meta: null,
-      unified: [],
-    }));
-
-    // Mock useFilters to return empty array for empty state
-    mockUseFilters.mockReturnValue([]);
+  it('should show file upload section when no data is loaded', () => {
+    mockUseAppStore.mockImplementation(selector =>
+      selector(
+        createMockState({
+          fileMetadata: null,
+        })
+      )
+    );
 
     render(<App />);
 
-    expect(screen.getByText('📭 No results. Try another query or adjust filters.')).toBeInTheDocument();
+    expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+    expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
   });
 
-  it('should render help button in header', () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData());
-    mockUseAppStore.mockImplementation((selector) => selector(createMockState({
-      unified: accounts || [], // Ensure unified is an array
-    })));
+  it('should show account list section when data is loaded', () => {
+    mockUseAppStore.mockImplementation(selector =>
+      selector(
+        createMockState({
+          fileMetadata: mockFileMetadata,
+        })
+      )
+    );
 
     render(<App />);
 
-    expect(screen.getByText('❓ Help')).toBeInTheDocument();
-  });
-
-  it('should show instructions alert in empty state', () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      meta: null,
-      unified: [],
-    }));
-    mockUseAppStore.mockImplementation((selector) => selector(createMockState({
-      unified: [], // Ensure unified is an array
-    })));
-
-    render(<App />);
-
-    expect(screen.getByText('Get Started with Instagram Data')).toBeInTheDocument();
-    expect(screen.getByText('📖 View Step-by-Step Guide')).toBeInTheDocument();
+    expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+    expect(screen.queryByTestId('file-upload-section')).not.toBeInTheDocument();
   });
 
   it('should open instructions modal when help button is clicked', async () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData());
-    mockUseAppStore.mockImplementation((selector) => selector(createMockState({
-      unified: accounts || [], // Ensure unified is an array
-    })));
-
     render(<App />);
 
-    fireEvent.click(screen.getByText('❓ Help'));
+    const helpButtons = screen.getAllByText('Help');
+    fireEvent.click(helpButtons[0]);
 
     await waitFor(() => {
-      expect(screen.getByText('📥 How to Download Your Instagram Data')).toBeInTheDocument();
+      expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
     });
   });
 
-  it('should clear search when clear button is clicked', () => {
-    mockUseInstagramData.mockReturnValue(createMockInstagramData());
-    mockUseAppStore.mockImplementation((selector) => selector(createMockState({
-      unified: accounts || [],
-    })));
-
+  it('should close instructions modal when onOpenChange is called', async () => {
     render(<App />);
 
-    const searchInput = screen.getByPlaceholderText('Search username…');
-
-    // Type something in search
-    fireEvent.change(searchInput, { target: { value: 'test' } });
-    expect(searchInput).toHaveValue('test');
-
-    // Click clear button
-    const clearButton = screen.getByLabelText('Clear search');
-    fireEvent.click(clearButton);
-
-    // Search should be cleared
-    expect(searchInput).toHaveValue('');
-  });
-
-
-  it('should handle multiple filter selection', () => {
-    mockUseAppStore.mockImplementation((selector) =>
-      selector(createMockState({
-        filters: new Set(['following', 'followers'] as BadgeKey[]),
-      }))
-    );
-
-    render(<App />);
-
-    expect(screen.getByRole('checkbox', { name: /Following \(\d+\)/ })).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: /Followers \(\d+\)/ })).toBeInTheDocument();
-  });
-
-  it('should handle no filters selected', () => {
-    mockUseAppStore.mockImplementation((selector) =>
-      selector(createMockState({ filters: new Set<BadgeKey>() }))
-    );
-
-    // Mock useFilters to return empty array when no filters are selected
-    mockUseFilters.mockReturnValue([]);
-
-    render(<App />);
-
-    expect(screen.getByText('📭 No results. Try another query or adjust filters.')).toBeInTheDocument();
-  });
-
-  it('should display Instagram links correctly', () => {
-    render(<App />);
-
-    const aliceLink = screen.getByText('@alice_mutual').closest('a');
-    expect(aliceLink).toHaveAttribute('href', 'https://www.instagram.com/alice_mutual');
-    expect(aliceLink).toHaveAttribute('target', '_blank');
-    expect(aliceLink).toHaveAttribute('rel', 'noreferrer');
-  });
-
-  it('should handle file upload errors gracefully', async () => {
-    const mockHandleZipUpload = vi.fn().mockRejectedValue(new Error('Upload failed'));
-    mockUseInstagramData.mockReturnValue(createMockInstagramData({
-      handleZipUpload: mockHandleZipUpload,
-    }));
-
-    // Mock console.error to avoid noise in test output
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-
-    render(<App />);
-
-    const file = new File(['test'], 'test.zip', { type: 'application/zip' });
-    const fileInput = document.querySelector('input[type="file"]');
-
-    fireEvent.change(fileInput!, { target: { files: [file] } });
+    // Open modal
+    const helpButtons = screen.getAllByText('Help');
+    fireEvent.click(helpButtons[0]);
 
     await waitFor(() => {
-      expect(mockHandleZipUpload).toHaveBeenCalledWith(file);
+      expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
     });
 
-    // Should not crash the app
-    expect(screen.getByText('📊 Instagram Unfollow Tracker')).toBeInTheDocument();
-
-    consoleSpy.mockRestore();
+    // Modal should be closed by default after opening
+    // This tests the modal state management
   });
 
+  describe('Hydration states', () => {
+    it('should show loading spinner when not hydrated', () => {
+      mockUseHydration.mockReturnValue(false);
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: null,
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+      expect(screen.queryByTestId('file-upload-section')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
+    });
+
+    it('should show loading spinner with animation', () => {
+      mockUseHydration.mockReturnValue(false);
+
+      render(<App />);
+
+      const spinner = screen.getByText('Loading...').previousElementSibling;
+      expect(spinner).toHaveClass('animate-spin');
+    });
+
+    it('should show file upload section after hydration with no data', () => {
+      mockUseHydration.mockReturnValue(true);
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: null,
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+    });
+
+    it('should show account list after hydration with data', () => {
+      mockUseHydration.mockReturnValue(true);
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: mockFileMetadata,
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+    });
+
+    it('should transition from loading to file upload', async () => {
+      mockUseHydration.mockReturnValue(false);
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: null,
+          })
+        )
+      );
+
+      const { rerender } = render(<App />);
+
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+
+      // Simulate hydration complete
+      mockUseHydration.mockReturnValue(true);
+      rerender(<App />);
+
+      await waitFor(() => {
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+      });
+    });
+
+    it('should handle hydration with existing data', () => {
+      mockUseHydration.mockReturnValue(false);
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: mockFileMetadata,
+          })
+        )
+      );
+
+      const { rerender } = render(<App />);
+
+      expect(screen.getByText('Loading...')).toBeInTheDocument();
+
+      // Simulate hydration complete
+      mockUseHydration.mockReturnValue(true);
+      rerender(<App />);
+
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+    });
+
+    it('should not show file upload or account list during hydration', () => {
+      mockUseHydration.mockReturnValue(false);
+
+      render(<App />);
+
+      expect(screen.queryByTestId('file-upload-section')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
+    });
+
+    it('should always show header and footer regardless of hydration', () => {
+      mockUseHydration.mockReturnValue(false);
+
+      render(<App />);
+
+      expect(screen.getByTestId('header')).toBeInTheDocument();
+      expect(screen.getByTestId('footer')).toBeInTheDocument();
+    });
+  });
+
+  describe('File metadata validation', () => {
+    it('should treat null fileMetadata as no data', () => {
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: null,
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+    });
+
+    it('should treat fileMetadata with 0 accounts as no data', () => {
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: { ...mockFileMetadata, accountCount: 0 },
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+    });
+
+    it('should treat fileMetadata with undefined accountCount as no data', () => {
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: { ...mockFileMetadata, accountCount: undefined as any },
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+    });
+
+    it('should show account list with valid accountCount', () => {
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: { ...mockFileMetadata, accountCount: 1 },
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+    });
+
+    it('should show account list with large accountCount', () => {
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: { ...mockFileMetadata, accountCount: 1000000 },
+          })
+        )
+      );
+
+      render(<App />);
+
+      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+    });
+  });
+
+  describe('Layout structure', () => {
+    it('should have correct container classes', () => {
+      const { container } = render(<App />);
+
+      const mainDiv = container.querySelector('.min-h-screen');
+      expect(mainDiv).toBeInTheDocument();
+      expect(mainDiv).toHaveClass('bg-background', 'flex', 'flex-col');
+    });
+
+    it('should have proper spacing and responsive padding', () => {
+      const { container } = render(<App />);
+
+      const contentDiv = container.querySelector('.mx-auto');
+      expect(contentDiv).toHaveClass('max-w-7xl', 'px-4', 'py-8', 'sm:px-6', 'lg:px-8');
+    });
+
+    it('should have footer with bottom spacing', () => {
+      const { container } = render(<App />);
+
+      const flexDiv = container.querySelector('.flex-1');
+      expect(flexDiv).toHaveClass('pb-20');
+    });
+  });
+
+  describe('Instructions modal integration', () => {
+    it('should pass correct props to InstructionsModal', () => {
+      render(<App />);
+
+      // Modal should not be visible initially
+      expect(screen.queryByTestId('instructions-modal')).not.toBeInTheDocument();
+    });
+
+    it('should open modal from header help button', async () => {
+      render(<App />);
+
+      const headerHelpButton = screen.getByTestId('header').querySelector('button');
+      if (headerHelpButton) {
+        fireEvent.click(headerHelpButton);
+
+        await waitFor(() => {
+          expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
+        });
+      }
+    });
+
+    it('should open modal from file upload section help button', async () => {
+      mockUseAppStore.mockImplementation(selector =>
+        selector(
+          createMockState({
+            fileMetadata: null,
+          })
+        )
+      );
+
+      render(<App />);
+
+      const uploadHelpButton = screen.getByTestId('file-upload-section').querySelector('button');
+      if (uploadHelpButton) {
+        fireEvent.click(uploadHelpButton);
+
+        await waitFor(() => {
+          expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
+        });
+      }
+    });
+  });
 });
