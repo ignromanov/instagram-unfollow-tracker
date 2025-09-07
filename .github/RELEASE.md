@@ -3,6 +3,7 @@
 ## v0.1.0 - Initial Release (January 2025)
 
 ### 🎉 What's New
+
 - **Core unfollow tracking** - Find who unfollowed you and who you don't follow back
 - **Smart badges** - Categorize accounts (mutuals, close friends, restricted, etc.)
 - **Real-time search** - Fast, debounced search with Map-based indexing
@@ -10,6 +11,7 @@
 - **Direct profile links** - Click to open Instagram profiles in new tabs
 
 ### 🎨 User Experience
+
 - **Professional UI/UX** - Modern design with Mantine UI components
 - **Drag & drop upload** - Easy ZIP file upload with visual feedback
 - **Responsive design** - Works on desktop, tablet, and mobile
@@ -17,23 +19,27 @@
 - **Accessibility** - ARIA labels, keyboard navigation, screen reader support
 
 ### ⚡ Performance
+
 - **Virtualization** - Efficient rendering for lists 50+ items
 - **Optimized search** - 300ms debounce with O(1) lookup performance
 - **Memoization** - Cached calculations for smooth interactions
 - **Single-pass algorithms** - Fast data processing
 
 ### 🔒 Privacy & Security
+
 - **100% local processing** - No data leaves your device
 - **No tracking** - No analytics, cookies, or data collection
 - **Open source** - Full transparency and community auditability
 - **No authentication** - Uses official Instagram data export only
 
 ### 🧪 Quality
+
 - **98% test coverage** - 175 tests covering all core functionality
 - **TypeScript strict mode** - Full type safety and error prevention
 - **Production ready** - GitHub Pages deployment with CI/CD
 
 ### 📱 Supported Data
+
 - **Followers and Following** - Core relationship data
 - **Close friends** - Instagram close friends list
 - **Pending requests** - Accounts with pending follow requests
@@ -41,24 +47,28 @@
 - **Restricted profiles** - Accounts you've restricted
 
 ### 🌐 Browser Support
+
 - **Chrome** 90+ (recommended)
 - **Firefox** 88+
 - **Safari** 14+
 - **Edge** 90+
 
 ### 📊 Performance Targets
+
 - **Parse time**: < 2 seconds for 50,000 total accounts
 - **Search response**: < 100ms for 10,000 items
 - **Filter updates**: < 50ms for any filter combination
 - **Memory usage**: < 100MB for large datasets
 
 ### 🚀 Getting Started
+
 1. Visit [https://ignromanov.github.io/instagram-unfollow-tracker](https://ignromanov.github.io/instagram-unfollow-tracker)
 2. Download your Instagram data from [Meta Accounts Center](https://accountscenter.instagram.com/)
 3. Upload your ZIP file to the app
 4. Explore your follower relationships!
 
 ### 📚 Documentation
+
 - **[User Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/user-guide)** - Complete step-by-step tutorial
 - **[FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq)** - Common questions and answers
 - **[Troubleshooting](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting)** - Problem-solving guide
@@ -68,11 +78,13 @@
 - **[Roadmap](https://ignromanov.github.io/instagram-unfollow-tracker/docs/roadmap)** - Future features
 
 ### 🤝 Contributing
+
 - **GitHub**: [https://github.com/ignromanov/instagram-unfollow-tracker](https://github.com/ignromanov/instagram-unfollow-tracker)
 - **Issues**: Report bugs and request features
 - **Contributing**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/master/CONTRIBUTING.md)
 
 ### 📄 License
+
 MIT License - Free to use, modify, and distribute
 
 ---
