@@ -10,7 +10,7 @@ coverage:
         threshold: 1%
 
 comment:
-  layout: "header,diff,files,footer"
+  layout: 'header,diff,files,footer'
   behavior: default
   require_changes: false
   require_base: false
