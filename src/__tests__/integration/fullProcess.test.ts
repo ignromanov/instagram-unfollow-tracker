@@ -1,7 +1,7 @@
 import { vi, beforeEach } from 'vitest';
 import { parseInstagramZipFile } from '@/core/parsers/instagram';
 import { buildAccountBadgeIndex, filterAccountsByBadges } from '@/core/badges';
-import { 
+import {
   generateFollowingData,
   generateFollowersData,
   generatePendingRequestsData,
@@ -10,7 +10,7 @@ import {
   generateUnfollowedData,
   generateDismissedData,
   TEST_ACCOUNTS,
-  EXPECTED_BADGE_COUNTS
+  EXPECTED_BADGE_COUNTS,
 } from '../fixtures/testData';
 import type { BadgeKey } from '@/core/types';
 
@@ -24,8 +24,8 @@ const { MockJSZip } = vi.hoisted(() => {
 let mockZipInstance: any;
 vi.mock('jszip', () => ({
   default: {
-    loadAsync: vi.fn().mockImplementation(() => Promise.resolve(mockZipInstance))
-  }
+    loadAsync: vi.fn().mockImplementation(() => Promise.resolve(mockZipInstance)),
+  },
 }));
 
 describe('Full Process Integration Tests', () => {
@@ -37,34 +37,49 @@ describe('Full Process Integration Tests', () => {
     it('should process ZIP file and generate correct badge counts', async () => {
       // Create mock JSZip instance
       mockZipInstance = new MockJSZip();
-      
-      // Add mock files to the ZIP
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateFollowingData())));
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateFollowersData())));
-      mockZipInstance._addFile('connections/followers_and_following/pending_follow_requests.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generatePendingRequestsData())));
-      mockZipInstance._addFile('connections/followers_and_following/permanent_follow_requests.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([])));
-      mockZipInstance._addFile('connections/followers_and_following/restricted_profiles.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateRestrictedData())));
-      mockZipInstance._addFile('connections/followers_and_following/close_friends.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateCloseFriendsData())));
-      mockZipInstance._addFile('connections/followers_and_following/recently_unfollowed_profiles.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateUnfollowedData())));
-      mockZipInstance._addFile('connections/followers_and_following/removed_suggestions.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateDismissedData())));
 
+      // Add mock files to the ZIP
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateFollowingData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateFollowersData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/pending_follow_requests.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generatePendingRequestsData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/permanent_follow_requests.json',
+        vi.fn().mockResolvedValue(JSON.stringify([]))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/restricted_profiles.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateRestrictedData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/close_friends.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateCloseFriendsData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/recently_unfollowed_profiles.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateUnfollowedData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/removed_suggestions.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateDismissedData()))
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
-      
+
       // Step 1: Parse ZIP file
       const parsedData = await parseInstagramZipFile(mockFile);
-      
+
       // Step 2: Build badge index
       const badgeIndex = buildAccountBadgeIndex(parsedData);
-      
+
       // Step 3: Verify badge counts
       const actualCounts = {
         following: badgeIndex.filter(acc => acc.badges.following).length,
@@ -79,7 +94,7 @@ describe('Full Process Integration Tests', () => {
         unfollowed: badgeIndex.filter(acc => acc.badges.unfollowed).length,
         dismissed: badgeIndex.filter(acc => acc.badges.dismissed).length,
       };
-      
+
       expect(actualCounts.following).toBe(EXPECTED_BADGE_COUNTS.following);
       expect(actualCounts.followers).toBe(EXPECTED_BADGE_COUNTS.followers);
       expect(actualCounts.mutuals).toBe(EXPECTED_BADGE_COUNTS.mutuals);
@@ -95,72 +110,77 @@ describe('Full Process Integration Tests', () => {
     it('should handle filtering workflow correctly', async () => {
       // Create mock JSZip instance
       mockZipInstance = new MockJSZip();
-      
-      // Add mock files to the ZIP
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateFollowingData())));
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateFollowersData())));
-      mockZipInstance._addFile('connections/followers_and_following/pending_follow_requests.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generatePendingRequestsData())));
-      mockZipInstance._addFile('connections/followers_and_following/restricted_profiles.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateRestrictedData())));
-      mockZipInstance._addFile('connections/followers_and_following/close_friends.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateCloseFriendsData())));
-      mockZipInstance._addFile('connections/followers_and_following/recently_unfollowed_profiles.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateUnfollowedData())));
-      mockZipInstance._addFile('connections/followers_and_following/removed_suggestions.json', 
-        vi.fn().mockResolvedValue(JSON.stringify(generateDismissedData())));
 
+      // Add mock files to the ZIP
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateFollowingData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateFollowersData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/pending_follow_requests.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generatePendingRequestsData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/restricted_profiles.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateRestrictedData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/close_friends.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateCloseFriendsData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/recently_unfollowed_profiles.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateUnfollowedData()))
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/removed_suggestions.json',
+        vi.fn().mockResolvedValue(JSON.stringify(generateDismissedData()))
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
-      
+
       // Step 1: Parse and build index
       const parsedData = await parseInstagramZipFile(mockFile);
       const badgeIndex = buildAccountBadgeIndex(parsedData);
-      
+
       // Step 2: Test various filtering scenarios
-      
+
       // Filter by mutuals only
       const mutuals = filterAccountsByBadges(badgeIndex, new Set(['mutuals']));
       expect(mutuals).toHaveLength(TEST_ACCOUNTS.mutuals.length);
       mutuals.forEach(account => {
         expect(account.badges.mutuals).toBeTruthy();
       });
-      
+
       // Filter by not following back
       const notFollowingBack = filterAccountsByBadges(badgeIndex, new Set(['notFollowingBack']));
       expect(notFollowingBack).toHaveLength(TEST_ACCOUNTS.notFollowingBack.length);
       notFollowingBack.forEach(account => {
         expect(account.badges.notFollowingBack).toBeTruthy();
       });
-      
+
       // Filter by multiple badge types
       const multipleFilters = filterAccountsByBadges(
-        badgeIndex, 
+        badgeIndex,
         new Set(['mutuals', 'notFollowingBack'] as BadgeKey[])
       );
       expect(multipleFilters).toHaveLength(
         TEST_ACCOUNTS.mutuals.length + TEST_ACCOUNTS.notFollowingBack.length
       );
-      
+
       // Filter by username query
-      const aliceAccounts = filterAccountsByBadges(
-        badgeIndex, 
-        new Set(['following']), 
-        'alice'
-      );
+      const aliceAccounts = filterAccountsByBadges(badgeIndex, new Set(['following']), 'alice');
       expect(aliceAccounts.length).toBeGreaterThan(0);
       aliceAccounts.forEach(account => {
         expect(account.username.toLowerCase()).toContain('alice');
       });
-      
+
       // Filter by username query with specific badge
-      const aliceMutuals = filterAccountsByBadges(
-        badgeIndex, 
-        new Set(['mutuals']), 
-        'alice'
-      );
+      const aliceMutuals = filterAccountsByBadges(badgeIndex, new Set(['mutuals']), 'alice');
       aliceMutuals.forEach(account => {
         expect(account.badges.mutuals).toBeTruthy();
         expect(account.username.toLowerCase()).toContain('alice');
@@ -170,53 +190,56 @@ describe('Full Process Integration Tests', () => {
     it('should handle edge cases in the pipeline', async () => {
       // Create mock JSZip instance
       mockZipInstance = new MockJSZip();
-      
-      // Add minimal mock files to the ZIP
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'single_user',
-            string_list_data: [{
-              href: 'https://www.instagram.com/single_user/',
-              value: 'single_user',
-              timestamp: Date.now() / 1000,
-            }],
-            media_list_data: [],
-          }
-        ])));
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([])));
 
+      // Add minimal mock files to the ZIP
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'single_user',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/single_user/',
+                  value: 'single_user',
+                  timestamp: Date.now() / 1000,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(JSON.stringify([]))
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
-      
+
       // Process minimal data
       const parsedData = await parseInstagramZipFile(mockFile);
       const badgeIndex = buildAccountBadgeIndex(parsedData);
-      
+
       // Should have one account
       expect(badgeIndex).toHaveLength(1);
       expect(badgeIndex[0]!.username).toBe('single_user');
       expect(badgeIndex[0]!.badges.following).toBeTruthy();
       expect(badgeIndex[0]!.badges.followers).toBeFalsy();
       expect(badgeIndex[0]!.badges.notFollowingBack).toBeTruthy();
-      
+
       // Test filtering with no results
       const noResults = filterAccountsByBadges(badgeIndex, new Set(['mutuals']));
       expect(noResults).toHaveLength(0);
-      
+
       // Test filtering with query that matches
-      const matchingQuery = filterAccountsByBadges(
-        badgeIndex, 
-        new Set(['following']), 
-        'single'
-      );
+      const matchingQuery = filterAccountsByBadges(badgeIndex, new Set(['following']), 'single');
       expect(matchingQuery).toHaveLength(1);
-      
+
       // Test filtering with query that doesn't match
       const nonMatchingQuery = filterAccountsByBadges(
-        badgeIndex, 
-        new Set(['following']), 
+        badgeIndex,
+        new Set(['following']),
         'nonexistent'
       );
       expect(nonMatchingQuery).toHaveLength(0);

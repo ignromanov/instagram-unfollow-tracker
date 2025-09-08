@@ -6,7 +6,7 @@ describe('types.ts utility functions', () => {
     it('should convert valid unix timestamp to ISO string', () => {
       const timestamp = 1700000000; // 2023-11-14T22:13:20.000Z
       const result = unixToISO(timestamp);
-      
+
       expect(result).toBe('2023-11-14T22:13:20.000Z');
     });
 
@@ -28,14 +28,14 @@ describe('types.ts utility functions', () => {
     it('should handle negative timestamps', () => {
       const timestamp = -1000;
       const result = unixToISO(timestamp);
-      
+
       expect(result).toBe('1969-12-31T23:43:20.000Z');
     });
 
     it('should handle very large timestamps', () => {
       const timestamp = 4102444800; // Year 2100
       const result = unixToISO(timestamp);
-      
+
       expect(result).toBe('2100-01-01T00:00:00.000Z');
     });
 
@@ -63,7 +63,7 @@ describe('types.ts utility functions', () => {
     it('should convert valid unix timestamp to human readable string', () => {
       const timestamp = 1700000000; // 2023-11-14T22:13:20.000Z
       const result = formatUnixHuman(timestamp);
-      
+
       expect(result).toBeTruthy();
       expect(typeof result).toBe('string');
       expect(result).toContain('2023'); // Should contain year
@@ -87,7 +87,7 @@ describe('types.ts utility functions', () => {
     it('should handle negative timestamps', () => {
       const timestamp = -1000;
       const result = formatUnixHuman(timestamp);
-      
+
       expect(result).toBeTruthy();
       expect(typeof result).toBe('string');
     });
@@ -95,7 +95,7 @@ describe('types.ts utility functions', () => {
     it('should handle very large timestamps', () => {
       const timestamp = 4102444800; // Year 2100
       const result = formatUnixHuman(timestamp);
-      
+
       expect(result).toBeTruthy();
       expect(typeof result).toBe('string');
       // The exact format depends on locale, so just check it's a valid string
@@ -143,7 +143,7 @@ describe('types.ts utility functions', () => {
       const timestamp = 1700000000.5;
       const isoResult = unixToISO(timestamp);
       const humanResult = formatUnixHuman(timestamp);
-      
+
       expect(isoResult).toBeTruthy();
       expect(humanResult).toBeTruthy();
     });
@@ -152,7 +152,7 @@ describe('types.ts utility functions', () => {
       const timestamp = 1;
       const isoResult = unixToISO(timestamp);
       const humanResult = formatUnixHuman(timestamp);
-      
+
       expect(isoResult).toBe('1970-01-01T00:00:01.000Z');
       expect(humanResult).toBeTruthy();
     });
