@@ -11,5 +11,6 @@
 
   <!-- Small magnifying glass icon for search/analysis -->
   <circle cx="21" cy="9" r="3" fill="none" stroke="#ffffff" stroke-width="1.5" />
-  <line x1="23.5" y1="11.5" x2="26" y2="14" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="23.5" y1="11.5" x2="26" y2="14" stroke="#ffffff" stroke-width="1.5"
+    stroke-linecap="round" />
 </svg>
