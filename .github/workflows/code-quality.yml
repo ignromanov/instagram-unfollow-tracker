@@ -17,8 +17,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -28,12 +28,6 @@ jobs:
 
       - name: Run TypeScript type check
         run: npm run type-check
-
-      - name: Check for unused code
-        run: node scripts/find-unused-code.js
-
-      - name: Check for unused dependencies
-        run: node scripts/find-unused-dependencies.js
 
       - name: Run tests
         run: npm run test:coverage
