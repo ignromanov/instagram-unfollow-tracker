@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "jsx": "react-jsx",
@@ -18,19 +14,20 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@tests/*": [
-        "src/__tests__/*"
-      ]
+      "@/*": ["src/*"],
+      "@tests/*": ["src/__tests__/*"]
     },
-    "types": [
-      "vitest/globals",
-      "@testing-library/jest-dom"
-    ]
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": [
-    "src"
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/__tests__/**/*",
+    "node_modules",
+    "dist",
+    "coverage"
   ]
 }

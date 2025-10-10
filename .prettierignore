@@ -1,0 +1,22 @@
+# Build output
+dist
+coverage
+
+# Dependencies
+node_modules
+
+# Project-specific directories
+designs
+scripts
+raw
+docs
+
+# Config files
+*.config.js
+*.config.ts
+
+# Scripts
+scripts/**/*.js
+
+# Git
+.git

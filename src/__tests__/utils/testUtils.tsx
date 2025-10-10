@@ -1,19 +1,22 @@
 import React from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { MantineProvider } from '@mantine/core';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <MantineProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
       {children}
-    </MantineProvider>
+    </ThemeProvider>
   );
 };
 
-const customRender = (
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from '@testing-library/react';
 export { customRender as render };

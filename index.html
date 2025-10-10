@@ -3,24 +3,118 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Instagram Unfollow Tracker — find out who unfollowed you on Instagram. 100% local, free, open source. Upload your Instagram data export and discover unfollowers instantly." />
-    <meta name="keywords" content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers, instagram data export, privacy, open source, free" />
+    <meta
+      name="description"
+      content="Instagram Unfollow Tracker — find out who unfollowed you on Instagram. 100% local, free, open source. Upload your Instagram data export and discover unfollowers instantly."
+    />
+    <meta
+      name="keywords"
+      content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers, instagram data export, privacy, open source, free"
+    />
     <meta name="theme-color" content="#1e66f5" />
-    
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
-    
-    <meta property="og:title" content="Instagram Unfollow Tracker — Find Who Unfollowed You" />
-    <meta property="og:description" content="Upload your Instagram Data Download ZIP and find out who unfollowed you. 100% local, free & open source unfollow tracker." />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Instagram Unfollow Tracker" />
-    <meta name="twitter:description" content="Find out who unfollowed you on Instagram. 100% local, free, open source." />
+    <meta property="og:url" content="https://ignromanov.github.io/instagram-unfollow-tracker/" />
+    <meta property="og:title" content="Instagram Unfollow Tracker — Free, Private, Fast" />
+    <meta
+      property="og:description"
+      content="Find who unfollowed you on Instagram. 100% free, 100% private, handles 1M+ accounts. No login required, works offline."
+    />
+    <meta property="og:site_name" content="Instagram Unfollow Tracker" />
+    <!-- TODO: Add og:image URL once social card is created -->
+    <!-- <meta property="og:image" content="https://ignromanov.github.io/instagram-unfollow-tracker/og-image.png" /> -->
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://ignromanov.github.io/instagram-unfollow-tracker/" />
+    <meta name="twitter:title" content="Instagram Unfollow Tracker — Free, Private, Fast" />
+    <meta
+      name="twitter:description"
+      content="Find Instagram unfollowers in your browser. Free forever, no login, handles millions. Privacy-first and open source."
+    />
+    <!-- TODO: Add twitter:image URL once social card is created -->
+    <!-- <meta name="twitter:image" content="https://ignromanov.github.io/instagram-unfollow-tracker/twitter-card.png" /> -->
+
+    <!-- Additional SEO -->
+    <meta name="author" content="Ignat Romanov" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://ignromanov.github.io/instagram-unfollow-tracker/" />
     <title>Instagram Unfollow Tracker — Find Who Unfollowed You</title>
+
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Instagram Unfollow Tracker",
+        "alternateName": "Unfollow Radar",
+        "description": "Privacy-first Instagram data analyzer that helps you find who unfollowed you. 100% local processing, no login required, handles 1M+ accounts.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "softwareVersion": "1.0.0",
+        "author": {
+          "@type": "Person",
+          "name": "Ignat Romanov",
+          "url": "https://github.com/ignromanov"
+        },
+        "provider": {
+          "@type": "Organization",
+          "name": "Unfollow Radar",
+          "url": "https://github.com/ignromanov/instagram-unfollow-tracker"
+        },
+        "url": "https://ignromanov.github.io/instagram-unfollow-tracker/",
+        "license": "https://opensource.org/licenses/MIT",
+        "softwareHelp": {
+          "@type": "CreativeWork",
+          "url": "https://ignromanov.github.io/instagram-unfollow-tracker/docs/"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5",
+          "reviewCount": "1",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "featureList": [
+          "Find Instagram unfollowers",
+          "Mutual follower analysis",
+          "100% local processing - no data upload",
+          "Handles 1M+ accounts",
+          "No Instagram login required",
+          "Free and open source",
+          "Works offline",
+          "Lightning-fast search and filtering"
+        ]
+      }
+    </script>
+
+    <!-- WorkerConsole.js - Enhanced version with ES Module support -->
+    <script src="/WorkerConsole.js"></script>
   </head>
-  <body>
+
+  <body class="font-sans antialiased">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

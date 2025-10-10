@@ -3,6 +3,7 @@
 ## Getting Help
 
 ### 📚 Documentation
+
 - **[User Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/user-guide)** - Complete step-by-step tutorial
 - **[FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq)** - Common questions and answers
 - **[Troubleshooting](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting)** - Problem-solving guide
@@ -12,7 +13,9 @@
 - **[Technical Specs](https://ignromanov.github.io/instagram-unfollow-tracker/docs/tech-spec)** - Technical details
 
 ### 🐛 Bug Reports
+
 If you found a bug, please:
+
 1. Check the [Troubleshooting Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting) first
 2. Check the [FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq) for common issues
 3. Search existing [issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
@@ -23,7 +26,9 @@ If you found a bug, please:
    - Screenshots if applicable
 
 ### 💡 Feature Requests
+
 Have an idea for improvement?
+
 1. Check the [roadmap](https://ignromanov.github.io/instagram-unfollow-tracker/docs/roadmap)
 2. Search existing [feature requests](https://github.com/ignromanov/instagram-unfollow-tracker/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 3. Create a new feature request with:
@@ -32,7 +37,9 @@ Have an idea for improvement?
    - Privacy considerations
 
 ### ❓ Questions
+
 Need help with something?
+
 1. Check the [User Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/user-guide) for step-by-step instructions
 2. Check the [Troubleshooting Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting) for common issues
 3. Check the [FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq) for quick answers
@@ -45,12 +52,15 @@ Need help with something?
 ## Privacy & Security
 
 ### 🔒 Data Protection
+
 - **Never share your Instagram data files** in issues or discussions
 - Use sample data or describe the structure instead
 - Your data never leaves your device
 
 ### 🛡️ Security Issues
+
 For security-related issues, please:
+
 1. **Do not** create a public issue
 2. Email security concerns privately
 3. See [SECURITY.md](../SECURITY.md) for details
@@ -58,16 +68,19 @@ For security-related issues, please:
 ## Community Guidelines
 
 ### 🤝 Be Respectful
+
 - Be kind and respectful to other users
 - Help others when you can
 - Follow the [Code of Conduct](../CODE_OF_CONDUCT.md)
 
 ### 📝 Provide Good Information
+
 - Be specific and detailed in your reports
 - Include relevant context
 - Use clear, descriptive titles
 
 ### 🔍 Search First
+
 - Check existing issues before creating new ones
 - Look for similar problems and solutions
 - Help reduce duplicate issues
@@ -75,13 +88,17 @@ For security-related issues, please:
 ## Development Support
 
 ### 🛠️ Contributing
+
 Want to help improve the project?
+
 - See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines
 - Check the [roadmap](https://ignromanov.github.io/instagram-unfollow-tracker/docs/roadmap) for priority areas
 - Look for issues labeled `good first issue`
 
 ### 🧪 Testing
+
 Help us test the app:
+
 - Try different browsers and devices
 - Test with various data sizes
 - Report any issues you find

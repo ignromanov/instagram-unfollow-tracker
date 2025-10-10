@@ -1,8 +1,8 @@
 import { vi, beforeEach } from 'vitest';
-import { 
-  parseFollowingJson, 
-  parseFollowersJson, 
-  parseInstagramZipFile
+import {
+  parseFollowingJson,
+  parseFollowersJson,
+  parseInstagramZipFile,
 } from '@/core/parsers/instagram';
 import type { InstagramExportEntry } from '@/core/types';
 
@@ -10,8 +10,8 @@ import type { InstagramExportEntry } from '@/core/types';
 let mockZipInstance: any;
 vi.mock('jszip', () => ({
   default: {
-    loadAsync: vi.fn().mockImplementation(() => Promise.resolve(mockZipInstance))
-  }
+    loadAsync: vi.fn().mockImplementation(() => Promise.resolve(mockZipInstance)),
+  },
 }));
 
 // Hoisted mock setup
@@ -30,20 +30,24 @@ describe('Instagram Parser', () => {
       const followingData: InstagramExportEntry[] = [
         {
           title: 'user1',
-          string_list_data: [{
-            href: 'https://www.instagram.com/user1/',
-            value: 'user1',
-            timestamp: 1640995200,
-          }],
+          string_list_data: [
+            {
+              href: 'https://www.instagram.com/user1/',
+              value: 'user1',
+              timestamp: 1640995200,
+            },
+          ],
           media_list_data: [],
         },
         {
           title: 'user2',
-          string_list_data: [{
-            href: 'https://www.instagram.com/user2/',
-            value: 'user2',
-            timestamp: 1640995201,
-          }],
+          string_list_data: [
+            {
+              href: 'https://www.instagram.com/user2/',
+              value: 'user2',
+              timestamp: 1640995201,
+            },
+          ],
           media_list_data: [],
         },
       ];
@@ -57,11 +61,13 @@ describe('Instagram Parser', () => {
         relationships_following: [
           {
             title: 'user1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/user1/',
-              value: 'user1',
-              timestamp: 1640995200,
-            }],
+            string_list_data: [
+              {
+                href: 'https://www.instagram.com/user1/',
+                value: 'user1',
+                timestamp: 1640995200,
+              },
+            ],
             media_list_data: [],
           },
         ],
@@ -80,11 +86,13 @@ describe('Instagram Parser', () => {
       const followingData: InstagramExportEntry[] = [
         {
           title: 'USER1',
-          string_list_data: [{
-            href: 'https://www.instagram.com/USER1/',
-            value: 'USER1',
-            timestamp: 1640995200,
-          }],
+          string_list_data: [
+            {
+              href: 'https://www.instagram.com/USER1/',
+              value: 'USER1',
+              timestamp: 1640995200,
+            },
+          ],
           media_list_data: [],
         },
       ];
@@ -97,20 +105,24 @@ describe('Instagram Parser', () => {
       const followingData: InstagramExportEntry[] = [
         {
           title: 'user1',
-          string_list_data: [{
-            href: 'https://www.instagram.com/user1/',
-            value: 'user1',
-            timestamp: 1640995200,
-          }],
+          string_list_data: [
+            {
+              href: 'https://www.instagram.com/user1/',
+              value: 'user1',
+              timestamp: 1640995200,
+            },
+          ],
           media_list_data: [],
         },
         {
           title: 'user1',
-          string_list_data: [{
-            href: 'https://www.instagram.com/user1/',
-            value: 'user1',
-            timestamp: 1640995201,
-          }],
+          string_list_data: [
+            {
+              href: 'https://www.instagram.com/user1/',
+              value: 'user1',
+              timestamp: 1640995201,
+            },
+          ],
           media_list_data: [],
         },
       ];
@@ -121,9 +133,10 @@ describe('Instagram Parser', () => {
 
     it('should throw error for invalid format', async () => {
       const invalidData = { invalid: 'data' };
-      
-      await expect(parseFollowingJson(JSON.stringify(invalidData)))
-        .rejects.toThrow('Invalid following.json: missing relationships_following');
+
+      await expect(parseFollowingJson(JSON.stringify(invalidData))).rejects.toThrow(
+        'Invalid following.json: missing relationships_following'
+      );
     });
   });
 
@@ -132,11 +145,13 @@ describe('Instagram Parser', () => {
       const followersData: InstagramExportEntry[] = [
         {
           title: 'follower1',
-          string_list_data: [{
-            href: 'https://www.instagram.com/follower1/',
-            value: 'follower1',
-            timestamp: 1640995200,
-          }],
+          string_list_data: [
+            {
+              href: 'https://www.instagram.com/follower1/',
+              value: 'follower1',
+              timestamp: 1640995200,
+            },
+          ],
           media_list_data: [],
         },
       ];
@@ -150,11 +165,13 @@ describe('Instagram Parser', () => {
         relationships_followers: [
           {
             title: 'follower1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/follower1/',
-              value: 'follower1',
-              timestamp: 1640995200,
-            }],
+            string_list_data: [
+              {
+                href: 'https://www.instagram.com/follower1/',
+                value: 'follower1',
+                timestamp: 1640995200,
+              },
+            ],
             media_list_data: [],
           },
         ],
@@ -166,9 +183,10 @@ describe('Instagram Parser', () => {
 
     it('should throw error for invalid followers format', async () => {
       const invalidData = { invalid: 'data' };
-      
-      await expect(parseFollowersJson(JSON.stringify(invalidData)))
-        .rejects.toThrow('Invalid followers json format');
+
+      await expect(parseFollowersJson(JSON.stringify(invalidData))).rejects.toThrow(
+        'Invalid followers json format'
+      );
     });
   });
 
@@ -179,57 +197,81 @@ describe('Instagram Parser', () => {
 
     it('should parse complete ZIP file with all data types', async () => {
       // Add mock files to the ZIP
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'user1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/user1/',
-              value: 'user1',
-              timestamp: 1640995200,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'user1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/user1/',
+                  value: 'user1',
+                  timestamp: 1640995200,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'follower1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/follower1/',
-              value: 'follower1',
-              timestamp: 1640995201,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'follower1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/follower1/',
+                  value: 'follower1',
+                  timestamp: 1640995201,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
-      mockZipInstance._addFile('connections/followers_and_following/pending_follow_requests.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'pending1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/pending1/',
-              value: 'pending1',
-              timestamp: 1640995202,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/pending_follow_requests.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'pending1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/pending1/',
+                  value: 'pending1',
+                  timestamp: 1640995202,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
-      mockZipInstance._addFile('connections/followers_and_following/restricted_profiles.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'restricted1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/restricted1/',
-              value: 'restricted1',
-              timestamp: 1640995203,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/restricted_profiles.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'restricted1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/restricted1/',
+                  value: 'restricted1',
+                  timestamp: 1640995203,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
@@ -244,18 +286,24 @@ describe('Instagram Parser', () => {
 
     it('should handle ZIP file with minimal data', async () => {
       // Add only following file
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'user1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/user1/',
-              value: 'user1',
-              timestamp: 1640995200,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'user1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/user1/',
+                  value: 'user1',
+                  timestamp: 1640995200,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
@@ -267,34 +315,48 @@ describe('Instagram Parser', () => {
 
     it('should handle multiple followers files', async () => {
       // Add multiple followers files
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(JSON.stringify([]))
+      );
 
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'follower1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/follower1/',
-              value: 'follower1',
-              timestamp: 1640995200,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'follower1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/follower1/',
+                  value: 'follower1',
+                  timestamp: 1640995200,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
-      mockZipInstance._addFile('connections/followers_and_following/followers_2.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'follower2',
-            string_list_data: [{
-              href: 'https://www.instagram.com/follower2/',
-              value: 'follower2',
-              timestamp: 1640995201,
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_2.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'follower2',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/follower2/',
+                  value: 'follower2',
+                  timestamp: 1640995201,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
@@ -306,40 +368,52 @@ describe('Instagram Parser', () => {
 
     it('should throw error for empty ZIP file', async () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
-      
-      await expect(parseInstagramZipFile(mockFile))
-        .rejects.toThrow('Could not find required files in ZIP');
+
+      await expect(parseInstagramZipFile(mockFile)).rejects.toThrow(
+        'Could not find required files in ZIP'
+      );
     });
 
     it('should handle malformed JSON gracefully', async () => {
       // Add malformed JSON file
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue('invalid json'));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue('invalid json')
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
-      
-      await expect(parseInstagramZipFile(mockFile))
-        .rejects.toThrow('Could not find required files in ZIP');
+
+      await expect(parseInstagramZipFile(mockFile)).rejects.toThrow(
+        'Could not find required files in ZIP'
+      );
     });
 
     it('should preserve timestamps correctly', async () => {
       const testTimestamp = 1640995200;
-      
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'user1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/user1/',
-              value: 'user1',
-              timestamp: testTimestamp,
-            }],
-            media_list_data: [],
-          },
-        ])));
 
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'user1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/user1/',
+                  value: 'user1',
+                  timestamp: testTimestamp,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
+
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(JSON.stringify([]))
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
@@ -348,21 +422,29 @@ describe('Instagram Parser', () => {
     });
 
     it('should handle missing timestamp gracefully', async () => {
-      mockZipInstance._addFile('connections/followers_and_following/following.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([
-          {
-            title: 'user1',
-            string_list_data: [{
-              href: 'https://www.instagram.com/user1/',
-              value: 'user1',
-              // No timestamp
-            }],
-            media_list_data: [],
-          },
-        ])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'user1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/user1/',
+                  value: 'user1',
+                  // No timestamp
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
 
-      mockZipInstance._addFile('connections/followers_and_following/followers_1.json', 
-        vi.fn().mockResolvedValue(JSON.stringify([])));
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(JSON.stringify([]))
+      );
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
@@ -370,7 +452,36 @@ describe('Instagram Parser', () => {
       expect(result.followingTimestamps.get('user1')).toBe(0);
     });
 
+    it('should handle followers files with different naming patterns', async () => {
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(JSON.stringify([]))
+      );
+
+      // Add followers file with different pattern to trigger line 110-111
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_2.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'user1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/user1/',
+                  value: 'user1',
+                  timestamp: 1234567890,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
+
+      const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
+      const result = await parseInstagramZipFile(mockFile);
+
+      expect(result.followersTimestamps.get('user1')).toBe(1234567890);
+    });
   });
-
-
 });

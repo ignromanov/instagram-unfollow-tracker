@@ -1,9 +1,11 @@
 ## Security Policy
 
 ### Supported Versions
+
 We support the latest commit on `main`.
 
 ### Reporting a Vulnerability
+
 Please avoid filing public issues for security vulnerabilities.
 
 - Use GitHub Security Advisories (Report a vulnerability) if available for this repository, or

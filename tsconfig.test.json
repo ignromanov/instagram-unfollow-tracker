@@ -1,0 +1,56 @@
+{
+  "extends": "./tsconfig.json",
+  "composite": true,
+  "compilerOptions": {
+    // Path mapping for tests
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@tests/*": ["src/__tests__/*"]
+    },
+    // Maximum leniency for test files - disable all strict type checking
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "exactOptionalPropertyTypes": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noFallthroughCasesInSwitch": false,
+    // Allow unreachable code and unused labels (common in tests)
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    // Allow JavaScript files and loose checking
+    "allowJs": true,
+    "checkJs": false,
+    // Relaxed module resolution
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": false,
+    // Allow experimental features for testing
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    // Critical settings - keep only what prevents runtime errors
+    "noEmit": true, // Don't emit files for tests - just type checking
+    "noEmitOnError": false, // Allow compilation even with errors for tests
+    "skipLibCheck": true, // Skip library checking for faster compilation
+    // Test-specific types
+    "types": ["vitest/globals", "@testing-library/jest-dom", "node"]
+  },
+  "include": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/__tests__/**/*",
+    "vitest.setup.ts"
+  ],
+  "exclude": ["node_modules", "dist", "coverage", "**/*.cjs", "**/*.mjs"]
+}

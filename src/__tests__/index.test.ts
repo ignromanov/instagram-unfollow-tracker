@@ -9,10 +9,10 @@ describe('Test Suite Integration', () => {
 
   it('should verify test data structure', () => {
     // Import test data to ensure it's properly structured
-    
+
     expect(TEST_ACCOUNTS).toBeDefined();
     expect(EXPECTED_BADGE_COUNTS).toBeDefined();
-    
+
     // Verify that we have test accounts for each category
     expect(TEST_ACCOUNTS.mutuals.length).toBeGreaterThan(0);
     expect(TEST_ACCOUNTS.notFollowingBack.length).toBeGreaterThan(0);
