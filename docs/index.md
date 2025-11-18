@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Documentation
-description: Complete documentation for Instagram Unfollow Tracker
+title: How to Find Instagram Unfollowers - Complete Guide
+description: Step-by-step guide to find who unfollowed you on Instagram using free data export. No login required, works offline. Privacy-first tutorial.
 permalink: /
 ---
 
