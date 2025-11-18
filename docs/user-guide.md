@@ -30,7 +30,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 **📖 Detailed instructions**: See [Instagram Export Guide](instagram-export/)
 
 ### Step 2: Upload Your Data
-1. Open [Instagram Unfollow Tracker](https://ignromanov.github.io/instagram-unfollow-tracker)
+1. Open [Instagram Unfollow Tracker](https://instagram-unfollow-tracker.vercel.app)
 2. Click "Upload ZIP" or drag & drop your ZIP file
 3. Wait for processing to complete (usually 1-3 seconds)
 4. Your data is now ready for analysis!

@@ -110,7 +110,7 @@ All processing happens **100% locally** in your browser. Your data never leaves 
 
 ### Try it online
 
-Visit the live demo: **[ignromanov.github.io/instagram-unfollow-tracker](https://ignromanov.github.io/instagram-unfollow-tracker)**
+Visit the live demo: **[instagram-unfollow-tracker.vercel.app](https://instagram-unfollow-tracker.vercel.app)**
 
 ### Run locally
 

@@ -4,20 +4,20 @@
 
 ### 📚 Documentation
 
-- **[User Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/user-guide)** - Complete step-by-step tutorial
-- **[FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq)** - Common questions and answers
-- **[Troubleshooting](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting)** - Problem-solving guide
-- **[Data Download Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/instagram-export)** - How to get your Instagram data
-- **[Accessibility](https://ignromanov.github.io/instagram-unfollow-tracker/docs/accessibility)** - Accessibility features and support
-- **[Privacy Policy](https://ignromanov.github.io/instagram-unfollow-tracker/docs/privacy)** - How we handle your data
-- **[Technical Specs](https://ignromanov.github.io/instagram-unfollow-tracker/docs/tech-spec)** - Technical details
+- **[User Guide](https://instagram-unfollow-tracker.vercel.app/docs/user-guide)** - Complete step-by-step tutorial
+- **[FAQ](https://instagram-unfollow-tracker.vercel.app/docs/faq)** - Common questions and answers
+- **[Troubleshooting](https://instagram-unfollow-tracker.vercel.app/docs/troubleshooting)** - Problem-solving guide
+- **[Data Download Guide](https://instagram-unfollow-tracker.vercel.app/docs/instagram-export)** - How to get your Instagram data
+- **[Accessibility](https://instagram-unfollow-tracker.vercel.app/docs/accessibility)** - Accessibility features and support
+- **[Privacy Policy](https://instagram-unfollow-tracker.vercel.app/docs/privacy)** - How we handle your data
+- **[Technical Specs](https://instagram-unfollow-tracker.vercel.app/docs/tech-spec)** - Technical details
 
 ### 🐛 Bug Reports
 
 If you found a bug, please:
 
-1. Check the [Troubleshooting Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting) first
-2. Check the [FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq) for common issues
+1. Check the [Troubleshooting Guide](https://instagram-unfollow-tracker.vercel.app/docs/troubleshooting) first
+2. Check the [FAQ](https://instagram-unfollow-tracker.vercel.app/docs/faq) for common issues
 3. Search existing [issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
 4. Create a new bug report with:
    - Clear description of the problem
@@ -29,7 +29,7 @@ If you found a bug, please:
 
 Have an idea for improvement?
 
-1. Check the [roadmap](https://ignromanov.github.io/instagram-unfollow-tracker/docs/roadmap)
+1. Check the [roadmap](https://instagram-unfollow-tracker.vercel.app/docs/roadmap)
 2. Search existing [feature requests](https://github.com/ignromanov/instagram-unfollow-tracker/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 3. Create a new feature request with:
    - Clear description of the feature
@@ -40,9 +40,9 @@ Have an idea for improvement?
 
 Need help with something?
 
-1. Check the [User Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/user-guide) for step-by-step instructions
-2. Check the [Troubleshooting Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting) for common issues
-3. Check the [FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq) for quick answers
+1. Check the [User Guide](https://instagram-unfollow-tracker.vercel.app/docs/user-guide) for step-by-step instructions
+2. Check the [Troubleshooting Guide](https://instagram-unfollow-tracker.vercel.app/docs/troubleshooting) for common issues
+3. Check the [FAQ](https://instagram-unfollow-tracker.vercel.app/docs/faq) for quick answers
 4. Search existing [questions](https://github.com/ignromanov/instagram-unfollow-tracker/issues?q=is%3Aissue+is%3Aopen+label%3Aquestion)
 5. Ask a new question with:
    - Clear description of what you need help with
@@ -92,7 +92,7 @@ For security-related issues, please:
 Want to help improve the project?
 
 - See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines
-- Check the [roadmap](https://ignromanov.github.io/instagram-unfollow-tracker/docs/roadmap) for priority areas
+- Check the [roadmap](https://instagram-unfollow-tracker.vercel.app/docs/roadmap) for priority areas
 - Look for issues labeled `good first issue`
 
 ### 🧪 Testing
@@ -105,7 +105,7 @@ Help us test the app:
 
 ## Quick Links
 
-- **Live Demo**: [https://ignromanov.github.io/instagram-unfollow-tracker](https://ignromanov.github.io/instagram-unfollow-tracker)
+- **Live Demo**: [https://instagram-unfollow-tracker.vercel.app](https://instagram-unfollow-tracker.vercel.app)
 - **Source Code**: [https://github.com/ignromanov/instagram-unfollow-tracker](https://github.com/ignromanov/instagram-unfollow-tracker)
 - **Issues**: [https://github.com/ignromanov/instagram-unfollow-tracker/issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
 - **Discussions**: [https://github.com/ignromanov/instagram-unfollow-tracker/discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)

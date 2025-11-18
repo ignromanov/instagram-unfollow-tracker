@@ -22,7 +22,7 @@ export function Footer() {
             </a>
 
             <a
-              href="https://ignromanov.github.io/instagram-unfollow-tracker/docs/"
+              href="/docs/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"

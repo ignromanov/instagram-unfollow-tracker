@@ -150,7 +150,7 @@ See our [Roadmap](docs/roadmap.md) for upcoming features:
 
 ## 🚀 Get Started
 
-**Try it now:** [ignromanov.github.io/instagram-unfollow-tracker](https://ignromanov.github.io/instagram-unfollow-tracker)
+**Try it now:** [instagram-unfollow-tracker.vercel.app](https://instagram-unfollow-tracker.vercel.app)
 
 **Source code:** [github.com/ignromanov/instagram-unfollow-tracker](https://github.com/ignromanov/instagram-unfollow-tracker)
 

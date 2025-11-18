@@ -1,6 +1,7 @@
 {
   "version": 2,
   "framework": "vite",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist"
+  "buildCommand": "npm run build && cd docs && bundle install && bundle exec jekyll build -d ../dist/docs",
+  "outputDirectory": "dist",
+  "installCommand": "npm install"
 }

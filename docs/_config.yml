@@ -4,8 +4,8 @@
 # Site settings
 title: "Instagram Unfollow Tracker"
 description: "Free Instagram unfollow tracker - analyze your followers and following"
-baseurl: "/instagram-unfollow-tracker/docs"
-url: "https://ignromanov.github.io"
+baseurl: "/docs"
+url: "https://instagram-unfollow-tracker.vercel.app"
 
 # Build settings
 markdown: kramdown

@@ -10,7 +10,7 @@ export function DocumentationLink() {
       asChild
     >
       <a
-        href="https://ignromanov.github.io/instagram-unfollow-tracker/docs/"
+        href="/docs/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Open documentation in new tab"

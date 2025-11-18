@@ -62,20 +62,20 @@
 
 ### 🚀 Getting Started
 
-1. Visit [https://ignromanov.github.io/instagram-unfollow-tracker](https://ignromanov.github.io/instagram-unfollow-tracker)
+1. Visit [https://instagram-unfollow-tracker.vercel.app](https://instagram-unfollow-tracker.vercel.app)
 2. Download your Instagram data from [Meta Accounts Center](https://accountscenter.instagram.com/)
 3. Upload your ZIP file to the app
 4. Explore your follower relationships!
 
 ### 📚 Documentation
 
-- **[User Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/user-guide)** - Complete step-by-step tutorial
-- **[FAQ](https://ignromanov.github.io/instagram-unfollow-tracker/docs/faq)** - Common questions and answers
-- **[Troubleshooting](https://ignromanov.github.io/instagram-unfollow-tracker/docs/troubleshooting)** - Problem-solving guide
-- **[Data Download Guide](https://ignromanov.github.io/instagram-unfollow-tracker/docs/instagram-export)** - How to get your data
-- **[Accessibility](https://ignromanov.github.io/instagram-unfollow-tracker/docs/accessibility)** - Accessibility features and support
-- **[Privacy Policy](https://ignromanov.github.io/instagram-unfollow-tracker/docs/privacy)** - Data handling principles
-- **[Roadmap](https://ignromanov.github.io/instagram-unfollow-tracker/docs/roadmap)** - Future features
+- **[User Guide](https://instagram-unfollow-tracker.vercel.app/docs/user-guide)** - Complete step-by-step tutorial
+- **[FAQ](https://instagram-unfollow-tracker.vercel.app/docs/faq)** - Common questions and answers
+- **[Troubleshooting](https://instagram-unfollow-tracker.vercel.app/docs/troubleshooting)** - Problem-solving guide
+- **[Data Download Guide](https://instagram-unfollow-tracker.vercel.app/docs/instagram-export)** - How to get your data
+- **[Accessibility](https://instagram-unfollow-tracker.vercel.app/docs/accessibility)** - Accessibility features and support
+- **[Privacy Policy](https://instagram-unfollow-tracker.vercel.app/docs/privacy)** - Data handling principles
+- **[Roadmap](https://instagram-unfollow-tracker.vercel.app/docs/roadmap)** - Future features
 
 ### 🤝 Contributing
 
