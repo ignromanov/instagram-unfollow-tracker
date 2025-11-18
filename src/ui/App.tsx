@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { InstructionsModal } from '@/components/InstructionsModal';
 import { useHydration } from '@/hooks/useHydration';
 import { useAppStore } from '@/lib/store';
+import { Analytics } from '@vercel/analytics/react';
 import React, { useState } from 'react';
 
 export const App: React.FC = () => {
@@ -36,6 +37,7 @@ export const App: React.FC = () => {
 
       <Footer />
       <InstructionsModal open={isInstructionsOpen} onOpenChange={setIsInstructionsOpen} />
+      <Analytics />
     </div>
   );
 };
