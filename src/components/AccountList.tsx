@@ -98,7 +98,13 @@ export const AccountList = memo(function AccountList({
             background: `linear-gradient(135deg, ${getAvatarGradient(account.username)}, ${getAvatarGradient(account.username + 'salt')})`,
           }}
         >
-          {account.username?.[0]?.toUpperCase() || '?'}
+          <a
+            href={`https://instagram.com/${account.username}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {account.username?.[0]?.toUpperCase() || '?'}
+          </a>
         </div>
 
         <div className="min-w-0 flex-1 space-y-2">

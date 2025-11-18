@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useAppStore } from '@/lib/store';
-import { useHydration } from '@/hooks/useHydration';
-import { Header } from '@/components/Header';
-import { FileUploadSection } from '@/components/FileUploadSection';
 import { AccountListSection } from '@/components/AccountListSection';
+import { FileUploadSection } from '@/components/FileUploadSection';
 import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
 import { InstructionsModal } from '@/components/InstructionsModal';
+import { useHydration } from '@/hooks/useHydration';
+import { useAppStore } from '@/lib/store';
+import React, { useState } from 'react';
 
 export const App: React.FC = () => {
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
