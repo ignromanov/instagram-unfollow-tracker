@@ -96,6 +96,9 @@ temp/
 .vercel/
 .netlify/
 
+# Vite cache
+.vite/
+
 # TypeScript
 *.tsbuildinfo
 
