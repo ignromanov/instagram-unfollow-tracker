@@ -1,4 +1,9 @@
-# Instagram Unfollow Tracker
+<div align="center">
+  <img src="./assets/logo.png" width="100" height="100" alt="Logo">
+  <h1>Instagram Unfollow Tracker</h1>
+</div>
+
+<br>
 
 ![Privacy: 100% local](https://img.shields.io/badge/Privacy-100%25%20local-success)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue)
@@ -12,6 +17,14 @@
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)
 
+<div align="left">
+    <a href="https://www.producthunt.com/products/instagram-unfollow-tracker?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-instagram&#0045;unfollow&#0045;tracker" target="_blank">
+        <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1039686&theme=light&t=1763490363396" alt="Instagram Unfollow Tracker - See who unfollowed you without login or ban risks | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" />
+    </a>
+</div>
+
+<br>
+
 **Find out who unfollowed you on Instagram** — analyze your Instagram Data Download ZIP locally to discover mutuals, non-mutuals, and connection patterns. No login, no servers, no tracking.
 
 ## 🎯 What it does
@@ -24,6 +37,38 @@ Upload your Instagram data export and instantly see:
 - **Connection patterns** — understand your Instagram network
 
 All processing happens **100% locally** in your browser. Your data never leaves your device.
+
+## 📸 Screenshots
+
+<div align="center">
+  <img src="assets/scr-full-mac.png" alt="Instagram Unfollow Tracker - Full Interface" width="100%" />
+  <p><em>Full interface with filtering, search, and account list</em></p>
+</div>
+
+<div align="center">
+  <img src="assets/scr-drop-data-mac.png" alt="Drag and drop your Instagram data" width="100%" />
+  <p><em>Drag and drop your Instagram ZIP file to get started</em></p>
+</div>
+
+<details>
+<summary>📱 <strong>View Mobile Screenshots</strong></summary>
+
+<div align="center">
+  <img src="assets/scr-full-mobile.png" alt="Mobile view - Full interface" width="375" />
+  <p><em>Responsive mobile interface</em></p>
+</div>
+
+<div align="center">
+  <img src="assets/scr-drop-data-mobile.png" alt="Mobile view - Upload screen" width="375" />
+  <p><em>Mobile file upload</em></p>
+</div>
+
+<div align="center">
+  <img src="assets/scr-processing-mobile.png" alt="Mobile view - Processing data" width="375" />
+  <p><em>Fast processing with progress indicator</em></p>
+</div>
+
+</details>
 
 ## ✨ Key Features
 

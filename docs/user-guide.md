@@ -35,11 +35,17 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 3. Wait for processing to complete (usually 1-3 seconds)
 4. Your data is now ready for analysis!
 
+![Upload your Instagram data](../assets/scr-drop-data-mac.png)
+*Drag and drop your Instagram ZIP file to get started*
+
 ### Step 3: Explore Your Results
 - **View all accounts**: See your complete follower/following list
 - **Use filters**: Click badge filters to see specific account types
 - **Search**: Type usernames to find specific accounts
 - **Click profiles**: Open Instagram profiles in new tabs
+
+![Explore your results](../assets/scr-full-mac.png)
+*Full interface with filtering, search, and detailed account information*
 
 ## Understanding the Results
 
