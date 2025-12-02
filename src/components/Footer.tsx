@@ -1,3 +1,4 @@
+import { analytics } from '@/lib/analytics';
 import { Github, BookOpen, Scale } from 'lucide-react';
 
 export function Footer() {
@@ -16,6 +17,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               aria-label="View source code on GitHub"
+              onClick={() => analytics.linkClick('github')}
             >
               <Github className="h-4 w-4" />
               <span className="hidden sm:inline">GitHub</span>
@@ -27,6 +29,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               aria-label="Read documentation"
+              onClick={() => analytics.linkClick('docs')}
             >
               <BookOpen className="h-4 w-4" />
               <span className="hidden sm:inline">Documentation</span>
@@ -38,6 +41,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               aria-label="View MIT license"
+              onClick={() => analytics.linkClick('license')}
             >
               <Scale className="h-4 w-4" />
               <span className="hidden sm:inline">MIT License</span>

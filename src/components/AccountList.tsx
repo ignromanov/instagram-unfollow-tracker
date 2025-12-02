@@ -3,6 +3,7 @@ import { BADGE_STYLES } from '@/constants/badge-styles';
 import { BADGE_LABELS } from '@/core/badges';
 import type { AccountBadges } from '@/core/types';
 import { useAccountDataSource } from '@/hooks/useAccountDataSource';
+import { analytics } from '@/lib/analytics';
 import { useAppStore } from '@/lib/store';
 import type { AccountListProps } from '@/types/components';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -89,6 +90,11 @@ export const AccountList = memo(function AccountList({
     </div>
   );
 
+  const trackAccountClick = (account: AccountBadges) => {
+    const badgeCount = Object.values(account.badges).filter(Boolean).length;
+    analytics.accountClick(badgeCount);
+  };
+
   const AccountItem = ({ account }: { account: AccountBadges }) => (
     <div className="group flex items-center justify-between rounded-lg border border-border/50 bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md hover:scale-[1.01]">
       <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -102,6 +108,7 @@ export const AccountList = memo(function AccountList({
             href={`https://instagram.com/${account.username}`}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackAccountClick(account)}
           >
             {account.username?.[0]?.toUpperCase() || '?'}
           </a>
@@ -136,6 +143,7 @@ export const AccountList = memo(function AccountList({
           href={`https://instagram.com/${account.username}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackAccountClick(account)}
         >
           <ExternalLink className="h-4 w-4" />
         </a>

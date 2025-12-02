@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { analytics } from '@/lib/analytics';
 import {
   AlertCircle,
   CheckCircle,
@@ -106,6 +107,7 @@ export function InstructionsModal({ open, onOpenChange }: InstructionsModalProps
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline mt-2"
+                        onClick={() => analytics.linkClick('meta_accounts')}
                       >
                         Open Meta Accounts Center
                         <ArrowRight className="h-3.5 w-3.5" />

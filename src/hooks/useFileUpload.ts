@@ -1,3 +1,4 @@
+import { analytics } from '@/lib/analytics';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
 import { useAppStore } from '@/lib/store';
@@ -106,6 +107,8 @@ export function useFileUpload() {
   const handleZipUpload = useCallback(
     async (file: File) => {
       const uploadDate = new Date();
+      const startTime = performance.now();
+      const fileSizeMb = file.size / (1024 * 1024);
 
       // Reset progress
       setUploadProgress(0);
@@ -127,10 +130,13 @@ export function useFileUpload() {
         uploadDate,
       });
 
-      try {
-        // Generate file hash for cache lookup
-        const fileHash = await generateFileHash(file);
+      // Generate file hash for cache lookup and analytics correlation
+      const fileHash = await generateFileHash(file);
 
+      // Track upload start with file hash
+      analytics.fileUploadStart(fileHash, fileSizeMb);
+
+      try {
         // Check IndexedDB cache first
         const cachedData = await dbCache.get(fileHash);
 
@@ -152,6 +158,14 @@ export function useFileUpload() {
             fileHash: fileHash,
             accountCount: cachedData.metadata.accountCount,
           });
+
+          // Track success from cache
+          analytics.fileUploadSuccess(
+            fileHash,
+            cachedData.metadata.accountCount,
+            performance.now() - startTime,
+            true
+          );
 
           return;
         }
@@ -261,12 +275,24 @@ export function useFileUpload() {
           fileHash: resultFileHash,
           accountCount: accountCount,
         });
+
+        // Track successful processing
+        analytics.fileUploadSuccess(
+          resultFileHash,
+          accountCount,
+          performance.now() - startTime,
+          false
+        );
       } catch (err) {
         if (abortControllerRef.current?.signal.aborted) {
           return; // Don't show error for cancelled uploads
         }
 
         const errorMessage = err instanceof Error ? err.message : 'Failed to parse ZIP';
+
+        // Track error
+        analytics.fileUploadError(fileHash, errorMessage);
+
         setUploadInfo({
           currentFileName: file.name,
           uploadStatus: 'error',

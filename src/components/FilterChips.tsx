@@ -5,6 +5,7 @@ import type { BadgeKey } from '@/core/types';
 import { BADGE_LABELS } from '@/core/badges';
 import type { FilterChipsProps } from '@/types/components';
 import { BADGE_CONFIGS } from '@/constants/badge-styles';
+import { analytics } from '@/lib/analytics';
 
 export function FilterChips({
   selectedFilters,
@@ -14,16 +15,20 @@ export function FilterChips({
 }: FilterChipsProps) {
   const handleFilterToggle = (filter: BadgeKey) => {
     const newFilters = new Set(selectedFilters);
+    const action = newFilters.has(filter) ? 'disable' : 'enable';
+
     if (newFilters.has(filter)) {
       newFilters.delete(filter);
     } else {
       newFilters.add(filter);
     }
 
+    analytics.filterToggle(filter, action, newFilters.size);
     onFiltersChange(newFilters);
   };
 
   const handleClearAll = () => {
+    analytics.filterClearAll(selectedFilters.size);
     onFiltersChange(new Set());
   };
 

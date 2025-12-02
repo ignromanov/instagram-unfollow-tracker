@@ -1,4 +1,5 @@
 import type { BadgeKey } from '@/core/types';
+import { analytics } from '@/lib/analytics';
 import { IndexedDBFilterEngine } from '@/lib/filtering/IndexedDBFilterEngine';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
 import { useAppStore } from '@/lib/store';
@@ -57,6 +58,8 @@ export function useAccountFiltering() {
   const isFilteringRef = useRef(false);
   // Track if component is mounted to prevent state updates after unmount
   const isMountedRef = useRef(true);
+  // Track last search query for analytics deduplication
+  const lastTrackedQueryRef = useRef<string>('');
 
   // Initialize filter engine when fileHash changes
   useEffect(() => {
@@ -132,6 +135,18 @@ export function useAccountFiltering() {
           setProcessingTime(0);
           setIsFiltering(false);
           isFilteringRef.current = false;
+
+          // Track search only if query changed and is non-empty
+          const trimmedQuery = debouncedQuery.trim();
+          if (trimmedQuery && trimmedQuery !== lastTrackedQueryRef.current) {
+            analytics.searchPerform(
+              trimmedQuery.length,
+              indices.length,
+              totalCount,
+              activeFilters.length > 0
+            );
+            lastTrackedQueryRef.current = trimmedQuery;
+          }
         }
       })
       .catch(_error => {

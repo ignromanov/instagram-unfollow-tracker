@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { InstructionsModal } from '@/components/InstructionsModal';
 import { useHydration } from '@/hooks/useHydration';
+import { analytics } from '@/lib/analytics';
 import { useAppStore } from '@/lib/store';
 import { Analytics } from '@vercel/analytics/react';
 import React, { useState } from 'react';
@@ -18,7 +19,12 @@ export const App: React.FC = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <div className="flex-1 pb-20">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <Header onHelpClick={() => setIsInstructionsOpen(true)} />
+          <Header
+            onHelpClick={() => {
+              analytics.helpOpen('header');
+              setIsInstructionsOpen(true);
+            }}
+          />
 
           {!hasHydrated ? (
             <div className="flex items-center justify-center min-h-[400px]">
@@ -28,7 +34,12 @@ export const App: React.FC = () => {
               </div>
             </div>
           ) : !hasLoadedData ? (
-            <FileUploadSection onHelpClick={() => setIsInstructionsOpen(true)} />
+            <FileUploadSection
+              onHelpClick={() => {
+                analytics.helpOpen('upload_section');
+                setIsInstructionsOpen(true);
+              }}
+            />
           ) : (
             <AccountListSection />
           )}
