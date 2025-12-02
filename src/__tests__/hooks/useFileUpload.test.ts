@@ -11,6 +11,14 @@ vi.mock('@/lib/indexeddb/indexeddb-cache');
 vi.mock('@/lib/indexeddb/indexeddb-service');
 vi.mock('@/core/parsers/instagram');
 vi.mock('@/core/badges');
+vi.mock('@/lib/analytics', () => ({
+  analytics: {
+    fileUploadStart: vi.fn(),
+    fileUploadSuccess: vi.fn(),
+    fileUploadError: vi.fn(),
+    linkClick: vi.fn(),
+  },
+}));
 
 const mockUseAppStore = vi.mocked(useAppStore);
 const mockDbCache = vi.mocked(dbCache);
@@ -140,7 +148,7 @@ describe('useFileUpload', () => {
 
   it('should handle upload errors', async () => {
     const errorMessage = 'Invalid ZIP file';
-    mockGenerateFileHash.mockRejectedValue(new Error(errorMessage));
+    mockGenerateFileHash.mockRejectedValueOnce(new Error(errorMessage));
 
     const { result } = renderHook(() => useFileUpload());
 
@@ -152,6 +160,7 @@ describe('useFileUpload', () => {
       }
     });
 
+    // Verify error state was set (only checking for the error call since loading might be batched)
     expect(mockSetUploadInfo).toHaveBeenCalledWith(
       expect.objectContaining({
         currentFileName: 'test.zip',
@@ -162,7 +171,7 @@ describe('useFileUpload', () => {
   });
 
   it('should handle non-Error exceptions', async () => {
-    mockGenerateFileHash.mockRejectedValue('Failed to parse ZIP');
+    mockGenerateFileHash.mockRejectedValueOnce('Failed to parse ZIP');
 
     const { result } = renderHook(() => useFileUpload());
 
@@ -174,6 +183,7 @@ describe('useFileUpload', () => {
       }
     });
 
+    // Verify error state was set (only checking for the error call since loading might be batched)
     expect(mockSetUploadInfo).toHaveBeenCalledWith(
       expect.objectContaining({
         currentFileName: 'test.zip',

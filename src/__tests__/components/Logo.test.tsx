@@ -7,7 +7,7 @@ describe('Logo Component', () => {
 
     const logo = screen.getByAltText('Instagram Unfollow Tracker Logo');
     expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', 'favicon.svg');
+    expect(logo).toHaveAttribute('src', '/logo.svg');
     expect(logo).toHaveStyle({ width: '40px', height: '40px' });
   });
 
@@ -80,6 +80,6 @@ describe('Logo Component', () => {
     render(<Logo />);
 
     const logo = screen.getByAltText('Instagram Unfollow Tracker Logo');
-    expect(logo).toHaveAttribute('src', 'favicon.svg');
+    expect(logo).toHaveAttribute('src', '/logo.svg');
   });
 });

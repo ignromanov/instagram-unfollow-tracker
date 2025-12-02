@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { BADGE_STYLES } from '@/constants/badge-styles';
 import { BADGE_LABELS } from '@/core/badges';
 import type { AccountBadges } from '@/core/types';
@@ -95,61 +94,60 @@ export const AccountList = memo(function AccountList({
     analytics.accountClick(badgeCount);
   };
 
-  const AccountItem = ({ account }: { account: AccountBadges }) => (
-    <div className="group flex items-center justify-between rounded-lg border border-border/50 bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md hover:scale-[1.01]">
-      <div className="flex min-w-0 flex-1 items-center gap-3">
-        <div
-          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold text-white shadow-sm ring-1 ring-black/5"
-          style={{
-            background: `linear-gradient(135deg, ${getAvatarGradient(account.username)}, ${getAvatarGradient(account.username + 'salt')})`,
-          }}
-        >
-          <a
-            href={`https://instagram.com/${account.username}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackAccountClick(account)}
+  const AccountItem = ({ account }: { account: AccountBadges }) => {
+    const handleRowClick = () => {
+      trackAccountClick(account);
+      window.open(`https://instagram.com/${account.username}`, '_blank', 'noopener,noreferrer');
+    };
+
+    return (
+      <div
+        className="group flex items-center justify-between rounded-lg border border-border/50 bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md hover:scale-[1.01] cursor-pointer"
+        onClick={handleRowClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleRowClick();
+          }
+        }}
+      >
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold text-white shadow-sm ring-1 ring-black/5"
+            style={{
+              background: `linear-gradient(135deg, ${getAvatarGradient(account.username)}, ${getAvatarGradient(account.username + 'salt')})`,
+            }}
           >
             {account.username?.[0]?.toUpperCase() || '?'}
-          </a>
-        </div>
+          </div>
 
-        <div className="min-w-0 flex-1 space-y-2">
-          <p className="truncate font-semibold text-card-foreground">@{account.username}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {Object.entries(account.badges)
-              .filter(([, hasBadge]) => hasBadge)
-              .map(([badgeKey]) => (
-                <span
-                  key={badgeKey}
-                  className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium shadow-sm ${
-                    BADGE_STYLES[badgeKey] || 'bg-muted text-muted-foreground'
-                  }`}
-                >
-                  {BADGE_LABELS[badgeKey as keyof typeof BADGE_LABELS] || badgeKey}
-                </span>
-              ))}
+          <div className="min-w-0 flex-1 space-y-2">
+            <p className="truncate font-semibold text-card-foreground">@{account.username}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {Object.entries(account.badges)
+                .filter(([, hasBadge]) => hasBadge)
+                .map(([badgeKey]) => (
+                  <span
+                    key={badgeKey}
+                    className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium shadow-sm ${
+                      BADGE_STYLES[badgeKey] || 'bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    {BADGE_LABELS[badgeKey as keyof typeof BADGE_LABELS] || badgeKey}
+                  </span>
+                ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <Button
-        variant="ghost"
-        size="sm"
-        asChild
-        className="flex-shrink-0 opacity-0 transition-all duration-200 group-hover:opacity-100 hover:scale-110"
-      >
-        <a
-          href={`https://instagram.com/${account.username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => trackAccountClick(account)}
-        >
-          <ExternalLink className="h-4 w-4" />
-        </a>
-      </Button>
-    </div>
-  );
+        <div className="flex-shrink-0 opacity-0 transition-all duration-200 group-hover:opacity-100">
+          <ExternalLink className="h-4 w-4 text-muted-foreground" />
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="space-y-3 pb-4">

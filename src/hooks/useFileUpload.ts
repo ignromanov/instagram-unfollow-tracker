@@ -130,13 +130,15 @@ export function useFileUpload() {
         uploadDate,
       });
 
-      // Generate file hash for cache lookup and analytics correlation
-      const fileHash = await generateFileHash(file);
-
-      // Track upload start with file hash
-      analytics.fileUploadStart(fileHash, fileSizeMb);
+      let fileHash: string = '';
 
       try {
+        // Generate file hash for cache lookup and analytics correlation
+        fileHash = await generateFileHash(file);
+
+        // Track upload start with file hash
+        analytics.fileUploadStart(fileHash, fileSizeMb);
+
         // Check IndexedDB cache first
         const cachedData = await dbCache.get(fileHash);
 

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { AccountList } from '@/components/AccountList';
 import type { AccountBadges } from '@/core/types';
 
@@ -103,12 +103,27 @@ describe('AccountList Virtual List', () => {
     const accountIndices = [0, 1, 2];
     render(<AccountList accountIndices={accountIndices} hasLoadedData={true} />);
 
-    const externalLinks = screen.getAllByTestId('external-link-icon');
-    expect(externalLinks.length).toBeGreaterThan(0);
+    // Mock window.open
+    const originalOpen = window.open;
+    window.open = vi.fn();
 
-    const firstLink = externalLinks[0]?.closest('a');
-    expect(firstLink).toHaveAttribute('href', 'https://instagram.com/test_user_0');
-    expect(firstLink).toHaveAttribute('target', '_blank');
+    // Find account items by role="button"
+    const accountItems = screen.getAllByRole('button');
+    expect(accountItems.length).toBeGreaterThan(0);
+
+    // Click the first account item
+    const firstItem = accountItems[0];
+    fireEvent.click(firstItem);
+
+    // Verify window.open was called with correct URL
+    expect(window.open).toHaveBeenCalledWith(
+      'https://instagram.com/test_user_0',
+      '_blank',
+      'noopener,noreferrer'
+    );
+
+    // Restore window.open
+    window.open = originalOpen;
   });
 
   it('should display badges correctly', () => {

@@ -34,10 +34,7 @@ describe('Footer', () => {
 
     const docsLink = screen.getByLabelText('Read documentation');
     expect(docsLink).toBeInTheDocument();
-    expect(docsLink).toHaveAttribute(
-      'href',
-      'https://ignromanov.github.io/instagram-unfollow-tracker/docs/'
-    );
+    expect(docsLink).toHaveAttribute('href', '/docs/');
     expect(docsLink).toHaveAttribute('target', '_blank');
     expect(docsLink).toHaveAttribute('rel', 'noopener noreferrer');
     expect(screen.getByText('Documentation')).toBeInTheDocument();

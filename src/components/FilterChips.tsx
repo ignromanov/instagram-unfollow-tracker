@@ -49,7 +49,13 @@ export function FilterChips({
           ) : null}
         </div>
         {selectedFilters.size > 0 && (
-          <Button variant="ghost" size="sm" onClick={handleClearAll} className="h-8 text-xs">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleClearAll}
+            className="h-8 text-xs"
+            aria-label={`Clear all ${selectedFilters.size} active filters`}
+          >
             Clear all
           </Button>
         )}
@@ -65,11 +71,13 @@ export function FilterChips({
             <button
               key={badgeKey}
               onClick={() => handleFilterToggle(badgeKey)}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 ${
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer ${
                 isActive
                   ? `${config.color} shadow-sm ring-1 ring-black/5`
                   : 'border-border bg-background text-muted-foreground hover:bg-accent hover:bg-opacity-90'
               }`}
+              aria-label={`${isActive ? 'Remove' : 'Add'} ${BADGE_LABELS[badgeKey]} filter (${count.toLocaleString()} accounts)`}
+              aria-pressed={isActive}
             >
               {BADGE_LABELS[badgeKey]}
               <span className="text-xs opacity-75">({count.toLocaleString()})</span>

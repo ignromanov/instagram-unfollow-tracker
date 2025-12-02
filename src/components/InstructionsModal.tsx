@@ -108,6 +108,7 @@ export function InstructionsModal({ open, onOpenChange }: InstructionsModalProps
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline mt-2"
                         onClick={() => analytics.linkClick('meta_accounts')}
+                        aria-label="Open Meta Accounts Center in new tab"
                       >
                         Open Meta Accounts Center
                         <ArrowRight className="h-3.5 w-3.5" />

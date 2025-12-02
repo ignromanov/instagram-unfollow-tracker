@@ -55,8 +55,8 @@ describe('AccountListSection', () => {
 
     expect(screen.getByPlaceholderText('Search accounts...')).toBeInTheDocument();
     expect(screen.getByText('Filter by badge')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Following (10)' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Followers (15)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Add Following filter/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Add Followers filter/ })).toBeInTheDocument();
   });
 
   it('should pass correct props to SearchBar', () => {
@@ -94,8 +94,8 @@ describe('AccountListSection', () => {
     render(<AccountListSection />);
 
     // Check that filters are passed correctly (there might be multiple instances)
-    const followingButtons = screen.getAllByRole('button', { name: 'Following (10)' });
-    const followersButtons = screen.getAllByRole('button', { name: 'Followers (15)' });
+    const followingButtons = screen.getAllByRole('button', { name: /Following filter/ });
+    const followersButtons = screen.getAllByRole('button', { name: /Followers filter/ });
     expect(followingButtons.length).toBeGreaterThan(0);
     expect(followersButtons.length).toBeGreaterThan(0);
 
@@ -131,7 +131,7 @@ describe('AccountListSection', () => {
   it('should handle filter changes', () => {
     render(<AccountListSection />);
 
-    const followingChip = screen.getByRole('button', { name: 'Following (10)' });
+    const followingChip = screen.getByRole('button', { name: /Add Following filter/ });
     fireEvent.click(followingChip);
 
     expect(mockSetFilters).toHaveBeenCalled();
