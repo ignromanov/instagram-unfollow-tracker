@@ -50,12 +50,24 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
     setUpdateCounter(c => c + 1);
   }, []);
 
+  // Track if component is mounted to prevent state updates after unmount
+  const isMountedRef = useRef(true);
+
   /**
-   * Clear cache when file changes
+   * Clear cache when file changes and track mount state
    */
   useEffect(() => {
+    // Mark as mounted
+    isMountedRef.current = true;
+
+    // Clear cache on file change
     cacheRef.current.clear();
     loadingSlicesRef.current.clear();
+
+    // Cleanup on unmount
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [fileHash]);
 
   /**
@@ -114,6 +126,11 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
       indexedDBService
         .getAccountsByRange(fileHash, start, end)
         .then(accounts => {
+          // Only update state if component is still mounted
+          if (!isMountedRef.current) {
+            return;
+          }
+
           // Cache the result
           cacheRef.current.set(cacheKey, {
             start,
@@ -131,10 +148,13 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
           forceUpdate();
         })
         .catch(error => {
-          console.error('[Account Data Source] Error loading range:', error);
+          // Only log if still mounted
+          if (isMountedRef.current) {
+            console.error('[Account Data Source] Error loading range:', error);
+          }
         })
         .finally(() => {
-          // Remove from loading set
+          // Remove from loading set (safe even if unmounted)
           loadingSlicesRef.current.delete(cacheKey);
         });
 

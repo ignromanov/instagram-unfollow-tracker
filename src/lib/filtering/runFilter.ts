@@ -1,9 +1,41 @@
 // Pure filtering function - no side effects, easily testable
 import type { AccountBadges } from '@/core/types';
 
-// Performance optimization: pre-compile regex for search
-let searchRegex: RegExp | null = null;
-let lastSearchQuery = '';
+/**
+ * Regex cache using Map pattern to avoid global mutable state pollution
+ * Cache is scoped to the module but with size limit to prevent memory leaks
+ */
+const regexCache = new Map<string, RegExp>();
+const CACHE_SIZE_LIMIT = 50;
+
+/**
+ * Get or create a cached regex for the search query
+ */
+function getSearchRegex(query: string): RegExp | null {
+  if (!query) return null;
+
+  // Check cache first
+  if (regexCache.has(query)) {
+    return regexCache.get(query) ?? null;
+  }
+
+  try {
+    // Escape special regex characters for literal search
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedQuery, 'i');
+
+    // Add to cache with size limit to prevent unbounded growth
+    if (regexCache.size >= CACHE_SIZE_LIMIT) {
+      const firstKey = regexCache.keys().next().value;
+      if (firstKey) regexCache.delete(firstKey);
+    }
+    regexCache.set(query, regex);
+    return regex;
+  } catch (regexError) {
+    console.warn('Invalid search regex, falling back to string includes:', regexError);
+    return null;
+  }
+}
 
 /**
  * Pure filtering function that filters accounts by search query and active filters
@@ -30,19 +62,7 @@ export function runFilter(
   // Single pass filtering for better performance
   const filtered: AccountBadges[] = [];
   const query = searchQuery.trim().toLowerCase();
-
-  // Pre-compile regex if search query changed
-  if (query && query !== lastSearchQuery) {
-    try {
-      // Escape special regex characters for literal search
-      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      searchRegex = new RegExp(escapedQuery, 'i');
-      lastSearchQuery = query;
-    } catch (regexError) {
-      console.warn('Invalid search regex, falling back to string includes:', regexError);
-      searchRegex = null;
-    }
-  }
+  const searchRegex = getSearchRegex(query);
 
   // Single pass through accounts
   for (let i = 0; i < accounts.length; i++) {
@@ -93,6 +113,5 @@ export function runFilter(
  * Reset internal state - useful for tests
  */
 export function resetFilterState(): void {
-  searchRegex = null;
-  lastSearchQuery = '';
+  regexCache.clear();
 }

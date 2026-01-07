@@ -68,16 +68,25 @@ export function Header({ onHelpClick }: HeaderProps) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <Logo size={40} />
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground">
-              Instagram Unfollow Tracker
-            </h1>
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <Logo size={40} className="mt-1 shrink-0" />
+            <div className="space-y-1">
+              <h1 className="text-balance text-2xl font-bold tracking-tight text-foreground md:text-3xl lg:text-4xl">
+                See Who Unfollowed You — No Login Required
+              </h1>
+              <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground md:text-base">
+                <span>No Login Needed</span>
+                <span className="text-muted-foreground/50">•</span>
+                <span>Free Forever</span>
+                <span className="text-muted-foreground/50">•</span>
+                <Badge variant="secondary" className="gap-1 px-2 py-0.5 text-xs font-medium">
+                  <ShieldCheck className="h-3 w-3" />
+                  1M+ Accounts Tested
+                </Badge>
+              </div>
+            </div>
           </div>
-          <p className="text-pretty text-muted-foreground">
-            Analyze your Instagram connections privately in your browser
-          </p>
           {hasData && fileName && fileSize && uploadDate && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <FileArchive className="h-4 w-4" />

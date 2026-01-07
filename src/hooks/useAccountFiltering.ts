@@ -60,6 +60,8 @@ export function useAccountFiltering() {
   const isMountedRef = useRef(true);
   // Track last search query for analytics deduplication
   const lastTrackedQueryRef = useRef<string>('');
+  // AbortController to cancel previous filter requests (fixes race condition)
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Initialize filter engine when fileHash changes
   useEffect(() => {
@@ -103,6 +105,12 @@ export function useAccountFiltering() {
 
     // Fast path: no filters and no search - show all
     if (activeFilters.length === 0 && !debouncedQuery.trim()) {
+      // Cancel any pending requests
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+
       // Use memoized allIndices
       setFilteredIndices(allIndices);
       setIsFiltering(false);
@@ -110,11 +118,14 @@ export function useAccountFiltering() {
       return;
     }
 
-    // If already filtering, skip this update
-    if (isFilteringRef.current) {
-      return;
+    // If already filtering, cancel previous request and start new one
+    if (isFilteringRef.current && abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
 
+    // Create new AbortController for this request
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
     isFilteringRef.current = true;
 
     // Run filtering asynchronously using IndexedDB engine
@@ -129,12 +140,18 @@ export function useAccountFiltering() {
     engine
       .filterToIndices(debouncedQuery, activeFilters)
       .then(indices => {
-        // Only update state if component is still mounted
+        // Check if this request was cancelled
+        if (abortController.signal.aborted) {
+          return;
+        }
+
+        // Only update state if component is still mounted and request not cancelled
         if (isMountedRef.current) {
           setFilteredIndices(indices);
           setProcessingTime(0);
           setIsFiltering(false);
           isFilteringRef.current = false;
+          abortControllerRef.current = null;
 
           // Track search only if query changed and is non-empty
           const trimmedQuery = debouncedQuery.trim();
@@ -149,19 +166,27 @@ export function useAccountFiltering() {
           }
         }
       })
-      .catch(_error => {
-        // Only update state if component is still mounted
-        if (isMountedRef.current) {
+      .catch(error => {
+        // Ignore abort errors (expected when cancelling)
+        if (error instanceof Error && error.name === 'AbortError') {
+          return;
+        }
+
+        // Only update state if component is still mounted and request not cancelled
+        if (isMountedRef.current && !abortController.signal.aborted) {
           setFilteredIndices([]);
           setProcessingTime(0);
           setIsFiltering(false);
           isFilteringRef.current = false;
+          abortControllerRef.current = null;
         }
       });
 
-    // Cleanup function to prevent state updates after unmount
+    // Cleanup function to cancel request on unmount or when dependencies change
     return () => {
-      // Mark as unmounted to prevent state updates
+      if (abortController) {
+        abortController.abort();
+      }
       isFilteringRef.current = false;
     };
     // Use filtersKey (string) instead of filtersArray (array) to prevent reruns
@@ -179,6 +204,12 @@ export function useAccountFiltering() {
   }, [fileHash]);
 
   const clearFilters = useCallback(() => {
+    // Cancel any pending filter requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+
     setQuery('');
     setStoreFilters(new Set());
     setFilteredIndices([]);
@@ -193,6 +224,12 @@ export function useAccountFiltering() {
 
     // Cleanup function to run when component unmounts
     return () => {
+      // Cancel any pending filter requests on unmount
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = null;
+      }
+
       // Mark component as unmounted to prevent state updates
       isMountedRef.current = false;
 

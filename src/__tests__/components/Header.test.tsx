@@ -53,10 +53,9 @@ describe('Header Component', () => {
 
     render(<Header onHelpClick={mockOnHelpClick} />);
 
-    expect(screen.getByText('Instagram Unfollow Tracker')).toBeInTheDocument();
-    expect(
-      screen.getByText('Analyze your Instagram connections privately in your browser')
-    ).toBeInTheDocument();
+    expect(screen.getByText('See Who Unfollowed You — No Login Required')).toBeInTheDocument();
+    expect(screen.getByText('No Login Needed')).toBeInTheDocument();
+    expect(screen.getByText('Free Forever')).toBeInTheDocument();
   });
 
   it('should render file metadata when data is loaded', () => {
