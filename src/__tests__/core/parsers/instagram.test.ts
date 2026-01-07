@@ -370,7 +370,7 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
       await expect(parseInstagramZipFile(mockFile)).rejects.toThrow(
-        'Could not find required files in ZIP'
+        "Wrong ZIP file: This doesn't appear to be an Instagram data export"
       );
     });
 
@@ -383,8 +383,10 @@ describe('Instagram Parser', () => {
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
+      // Mock doesn't populate zip.files, so it triggers "Wrong ZIP file" error
+      // The important thing is that it doesn't crash and gives a helpful error
       await expect(parseInstagramZipFile(mockFile)).rejects.toThrow(
-        'Could not find required files in ZIP'
+        "Wrong ZIP file: This doesn't appear to be an Instagram data export"
       );
     });
 

@@ -72,6 +72,45 @@ function listToMap(entries: InstagramExportEntry[] | undefined): Map<string, num
   return m;
 }
 
+function diagnoseZipError(allFiles: string[]): string {
+  const hasHtmlFiles = allFiles.some(f => f.endsWith('.html'));
+  const hasJsonFiles = allFiles.some(f => f.endsWith('.json'));
+  const hasConnections = allFiles.some(f => f.includes('connections/'));
+  const hasFollowersFolder = allFiles.some(f => f.includes('followers_and_following'));
+  const topLevelFolders = [...new Set(allFiles.map(f => f.split('/')[0]).filter(Boolean))].slice(
+    0,
+    5
+  );
+
+  if (hasHtmlFiles && !hasJsonFiles) {
+    return (
+      'Wrong format: You uploaded HTML format, but JSON is required. ' +
+      'Please re-request your data from Instagram and select JSON format instead of HTML.'
+    );
+  }
+
+  if (!hasConnections && !hasFollowersFolder) {
+    return (
+      "Wrong ZIP file: This doesn't appear to be an Instagram data export. " +
+      `Found folders: ${topLevelFolders.join(', ') || 'none'}. ` +
+      'Please download your data from Instagram Settings → Download Your Data → JSON format.'
+    );
+  }
+
+  if (hasConnections && !hasFollowersFolder) {
+    return (
+      'Incomplete export: The ZIP contains connections/ but no followers_and_following/ folder. ' +
+      'Please re-request your data and make sure to select "Followers and following" option.'
+    );
+  }
+
+  return (
+    'Could not find required files in ZIP. Expected following.json and followers_*.json ' +
+    'under connections/followers_and_following/. ' +
+    `Found top-level: ${topLevelFolders.join(', ') || 'none'}.`
+  );
+}
+
 export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
   const zip = await JSZip.loadAsync(file);
 
@@ -153,9 +192,7 @@ export async function parseInstagramZipFile(file: File): Promise<ParsedAll> {
   );
 
   if (followingUsers.length === 0 && followersUsers.length === 0) {
-    throw new Error(
-      'Could not find required files in ZIP. Expected following.json and followers_*.json under connections/followers_and_following/.'
-    );
+    throw new Error(diagnoseZipError(Object.keys(zip.files ?? {})));
   }
 
   // Other lists

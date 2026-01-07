@@ -1,9 +1,9 @@
 'use client';
 
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import type { FileUploadProps } from '@/types/components';
-import { AlertCircle, BookOpen, FileArchive, Upload } from 'lucide-react';
+import { AlertCircle, BookOpen, CheckCircle2, FileArchive, Upload } from 'lucide-react';
 import type React from 'react';
 import { useCallback } from 'react';
 
@@ -31,6 +31,18 @@ export function FileUpload({ onFileSelect, isLoading, error, onHelpClick }: File
 
   return (
     <div className="mt-12 space-y-6">
+      {/* Important notice about JSON format */}
+      <Alert className="border-primary/50 bg-primary/5">
+        <CheckCircle2 className="h-4 w-4 text-primary" />
+        <AlertTitle className="text-primary">Important: JSON format required</AlertTitle>
+        <AlertDescription className="text-muted-foreground">
+          When requesting your data from Instagram, make sure to select{' '}
+          <strong className="text-foreground">JSON format</strong> (not HTML). The file should be a
+          ZIP containing <code className="text-xs bg-muted px-1 rounded">following.json</code> and{' '}
+          <code className="text-xs bg-muted px-1 rounded">followers_*.json</code> files.
+        </AlertDescription>
+      </Alert>
+
       <div
         onDrop={handleDrop}
         onDragOver={e => e.preventDefault()}
@@ -76,7 +88,16 @@ export function FileUpload({ onFileSelect, isLoading, error, onHelpClick }: File
       {error && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
+          <AlertTitle>Upload Error</AlertTitle>
+          <AlertDescription className="mt-2">
+            {error}
+            {error.includes('HTML format') && (
+              <div className="mt-3 text-sm">
+                <strong>How to fix:</strong> Go to Instagram Settings → Download Your Data → Select{' '}
+                <strong>JSON</strong> format (not HTML).
+              </div>
+            )}
+          </AlertDescription>
         </Alert>
       )}
 
