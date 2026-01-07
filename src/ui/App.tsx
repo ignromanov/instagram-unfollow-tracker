@@ -1,7 +1,9 @@
 import { AccountListSection } from '@/components/AccountListSection';
+import { FAQSection } from '@/components/FAQSection';
 import { FileUploadSection } from '@/components/FileUploadSection';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { HowToSection } from '@/components/HowToSection';
 import { InstructionsModal } from '@/components/InstructionsModal';
 import { useHydration } from '@/hooks/useHydration';
 import { analytics } from '@/lib/analytics';
@@ -56,6 +58,8 @@ export const App: React.FC = () => {
         </div>
       </div>
 
+      <HowToSection />
+      <FAQSection />
       <Footer />
       <InstructionsModal open={isInstructionsOpen} onOpenChange={setIsInstructionsOpen} />
       <Analytics />
