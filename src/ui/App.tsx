@@ -1,36 +1,26 @@
-import { AccountListSection } from '@/components/AccountListSection';
 import { FAQSection } from '@/components/FAQSection';
-import { FileUploadSection } from '@/components/FileUploadSection';
 import { Footer } from '@/components/Footer';
-import { Header } from '@/components/Header';
-import { HowToSection } from '@/components/HowToSection';
+import { JourneyContainer } from '@/components/JourneyContainer';
 import { InstructionsModal } from '@/components/InstructionsModal';
 import { useHydration } from '@/hooks/useHydration';
-import { analytics } from '@/lib/analytics';
-import { useAppStore } from '@/lib/store';
 import { Analytics } from '@vercel/analytics/react';
 import React, { useState } from 'react';
 
 export const App: React.FC = () => {
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
   const hasHydrated = useHydration();
-  const fileMetadata = useAppStore(s => s.fileMetadata);
-  const hasLoadedData = !!fileMetadata && (fileMetadata.accountCount || 0) > 0;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <div className="flex-1 pb-20">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
+      >
+        Skip to main content
+      </a>
+      <div className="flex-1">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <header>
-            <Header
-              onHelpClick={() => {
-                analytics.helpOpen('header');
-                setIsInstructionsOpen(true);
-              }}
-            />
-          </header>
-
-          <main>
+          <main id="main-content">
             {!hasHydrated ? (
               <section aria-label="Loading application">
                 <div className="flex items-center justify-center min-h-[400px]">
@@ -40,25 +30,13 @@ export const App: React.FC = () => {
                   </div>
                 </div>
               </section>
-            ) : !hasLoadedData ? (
-              <section aria-label="Upload Instagram data">
-                <FileUploadSection
-                  onHelpClick={() => {
-                    analytics.helpOpen('upload_section');
-                    setIsInstructionsOpen(true);
-                  }}
-                />
-              </section>
             ) : (
-              <section aria-label="Account list and filters">
-                <AccountListSection />
-              </section>
+              <JourneyContainer />
             )}
           </main>
         </div>
       </div>
 
-      <HowToSection />
       <FAQSection />
       <Footer />
       <InstructionsModal open={isInstructionsOpen} onOpenChange={setIsInstructionsOpen} />

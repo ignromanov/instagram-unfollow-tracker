@@ -96,7 +96,7 @@ export function HowToSection() {
         }}
       />
       <section className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-8">
+        <div className="space-y-6">
           <div className="text-center space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               How to Check Who Unfollowed You
@@ -110,12 +110,19 @@ export function HowToSection() {
           <ol className="relative border-l border-muted-foreground/20 ml-4 space-y-6">
             {howToSteps.map((step, index) => (
               <li key={`step-${index}`} className="ml-6">
-                <span className="absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium ring-4 ring-background">
+                <span
+                  className="absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium ring-4 ring-background"
+                  aria-hidden="true"
+                >
                   {index + 1}
                 </span>
                 <div className="pt-1">
                   <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
-                    <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                    <CheckCircle2
+                      className="h-5 w-5 text-primary flex-shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span className="sr-only">Step {index + 1}:</span>
                     {step.name}
                   </h3>
                   <p className="mt-2 text-muted-foreground">{step.text}</p>

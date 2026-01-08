@@ -23,34 +23,42 @@ export function SearchBar({
 }: SearchBarProps) {
   return (
     <div className="space-y-2">
-      <div className="relative">
-        {isFiltering ? (
-          <Loader2 className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground animate-spin" />
-        ) : (
-          <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-        )}
-        <Input
-          type="text"
-          placeholder="Search accounts..."
-          value={value}
-          onChange={e => onChange(e.target.value)}
-          className="pl-10 pr-10 text-base"
-        />
-        {value && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onChange('')}
-            className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0"
-            aria-label="Clear search"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        )}
-      </div>
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
+      <form role="search" onSubmit={e => e.preventDefault()}>
+        <div className="relative">
+          {isFiltering ? (
+            <Loader2 className="absolute left-3 sm:left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground animate-spin" />
+          ) : (
+            <Search
+              className="absolute left-3 sm:left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
+          )}
+          <Input
+            id="account-search"
+            type="text"
+            placeholder="Search accounts..."
+            value={value}
+            onChange={e => onChange(e.target.value)}
+            className="pl-10 pr-12 sm:pr-10 text-base h-12 sm:h-10"
+            aria-label="Search accounts by username"
+          />
+          {value && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onChange('')}
+              className="absolute right-1 top-1/2 h-10 w-10 sm:h-7 sm:w-7 -translate-y-1/2 p-0"
+              aria-label="Clear search"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </form>
+      <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
         <p>
-          Showing {resultCount.toLocaleString()} of {totalCount.toLocaleString()} accounts
+          Showing {resultCount.toLocaleString()} of {totalCount.toLocaleString()}
+          <span className="hidden sm:inline"> accounts</span>
         </p>
         {processingTime !== undefined && processingTime > 0 && !isFiltering && (
           <p className="text-xs">{processingTime < 1 ? '<1' : Math.round(processingTime)}ms</p>

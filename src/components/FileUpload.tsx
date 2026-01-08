@@ -2,8 +2,9 @@
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { ParseResultDisplay } from '@/components/ParseResultDisplay';
 import type { FileUploadProps } from '@/types/components';
-import { AlertCircle, BookOpen, CheckCircle2, FileArchive, Upload } from 'lucide-react';
+import { AlertCircle, BookOpen, FileArchive, Info, Upload } from 'lucide-react';
 import type React from 'react';
 import { useCallback } from 'react';
 
@@ -32,9 +33,9 @@ export function FileUpload({ onFileSelect, isLoading, error, onHelpClick }: File
   return (
     <div className="mt-12 space-y-6">
       {/* Important notice about JSON format */}
-      <Alert className="border-primary/50 bg-primary/5">
-        <CheckCircle2 className="h-4 w-4 text-primary" />
-        <AlertTitle className="text-primary">Important: JSON format required</AlertTitle>
+      <Alert className="border-blue-500/30 bg-blue-500/5">
+        <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+        <AlertTitle className="text-blue-900 dark:text-blue-100">JSON format required</AlertTitle>
         <AlertDescription className="text-muted-foreground">
           When requesting your data from Instagram, make sure to select{' '}
           <strong className="text-foreground">JSON format</strong> (not HTML). The file should be a
@@ -46,20 +47,25 @@ export function FileUpload({ onFileSelect, isLoading, error, onHelpClick }: File
       <div
         onDrop={handleDrop}
         onDragOver={e => e.preventDefault()}
-        className="group relative rounded-xl border-2 border-dashed border-border bg-card p-12 text-center transition-all hover:border-primary hover:bg-accent/50"
+        className="group relative rounded-xl border-2 border-dashed border-border bg-card p-12 text-center transition-all hover:border-primary hover:bg-accent/50 focus-within:ring-4 focus-within:ring-ring/50 focus-within:border-primary cursor-grab active:cursor-grabbing"
       >
         <input
           type="file"
           accept=".zip"
           onChange={handleFileInput}
-          className="absolute inset-0 cursor-pointer opacity-0"
+          className="absolute inset-0 cursor-pointer disabled:cursor-not-allowed opacity-0"
           disabled={isLoading}
+          aria-label="Upload Instagram data ZIP file"
         />
 
         <div className="flex flex-col items-center gap-4">
           <div className="rounded-full bg-primary/10 p-6 transition-transform group-hover:scale-110">
             {isLoading ? (
-              <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              <div
+                role="status"
+                aria-label="Processing your Instagram data"
+                className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"
+              />
             ) : (
               <FileArchive className="h-12 w-12 text-primary" />
             )}
@@ -85,21 +91,20 @@ export function FileUpload({ onFileSelect, isLoading, error, onHelpClick }: File
         </div>
       </div>
 
-      {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Upload Error</AlertTitle>
-          <AlertDescription className="mt-2">
-            {error}
-            {error.includes('HTML format') && (
-              <div className="mt-3 text-sm">
-                <strong>How to fix:</strong> Go to Instagram Settings → Download Your Data → Select{' '}
-                <strong>JSON</strong> format (not HTML).
-              </div>
-            )}
-          </AlertDescription>
-        </Alert>
-      )}
+      {/* Show detailed parse result with file discovery */}
+      <ParseResultDisplay />
+
+      {/* Fallback error display for non-parse errors */}
+      {error &&
+        !error.includes('format') &&
+        !error.includes('export') &&
+        !error.includes('ZIP') && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" aria-hidden="true" />
+            <AlertTitle>Upload Error</AlertTitle>
+            <AlertDescription className="mt-2">{error}</AlertDescription>
+          </Alert>
+        )}
 
       <div className="rounded-lg border border-border bg-muted/50 p-6">
         <div className="flex items-start justify-between gap-4 mb-4">

@@ -3,7 +3,7 @@ import { Github, BookOpen, Scale } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/50 bg-background/80 backdrop-blur-lg shadow-lg">
+    <footer className="border-t border-border/50 bg-background mt-auto">
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-sm text-muted-foreground">

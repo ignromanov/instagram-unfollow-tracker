@@ -3,6 +3,7 @@ import type { BadgeKey } from '@/core/types';
 // Common component prop types
 export interface StatCardProps {
   label: string;
+  mobileLabel?: string;
   value: number;
   icon: React.ElementType;
   color: 'blue' | 'green' | 'purple' | 'red';

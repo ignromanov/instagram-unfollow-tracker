@@ -58,8 +58,8 @@ export const AccountList = memo(function AccountList({
 
   if (displayCount === 0) {
     return (
-      <div className="rounded-lg border border-border bg-card p-12 text-center">
-        <p className="text-muted-foreground">No accounts match your filters</p>
+      <div className="rounded-lg border border-border bg-card p-8 sm:p-12 text-center mx-2 sm:mx-0">
+        <p className="text-sm sm:text-base text-muted-foreground">No accounts match your filters</p>
       </div>
     );
   }
@@ -78,12 +78,12 @@ export const AccountList = memo(function AccountList({
   };
 
   const SkeletonItem = () => (
-    <div className="rounded-lg border border-border/50 bg-card p-4 animate-pulse">
+    <div className="rounded-lg border border-border/50 bg-card p-3 sm:p-4 animate-pulse">
       <div className="flex items-center gap-3">
-        <div className="h-12 w-12 rounded-full bg-muted" />
-        <div className="flex-1 space-y-2">
-          <div className="h-4 bg-muted rounded w-32" />
-          <div className="h-3 bg-muted rounded w-48" />
+        <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-muted flex-shrink-0" />
+        <div className="flex-1 space-y-2 min-w-0">
+          <div className="h-3 sm:h-4 bg-muted rounded w-24 sm:w-32" />
+          <div className="h-2 sm:h-3 bg-muted rounded w-32 sm:w-48" />
         </div>
       </div>
     </div>
@@ -102,7 +102,7 @@ export const AccountList = memo(function AccountList({
 
     return (
       <div
-        className="group flex items-center justify-between rounded-lg border border-border/50 bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md hover:scale-[1.01] cursor-pointer"
+        className="group flex items-center justify-between rounded-lg border border-border/50 bg-card p-3 sm:p-4 shadow-sm transition-all duration-200 hover:border-primary hover:shadow-sm dark:hover:shadow-primary/10 cursor-pointer min-h-[68px] sm:min-h-[60px]"
         onClick={handleRowClick}
         role="button"
         tabIndex={0}
@@ -113,9 +113,9 @@ export const AccountList = memo(function AccountList({
           }
         }}
       >
-        <div className="flex min-w-0 flex-1 items-center gap-3">
+        <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
           <div
-            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold text-white shadow-sm ring-1 ring-black/5"
+            className="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center rounded-full text-base sm:text-lg font-bold text-white shadow-sm ring-1 ring-black/5"
             style={{
               background: `linear-gradient(135deg, ${getAvatarGradient(account.username)}, ${getAvatarGradient(account.username + 'salt')})`,
             }}
@@ -123,15 +123,17 @@ export const AccountList = memo(function AccountList({
             {account.username?.[0]?.toUpperCase() || '?'}
           </div>
 
-          <div className="min-w-0 flex-1 space-y-2">
-            <p className="truncate font-semibold text-card-foreground">@{account.username}</p>
-            <div className="flex flex-wrap gap-1.5">
+          <div className="min-w-0 flex-1 space-y-1.5 sm:space-y-2">
+            <p className="truncate text-sm sm:text-base font-semibold text-card-foreground">
+              @{account.username}
+            </p>
+            <div className="flex flex-wrap gap-1 sm:gap-1.5">
               {Object.entries(account.badges)
                 .filter(([, hasBadge]) => hasBadge)
                 .map(([badgeKey]) => (
                   <span
                     key={badgeKey}
-                    className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium shadow-sm ${
+                    className={`inline-flex items-center rounded-full border px-1.5 sm:px-2 py-0.5 text-xs font-medium shadow-sm ${
                       BADGE_STYLES[badgeKey] || 'bg-muted text-muted-foreground'
                     }`}
                   >
@@ -142,7 +144,7 @@ export const AccountList = memo(function AccountList({
           </div>
         </div>
 
-        <div className="flex-shrink-0 opacity-0 transition-all duration-200 group-hover:opacity-100">
+        <div className="flex-shrink-0 opacity-60 sm:opacity-0 transition-all duration-200 sm:group-hover:opacity-100 ml-2">
           <ExternalLink className="h-4 w-4 text-muted-foreground" />
         </div>
       </div>
@@ -150,8 +152,8 @@ export const AccountList = memo(function AccountList({
   };
 
   return (
-    <div className="space-y-3 pb-4">
-      <h3 className="text-sm font-semibold text-foreground">
+    <div className="space-y-3 pb-4 px-2 sm:px-0">
+      <h3 className="text-xs sm:text-sm font-semibold text-foreground">
         Accounts ({displayCount.toLocaleString()})
       </h3>
 
@@ -159,7 +161,7 @@ export const AccountList = memo(function AccountList({
         ref={parentRef}
         className="overflow-auto"
         style={{
-          height: 'calc(100vh - 220px)', // Full viewport minus header/footer
+          height: 'calc(100vh - 280px)', // Full viewport minus header/footer/safe-area
           width: '100%',
           position: 'relative',
         }}

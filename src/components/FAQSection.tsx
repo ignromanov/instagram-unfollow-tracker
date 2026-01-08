@@ -77,10 +77,13 @@ export function FAQSection() {
           __html: JSON.stringify(generateFAQSchema()),
         }}
       />
-      <section className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <section
+        className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8"
+        aria-labelledby="faq-heading"
+      >
         <div className="space-y-6">
           <div className="text-center space-y-3">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground">
+            <h2 id="faq-heading" className="text-3xl font-bold tracking-tight text-foreground">
               Frequently Asked Questions
             </h2>
             <p className="text-muted-foreground">
@@ -88,7 +91,12 @@ export function FAQSection() {
             </p>
           </div>
 
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            aria-label="Frequently asked questions"
+          >
             {faqItems.map((item, index) => (
               <AccordionItem key={`faq-${index}`} value={`item-${index}`}>
                 <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>

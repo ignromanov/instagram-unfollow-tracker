@@ -66,14 +66,15 @@ export function Header({ onHelpClick }: HeaderProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <header className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-3">
           <div className="flex items-start gap-3">
             <Logo size={40} className="mt-1 shrink-0" />
             <div className="space-y-1">
-              <h1 className="text-balance text-2xl font-bold tracking-tight text-foreground md:text-3xl lg:text-4xl">
-                See Who Unfollowed You — No Login Required
+              <h1 className="text-balance text-2xl sm:text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
+                See Who Unfollowed You
+                <br className="sm:hidden" /> — No Login Required
               </h1>
               <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground md:text-base">
                 <span>No Login Needed</span>
@@ -140,41 +141,60 @@ export function Header({ onHelpClick }: HeaderProps) {
 
       <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         <Badge variant="secondary" className="gap-1.5 justify-center">
-          <Shield className="h-3.5 w-3.5" />
+          <Shield className="h-3.5 w-3.5" aria-hidden="true" />
           100% Private
         </Badge>
         <Badge variant="secondary" className="gap-1.5 justify-center">
-          <Github className="h-3.5 w-3.5" />
+          <Github className="h-3.5 w-3.5" aria-hidden="true" />
           Open Source
         </Badge>
         <Badge variant="secondary" className="gap-1.5 justify-center">
-          <UserCheck className="h-3.5 w-3.5" />
+          <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
           No Login Required
         </Badge>
         <Badge variant="secondary" className="gap-1.5 justify-center">
-          <ShieldCheck className="h-3.5 w-3.5" />
+          <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
           Local Processing
         </Badge>
       </div>
 
       {hasData && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Following" value={stats.following} icon={Users} color="blue" />
-          <StatCard label="Followers" value={stats.followers} icon={Users} color="green" />
-          <StatCard label="Mutuals" value={stats.mutuals} icon={Users} color="purple" />
+          <StatCard
+            label="Following"
+            mobileLabel="Following"
+            value={stats.following}
+            icon={Users}
+            color="blue"
+          />
+          <StatCard
+            label="Followers"
+            mobileLabel="Followers"
+            value={stats.followers}
+            icon={Users}
+            color="green"
+          />
+          <StatCard
+            label="Mutuals"
+            mobileLabel="Mutuals"
+            value={stats.mutuals}
+            icon={Users}
+            color="purple"
+          />
           <StatCard
             label="Not Following Back"
+            mobileLabel="Not Back"
             value={stats.notFollowingBack}
             icon={TrendingDown}
             color="red"
           />
         </div>
       )}
-    </div>
+    </header>
   );
 }
 
-function StatCard({ label, value, icon: Icon, color }: StatCardProps) {
+function StatCard({ label, mobileLabel, value, icon: Icon, color }: StatCardProps) {
   const colorClasses = {
     blue: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
     green: 'bg-green-500/10 text-green-600 dark:text-green-400',
@@ -183,14 +203,19 @@ function StatCard({ label, value, icon: Icon, color }: StatCardProps) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-lg border border-border bg-card p-4 sm:p-6 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">{label}</p>
-          <p className="text-3xl font-bold text-card-foreground">{value.toLocaleString()}</p>
+          <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+            <span className="sm:hidden">{mobileLabel || label}</span>
+            <span className="hidden sm:inline">{label}</span>
+          </p>
+          <p className="text-2xl sm:text-3xl font-bold text-card-foreground">
+            {value.toLocaleString()}
+          </p>
         </div>
-        <div className={`rounded-full p-3 ${colorClasses[color]}`}>
-          <Icon className="h-6 w-6" />
+        <div className={`rounded-full p-2 sm:p-3 ${colorClasses[color]}`}>
+          <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
         </div>
       </div>
     </div>

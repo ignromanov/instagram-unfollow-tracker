@@ -51,10 +51,16 @@ self.onmessage = async (
     const fileHash = providedHash || (await generateFileHash(file));
 
     // Parse the ZIP file
-    const parsed = await parseInstagramZipFile(file);
+    const parseResult = await parseInstagramZipFile(file);
 
-    // Build account badge index
-    const unified = buildAccountBadgeIndex(parsed);
+    // Check if we have enough data to continue
+    if (!parseResult.hasMinimalData) {
+      const error = parseResult.warnings.find(w => w.severity === 'error');
+      throw new Error(error?.message ?? 'Could not parse Instagram data');
+    }
+
+    // Build account badge index from parsed data
+    const unified = buildAccountBadgeIndex(parseResult.data);
 
     // Save file metadata
     await indexedDBService.saveFileMetadata({
@@ -85,12 +91,14 @@ self.onmessage = async (
       }
     }, 100);
 
-    // Send success result
+    // Send success result with warnings and discovery info
     self.postMessage({
       type: 'result',
       fileHash,
       // Don't send unified - data is already in IndexedDB for lazy loading
       accountCount: unified.length,
+      warnings: parseResult.warnings,
+      discovery: parseResult.discovery,
     });
   } catch (error) {
     // Send error result

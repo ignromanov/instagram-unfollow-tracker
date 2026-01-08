@@ -74,11 +74,12 @@ describe('Full Process Integration Tests', () => {
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
-      // Step 1: Parse ZIP file
-      const parsedData = await parseInstagramZipFile(mockFile);
+      // Step 1: Parse ZIP file (now returns ParseResult)
+      const parseResult = await parseInstagramZipFile(mockFile);
+      expect(parseResult.hasMinimalData).toBe(true);
 
-      // Step 2: Build badge index
-      const badgeIndex = buildAccountBadgeIndex(parsedData);
+      // Step 2: Build badge index from parseResult.data
+      const badgeIndex = buildAccountBadgeIndex(parseResult.data);
 
       // Step 3: Verify badge counts
       const actualCounts = {
@@ -143,9 +144,10 @@ describe('Full Process Integration Tests', () => {
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
-      // Step 1: Parse and build index
-      const parsedData = await parseInstagramZipFile(mockFile);
-      const badgeIndex = buildAccountBadgeIndex(parsedData);
+      // Step 1: Parse and build index (now returns ParseResult)
+      const parseResult = await parseInstagramZipFile(mockFile);
+      expect(parseResult.hasMinimalData).toBe(true);
+      const badgeIndex = buildAccountBadgeIndex(parseResult.data);
 
       // Step 2: Test various filtering scenarios
 
@@ -217,9 +219,10 @@ describe('Full Process Integration Tests', () => {
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
-      // Process minimal data
-      const parsedData = await parseInstagramZipFile(mockFile);
-      const badgeIndex = buildAccountBadgeIndex(parsedData);
+      // Process minimal data (now returns ParseResult)
+      const parseResult = await parseInstagramZipFile(mockFile);
+      expect(parseResult.hasMinimalData).toBe(true);
+      const badgeIndex = buildAccountBadgeIndex(parseResult.data);
 
       // Should have one account
       expect(badgeIndex).toHaveLength(1);

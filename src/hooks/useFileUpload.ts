@@ -182,6 +182,8 @@ export function useFileUpload() {
           const result = await new Promise<{
             fileHash: string;
             accountCount: number;
+            warnings?: import('@/core/types').ParseWarning[];
+            discovery?: import('@/core/types').FileDiscovery;
           }>((resolve, reject) => {
             // Add timeout to detect infinite loading
             const timeoutId = setTimeout(() => {
@@ -198,11 +200,18 @@ export function useFileUpload() {
                 setTotalCount(totalCount);
               } else if (e.data?.type === 'result') {
                 clearTimeout(timeoutId);
-                const { fileHash: resultHash, accountCount: resultAccountCount } = e.data;
+                const {
+                  fileHash: resultHash,
+                  accountCount: resultAccountCount,
+                  warnings,
+                  discovery,
+                } = e.data;
                 workerRef.current?.removeEventListener('message', handleMessage);
                 resolve({
                   fileHash: resultHash || fileHash,
                   accountCount: resultAccountCount,
+                  warnings,
+                  discovery,
                 });
               } else if (e.data?.type === 'error') {
                 clearTimeout(timeoutId);
@@ -222,6 +231,14 @@ export function useFileUpload() {
 
           accountCount = result.accountCount;
           resultFileHash = result.fileHash;
+
+          // Store warnings and discovery from worker
+          if (result.warnings || result.discovery) {
+            setUploadInfo({
+              parseWarnings: result.warnings ?? [],
+              fileDiscovery: result.discovery,
+            });
+          }
         } else {
           console.warn('[Upload] Worker not available, falling back to main thread parsing');
           console.warn('[Upload] This will be slower for large files!');
@@ -234,13 +251,19 @@ export function useFileUpload() {
           const { parseInstagramZipFile } = await import('@/core/parsers/instagram');
           const { buildAccountBadgeIndex } = await import('@/core/badges');
 
-          const parsed = await parseInstagramZipFile(file);
+          const parseResult = await parseInstagramZipFile(file);
 
           if (abortControllerRef.current?.signal.aborted) {
             throw new Error('Upload cancelled');
           }
 
-          const unified = buildAccountBadgeIndex(parsed);
+          // Check if we have enough data to continue
+          if (!parseResult.hasMinimalData) {
+            const error = parseResult.warnings.find(w => w.severity === 'error');
+            throw new Error(error?.message ?? 'Could not parse Instagram data');
+          }
+
+          const unified = buildAccountBadgeIndex(parseResult.data);
 
           if (abortControllerRef.current?.signal.aborted) {
             throw new Error('Upload cancelled');
@@ -259,6 +282,12 @@ export function useFileUpload() {
 
           await indexedDBService.storeAllAccounts(resultFileHash, unified);
           accountCount = unified.length;
+
+          // Store warnings and discovery from main thread parsing
+          setUploadInfo({
+            parseWarnings: parseResult.warnings,
+            fileDiscovery: parseResult.discovery,
+          });
         }
 
         // Data already cached in IndexedDB by worker during chunked processing
