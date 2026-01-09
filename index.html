@@ -11,20 +11,21 @@
       name="keywords"
       content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers, instagram data export, privacy, open source, free"
     />
-    <meta name="theme-color" content="#1e66f5" />
+    <meta name="theme-color" content="#4E7EF5" />
 
-    <!-- Inter Font -->
+    <!-- Google Fonts: Plus Jakarta Sans (display) + Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
       rel="stylesheet"
     />
 
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Instagram Unfollow" />
@@ -114,12 +115,37 @@
     <!-- WorkerConsole.js - Enhanced version with ES Module support -->
     <script src="/WorkerConsole.js"></script>
 
-    <!-- Umami Analytics -->
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="48136699-8e66-4397-bf85-89f46b28fc6d"></script>
+    <!-- Umami Analytics (conditionally loaded based on opt-out preference) -->
+    <script>
+      (function() {
+        // Check if user has opted out of tracking
+        if (localStorage.getItem('umami-opt-out') !== 'true') {
+          var script = document.createElement('script');
+          script.defer = true;
+          script.src = 'https://cloud.umami.is/script.js';
+          script.dataset.websiteId = '48136699-8e66-4397-bf85-89f46b28fc6d';
+          document.head.appendChild(script);
+        }
+      })();
+    </script>
   </head>
 
   <body class="font-sans antialiased">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- BuyMeACoffee Widget (always visible, React controls panel expansion) -->
+    <script
+      data-name="BMC-Widget"
+      data-cfasync="false"
+      src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+      data-id="ignromanov"
+      data-description="Support privacy-first tools"
+      data-message="Thanks for using a private tool! 🛡️"
+      data-color="#6366F1"
+      data-position="Right"
+      data-x_margin="18"
+      data-y_margin="18"
+    ></script>
   </body>
 </html>
