@@ -136,6 +136,10 @@
     letter-spacing: -0.04em;
     line-height: 1.15;
   }
+  /* Interactive elements should always show pointer cursor */
+  button, [role="button"], a[href], input[type="button"], input[type="submit"] {
+    cursor: pointer;
+  }
 }
 
 @layer utilities {

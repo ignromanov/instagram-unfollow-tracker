@@ -491,5 +491,67 @@ describe('Instagram Parser', () => {
 
       expect(result.data.followersTimestamps.get('user1')).toBe(1234567890);
     });
+
+    it('should parse new Instagram format with username in title only (no value field)', async () => {
+      // New Instagram format (2026+): username is in entry.title, not in string_list_data[0].value
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify({
+            relationships_following: [
+              {
+                title: 'newformat_user1',
+                string_list_data: [
+                  {
+                    href: 'https://www.instagram.com/_u/newformat_user1',
+                    timestamp: 1765477864,
+                    // Note: no 'value' field - this is the new format
+                  },
+                ],
+                media_list_data: [],
+              },
+              {
+                title: 'newformat_user2',
+                string_list_data: [
+                  {
+                    href: 'https://www.instagram.com/_u/newformat_user2',
+                    timestamp: 1765063724,
+                  },
+                ],
+                media_list_data: [],
+              },
+            ],
+          })
+        )
+      );
+
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'newformat_follower1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/_u/newformat_follower1',
+                  timestamp: 1765000000,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
+
+      const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
+      const result = await parseInstagramZipFile(mockFile);
+
+      expect(result.hasMinimalData).toBe(true);
+      expect(result.data.following.has('newformat_user1')).toBe(true);
+      expect(result.data.following.has('newformat_user2')).toBe(true);
+      expect(result.data.followers.has('newformat_follower1')).toBe(true);
+      expect(result.data.followingTimestamps.get('newformat_user1')).toBe(1765477864);
+      expect(result.data.followersTimestamps.get('newformat_follower1')).toBe(1765000000);
+    });
   });
 });

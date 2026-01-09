@@ -15,6 +15,8 @@ import { FAQSection } from '@/components/FAQSection';
 import { FooterCTA } from '@/components/FooterCTA';
 import { Footer } from '@/components/Footer';
 import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
+import { PrivacyPolicy } from '@/components/PrivacyPolicy';
+import { TermsOfService } from '@/components/TermsOfService';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useSampleData } from '@/hooks/useSampleData';
@@ -74,6 +76,8 @@ export const App: React.FC = () => {
         upload: AppState.UPLOAD,
         results: AppState.RESULTS,
         sample: AppState.SAMPLE,
+        privacy: AppState.PRIVACY,
+        terms: AppState.TERMS,
       };
 
       const newScreen = routes[hash] ?? AppState.HERO;
@@ -245,6 +249,12 @@ export const App: React.FC = () => {
             isSample={true}
           />
         ) : null;
+
+      case AppState.PRIVACY:
+        return <PrivacyPolicy onBack={() => navigateTo(AppState.HERO)} />;
+
+      case AppState.TERMS:
+        return <TermsOfService onBack={() => navigateTo(AppState.HERO)} />;
 
       default:
         return (

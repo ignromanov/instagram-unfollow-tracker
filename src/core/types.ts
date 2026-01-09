@@ -1,6 +1,6 @@
 export interface InstagramListItem {
   href: string;
-  value: string; // username
+  value?: string; // username (old format) - now optional, username may be in parent entry.title
   timestamp?: number;
 }
 
@@ -346,6 +346,8 @@ export enum AppState {
   UPLOAD = 'UPLOAD',
   RESULTS = 'RESULTS',
   SAMPLE = 'SAMPLE',
+  PRIVACY = 'PRIVACY',
+  TERMS = 'TERMS',
 }
 
 // Wizard step data

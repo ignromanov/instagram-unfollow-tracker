@@ -92,7 +92,8 @@ const extractUsernames = (entries: InstagramExportEntry[]): string[] => {
   const usernames: string[] = [];
   for (const entry of entries) {
     const item = entry.string_list_data?.[0];
-    const norm = normalize(item?.value);
+    // Instagram changed format: username can be in item.value (old) or entry.title (new)
+    const norm = normalize(item?.value) ?? normalize(entry.title);
     if (norm) usernames.push(norm);
   }
   return Array.from(new Set(usernames));
@@ -132,7 +133,8 @@ function listToRaw(entries: InstagramExportEntry[] | undefined): RawItem[] {
   const seen = new Set<string>();
   for (const e of entries) {
     const item = e.string_list_data?.[0];
-    const username = normalize(item?.value);
+    // Instagram changed format: username can be in item.value (old) or entry.title (new)
+    const username = normalize(item?.value) ?? normalize(e.title);
     if (!username || seen.has(username)) continue;
     seen.add(username);
     result.push({ username, href: item?.href, timestamp: item?.timestamp });
@@ -145,7 +147,8 @@ function listToMap(entries: InstagramExportEntry[] | undefined): Map<string, num
   if (!entries) return m;
   for (const e of entries) {
     const item = e.string_list_data?.[0];
-    const u = normalize(item?.value);
+    // Instagram changed format: username can be in item.value (old) or entry.title (new)
+    const u = normalize(item?.value) ?? normalize(e.title);
     if (!u) continue;
     if (!m.has(u)) m.set(u, item?.timestamp ?? 0);
   }

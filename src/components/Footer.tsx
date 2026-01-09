@@ -47,14 +47,14 @@ export function Footer() {
             {/* Navigation Links */}
             <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-12 gap-y-6 text-xs md:text-sm font-black uppercase tracking-widest text-zinc-400">
               <a
-                href="#"
+                href="#privacy"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('privacy-policy')}
               >
                 Privacy Policy
               </a>
               <a
-                href="#"
+                href="#terms"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('terms-of-service')}
               >
