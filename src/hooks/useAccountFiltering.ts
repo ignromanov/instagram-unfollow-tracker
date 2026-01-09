@@ -6,14 +6,25 @@ import { useAppStore } from '@/lib/store';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-export function useAccountFiltering() {
+/**
+ * Options for useAccountFiltering hook
+ * fileHash and accountCount are now passed as parameters
+ * to support multiple data sources (user data vs sample data)
+ */
+export interface UseAccountFilteringOptions {
+  fileHash: string | null;
+  accountCount: number;
+}
+
+export function useAccountFiltering(options: UseAccountFilteringOptions) {
+  const { fileHash, accountCount: totalCount } = options;
+
   const [query, setQuery] = useState('');
   const [filteredIndices, setFilteredIndices] = useState<number[]>([]);
   const [isFiltering, setIsFiltering] = useState(false);
   const [processingTime, setProcessingTime] = useState<number>(0);
 
-  // Get data from store
-  const fileMetadata = useAppStore(s => s.fileMetadata);
+  // Get filters from store (shared across all data sources)
   const filters = useAppStore(s => s.filters);
   const setStoreFilters = useAppStore(s => s.setFilters);
 
@@ -22,9 +33,6 @@ export function useAccountFiltering() {
   const filtersArray = useMemo(() => {
     return Array.from(filters).sort();
   }, [filters]);
-
-  const fileHash = fileMetadata?.fileHash || null;
-  const totalCount = fileMetadata?.accountCount || 0;
 
   // Create filter engine instance
   const filterEngineRef = useRef<IndexedDBFilterEngine | null>(null);

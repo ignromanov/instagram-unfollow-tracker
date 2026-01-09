@@ -8,9 +8,20 @@ import { Logo } from '@/components/Logo';
 import { useAppStore } from '@/lib/store';
 import { useSampleData } from '@/hooks/useSampleData';
 
+/**
+ * @deprecated This component is part of V2 architecture.
+ * V3 uses Hero component with props-based data flow.
+ */
 export function HeroStep() {
   const advanceJourney = useAppStore(s => s.advanceJourney);
-  const { handleLoadSample, isGenerating } = useSampleData();
+  const { load: loadSampleData, state: sampleState } = useSampleData();
+
+  // V2 compatibility wrapper
+  const handleLoadSample = async () => {
+    await loadSampleData();
+    advanceJourney('results');
+  };
+  const isGenerating = sampleState === 'loading';
 
   return (
     <div className="text-center space-y-6 sm:space-y-8 py-4 sm:py-8">

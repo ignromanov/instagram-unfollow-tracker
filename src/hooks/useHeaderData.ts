@@ -1,9 +1,18 @@
 import { useInstagramData } from './useInstagramData';
 import { useAccountFiltering } from './useAccountFiltering';
 
+/**
+ * @deprecated This hook is part of V2 architecture.
+ * V3 uses HeaderV2 component with props-based data flow.
+ */
 export function useHeaderData() {
   const { fileMetadata, handleClearData, uploadState } = useInstagramData();
-  const { clearFilters, filterCounts } = useAccountFiltering();
+
+  // V2 compatibility: get fileHash from store for legacy components
+  const fileHash = fileMetadata?.fileHash ?? null;
+  const accountCount = fileMetadata?.accountCount ?? 0;
+
+  const { clearFilters, filterCounts } = useAccountFiltering({ fileHash, accountCount });
 
   const handleClearDataWrapper = () => {
     handleClearData();

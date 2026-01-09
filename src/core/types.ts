@@ -163,6 +163,7 @@ export enum AppState {
   WAITING = 'WAITING',
   UPLOAD = 'UPLOAD',
   RESULTS = 'RESULTS',
+  SAMPLE = 'SAMPLE',
 }
 
 // Wizard step data

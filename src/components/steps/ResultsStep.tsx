@@ -19,9 +19,19 @@ import { FilterChips } from '@/components/FilterChips';
 import { AccountList } from '@/components/AccountList';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
 import { useHeaderData } from '@/hooks/useHeaderData';
+import { useInstagramData } from '@/hooks/useInstagramData';
 import type { StatCardProps } from '@/types/components';
 
+/**
+ * @deprecated This component is part of V2 architecture.
+ * V3 uses AccountListSection with props-based data flow.
+ */
 export function ResultsStep() {
+  // V2 compatibility: get fileHash from store
+  const { fileMetadata } = useInstagramData();
+  const fileHash = fileMetadata?.fileHash ?? null;
+  const accountCount = fileMetadata?.accountCount ?? 0;
+
   const {
     query,
     setQuery,
@@ -33,7 +43,7 @@ export function ResultsStep() {
     processingTime,
     totalCount,
     hasLoadedData,
-  } = useAccountFiltering();
+  } = useAccountFiltering({ fileHash, accountCount });
 
   const { fileName, fileSize, uploadDate, stats, onClearData } = useHeaderData();
 
@@ -163,6 +173,8 @@ export function ResultsStep() {
 
       {/* Account list */}
       <AccountList
+        fileHash={fileHash ?? ''}
+        accountCount={accountCount}
         accountIndices={filteredIndices}
         hasLoadedData={hasLoadedData}
         isLoading={isFiltering}

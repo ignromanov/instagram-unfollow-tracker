@@ -1,14 +1,43 @@
 'use client';
 
-import { Search, Users, UserPlus, XCircle, TrendingDown, ArrowUpDown } from 'lucide-react';
+import {
+  Search,
+  Users,
+  UserPlus,
+  XCircle,
+  TrendingDown,
+  ArrowUpDown,
+  Database,
+  Upload,
+} from 'lucide-react';
 import { FilterChips } from './FilterChips';
 import { AccountList } from './AccountList';
 import { StatCard } from './StatCard';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
-import { useAppStore } from '@/lib/store';
 import { useState } from 'react';
 
-export function AccountListSection() {
+/**
+ * Props for AccountListSection
+ * Parameterized to support multiple data sources (user data vs sample data)
+ */
+export interface AccountListSectionProps {
+  /** IndexedDB file hash for data lookup */
+  fileHash: string;
+  /** Total number of accounts in this dataset */
+  accountCount: number;
+  /** Display name for the dataset (e.g., "instagram_data.zip" or "Sample Data (Demo)") */
+  filename: string;
+  /** Whether this is sample/demo data (shows indicator banner) */
+  isSample?: boolean;
+}
+
+export function AccountListSection({
+  fileHash,
+  accountCount,
+  filename,
+  isSample = false,
+}: AccountListSectionProps) {
   const {
     query,
     setQuery,
@@ -19,9 +48,8 @@ export function AccountListSection() {
     isFiltering,
     totalCount,
     hasLoadedData,
-  } = useAccountFiltering();
+  } = useAccountFiltering({ fileHash, accountCount });
 
-  const fileMetadata = useAppStore(s => s.fileMetadata);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Apply sort order to filtered indices
@@ -50,6 +78,25 @@ export function AccountListSection() {
 
   return (
     <div className="max-w-7xl mx-auto py-6 md:py-16 space-y-6 md:space-y-12 animate-in fade-in duration-500 mb-12 px-4">
+      {/* Sample Data Indicator Banner */}
+      {isSample && (
+        <Alert className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/50">
+          <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <AlertTitle className="text-blue-800 dark:text-blue-200">Viewing Sample Data</AlertTitle>
+          <AlertDescription className="text-blue-700 dark:text-blue-300">
+            This is demo data to help you explore the app.{' '}
+            <a
+              href="#upload"
+              className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100 inline-flex items-center gap-1"
+            >
+              <Upload className="h-3 w-3" />
+              Upload your data
+            </a>{' '}
+            to see your real followers.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Top Header & Search */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
@@ -57,7 +104,7 @@ export function AccountListSection() {
             Analysis Results
           </h1>
           <p className="text-zinc-500 text-[10px] md:text-sm font-bold uppercase tracking-widest">
-            {fileMetadata?.name} • {totalCount.toLocaleString()} Total
+            {filename} • {totalCount.toLocaleString()} Total
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -139,6 +186,8 @@ export function AccountListSection() {
 
         {/* Account List */}
         <AccountList
+          fileHash={fileHash}
+          accountCount={accountCount}
           accountIndices={sortedIndices}
           hasLoadedData={hasLoadedData}
           isLoading={isFiltering}

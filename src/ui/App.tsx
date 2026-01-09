@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 
 import { AppState } from '@/core/types';
@@ -17,6 +17,7 @@ import { Footer } from '@/components/Footer';
 import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
+import { useSampleData } from '@/hooks/useSampleData';
 
 /**
  * V3 App with hash-based routing
@@ -35,8 +36,13 @@ export const App: React.FC = () => {
   const hasHydrated = useHydration();
 
   const { uploadState, handleZipUpload, handleClearData, fileMetadata } = useInstagramData();
+  const { load: loadSampleData, state: sampleState, data: sampleData } = useSampleData();
+
+  // Track if sample load has been triggered to prevent duplicate calls
+  const sampleLoadTriggeredRef = useRef(false);
 
   const hasResults = uploadState.status === 'success' && fileMetadata !== null;
+  const hasSampleData = sampleState === 'success' && sampleData !== null;
 
   // Hash Router
   useEffect(() => {
@@ -55,15 +61,9 @@ export const App: React.FC = () => {
       // Close wizard when navigating away
       setShowWizard(false);
 
-      // Sample path - load sample data and go to results
+      // Sample path - show sample data (separate from user data)
       if (hash === 'sample') {
-        // TODO: Implement sample data loading
-        // For now, redirect to upload
-        if (!hasResults) {
-          setActiveScreen(AppState.UPLOAD);
-          return;
-        }
-        setActiveScreen(AppState.RESULTS);
+        setActiveScreen(AppState.SAMPLE);
         return;
       }
 
@@ -72,6 +72,7 @@ export const App: React.FC = () => {
         waiting: AppState.WAITING,
         upload: AppState.UPLOAD,
         results: AppState.RESULTS,
+        sample: AppState.SAMPLE,
       };
 
       const newScreen = routes[hash] ?? AppState.HERO;
@@ -174,8 +175,13 @@ export const App: React.FC = () => {
         );
 
       case AppState.RESULTS:
-        return hasResults ? (
-          <AccountListSection />
+        return hasResults && fileMetadata ? (
+          <AccountListSection
+            fileHash={fileMetadata.fileHash!}
+            accountCount={fileMetadata.accountCount!}
+            filename={fileMetadata.name}
+            isSample={false}
+          />
         ) : (
           <Hero
             onStartGuide={handleStartGuide}
@@ -185,6 +191,57 @@ export const App: React.FC = () => {
             onContinue={() => navigateTo(AppState.RESULTS)}
           />
         );
+
+      case AppState.SAMPLE:
+        // Trigger sample data load on first visit
+        if (sampleState === 'idle' && !sampleLoadTriggeredRef.current) {
+          sampleLoadTriggeredRef.current = true;
+          loadSampleData().catch(() => {
+            sampleLoadTriggeredRef.current = false;
+          });
+        }
+
+        // Loading state
+        if (sampleState === 'loading' || sampleState === 'idle') {
+          return (
+            <div className="flex-1 flex items-center justify-center py-24">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+                <p className="text-muted-foreground">Generating sample data...</p>
+              </div>
+            </div>
+          );
+        }
+
+        // Error state
+        if (sampleState === 'error') {
+          return (
+            <div className="flex-1 flex items-center justify-center py-24">
+              <div className="text-center">
+                <p className="text-destructive mb-4">Failed to generate sample data</p>
+                <button
+                  onClick={() => {
+                    sampleLoadTriggeredRef.current = false;
+                    loadSampleData();
+                  }}
+                  className="text-primary hover:underline"
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        // Success - show sample data
+        return hasSampleData && sampleData ? (
+          <AccountListSection
+            fileHash={sampleData.fileHash}
+            accountCount={sampleData.accountCount}
+            filename="Sample Data (Demo)"
+            isSample={true}
+          />
+        ) : null;
 
       default:
         return (

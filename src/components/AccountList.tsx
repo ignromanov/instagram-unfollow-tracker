@@ -3,28 +3,42 @@ import { BADGE_LABELS } from '@/core/badges';
 import type { AccountBadges } from '@/core/types';
 import { useAccountDataSource } from '@/hooks/useAccountDataSource';
 import { analytics } from '@/lib/analytics';
-import { useAppStore } from '@/lib/store';
-import type { AccountListProps } from '@/types/components';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, User, Ghost } from 'lucide-react';
 import { memo, useCallback, useRef } from 'react';
 
+/**
+ * Props for AccountList component
+ * Parameterized to support multiple data sources (user data vs sample data)
+ */
+export interface AccountListProps {
+  /** IndexedDB file hash for data lookup */
+  fileHash: string;
+  /** Total number of accounts in this dataset */
+  accountCount: number;
+  /** Array of account indices to display (after filtering) */
+  accountIndices: number[];
+  /** Whether data has been loaded */
+  hasLoadedData: boolean;
+  /** Whether filtering is in progress */
+  isLoading?: boolean;
+  /** Callback to clear all filters */
+  onClearFilters?: () => void;
+}
+
 export const AccountList = memo(function AccountList({
+  fileHash,
+  accountCount,
   accountIndices,
   hasLoadedData,
   onClearFilters,
-}: AccountListProps & { onClearFilters?: () => void }) {
+}: AccountListProps) {
   const parentRef = useRef<HTMLDivElement>(null);
 
-  // Get file metadata for lazy loading
-  const fileMetadata = useAppStore(s => s.fileMetadata);
-  const fileHash = fileMetadata?.fileHash || null;
-  const totalAccountCount = fileMetadata?.accountCount || 0;
-
-  // Initialize data source for lazy loading
+  // Initialize data source for lazy loading (uses passed fileHash, not store)
   const { getAccount } = useAccountDataSource({
     fileHash,
-    accountCount: totalAccountCount,
+    accountCount,
     chunkSize: 500,
     overscan: 20,
   });
