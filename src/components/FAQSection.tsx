@@ -1,9 +1,5 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface FAQItem {
   question: string;
@@ -12,44 +8,29 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    question: 'Is it safe to use? Do you need my Instagram password?',
+    question: 'Is this really private?',
     answer:
-      'Absolutely safe! We never ask for your Instagram password or login. This tool works entirely with the official data export from Instagram — a ZIP file you download directly from Meta. Your credentials stay with you.',
+      "Yes. All processing happens entirely within your web browser. Your data is never uploaded to any server. You can even use this app offline once it's loaded.",
   },
   {
-    question: 'How do I get my Instagram data?',
+    question: 'Why do I need to download a ZIP file?',
     answer:
-      'Go to Instagram Settings → Privacy and Security → Download Your Data → Request Download (JSON format). Instagram will email you a link within 24-48 hours. Download the ZIP file and upload it here.',
+      "Platforms restrict apps from seeing certain data through their official API to prevent 'spam'. The only safe, authorized way to get this data without risking your account is through their official 'Download Your Information' tool.",
   },
   {
-    question: 'Does it work with the ZIP file from Instagram?',
+    question: 'Will my account be safe?',
     answer:
-      "Yes! This tool is specifically designed for Instagram's official data export (ZIP file). This is the safest and most privacy-respecting way to analyze your followers — no third-party API access needed.",
+      "Yes. Unlike other apps that ask for your password and 'scrape' data (which violates Terms of Service), this tool uses your official data export. It's 100% safe.",
   },
   {
-    question: 'Can I use it offline?',
+    question: 'How many accounts can this handle?',
     answer:
-      'Yes! Once the page loads, everything works offline. Your data is processed entirely in your browser and stored locally. No internet connection required for analysis.',
+      "We've tested this tool with exports containing over 1,000,000 accounts. We use high-performance virtual scrolling and local indexing to keep the experience smooth even for huge datasets.",
   },
   {
-    question: 'Does it work on mobile?',
+    question: 'Is this really free?',
     answer:
-      'Yes! The app is fully responsive and works great on mobile devices. 81% of our users access it from their phones.',
-  },
-  {
-    question: 'How many followers can it handle?',
-    answer:
-      "We've tested with over 1,000,000 accounts and it works flawlessly. The app uses advanced compression and filtering techniques to handle massive datasets in milliseconds.",
-  },
-  {
-    question: 'How is this different from paid apps?',
-    answer:
-      'Unlike paid apps that require your Instagram login (risking your account), charge monthly fees, and store your data on their servers — this tool is 100% free, requires no login, and processes everything locally on your device.',
-  },
-  {
-    question: 'Where is my data stored?',
-    answer:
-      'Only on YOUR device. We use IndexedDB (browser storage) to keep your data. Nothing is ever sent to our servers. When you close the browser, you control what happens to your data.',
+      'Yes. This tool is open-source and free to use. There are no subscriptions, paywalls, or hidden limits.',
   },
 ];
 
@@ -69,6 +50,8 @@ function generateFAQSchema() {
 }
 
 export function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
     <>
       <script
@@ -78,32 +61,53 @@ export function FAQSection() {
         }}
       />
       <section
-        className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8"
+        id="faq"
+        className="py-24 md:py-40 border-t border-border"
         aria-labelledby="faq-heading"
       >
-        <div className="space-y-6">
-          <div className="text-center space-y-3">
-            <h2 id="faq-heading" className="text-3xl font-bold tracking-tight text-foreground">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-muted-foreground">
-              Everything you need to know about using Instagram Unfollow Tracker
-            </p>
-          </div>
-
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full"
-            aria-label="Frequently asked questions"
+        <div className="max-w-3xl mx-auto px-4">
+          <h2
+            id="faq-heading"
+            className="text-3xl md:text-5xl font-display font-extrabold mb-12 md:mb-24 text-center tracking-tight leading-[1.15] px-4"
           >
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-6">
             {faqItems.map((item, index) => (
-              <AccordionItem key={`faq-${index}`} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{item.answer}</AccordionContent>
-              </AccordionItem>
+              <div
+                key={index}
+                className="rounded-3xl md:rounded-4xl border border-border bg-card overflow-hidden transition-all duration-200 shadow-sm"
+              >
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="cursor-pointer w-full px-6 py-6 md:px-10 md:py-10 flex items-center justify-between text-left hover:bg-[oklch(0.5_0_0_/_0.02)] transition-colors group"
+                  aria-expanded={openIndex === index}
+                >
+                  <span className="font-bold text-lg md:text-2xl pr-8 group-hover:text-primary transition-colors leading-tight">
+                    {item.question}
+                  </span>
+                  <div
+                    className={`shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all ${
+                      openIndex === index
+                        ? 'bg-primary text-white'
+                        : 'bg-[oklch(0.5_0_0_/_0.05)] text-zinc-400'
+                    }`}
+                  >
+                    {openIndex === index ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+                  </div>
+                </button>
+                <div
+                  className={`transition-all duration-500 ease-in-out ${
+                    openIndex === index ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="px-6 md:px-10 pb-8 md:pb-12 text-zinc-600 dark:text-zinc-400 leading-[1.625] font-medium text-base md:text-xl">
+                    {item.answer}
+                  </div>
+                </div>
+              </div>
             ))}
-          </Accordion>
+          </div>
         </div>
       </section>
     </>

@@ -1,50 +1,69 @@
-import { CheckCircle2 } from 'lucide-react';
+import { ChevronRight, Play } from 'lucide-react';
 
 interface HowToStep {
-  name: string;
-  text: string;
+  id: number;
+  title: string;
+  description: string;
+  isWarning?: boolean;
+  visual?: string;
 }
 
-const howToSteps: HowToStep[] = [
+const WIZARD_STEPS: HowToStep[] = [
   {
-    name: 'Open Instagram Settings',
-    text: 'Open the Instagram app on your phone and go to your profile. Tap the menu icon (☰) in the top-right corner, then tap "Settings and privacy".',
+    id: 1,
+    title: 'Open Data Export Page',
+    description:
+      "Tap the button below to go directly to the platform's data export page. You may need to log in first.",
   },
   {
-    name: 'Navigate to Account Center',
-    text: 'Scroll down and tap "Accounts Center" under the Meta section. This is where you manage your data across Meta apps.',
+    id: 2,
+    title: "Select 'Some of your information'",
+    description:
+      "Don't download everything — we only need your followers and following data to speed this up.",
+    visual: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80',
   },
   {
-    name: 'Find Download Your Information',
-    text: 'In the Accounts Center, tap "Your information and permissions", then tap "Download your information".',
+    id: 3,
+    title: "Check only 'Followers and following'",
+    description:
+      'Uncheck all other options like messages or media. This makes your file much smaller.',
+    visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80',
   },
   {
-    name: 'Request Instagram Data',
-    text: 'Tap "Download or transfer information", select your Instagram account, then choose "Some of your information".',
+    id: 4,
+    title: 'Select JSON format',
+    description:
+      'This is critical: Choose JSON, not HTML. HTML files will not work with our analyzer.',
+    isWarning: true,
+    visual: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
   },
   {
-    name: 'Select Followers and Following',
-    text: 'Scroll down to "Connections" section and check only "Followers and following". This keeps the download small and fast.',
+    id: 5,
+    title: "Choose 'All time' and tap 'Create files'",
+    description:
+      'The platform will now start preparing your data. This can take anywhere from 5 minutes to a few hours.',
+    visual: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
   },
   {
-    name: 'Choose JSON Format',
-    text: 'On the next screen, select "Download to device", then change the format from HTML to JSON. JSON format is required for this tool.',
+    id: 6,
+    title: 'Wait for email notification',
+    description:
+      "Keep an eye on your inbox (and spam folder!). You'll get an email when your file is ready to download.",
+    visual: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800&q=80',
   },
   {
-    name: 'Create and Download File',
-    text: 'Tap "Create files" and wait. Instagram will email you when ready (usually within 24-48 hours, sometimes faster).',
+    id: 7,
+    title: 'Download the ZIP file',
+    description:
+      "Download the file to your device. Once you have it, you're ready to analyze it here!",
+    visual: 'https://images.unsplash.com/photo-1590212151175-e58edd96d85c?w=800&q=80',
   },
   {
-    name: 'Download the ZIP File',
-    text: 'Check your email for the download link from Instagram. Download the ZIP file to your device.',
-  },
-  {
-    name: 'Upload to This Tool',
-    text: 'Come back to this page and drag-and-drop the ZIP file onto the upload area. The tool will process it locally in your browser.',
-  },
-  {
-    name: 'Analyze Your Followers',
-    text: 'Once uploaded, you can see who unfollowed you, find non-mutuals, and filter by any badge type. All data stays on your device!',
+    id: 8,
+    title: 'Upload & Reveal Results',
+    description:
+      'Head back here, upload your ZIP file, and instantly see who unfollowed you and more!',
+    visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80',
   },
 ];
 
@@ -77,16 +96,38 @@ function generateHowToSchema() {
         name: 'Instagram Unfollow Tracker (this website)',
       },
     ],
-    step: howToSteps.map((step, index) => ({
+    step: WIZARD_STEPS.map(step => ({
       '@type': 'HowToStep',
-      position: index + 1,
-      name: step.name,
-      text: step.text,
+      position: step.id,
+      name: step.title,
+      text: step.description,
+      image: step.visual,
     })),
   };
 }
 
-export function HowToSection() {
+interface HowToSectionProps {
+  onStart?: (step?: number) => void;
+}
+
+export function HowToSection({ onStart }: HowToSectionProps) {
+  const handleStepClick = (stepIndex: number) => {
+    if (onStart) {
+      onStart(stepIndex);
+    } else {
+      // Fallback to hash navigation if no callback provided
+      window.location.hash = `wizard/step/${stepIndex + 1}`;
+    }
+  };
+
+  const handleStartClick = () => {
+    if (onStart) {
+      onStart(0);
+    } else {
+      window.location.hash = 'wizard/step/1';
+    }
+  };
+
   return (
     <>
       <script
@@ -95,46 +136,71 @@ export function HowToSection() {
           __html: JSON.stringify(generateHowToSchema()),
         }}
       />
-      <section className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6">
-          <div className="text-center space-y-3">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground">
-              How to Check Who Unfollowed You
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Follow these simple steps to download your Instagram data and analyze your followers —
-              no login required, completely private.
-            </p>
-          </div>
+      <section id="how-it-works" className="py-24 md:py-40 border-t border-border">
+        <div className="max-w-4xl mx-auto px-4">
+          <h2 className="text-3xl md:text-6xl font-display font-extrabold mb-8 text-center tracking-tight leading-[1.1]">
+            How to Check Your <span className="text-gradient">Instagram Unfollowers</span>
+          </h2>
+          <p className="text-zinc-500 dark:text-zinc-400 text-center mb-20 md:mb-32 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
+            Follow these 8 simple steps to securely analyze your account without sharing your
+            password.
+          </p>
 
-          <ol className="relative border-l border-muted-foreground/20 ml-4 space-y-6">
-            {howToSteps.map((step, index) => (
-              <li key={`step-${index}`} className="ml-6">
-                <span
-                  className="absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium ring-4 ring-background"
-                  aria-hidden="true"
-                >
-                  {index + 1}
-                </span>
-                <div className="pt-1">
-                  <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
-                    <CheckCircle2
-                      className="h-5 w-5 text-primary flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span className="sr-only">Step {index + 1}:</span>
-                    {step.name}
+          <ol className="space-y-16 md:space-y-24 relative before:absolute before:left-6 md:before:left-8 before:top-4 before:bottom-4 before:w-0.5 before:bg-border">
+            {WIZARD_STEPS.map((step, idx) => (
+              <li
+                key={step.id}
+                className="relative pl-16 md:pl-24 group cursor-pointer"
+                onClick={() => handleStepClick(idx)}
+              >
+                <div className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-3xl bg-card border-2 border-primary flex items-center justify-center font-black text-lg md:text-2xl text-primary z-10 group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
+                  {step.id}
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-2xl md:text-3xl font-display font-bold flex items-center flex-wrap gap-3 text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
+                    {step.title}
+                    {step.isWarning && (
+                      <span className="text-[10px] bg-amber-400 text-black px-3 py-1 rounded-full font-black uppercase tracking-widest shadow-sm">
+                        Important
+                      </span>
+                    )}
                   </h3>
-                  <p className="mt-2 text-muted-foreground">{step.text}</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium text-base md:text-lg">
+                    {step.description}
+                  </p>
+                  {step.visual && (
+                    <div className="rounded-3xl md:rounded-4xl overflow-hidden border border-border shadow-md max-w-xl mt-6 group-hover:border-primary/30 transition-all">
+                      <img
+                        src={step.visual}
+                        alt={step.title}
+                        className="w-full h-auto grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                    Open step in guide <ChevronRight size={14} />
+                  </div>
                 </div>
               </li>
             ))}
           </ol>
 
-          <div className="text-center pt-4">
-            <p className="text-sm text-muted-foreground">
-              Total time: ~5 minutes (plus waiting for Instagram to prepare your data)
-            </p>
+          <div className="mt-24 md:mt-40 p-10 md:p-16 rounded-4xl bg-primary text-white flex flex-col md:flex-row items-center justify-between gap-10 shadow-2xl shadow-primary/30">
+            <div className="text-center md:text-left space-y-4">
+              <h4 className="text-3xl md:text-5xl font-display font-black tracking-tight leading-none">
+                Ready to start?
+              </h4>
+              <p className="opacity-90 font-bold text-base md:text-xl leading-relaxed">
+                Analyze your data export privately in seconds.
+              </p>
+            </div>
+            <button
+              onClick={handleStartClick}
+              className="cursor-pointer w-full md:w-auto px-10 py-5 bg-white text-primary font-black rounded-3xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 text-lg shadow-xl"
+            >
+              Open Analysis Guide <Play size={22} fill="currentColor" />
+            </button>
           </div>
         </div>
       </section>
