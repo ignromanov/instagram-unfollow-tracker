@@ -408,6 +408,7 @@ class IndexedDBService {
 
   /**
    * Get accounts by index range (for virtualization)
+   * Loads both usernames and badges for the specified range
    */
   async getAccountsByRange(fileHash: string, start: number, end: number): Promise<AccountBadges[]> {
     // Get username column
@@ -432,13 +433,54 @@ class IndexedDBService {
     }
 
     // Get usernames for range
-    const usernames = reader.getRange(start, Math.min(end, reader.length));
+    const actualEnd = Math.min(end, reader.length);
+    const usernames = reader.getRange(start, actualEnd);
 
-    // Build minimal account objects (badges loaded on demand)
-    const accounts: AccountBadges[] = usernames.map(username => ({
-      username,
-      badges: {},
-    }));
+    // Load all badge bitsets (they are cached after first load)
+    const allBadgeKeys: BadgeKey[] = [
+      'following',
+      'followers',
+      'pending',
+      'permanent',
+      'restricted',
+      'close',
+      'unfollowed',
+      'dismissed',
+      'notFollowingBack',
+      'notFollowedBack',
+      'mutuals',
+    ];
+
+    // Load bitsets in parallel (uses cache if already loaded)
+    const bitsetEntries = await Promise.all(
+      allBadgeKeys.map(async badge => {
+        const bitset = await this.getBadgeBitset(fileHash, badge);
+        return [badge, bitset] as const;
+      })
+    );
+
+    // Filter out null bitsets and create map
+    const bitsets = new Map<BadgeKey, BitSet>();
+    for (const [badge, bitset] of bitsetEntries) {
+      if (bitset) {
+        bitsets.set(badge, bitset);
+      }
+    }
+
+    // Build account objects with badges
+    const accounts: AccountBadges[] = usernames.map((username, localIndex) => {
+      const globalIndex = start + localIndex;
+      const badges: Partial<Record<BadgeKey, number | true>> = {};
+
+      // Check each bitset for this account
+      for (const [badge, bitset] of bitsets) {
+        if (bitset.has(globalIndex)) {
+          badges[badge] = true;
+        }
+      }
+
+      return { username, badges };
+    });
 
     return accounts;
   }
