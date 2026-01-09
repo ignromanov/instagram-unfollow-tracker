@@ -35,7 +35,8 @@ export const App: React.FC = () => {
   const [showWizard, setShowWizard] = useState(false);
   const hasHydrated = useHydration();
 
-  const { uploadState, handleZipUpload, handleClearData, fileMetadata } = useInstagramData();
+  const { uploadState, handleZipUpload, handleClearData, fileMetadata, parseWarnings } =
+    useInstagramData();
   const { load: loadSampleData, state: sampleState, data: sampleData } = useSampleData();
 
   // Track if sample load has been triggered to prevent duplicate calls
@@ -169,8 +170,10 @@ export const App: React.FC = () => {
           <UploadZone
             onUploadStart={handleUploadStart}
             onBack={() => navigateTo(AppState.WAITING)}
+            onOpenWizard={() => handleStartGuide(0)}
             isProcessing={uploadState.status === 'loading'}
             error={uploadState.error}
+            parseWarnings={parseWarnings}
           />
         );
 

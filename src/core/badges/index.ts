@@ -38,8 +38,8 @@ function buildAccountBadges(
   username: string,
   parsed: ParsedAll,
   derived: ReturnType<typeof computeDerivedRelationships>
-): Partial<Record<BadgeKey, number | true>> {
-  const badges: Partial<Record<BadgeKey, number | true>> = {};
+): AccountBadges['badges'] {
+  const badges: Record<string, number | true> = {};
 
   // Core relationship badges (with timestamps when available)
   if (parsed.following.has(username))
@@ -62,7 +62,7 @@ function buildAccountBadges(
   if (derived.notFollowedBack.has(username)) badges.notFollowedBack = true;
   if (derived.mutuals.has(username)) badges.mutuals = true;
 
-  return badges;
+  return badges as AccountBadges['badges'];
 }
 
 export function buildAccountBadgeIndex(parsed: ParsedAll): AccountBadges[] {

@@ -1,8 +1,43 @@
+import type { ParseWarning } from '@/core/types';
 import { analytics } from '@/lib/analytics';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
 import { useAppStore } from '@/lib/store';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+// ZIP magic bytes: PK\x03\x04 (0x504B0304)
+const ZIP_MAGIC_BYTES = [0x50, 0x4b, 0x03, 0x04];
+
+/** Check if file is a valid ZIP by reading magic bytes */
+async function isValidZipFile(file: File): Promise<boolean> {
+  // Check extension first (quick check)
+  if (!file.name.toLowerCase().endsWith('.zip')) {
+    return false;
+  }
+
+  // In test environment, file.slice may not be available
+  if (typeof file.slice !== 'function') {
+    // Fall back to extension check only
+    return true;
+  }
+
+  try {
+    // Read first 4 bytes to verify ZIP signature
+    const header = await file.slice(0, 4).arrayBuffer();
+    const bytes = new Uint8Array(header);
+
+    return (
+      bytes.length >= 4 &&
+      bytes[0] === ZIP_MAGIC_BYTES[0] &&
+      bytes[1] === ZIP_MAGIC_BYTES[1] &&
+      bytes[2] === ZIP_MAGIC_BYTES[2] &&
+      bytes[3] === ZIP_MAGIC_BYTES[3]
+    );
+  } catch {
+    // If reading fails, fall back to extension check
+    return true;
+  }
+}
 
 export function useFileUpload() {
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -133,6 +168,27 @@ export function useFileUpload() {
       let fileHash: string = '';
 
       try {
+        // Validate ZIP file before processing
+        const isZip = await isValidZipFile(file);
+        if (!isZip) {
+          const notZipWarning: ParseWarning = {
+            code: 'NOT_ZIP',
+            message: 'Please upload a ZIP archive file, not a folder or other file type.',
+            severity: 'error',
+            fix: 'Look for a file ending in .zip in your Downloads folder.',
+          };
+
+          setUploadInfo({
+            currentFileName: file.name,
+            uploadStatus: 'error',
+            uploadError: notZipWarning.message,
+            parseWarnings: [notZipWarning],
+          });
+
+          analytics.fileUploadError('', 'NOT_ZIP');
+          throw new Error(notZipWarning.message);
+        }
+
         // Generate file hash for cache lookup and analytics correlation
         fileHash = await generateFileHash(file);
 

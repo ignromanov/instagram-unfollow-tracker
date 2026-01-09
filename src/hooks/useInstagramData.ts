@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useAppStore } from '@/lib/store';
 import { useFileUpload } from './useFileUpload';
 import { useDataManagement } from './useDataManagement';
-import type { UploadState } from '@/core/types';
+import { createUploadState } from '@/core/types';
 
 export function useInstagramData() {
   // Get data from store
@@ -10,19 +10,16 @@ export function useInstagramData() {
   const uploadStatus = useAppStore(s => s.uploadStatus);
   const uploadError = useAppStore(s => s.uploadError);
   const fileMetadata = useAppStore(s => s.fileMetadata);
+  const parseWarnings = useAppStore(s => s.parseWarnings);
 
   // Use specialized hooks
   const { handleZipUpload, abortUpload, uploadProgress, processedCount, totalCount } =
     useFileUpload();
   const { handleClearData } = useDataManagement();
 
-  // Memoized upload state
-  const uploadState: UploadState = useMemo(
-    () => ({
-      status: uploadStatus,
-      error: uploadError,
-      fileName: currentFileName,
-    }),
+  // Memoized upload state with discriminated union
+  const uploadState = useMemo(
+    () => createUploadState(uploadStatus, currentFileName, uploadError),
     [uploadStatus, uploadError, currentFileName]
   );
 
@@ -40,6 +37,7 @@ export function useInstagramData() {
     handleZipUpload,
     handleClearData: handleClearDataWithCache,
     fileMetadata,
+    parseWarnings,
     uploadProgress,
     processedCount,
     totalCount,

@@ -1,16 +1,10 @@
 'use client';
 
-import {
-  AlertCircle,
-  ArrowLeft,
-  CheckCircle2,
-  FileWarning,
-  Info,
-  Loader2,
-  Upload,
-} from 'lucide-react';
+import type { ParseWarning } from '@/core/types';
+import { AlertCircle, ArrowLeft, CheckCircle2, Info, Loader2, Upload } from 'lucide-react';
 import type React from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { DiagnosticErrorScreen } from './DiagnosticErrorScreen';
 
 export interface UploadError {
   title: string;
@@ -23,6 +17,7 @@ export interface UploadZoneProps {
   onOpenWizard?: () => void;
   isProcessing?: boolean;
   error?: UploadError | string | null;
+  parseWarnings?: ParseWarning[];
 }
 
 export function UploadZone({
@@ -30,9 +25,17 @@ export function UploadZone({
   onBack,
   onOpenWizard,
   isProcessing = false,
-  error,
+  error: _error,
+  parseWarnings,
 }: UploadZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false);
+  const [showDiagnostic, setShowDiagnostic] = useState(true);
+
+  // Check if we have a critical error that should show diagnostic screen
+  const hasCriticalError = useMemo(() => {
+    if (!parseWarnings?.length) return false;
+    return parseWarnings.some(w => w.severity === 'error');
+  }, [parseWarnings]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -66,7 +69,21 @@ export function UploadZone({
     [onUploadStart]
   );
 
-  const errorData = typeof error === 'string' ? { title: 'Error', message: error } : error;
+  const handleTryAgain = useCallback(() => {
+    setShowDiagnostic(false);
+  }, []);
+
+  // Show diagnostic error screen for critical errors
+  if (hasCriticalError && showDiagnostic && !isProcessing) {
+    return (
+      <DiagnosticErrorScreen
+        parseWarnings={parseWarnings}
+        onTryAgain={handleTryAgain}
+        onOpenWizard={onOpenWizard}
+        onBack={onBack}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 md:py-24">
@@ -162,24 +179,6 @@ export function UploadZone({
               </div>
             )}
           </div>
-
-          {/* Error state */}
-          {errorData && (
-            <div className="animate-in slide-in-from-top-4 rounded-3xl border border-rose-200 bg-rose-50 p-6 text-rose-600 dark:border-rose-900/50 dark:bg-rose-950/20">
-              <div className="mb-2 flex items-center gap-3 text-xs font-black uppercase tracking-widest">
-                <FileWarning size={18} aria-hidden="true" /> {errorData.title}
-              </div>
-              <p className="text-sm font-medium leading-relaxed">{errorData.message}</p>
-              {onOpenWizard && (
-                <button
-                  onClick={onOpenWizard}
-                  className="mt-4 text-[10px] font-black uppercase tracking-widest underline decoration-rose-200"
-                >
-                  Re-read the guide to fix this
-                </button>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Sidebar - 2 columns */}

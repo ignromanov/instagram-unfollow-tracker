@@ -74,17 +74,36 @@ function generateAccounts(distribution: Record<BadgeKey, number>): AccountBadges
 
   // Helper to add accounts with specific badge
   const addAccountsWithBadge = (badge: BadgeKey, count: number, additionalBadges?: BadgeKey[]) => {
+    const now = Math.floor(Date.now() / 1000);
+
     for (let i = 0; i < count; i++) {
       const username = generateUsername(currentIndex, badge);
-      const badges: Partial<Record<BadgeKey, number | true>> = {
-        [badge]: true,
+      const badges: AccountBadges['badges'] = {};
+
+      // Time-based badges get timestamps, boolean badges get true
+      const timeBadges = [
+        'following',
+        'followers',
+        'pending',
+        'permanent',
+        'restricted',
+        'close',
+        'unfollowed',
+        'dismissed',
+      ];
+      const setBadge = (b: BadgeKey) => {
+        if (timeBadges.includes(b)) {
+          (badges as Record<string, number>)[b] = now - currentIndex * 3600;
+        } else {
+          (badges as Record<string, true>)[b] = true;
+        }
       };
+
+      setBadge(badge);
 
       // Add any additional badges
       if (additionalBadges) {
-        additionalBadges.forEach(b => {
-          badges[b] = true;
-        });
+        additionalBadges.forEach(setBadge);
       }
 
       accounts.push({ username, badges });

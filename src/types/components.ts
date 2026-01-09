@@ -21,7 +21,7 @@ export interface HeaderProps {
   onClearData?: () => void;
   fileName?: string;
   fileSize?: number;
-  uploadDate?: Date | string;
+  uploadDate?: Date;
 }
 
 export interface AccountListProps {

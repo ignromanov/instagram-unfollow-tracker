@@ -470,7 +470,7 @@ class IndexedDBService {
     // Build account objects with badges
     const accounts: AccountBadges[] = usernames.map((username, localIndex) => {
       const globalIndex = start + localIndex;
-      const badges: Partial<Record<BadgeKey, number | true>> = {};
+      const badges: Record<string, number | true> = {};
 
       // Check each bitset for this account
       for (const [badge, bitset] of bitsets) {
@@ -479,7 +479,7 @@ class IndexedDBService {
         }
       }
 
-      return { username, badges };
+      return { username, badges: badges as AccountBadges['badges'] };
     });
 
     return accounts;
