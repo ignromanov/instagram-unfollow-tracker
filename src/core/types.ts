@@ -156,6 +156,25 @@ export interface UploadState {
   fileName: string | null;
 }
 
+// V3 App state for hash routing
+export enum AppState {
+  HERO = 'HERO',
+  WIZARD = 'WIZARD',
+  WAITING = 'WAITING',
+  UPLOAD = 'UPLOAD',
+  RESULTS = 'RESULTS',
+}
+
+// Wizard step data
+export interface WizardStep {
+  id: number;
+  title: string;
+  description: string;
+  visual?: string;
+  externalLink?: string;
+  isWarning?: boolean;
+}
+
 export interface FilterCache {
   key: string;
   result: AccountBadges[];

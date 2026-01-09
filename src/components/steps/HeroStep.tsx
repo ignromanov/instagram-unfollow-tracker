@@ -1,14 +1,16 @@
 'use client';
 
 import type React from 'react';
-import { Shield, Github, UserCheck, ShieldCheck } from 'lucide-react';
+import { Shield, Github, UserCheck, ShieldCheck, Database } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/Logo';
 import { useAppStore } from '@/lib/store';
+import { useSampleData } from '@/hooks/useSampleData';
 
 export function HeroStep() {
   const advanceJourney = useAppStore(s => s.advanceJourney);
+  const { handleLoadSample, isGenerating } = useSampleData();
 
   return (
     <div className="text-center space-y-6 sm:space-y-8 py-4 sm:py-8">
@@ -61,25 +63,39 @@ export function HeroStep() {
       </div>
 
       {/* Call to action */}
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center px-4 sm:px-0">
-        <Button
-          size="lg"
-          onClick={() => advanceJourney('how-to')}
-          className="text-sm sm:text-base px-6 sm:px-8 py-3 min-h-[48px] w-full sm:w-auto"
-        >
-          <span className="sm:hidden">Get Started — How to Get Data?</span>
-          <span className="hidden sm:inline">Get Started — How to Get My Data?</span>
-        </Button>
+      <div className="space-y-3 sm:space-y-4 px-4 sm:px-0">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
+          <Button
+            size="lg"
+            onClick={() => advanceJourney('how-to')}
+            className="text-sm sm:text-base px-6 sm:px-8 py-3 min-h-[48px] w-full sm:w-auto"
+          >
+            <span className="sm:hidden">Get Started — How to Get Data?</span>
+            <span className="hidden sm:inline">Get Started — How to Get My Data?</span>
+          </Button>
 
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => advanceJourney('upload')}
-          className="text-sm sm:text-base px-6 sm:px-8 py-3 min-h-[48px] w-full sm:w-auto"
-        >
-          <span className="sm:hidden">I Have My Data</span>
-          <span className="hidden sm:inline">I Already Have My Data</span>
-        </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={handleLoadSample}
+            disabled={isGenerating}
+            className="text-sm sm:text-base px-6 sm:px-8 py-3 min-h-[48px] w-full sm:w-auto gap-2"
+          >
+            <Database className="h-5 w-5" aria-hidden="true" />
+            {isGenerating ? 'Generating...' : 'Try with Sample'}
+          </Button>
+        </div>
+
+        <div className="text-center">
+          <Button
+            variant="link"
+            size="sm"
+            onClick={() => advanceJourney('upload')}
+            className="text-xs sm:text-sm text-muted-foreground hover:text-foreground underline underline-offset-4"
+          >
+            I already have my ZIP file
+          </Button>
+        </div>
       </div>
 
       {/* Value proposition */}
