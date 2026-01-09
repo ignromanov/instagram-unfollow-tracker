@@ -1,21 +1,28 @@
 {
   "name": "Instagram Unfollow Tracker",
-  "short_name": "Instagram Unfollow",
+  "short_name": "Unfollow Tracker",
+  "description": "Privacy-first Instagram unfollow tracker. 100% local, no login required.",
   "icons": [
     {
-      "src": "/web-app-manifest-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
     },
     {
-      "src": "/web-app-manifest-512x512.png",
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
     }
   ],
-  "theme_color": "#ffffff",
+  "start_url": "/",
+  "theme_color": "#4E7EF5",
   "background_color": "#ffffff",
   "display": "standalone"
 }
