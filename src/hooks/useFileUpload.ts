@@ -272,6 +272,13 @@ export function useFileUpload() {
               } else if (e.data?.type === 'error') {
                 clearTimeout(timeoutId);
                 workerRef.current?.removeEventListener('message', handleMessage);
+                // Save warnings and discovery for DiagnosticErrorScreen before rejecting
+                if (e.data.warnings || e.data.discovery) {
+                  setUploadInfo({
+                    parseWarnings: e.data.warnings ?? [],
+                    fileDiscovery: e.data.discovery,
+                  });
+                }
                 reject(new Error(e.data.error));
               }
             };

@@ -56,7 +56,14 @@ self.onmessage = async (
     // Check if we have enough data to continue
     if (!parseResult.hasMinimalData) {
       const error = parseResult.warnings.find(w => w.severity === 'error');
-      throw new Error(error?.message ?? 'Could not parse Instagram data');
+      // Send error with warnings and discovery for DiagnosticErrorScreen
+      self.postMessage({
+        type: 'error',
+        error: error?.message ?? 'Could not parse Instagram data',
+        warnings: parseResult.warnings,
+        discovery: parseResult.discovery,
+      });
+      return;
     }
 
     // Build account badge index from parsed data

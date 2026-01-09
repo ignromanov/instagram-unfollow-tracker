@@ -315,8 +315,13 @@ export const App: React.FC = () => {
       {/* Wizard Modal */}
       {showWizard && <Wizard onComplete={handleWizardComplete} onCancel={handleWizardCancel} />}
 
-      {/* BMC Widget - expands panel after successful upload */}
-      <BuyMeCoffeeWidget expandOnSuccess={hasResults} delay={3000} autoCollapseAfter={10000} />
+      {/* BMC Widget - expands panel on first real file upload (not sample) */}
+      <BuyMeCoffeeWidget
+        expandOnSuccess={hasResults}
+        isSample={activeScreen === AppState.SAMPLE}
+        delay={3000}
+        autoCollapseAfter={10000}
+      />
 
       <Analytics />
     </div>

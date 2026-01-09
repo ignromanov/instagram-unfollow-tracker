@@ -2,12 +2,14 @@
 
 import { useEffect, useRef } from 'react';
 
-const BMC_STORAGE_KEY = 'bmc_widget_expanded';
+const BMC_STORAGE_KEY = 'bmc_widget_shown_v1';
 const BMC_WIDGET_ID = 'bmc-wbtn';
 
 interface BuyMeCoffeeWidgetProps {
-  /** Trigger to expand the widget panel */
+  /** Trigger to expand the widget panel (e.g., file upload success) */
   expandOnSuccess: boolean;
+  /** Whether this is sample/demo data (don't show widget for demo) */
+  isSample: boolean;
   /** Delay before expanding (ms) */
   delay?: number;
   /** Auto-collapse after this time (ms), 0 = don't collapse */
@@ -18,33 +20,37 @@ interface BuyMeCoffeeWidgetProps {
  * Controller for the BuyMeACoffee widget loaded in index.html.
  *
  * The widget button is always visible. This component controls:
- * - Auto-expanding the panel after successful upload
+ * - Auto-expanding the panel on first real file upload (not sample data)
  * - Auto-collapsing after a timeout
+ * - One-time behavior persisted in localStorage
  */
 export function BuyMeCoffeeWidget({
   expandOnSuccess,
+  isSample,
   delay = 3000,
   autoCollapseAfter = 10000,
 }: BuyMeCoffeeWidgetProps) {
   const hasExpandedRef = useRef(false);
 
   useEffect(() => {
-    // Don't expand if already expanded this session
-    // TODO: uncomment after testing
-    // const alreadyExpanded = sessionStorage.getItem(BMC_STORAGE_KEY);
-    // if (alreadyExpanded) return;
+    // Don't expand for sample/demo data
+    if (isSample) return;
+
+    // Don't expand if already shown before (persisted)
+    const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
+    if (alreadyShown) return;
 
     // Don't expand if trigger is false
     if (!expandOnSuccess) return;
 
-    // Don't trigger twice
+    // Don't trigger twice in same session
     if (hasExpandedRef.current) return;
 
     // Delay before expanding
     const expandTimer = setTimeout(() => {
       expandBMCWidget();
       hasExpandedRef.current = true;
-      sessionStorage.setItem(BMC_STORAGE_KEY, 'true');
+      localStorage.setItem(BMC_STORAGE_KEY, 'true');
 
       // Auto-collapse after timeout
       if (autoCollapseAfter > 0) {
@@ -55,7 +61,7 @@ export function BuyMeCoffeeWidget({
     }, delay);
 
     return () => clearTimeout(expandTimer);
-  }, [expandOnSuccess, delay, autoCollapseAfter]);
+  }, [expandOnSuccess, isSample, delay, autoCollapseAfter]);
 
   return null; // No React DOM, we control the external widget
 }

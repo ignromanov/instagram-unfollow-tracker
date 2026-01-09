@@ -105,7 +105,7 @@ export function DiagnosticErrorScreen({
       {onBack && (
         <button
           onClick={onBack}
-          className="mb-8 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-500 transition-colors hover:text-primary"
+          className="mb-8 flex cursor-pointer items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-500 transition-colors hover:text-primary"
         >
           <ArrowLeft size={18} /> Back
         </button>
@@ -146,7 +146,7 @@ export function DiagnosticErrorScreen({
           {onTryAgain && (
             <button
               onClick={onTryAgain}
-              className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg"
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg"
             >
               <RefreshCw size={18} />
               Try Again
@@ -156,7 +156,7 @@ export function DiagnosticErrorScreen({
           {onOpenWizard && (
             <button
               onClick={onOpenWizard}
-              className={`flex items-center justify-center gap-2 rounded-2xl border-2 ${colors.border} px-6 py-3 text-sm font-bold ${colors.title} transition-all hover:bg-white/50 dark:hover:bg-black/20`}
+              className={`flex cursor-pointer items-center justify-center gap-2 rounded-2xl border-2 ${colors.border} px-6 py-3 text-sm font-bold ${colors.title} transition-all hover:bg-white/50 dark:hover:bg-black/20`}
             >
               Show Where I Went Wrong
             </button>
