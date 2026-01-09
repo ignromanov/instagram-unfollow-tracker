@@ -15,6 +15,37 @@ declare global {
   }
 }
 
+// localStorage key for tracking opt-out preference
+const TRACKING_OPT_OUT_KEY = 'umami-opt-out';
+
+/**
+ * Check if user has opted out of tracking
+ */
+export function isTrackingOptedOut(): boolean {
+  if (typeof window === 'undefined') return false;
+  return localStorage.getItem(TRACKING_OPT_OUT_KEY) === 'true';
+}
+
+/**
+ * Opt out of tracking - Umami script will not load
+ */
+export function optOutOfTracking(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(TRACKING_OPT_OUT_KEY, 'true');
+  // Remove existing umami instance if present
+  delete window.umami;
+}
+
+/**
+ * Opt back into tracking
+ */
+export function optIntoTracking(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(TRACKING_OPT_OUT_KEY);
+  // Reload page to load Umami script
+  window.location.reload();
+}
+
 // Event name constants
 export const AnalyticsEvents = {
   // File Upload
@@ -37,22 +68,56 @@ export const AnalyticsEvents = {
 
   // Links
   LINK_CLICK: 'link_click',
+
+  // V2: Hero CTAs
+  HERO_CTA_GUIDE: 'hero_cta_guide',
+  HERO_CTA_SAMPLE: 'hero_cta_sample',
+  HERO_CTA_UPLOAD_DIRECT: 'hero_cta_upload_direct',
+  HERO_CTA_CONTINUE: 'hero_cta_continue',
+
+  // V2: Navigation
+  THEME_TOGGLE: 'theme_toggle',
+  CLEAR_DATA: 'clear_data',
+  SAMPLE_DATA_CLICK: 'sample_data_click',
+
+  // V2: Wizard
+  WIZARD_STEP_VIEW: 'wizard_step_view',
+  WIZARD_NEXT_CLICK: 'wizard_next_click',
+  WIZARD_BACK_CLICK: 'wizard_back_click',
+  WIZARD_CANCEL: 'wizard_cancel',
+  WIZARD_EXTERNAL_LINK_CLICK: 'wizard_external_link_click',
+
+  // V2: Results
+  EXTERNAL_PROFILE_CLICK: 'external_profile_click',
 } as const;
 
 export type AnalyticsEventName = (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents];
 
-type LinkType = 'github' | 'docs' | 'license' | 'meta_accounts';
+type LinkType =
+  | 'github'
+  | 'docs'
+  | 'license'
+  | 'meta_accounts'
+  | 'privacy-policy'
+  | 'terms-of-service'
+  | 'buy-me-coffee';
 type HelpSource = 'header' | 'upload_section';
 type FilterAction = 'enable' | 'disable';
 
 /**
  * Track event with Umami
  * Safe to call even if Umami hasn't loaded
+ * Disabled in development mode or if user opted out
  */
 function trackEvent(
   eventName: AnalyticsEventName,
   eventData?: Record<string, string | number | boolean>
 ): void {
+  // Skip analytics in development or if opted out
+  if (import.meta.env.DEV || isTrackingOptedOut()) {
+    return;
+  }
+
   try {
     if (typeof window !== 'undefined' && window.umami) {
       window.umami.track(eventName, eventData);
@@ -143,6 +208,67 @@ export const analytics = {
   linkClick: (linkType: LinkType) => {
     trackEvent(AnalyticsEvents.LINK_CLICK, {
       link_type: linkType,
+    });
+  },
+
+  // V2: Hero CTAs
+  heroCTAGuide: () => {
+    trackEvent(AnalyticsEvents.HERO_CTA_GUIDE);
+  },
+
+  heroCTASample: () => {
+    trackEvent(AnalyticsEvents.HERO_CTA_SAMPLE);
+  },
+
+  heroCTAUploadDirect: () => {
+    trackEvent(AnalyticsEvents.HERO_CTA_UPLOAD_DIRECT);
+  },
+
+  heroCTAContinue: () => {
+    trackEvent(AnalyticsEvents.HERO_CTA_CONTINUE);
+  },
+
+  // V2: Navigation
+  themeToggle: (mode: 'dark' | 'light') => {
+    trackEvent(AnalyticsEvents.THEME_TOGGLE, { mode });
+  },
+
+  clearData: () => {
+    trackEvent(AnalyticsEvents.CLEAR_DATA);
+  },
+
+  sampleDataClick: () => {
+    trackEvent(AnalyticsEvents.SAMPLE_DATA_CLICK);
+  },
+
+  // V2: Wizard events
+  wizardStepView: (stepId: number, stepTitle: string) => {
+    trackEvent(AnalyticsEvents.WIZARD_STEP_VIEW, {
+      step_id: stepId,
+      step_title: stepTitle,
+    });
+  },
+
+  wizardNextClick: (fromStep: number) => {
+    trackEvent(AnalyticsEvents.WIZARD_NEXT_CLICK, { from_step: fromStep });
+  },
+
+  wizardBackClick: (fromStep: number) => {
+    trackEvent(AnalyticsEvents.WIZARD_BACK_CLICK, { from_step: fromStep });
+  },
+
+  wizardCancel: () => {
+    trackEvent(AnalyticsEvents.WIZARD_CANCEL);
+  },
+
+  wizardExternalLinkClick: (stepId: number) => {
+    trackEvent(AnalyticsEvents.WIZARD_EXTERNAL_LINK_CLICK, { step_id: stepId });
+  },
+
+  // V2: Results
+  externalProfileClick: (username: string) => {
+    trackEvent(AnalyticsEvents.EXTERNAL_PROFILE_CLICK, {
+      username_hash: username.slice(0, 2) + '***', // Privacy: only prefix
     });
   },
 };
