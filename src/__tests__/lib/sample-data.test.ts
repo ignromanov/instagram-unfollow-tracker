@@ -1,8 +1,10 @@
 /**
  * Sample Data Tests
+ *
+ * Tests for loading pre-built sample data snapshot from public/sample-data.json
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
   generateAndStoreSampleData,
   clearSampleData,
@@ -10,7 +12,7 @@ import {
   getSampleFileHash,
 } from '@/lib/sample-data';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
-import type { BadgeKey } from '@/core/types';
+import type { AccountBadges, BadgeKey } from '@/core/types';
 
 // Mock IndexedDB service
 vi.mock('@/lib/indexeddb/indexeddb-service', () => ({
@@ -22,35 +24,78 @@ vi.mock('@/lib/indexeddb/indexeddb-service', () => ({
   },
 }));
 
-describe('Sample Data Generation', () => {
+// Mock sample data snapshot (subset for testing)
+const mockSampleAccounts: AccountBadges[] = [
+  {
+    username: 'alex_photo1',
+    badges: { mutuals: true, following: 1704067200, followers: 1704067200 },
+  },
+  {
+    username: 'emma_travel2',
+    badges: { mutuals: true, following: 1704063600, followers: 1704063600 },
+  },
+  { username: 'john_fitness3', badges: { following: 1704060000 } },
+  { username: 'sarah_art4', badges: { followers: 1704056400 } },
+  { username: 'mike_music5', badges: { notFollowingBack: true, following: 1704052800 } },
+  { username: 'lisa_tech6', badges: { notFollowedBack: true, followers: 1704049200 } },
+  { username: 'david_food7', badges: { unfollowed: 1704045600 } },
+  { username: 'anna_yoga8', badges: { pending: 1704042000, following: 1704042000 } },
+  { username: 'chris_design9', badges: { restricted: 1704038400 } },
+  { username: 'kate_coffee10', badges: { dismissed: 1704034800 } },
+];
+
+const mockSnapshot = {
+  version: 1,
+  generatedAt: '2024-01-01T00:00:00.000Z',
+  accountCount: mockSampleAccounts.length,
+  accounts: mockSampleAccounts,
+};
+
+// Mock global fetch
+const mockFetch = vi.fn();
+global.fetch = mockFetch;
+
+describe('Sample Data Loading', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Default: fetch returns mock snapshot
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(mockSnapshot),
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   describe('generateAndStoreSampleData', () => {
-    it('should generate and store sample data when none exists', async () => {
+    it('should fetch and store sample data when none exists', async () => {
       // Mock no existing data
       vi.mocked(indexedDBService.getFileMetadata).mockResolvedValue(null);
 
       const result = await generateAndStoreSampleData();
 
+      // Should fetch from correct URL
+      expect(mockFetch).toHaveBeenCalledWith('/sample-data.json');
+
       // Should return file hash and account count
       expect(result.fileHash).toBe(getSampleFileHash());
-      expect(result.accountCount).toBeGreaterThan(0);
+      expect(result.accountCount).toBe(mockSampleAccounts.length);
 
       // Should save metadata
       expect(indexedDBService.saveFileMetadata).toHaveBeenCalledWith(
         expect.objectContaining({
           fileHash: getSampleFileHash(),
           fileName: 'Sample Data (Demo)',
-          accountCount: result.accountCount,
+          accountCount: mockSampleAccounts.length,
         })
       );
 
-      // Should store accounts
+      // Should store accounts from snapshot
       expect(indexedDBService.storeAllAccounts).toHaveBeenCalledWith(
         getSampleFileHash(),
-        expect.any(Array)
+        mockSampleAccounts
       );
     });
 
@@ -61,7 +106,7 @@ describe('Sample Data Generation', () => {
         fileName: 'Sample Data (Demo)',
         fileSize: 0,
         uploadDate: new Date(),
-        accountCount: 1000,
+        accountCount: 1180,
         lastAccessed: Date.now(),
         version: 2,
       };
@@ -70,25 +115,52 @@ describe('Sample Data Generation', () => {
 
       const result = await generateAndStoreSampleData();
 
-      // Should return existing data
+      // Should return existing data without fetching
       expect(result.fileHash).toBe(getSampleFileHash());
-      expect(result.accountCount).toBe(1000);
+      expect(result.accountCount).toBe(1180);
+
+      // Should not fetch
+      expect(mockFetch).not.toHaveBeenCalled();
 
       // Should not save new data
       expect(indexedDBService.saveFileMetadata).not.toHaveBeenCalled();
       expect(indexedDBService.storeAllAccounts).not.toHaveBeenCalled();
     });
 
-    it('should generate accounts with correct badge distribution', async () => {
+    it('should throw on fetch error', async () => {
+      vi.mocked(indexedDBService.getFileMetadata).mockResolvedValue(null);
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      await expect(generateAndStoreSampleData()).rejects.toThrow(
+        'Failed to fetch sample data: 404 Not Found'
+      );
+    });
+
+    it('should throw on invalid snapshot format', async () => {
+      vi.mocked(indexedDBService.getFileMetadata).mockResolvedValue(null);
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ version: 1 }), // Missing accounts array
+      });
+
+      await expect(generateAndStoreSampleData()).rejects.toThrow(
+        'Invalid sample data format: missing accounts array'
+      );
+    });
+
+    it('should store accounts with correct badge types', async () => {
       vi.mocked(indexedDBService.getFileMetadata).mockResolvedValue(null);
 
       await generateAndStoreSampleData();
 
       const storeCall = vi.mocked(indexedDBService.storeAllAccounts).mock.calls[0];
-      const accounts = storeCall?.[1];
+      const accounts = storeCall?.[1] as AccountBadges[];
 
       expect(accounts).toBeDefined();
-      if (!accounts) return;
 
       // Count badges
       const badgeCounts: Record<string, number> = {};
@@ -98,7 +170,7 @@ describe('Sample Data Generation', () => {
         });
       });
 
-      // Should have various badge types
+      // Should have various badge types from mock data
       const expectedBadges: BadgeKey[] = [
         'following',
         'followers',
@@ -111,16 +183,15 @@ describe('Sample Data Generation', () => {
       });
     });
 
-    it('should generate unique usernames', async () => {
+    it('should have unique usernames in snapshot', async () => {
       vi.mocked(indexedDBService.getFileMetadata).mockResolvedValue(null);
 
       await generateAndStoreSampleData();
 
       const storeCall = vi.mocked(indexedDBService.storeAllAccounts).mock.calls[0];
-      const accounts = storeCall?.[1];
+      const accounts = storeCall?.[1] as AccountBadges[];
 
       expect(accounts).toBeDefined();
-      if (!accounts) return;
 
       // Check uniqueness
       const usernames = accounts.map(a => a.username);
@@ -144,7 +215,7 @@ describe('Sample Data Generation', () => {
         fileName: 'Sample Data (Demo)',
         fileSize: 0,
         uploadDate: new Date(),
-        accountCount: 1000,
+        accountCount: 1180,
         lastAccessed: Date.now(),
         version: 2,
       });

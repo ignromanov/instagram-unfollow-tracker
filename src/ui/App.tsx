@@ -213,8 +213,9 @@ export const App: React.FC = () => {
           return (
             <div className="flex-1 flex items-center justify-center py-24">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-                <p className="text-muted-foreground">Generating sample data...</p>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary/20 border-t-primary mx-auto mb-4" />
+                <p className="text-lg font-medium text-foreground mb-1">Loading sample data...</p>
+                <p className="text-sm text-muted-foreground">Preparing 1,180 demo accounts</p>
               </div>
             </div>
           );
@@ -325,10 +326,10 @@ export const App: React.FC = () => {
       {/* Wizard Modal */}
       {showWizard && <Wizard onComplete={handleWizardComplete} onCancel={handleWizardCancel} />}
 
-      {/* BMC Widget - expands panel on first real file upload (not sample) */}
+      {/* BMC Widget - expands after data load (real: once, sample: always) */}
       <BuyMeCoffeeWidget
         expandOnSuccess={hasResults}
-        isSample={activeScreen === AppState.SAMPLE}
+        isSample={hasSampleData}
         delay={3000}
         autoCollapseAfter={10000}
       />

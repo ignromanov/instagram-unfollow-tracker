@@ -8,10 +8,12 @@ const BMC_WIDGET_ID = 'bmc-wbtn';
 interface BuyMeCoffeeWidgetProps {
   /** Trigger to expand the widget panel (e.g., file upload success) */
   expandOnSuccess: boolean;
-  /** Whether this is sample/demo data (don't show widget for demo) */
+  /** Whether this is sample/demo data */
   isSample: boolean;
-  /** Delay before expanding (ms) */
+  /** Delay before expanding for real uploads (ms) */
   delay?: number;
+  /** Delay before expanding for sample data (ms) */
+  sampleDelay?: number;
   /** Auto-collapse after this time (ms), 0 = don't collapse */
   autoCollapseAfter?: number;
 }
@@ -28,31 +30,27 @@ export function BuyMeCoffeeWidget({
   expandOnSuccess,
   isSample,
   delay = 3000,
+  sampleDelay = 30000,
   autoCollapseAfter = 10000,
 }: BuyMeCoffeeWidgetProps) {
   const hasExpandedRef = useRef(false);
+  const hasExpandedSampleRef = useRef(false);
 
+  // Effect for real uploads
   useEffect(() => {
-    // Don't expand for sample/demo data
     if (isSample) return;
 
-    // Don't expand if already shown before (persisted)
     const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
     if (alreadyShown) return;
 
-    // Don't expand if trigger is false
     if (!expandOnSuccess) return;
-
-    // Don't trigger twice in same session
     if (hasExpandedRef.current) return;
 
-    // Delay before expanding
     const expandTimer = setTimeout(() => {
       expandBMCWidget();
       hasExpandedRef.current = true;
       localStorage.setItem(BMC_STORAGE_KEY, 'true');
 
-      // Auto-collapse after timeout
       if (autoCollapseAfter > 0) {
         setTimeout(() => {
           collapseBMCWidget();
@@ -63,7 +61,26 @@ export function BuyMeCoffeeWidget({
     return () => clearTimeout(expandTimer);
   }, [expandOnSuccess, isSample, delay, autoCollapseAfter]);
 
-  return null; // No React DOM, we control the external widget
+  // Effect for sample data (separate, longer delay)
+  useEffect(() => {
+    if (!isSample) return;
+    if (hasExpandedSampleRef.current) return;
+
+    const expandTimer = setTimeout(() => {
+      expandBMCWidget();
+      hasExpandedSampleRef.current = true;
+
+      if (autoCollapseAfter > 0) {
+        setTimeout(() => {
+          collapseBMCWidget();
+        }, autoCollapseAfter);
+      }
+    }, sampleDelay);
+
+    return () => clearTimeout(expandTimer);
+  }, [isSample, sampleDelay, autoCollapseAfter]);
+
+  return null;
 }
 
 /**

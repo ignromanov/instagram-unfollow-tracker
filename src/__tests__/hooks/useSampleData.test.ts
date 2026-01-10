@@ -42,8 +42,8 @@ describe('useSampleData', () => {
     vi.clearAllMocks();
   });
 
-  describe('handleLoadSample', () => {
-    it('should generate sample data and update store', async () => {
+  describe('load', () => {
+    it('should generate sample data and return result', async () => {
       // Mock successful generation
       vi.mocked(sampleDataModule.generateAndStoreSampleData).mockResolvedValue({
         fileHash: 'sample-demo-data-v1',
@@ -52,38 +52,27 @@ describe('useSampleData', () => {
 
       const { result } = renderHook(() => useSampleData());
 
-      expect(result.current.isGenerating).toBe(false);
+      expect(result.current.state).toBe('idle');
 
       // Load sample data
+      let loadResult: any;
       await act(async () => {
-        await result.current.handleLoadSample();
+        loadResult = await result.current.load();
       });
 
-      // Should have called setUploadInfo with loading state
-      expect(mockSetUploadInfo).toHaveBeenCalledWith({
-        currentFileName: 'Sample Data (Demo)',
-        uploadStatus: 'loading',
-        uploadError: null,
+      // Should return the result
+      expect(loadResult).toEqual({
+        fileHash: 'sample-demo-data-v1',
+        accountCount: 1000,
       });
 
-      // Should set default filters
-      expect(mockSetFilters).toHaveBeenCalledWith(
-        new Set(['unfollowed', 'notFollowingBack', 'mutuals'])
-      );
-
-      // Should have called setUploadInfo with success state
-      expect(mockSetUploadInfo).toHaveBeenCalledWith(
-        expect.objectContaining({
-          currentFileName: 'Sample Data (Demo)',
-          uploadStatus: 'success',
-          accountCount: 1000,
-        })
-      );
-
-      // Should advance to results
-      expect(mockAdvanceJourney).toHaveBeenCalledWith('results');
-
-      expect(result.current.isGenerating).toBe(false);
+      // Should update state
+      expect(result.current.state).toBe('success');
+      expect(result.current.data).toEqual({
+        fileHash: 'sample-demo-data-v1',
+        accountCount: 1000,
+      });
+      expect(result.current.error).toBe(null);
     });
 
     it('should handle errors during generation', async () => {
@@ -96,23 +85,19 @@ describe('useSampleData', () => {
       // Load sample data
       await act(async () => {
         try {
-          await result.current.handleLoadSample();
+          await result.current.load();
         } catch (err) {
           expect(err).toBe(error);
         }
       });
 
-      // Should have called setUploadInfo with error state
-      expect(mockSetUploadInfo).toHaveBeenCalledWith({
-        currentFileName: 'Sample Data (Demo)',
-        uploadStatus: 'error',
-        uploadError: 'Generation failed',
-      });
-
-      expect(result.current.isGenerating).toBe(false);
+      // Should update state with error
+      expect(result.current.state).toBe('error');
+      expect(result.current.error).toBe('Generation failed');
+      expect(result.current.data).toBe(null);
     });
 
-    it('should set isGenerating state during generation', async () => {
+    it('should set state during generation', async () => {
       // Mock delayed generation
       let resolveGeneration: (value: any) => void;
       const generationPromise = new Promise(resolve => {
@@ -125,16 +110,16 @@ describe('useSampleData', () => {
 
       const { result } = renderHook(() => useSampleData());
 
-      expect(result.current.isGenerating).toBe(false);
+      expect(result.current.state).toBe('idle');
 
       // Start loading
       act(() => {
-        result.current.handleLoadSample();
+        result.current.load();
       });
 
-      // Should be generating
+      // Should be loading
       await waitFor(() => {
-        expect(result.current.isGenerating).toBe(true);
+        expect(result.current.state).toBe('loading');
       });
 
       // Complete generation
@@ -143,22 +128,39 @@ describe('useSampleData', () => {
         await generationPromise;
       });
 
-      // Should be done
+      // Should be success
       await waitFor(() => {
-        expect(result.current.isGenerating).toBe(false);
+        expect(result.current.state).toBe('success');
       });
     });
   });
 
-  describe('handleClearSample', () => {
-    it('should clear sample data', async () => {
+  describe('clear', () => {
+    it('should clear sample data and reset state', async () => {
       const { result } = renderHook(() => useSampleData());
 
+      // First load data
+      vi.mocked(sampleDataModule.generateAndStoreSampleData).mockResolvedValue({
+        fileHash: 'sample-demo-data-v1',
+        accountCount: 1000,
+      });
+
       await act(async () => {
-        await result.current.handleClearSample();
+        await result.current.load();
+      });
+
+      expect(result.current.state).toBe('success');
+      expect(result.current.data).not.toBe(null);
+
+      // Now clear
+      await act(async () => {
+        await result.current.clear();
       });
 
       expect(sampleDataModule.clearSampleData).toHaveBeenCalled();
+      expect(result.current.state).toBe('idle');
+      expect(result.current.data).toBe(null);
+      expect(result.current.error).toBe(null);
     });
 
     it('should handle errors silently', async () => {
@@ -170,7 +172,7 @@ describe('useSampleData', () => {
 
       // Should not throw
       await act(async () => {
-        await result.current.handleClearSample();
+        await result.current.clear();
       });
 
       expect(sampleDataModule.clearSampleData).toHaveBeenCalled();
