@@ -1,11 +1,11 @@
 import { BADGE_STYLES } from '@/constants/badge-styles';
-import { BADGE_LABELS } from '@/core/badges';
-import type { AccountBadges } from '@/core/types';
+import type { AccountBadges, BadgeKey } from '@/core/types';
 import { useAccountDataSource } from '@/hooks/useAccountDataSource';
 import { analytics } from '@/lib/analytics';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, User, Ghost } from 'lucide-react';
 import { memo, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Props for AccountList component
@@ -33,6 +33,7 @@ export const AccountList = memo(function AccountList({
   hasLoadedData,
   onClearFilters,
 }: AccountListProps) {
+  const { t } = useTranslation('results');
   const parentRef = useRef<HTMLDivElement>(null);
 
   // Initialize data source for lazy loading (uses passed fileHash, not store)
@@ -72,13 +73,15 @@ export const AccountList = memo(function AccountList({
       <div className="flex-grow bg-card rounded-4xl border border-border shadow-sm overflow-hidden flex flex-col h-[75vh] md:h-[85vh]">
         <div className="flex flex-col items-center justify-center h-full py-24 text-center px-12">
           <Ghost size={64} className="mb-8 opacity-10" />
-          <p className="text-xl md:text-2xl font-display font-bold text-zinc-300">No users found</p>
+          <p className="text-xl md:text-2xl font-display font-bold text-zinc-300">
+            {t('empty.noUsers')}
+          </p>
           {onClearFilters && (
             <button
               onClick={onClearFilters}
               className="mt-4 text-primary font-black uppercase text-xs tracking-widest hover:underline"
             >
-              Reset Filters
+              {t('empty.resetFilters')}
             </button>
           )}
         </div>
@@ -141,7 +144,7 @@ export const AccountList = memo(function AccountList({
                       BADGE_STYLES[badgeKey] || 'bg-muted text-muted-foreground'
                     }`}
                   >
-                    {BADGE_LABELS[badgeKey as keyof typeof BADGE_LABELS] || badgeKey}
+                    {t(`badges.${badgeKey as BadgeKey}`)}
                   </span>
                 ))}
             </div>
@@ -155,7 +158,7 @@ export const AccountList = memo(function AccountList({
           rel="noopener noreferrer"
           onClick={handleLinkClick}
           className="ml-4 p-3 md:p-4 rounded-2xl text-zinc-400 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/20 shrink-0"
-          title="View Profile"
+          title={t('list.viewProfile')}
         >
           <ExternalLink size={18} />
         </a>
@@ -168,7 +171,7 @@ export const AccountList = memo(function AccountList({
       {/* List Header */}
       <div className="px-5 md:px-8 py-4 md:py-5 border-b border-border bg-zinc-50/50 dark:bg-zinc-900/30">
         <h3 className="text-[10px] md:text-xs font-black text-zinc-500 uppercase tracking-widest">
-          Accounts ({displayCount.toLocaleString()})
+          {t('list.header', { count: displayCount })}
         </h3>
       </div>
       {/* Virtual List */}

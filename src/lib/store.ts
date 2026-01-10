@@ -2,6 +2,9 @@ import type { BadgeKey, FileDiscovery, FileMetadata, ParseWarning } from '@/core
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+// Supported languages for i18n
+export type SupportedLanguage = 'en' | 'es' | 'pt' | 'hi' | 'id' | 'tr' | 'ja' | 'ru' | 'de';
+
 // Journey step definition for guided user experience
 export type JourneyStep =
   | 'hero' // Initial landing with hero section
@@ -32,6 +35,8 @@ interface AppState {
   fileMetadata: FileMetadata | null;
   // Journey state for guided user experience
   journey: JourneyState;
+  // i18n language state
+  language: SupportedLanguage;
   // Session-only state (not persisted)
   parseWarnings: ParseWarning[];
   fileDiscovery: FileDiscovery | null;
@@ -54,6 +59,8 @@ interface AppState {
   toggleHowToSubStep: (subStep: HowToSubStep) => void;
   resetJourney: () => void;
   clearData: () => void;
+  // Language action
+  setLanguage: (lang: SupportedLanguage) => void;
 }
 
 // Helper to serialize Set for persist
@@ -78,6 +85,7 @@ export const useAppStore = create<AppState>()(
         expandedSteps: new Set<JourneyStep>(['hero']), // Hero always expanded
         completedHowToSubSteps: new Set<HowToSubStep>(),
       },
+      language: 'en' as SupportedLanguage,
       parseWarnings: [],
       fileDiscovery: null,
       _hasHydrated: false,
@@ -175,10 +183,17 @@ export const useAppStore = create<AppState>()(
             completedHowToSubSteps: new Set<HowToSubStep>(),
           },
         }),
+      setLanguage: (lang: SupportedLanguage) => {
+        set({ language: lang });
+        // Sync with i18next (dynamic import to avoid circular deps)
+        import('@/locales').then(({ loadLanguage, default: i18n }) => {
+          loadLanguage(lang).then(() => i18n.changeLanguage(lang));
+        });
+      },
     }),
     {
       name: 'unfollow-radar-store',
-      version: 3, // Increment version for completedHowToSubSteps
+      version: 4, // Increment version for language support
       migrate: (persistedState: any, version: number) => {
         // If version is 1 or older, clear all data and start fresh
         if (version <= 1) {
@@ -207,6 +222,11 @@ export const useAppStore = create<AppState>()(
           return state;
         }
 
+        // Version 3 -> 4: Add language support
+        if (version === 3) {
+          return { ...persistedState, language: 'en' };
+        }
+
         // For future versions, return the persisted state as-is
         return persistedState;
       },
@@ -223,10 +243,22 @@ export const useAppStore = create<AppState>()(
             expandedSteps: serializeSet(state.journey.expandedSteps),
             completedHowToSubSteps: serializeSet(state.journey.completedHowToSubSteps),
           },
+          language: state.language,
         }) as unknown as Partial<AppState>,
       onRehydrateStorage: () => state => {
         if (state) {
           state._hasHydrated = true;
+          // Sync i18next with persisted language after hydration
+          if (state.language && state.language !== 'en') {
+            import('@/locales').then(({ loadLanguage, default: i18n }) => {
+              loadLanguage(state.language).then(() => i18n.changeLanguage(state.language));
+            });
+          } else if (state.language === 'en') {
+            // Ensure i18next is set to English if that's the persisted language
+            import('@/locales').then(({ default: i18n }) => {
+              i18n.changeLanguage('en');
+            });
+          }
         }
       },
       storage: {

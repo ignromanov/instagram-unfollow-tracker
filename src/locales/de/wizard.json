@@ -1,0 +1,56 @@
+{
+  "header": {
+    "stepOf": "Schritt {{current}} von {{total}}"
+  },
+  "buttons": {
+    "back": "Zurück",
+    "next": "Nächster Schritt",
+    "done": "Fertig, los geht's!",
+    "openInstagram": "Instagram öffnen"
+  },
+  "format": {
+    "warning": "NUR JSON-FORMAT"
+  },
+  "steps": {
+    "1": {
+      "title": "Datenexport-Seite öffnen",
+      "description": "Tippe auf den Button unten, um direkt zur Datenexport-Seite der Plattform zu gelangen. Möglicherweise musst du dich zuerst anmelden.",
+      "alt": "Schritt 1: Datenexport-Seite öffnen"
+    },
+    "2": {
+      "title": "'Einige deiner Informationen' auswählen",
+      "description": "Lade nicht alles herunter — wir brauchen nur deine Follower- und Following-Daten, um den Prozess zu beschleunigen.",
+      "alt": "Schritt 2: 'Einige deiner Informationen' auswählen"
+    },
+    "3": {
+      "title": "Nur 'Follower und Gefolgte' ankreuzen",
+      "description": "Deaktiviere alle anderen Optionen wie Nachrichten oder Medien. Das macht deine Datei viel kleiner.",
+      "alt": "Schritt 3: Nur 'Follower und Gefolgte' ankreuzen"
+    },
+    "4": {
+      "title": "⚠️ JSON-Format auswählen",
+      "description": "Das ist entscheidend: Wähle JSON, nicht HTML. HTML-Dateien funktionieren nicht mit unserem Analyzer.",
+      "alt": "Schritt 4: JSON-Format auswählen"
+    },
+    "5": {
+      "title": "'Gesamter Zeitraum' wählen und auf 'Dateien erstellen' tippen",
+      "description": "Die Plattform beginnt jetzt mit der Vorbereitung deiner Daten. Das kann zwischen 5 Minuten und einigen Stunden dauern.",
+      "alt": "Schritt 5: 'Gesamter Zeitraum' wählen und auf 'Dateien erstellen' tippen"
+    },
+    "6": {
+      "title": "Auf E-Mail-Benachrichtigung warten",
+      "description": "Behalte deinen Posteingang im Auge (und den Spam-Ordner!). Du erhältst eine E-Mail, wenn deine Datei zum Download bereit ist.",
+      "alt": "Schritt 6: Auf E-Mail-Benachrichtigung warten"
+    },
+    "7": {
+      "title": "ZIP-Datei herunterladen",
+      "description": "Lade die Datei auf dein Gerät herunter. Sobald du sie hast, kannst du sie hier analysieren!",
+      "alt": "Schritt 7: ZIP-Datei herunterladen"
+    },
+    "8": {
+      "title": "Hochladen & Ergebnisse anzeigen",
+      "description": "Komm hierher zurück, lade deine ZIP-Datei hoch und sieh sofort, wer dir entfolgt ist und mehr!",
+      "alt": "Schritt 8: Hochladen & Ergebnisse anzeigen"
+    }
+  }
+}

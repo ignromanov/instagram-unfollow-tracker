@@ -13,6 +13,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface DiagnosticErrorScreenProps {
   /** Error code for direct error display */
@@ -76,6 +77,8 @@ export function DiagnosticErrorScreen({
   onOpenWizard,
   onBack,
 }: DiagnosticErrorScreenProps) {
+  const { t } = useTranslation('upload');
+
   // Derive diagnostic error from props
   const diagnosticError = useMemo((): DiagnosticError => {
     // Direct error code takes priority
@@ -107,7 +110,7 @@ export function DiagnosticErrorScreen({
           onClick={onBack}
           className="mb-8 flex cursor-pointer items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-500 transition-colors hover:text-primary"
         >
-          <ArrowLeft size={18} /> Back
+          <ArrowLeft size={18} /> {t('diagnostic.back')}
         </button>
       )}
 
@@ -134,7 +137,7 @@ export function DiagnosticErrorScreen({
         {/* Fix section */}
         <div className="mb-8 rounded-2xl bg-white/60 p-6 dark:bg-black/20">
           <h3 className="mb-3 text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-            How to fix this
+            {t('diagnostic.howToFix')}
           </h3>
           <p className="text-sm font-medium leading-relaxed text-zinc-600 dark:text-zinc-400">
             {diagnosticError.fix}
@@ -149,7 +152,7 @@ export function DiagnosticErrorScreen({
               className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg"
             >
               <RefreshCw size={18} />
-              Try Again
+              {t('diagnostic.tryAgain')}
             </button>
           )}
 
@@ -158,7 +161,7 @@ export function DiagnosticErrorScreen({
               onClick={onOpenWizard}
               className={`flex cursor-pointer items-center justify-center gap-2 rounded-2xl border-2 ${colors.border} px-6 py-3 text-sm font-bold ${colors.title} transition-all hover:bg-white/50 dark:hover:bg-black/20`}
             >
-              Show Where I Went Wrong
+              {t('diagnostic.showMistakes')}
             </button>
           )}
         </div>
@@ -167,27 +170,28 @@ export function DiagnosticErrorScreen({
       {/* Common mistakes hint */}
       <div className="mt-8 rounded-3xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/40">
         <h4 className="mb-4 text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-          Common Mistakes
+          {t('diagnostic.commonMistakes')}
         </h4>
         <ul className="space-y-3 text-sm font-medium text-zinc-600 dark:text-zinc-400">
           <li className="flex items-start gap-3">
             <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-500" />
             <span>
-              <strong>HTML instead of JSON</strong> — Make sure to select "JSON" format when
-              requesting your data
+              <strong>{t('diagnostic.mistakes.html.title')}</strong> —{' '}
+              {t('diagnostic.mistakes.html.description')}
             </span>
           </li>
           <li className="flex items-start gap-3">
             <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
             <span>
-              <strong>Missing data category</strong> — You need to select "Followers and following"
-              in the data types
+              <strong>{t('diagnostic.mistakes.missingData.title')}</strong> —{' '}
+              {t('diagnostic.mistakes.missingData.description')}
             </span>
           </li>
           <li className="flex items-start gap-3">
             <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
             <span>
-              <strong>Wrong file</strong> — Upload the .zip file, not a folder or extracted files
+              <strong>{t('diagnostic.mistakes.wrongFile.title')}</strong> —{' '}
+              {t('diagnostic.mistakes.wrongFile.description')}
             </span>
           </li>
         </ul>

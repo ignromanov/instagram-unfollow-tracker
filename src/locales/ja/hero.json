@@ -1,0 +1,38 @@
+{
+  "version": "V1.1 100万件以上のアカウントに最適化",
+  "headline": {
+    "prefix": "誰が",
+    "highlight": "フォロー解除したか",
+    "suffix": "ログインなしで確認"
+  },
+  "subheadline": "ログイン不要でInstagramのZIPファイルをローカルで分析する唯一の無料ツール。100%プライベート。アカウントリスクなし。サーバー保存なし。",
+  "buttons": {
+    "getGuide": "アンフォロワーを無料でチェック",
+    "trySample": "サンプルで試す",
+    "haveFile": "ZIPファイルを持っています",
+    "viewResults": "分析結果を見る"
+  },
+  "trust": {
+    "free": "永久無料",
+    "noPassword": "パスワード不要",
+    "privacy": "プライバシー保証"
+  },
+  "features": {
+    "local": {
+      "title": "100%ローカル",
+      "description": "データがデバイスから出ることはありません"
+    },
+    "noLogin": {
+      "title": "ログイン不要",
+      "description": "アカウント凍結やハッキングのリスクなし"
+    },
+    "scale": {
+      "title": "大規模対応",
+      "description": "100万件以上のアカウントを高速処理"
+    },
+    "openSource": {
+      "title": "オープンソース",
+      "description": "コードを監査可能、信頼性を大切に"
+    }
+  }
+}

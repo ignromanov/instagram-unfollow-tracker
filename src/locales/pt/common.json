@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "Voltar",
+    "next": "Avançar",
+    "cancel": "Cancelar",
+    "tryAgain": "Tentar Novamente",
+    "clearData": "Limpar Dados",
+    "viewResults": "Resultados",
+    "uploadFile": "Enviar Arquivo",
+    "delete": "Excluir"
+  },
+  "badges": {
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "unfollowed": "Deixou de seguir recentemente",
+    "notFollowingBack": "Não segue de volta",
+    "mutuals": "Mútuos",
+    "notFollowedBack": "Não é seguido de volta",
+    "pending": "Solicitação pendente",
+    "permanent": "Pendente (permanente)",
+    "restricted": "Restrito",
+    "close": "Amigo próximo",
+    "dismissed": "Sugestão ignorada"
+  },
+  "theme": {
+    "light": "Modo Claro",
+    "dark": "Modo Escuro",
+    "switchToLight": "Mudar para modo claro",
+    "switchToDark": "Mudar para modo escuro"
+  },
+  "header": {
+    "clearDataTitle": "Limpar todos os dados?",
+    "clearDataDescription": "Isso removerá todos os dados do Instagram carregados e retornará à tela inicial. Esta ação não pode ser desfeita.",
+    "deleteData": "Excluir Dados"
+  },
+  "footer": {
+    "description": "O único analisador de relacionamentos que funciona 100% no seu navegador. Sem servidor, sem logs, apenas seus dados e seu dispositivo.",
+    "privacyPolicy": "Política de Privacidade",
+    "termsOfService": "Termos de Serviço",
+    "contactSupport": "Contato e Suporte",
+    "trackingOff": "Rastreamento Desligado",
+    "dontTrackMe": "Não Me Rastreie",
+    "trackingDisabled": "Analytics desativado",
+    "trackingEnabled": "Desativar analytics anônimo",
+    "keepItFree": "Mantenha gratuito e privado",
+    "supportPrivacy": "Apoie a privacidade",
+    "madeWithLove": "Feito com",
+    "forTheCommunity": "para a Comunidade",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "Licença MIT"
+  },
+  "nav": {
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço"
+  },
+  "language": {
+    "changeLanguage": "Mudar Idioma"
+  },
+  "cta": {
+    "title": "Comece Sua Análise Privada Hoje",
+    "subtitle": "Junte-se a milhares de usuários que rastreiam seguidores sem arriscar suas contas.",
+    "getStarted": "Começar",
+    "trySample": "Testar Demo",
+    "tagline": "100% Grátis • Sem Login • Privacidade Garantida"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "title": "Cara Cek <gradient>Instagram Unfollowers</gradient> Anda",
+  "subtitle": "Ikuti 8 langkah sederhana ini untuk menganalisis akun Anda dengan aman tanpa membagikan password.",
+  "important": "Penting",
+  "openStep": "Buka langkah di panduan",
+  "steps": {
+    "1": {
+      "title": "Buka Halaman Ekspor Data",
+      "description": "Ketuk tombol di bawah untuk langsung ke halaman ekspor data platform. Anda mungkin perlu login terlebih dahulu."
+    },
+    "2": {
+      "title": "Pilih 'Sebagian informasi Anda'",
+      "description": "Jangan unduh semuanya — kita hanya butuh data pengikut dan mengikuti untuk mempercepat proses."
+    },
+    "3": {
+      "title": "Centang hanya 'Pengikut dan mengikuti'",
+      "description": "Hapus centang opsi lain seperti pesan atau media. Ini membuat file Anda jauh lebih kecil."
+    },
+    "4": {
+      "title": "Pilih format JSON",
+      "description": "Ini sangat penting: Pilih JSON, bukan HTML. File HTML tidak akan berfungsi dengan alat analisis kami."
+    },
+    "5": {
+      "title": "Pilih 'Sepanjang waktu' dan ketuk 'Buat file'",
+      "description": "Platform akan mulai menyiapkan data Anda. Ini bisa memakan waktu dari 5 menit hingga beberapa jam."
+    },
+    "6": {
+      "title": "Tunggu notifikasi email",
+      "description": "Pantau kotak masuk Anda (dan folder spam!). Anda akan mendapat email saat file siap diunduh."
+    },
+    "7": {
+      "title": "Unduh file ZIP",
+      "description": "Unduh file ke perangkat Anda. Setelah mendapatkannya, Anda siap menganalisisnya di sini!"
+    },
+    "8": {
+      "title": "Unggah & Lihat Hasil",
+      "description": "Kembali ke sini, unggah file ZIP Anda, dan langsung lihat siapa yang berhenti mengikuti Anda!"
+    }
+  },
+  "cta": {
+    "title": "Siap untuk mulai?",
+    "subtitle": "Analisis ekspor data Anda secara privat dalam hitungan detik.",
+    "button": "Buka Panduan Analisis"
+  },
+  "schema": {
+    "name": "Cara Cek Siapa yang Berhenti Mengikuti Anda di Instagram Tanpa Login",
+    "description": "Panduan langkah demi langkah untuk menemukan Instagram unfollowers menggunakan ekspor data resmi Anda. Tanpa login, 100% privat.",
+    "supplies": {
+      "account": "Akun Instagram",
+      "email": "Akses email"
+    },
+    "tool": "Instagram Unfollow Tracker (website ini)"
+  }
+}

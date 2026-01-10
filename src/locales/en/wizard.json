@@ -1,0 +1,56 @@
+{
+  "header": {
+    "stepOf": "Step {{current}} of {{total}}"
+  },
+  "buttons": {
+    "back": "Back",
+    "next": "Next Step",
+    "done": "Done, let's go!",
+    "openInstagram": "Open Instagram"
+  },
+  "format": {
+    "warning": "JSON FORMAT ONLY"
+  },
+  "steps": {
+    "1": {
+      "title": "Open Data Export Page",
+      "description": "Tap the button below to go directly to the platform's data export page. You may need to log in first.",
+      "alt": "Step 1: Open Data Export Page"
+    },
+    "2": {
+      "title": "Select 'Some of your information'",
+      "description": "Don't download everything — we only need your followers and following data to speed this up.",
+      "alt": "Step 2: Select 'Some of your information'"
+    },
+    "3": {
+      "title": "Check only 'Followers and following'",
+      "description": "Uncheck all other options like messages or media. This makes your file much smaller.",
+      "alt": "Step 3: Check only 'Followers and following'"
+    },
+    "4": {
+      "title": "⚠️ Select JSON format",
+      "description": "This is critical: Choose JSON, not HTML. HTML files will not work with our analyzer.",
+      "alt": "Step 4: Select JSON format"
+    },
+    "5": {
+      "title": "Choose 'All time' and tap 'Create files'",
+      "description": "The platform will now start preparing your data. This can take anywhere from 5 minutes to a few hours.",
+      "alt": "Step 5: Choose 'All time' and tap 'Create files'"
+    },
+    "6": {
+      "title": "Wait for email notification",
+      "description": "Keep an eye on your inbox (and spam folder!). You'll get an email when your file is ready to download.",
+      "alt": "Step 6: Wait for email notification"
+    },
+    "7": {
+      "title": "Download the ZIP file",
+      "description": "Download the file to your device. Once you have it, you're ready to analyze it here!",
+      "alt": "Step 7: Download the ZIP file"
+    },
+    "8": {
+      "title": "Upload & Reveal Results",
+      "description": "Head back here, upload your ZIP file, and instantly see who unfollowed you and more!",
+      "alt": "Step 8: Upload & Reveal Results"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "分析結果",
+    "fileInfo": "{{filename}} • {{count, number}}件",
+    "showing": "{{total}}件中{{filtered}}件を表示"
+  },
+  "sample": {
+    "banner": "サンプルデータを表示中",
+    "hint": "アプリを体験するためのデモデータです。",
+    "uploadPrompt": "データをアップロード",
+    "toSeeReal": "して実際のフォロワーを確認"
+  },
+  "search": {
+    "placeholder": "ユーザー名を検索...",
+    "ariaLabel": "ユーザー名でアカウントを検索",
+    "clearAriaLabel": "検索をクリア",
+    "resultsCount": "{{total}}件中{{result}}件を表示",
+    "accounts": "アカウント",
+    "time": "{{time}}ミリ秒"
+  },
+  "sort": {
+    "asc": "A→Z順",
+    "desc": "Z→A順"
+  },
+  "stats": {
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "unfollowed": "フォロー解除",
+    "notFollowing": "フォローなし"
+  },
+  "filters": {
+    "title": "結果をフィルタ",
+    "reset": "リセット",
+    "emptyCategories": "空のカテゴリ（{{count, number}}件）",
+    "addFilter": "{{label}}フィルタを追加（{{count, number}}件）",
+    "removeFilter": "{{label}}フィルタを削除（{{count, number}}件）"
+  },
+  "badges": {
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "unfollowed": "最近フォロー解除",
+    "notFollowingBack": "フォローバックなし",
+    "mutuals": "相互フォロー",
+    "notFollowedBack": "フォローされていない",
+    "pending": "リクエスト中",
+    "permanent": "リクエスト中（長期）",
+    "restricted": "制限中",
+    "close": "親しい友達",
+    "dismissed": "非表示にした候補"
+  },
+  "empty": {
+    "noUsers": "ユーザーが見つかりません",
+    "resetFilters": "フィルタをリセット"
+  },
+  "list": {
+    "header": "アカウント ({{count, number}})",
+    "viewProfile": "プロフィールを見る"
+  }
+}

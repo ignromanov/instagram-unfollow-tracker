@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "Hasil Analisis",
+    "fileInfo": "{{filename}} • {{count, number}} Total",
+    "showing": "Menampilkan {{filtered}} dari {{total}} akun"
+  },
+  "sample": {
+    "banner": "Melihat Data Sampel",
+    "hint": "Ini adalah data demo untuk membantu Anda menjelajahi aplikasi.",
+    "uploadPrompt": "Unggah data Anda",
+    "toSeeReal": "untuk melihat pengikut asli Anda."
+  },
+  "search": {
+    "placeholder": "Cari username...",
+    "ariaLabel": "Cari akun berdasarkan username",
+    "clearAriaLabel": "Hapus pencarian",
+    "resultsCount": "Menampilkan {{result}} dari {{total}}",
+    "accounts": "akun",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Urut A→Z",
+    "desc": "Urut Z→A"
+  },
+  "stats": {
+    "followers": "Pengikut",
+    "following": "Mengikuti",
+    "unfollowed": "Berhenti Mengikuti",
+    "notFollowing": "Tidak Mengikuti"
+  },
+  "filters": {
+    "title": "Filter Hasil",
+    "reset": "Reset",
+    "emptyCategories": "Kategori Kosong ({{count, number}})",
+    "addFilter": "Tambah filter {{label}} ({{count, number}} akun)",
+    "removeFilter": "Hapus filter {{label}} ({{count, number}} akun)"
+  },
+  "badges": {
+    "followers": "Pengikut",
+    "following": "Mengikuti",
+    "unfollowed": "Baru berhenti mengikuti",
+    "notFollowingBack": "Tidak mengikuti balik",
+    "mutuals": "Saling mengikuti",
+    "notFollowedBack": "Tidak diikuti balik",
+    "pending": "Permintaan tertunda",
+    "permanent": "Tertunda (permanen)",
+    "restricted": "Dibatasi",
+    "close": "Teman dekat",
+    "dismissed": "Saran ditolak"
+  },
+  "empty": {
+    "noUsers": "Tidak ada pengguna ditemukan",
+    "resetFilters": "Reset Filter"
+  },
+  "list": {
+    "header": "Akun ({{count, number}})",
+    "viewProfile": "Lihat Profil"
+  }
+}

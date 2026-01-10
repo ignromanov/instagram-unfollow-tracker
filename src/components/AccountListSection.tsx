@@ -16,6 +16,7 @@ import { StatCard } from './StatCard';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Props for AccountListSection
@@ -38,6 +39,7 @@ export function AccountListSection({
   filename,
   isSample = false,
 }: AccountListSectionProps) {
+  const { t } = useTranslation('results');
   const {
     query,
     setQuery,
@@ -82,17 +84,17 @@ export function AccountListSection({
       {isSample && (
         <Alert className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/50">
           <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-          <AlertTitle className="text-blue-800 dark:text-blue-200">Viewing Sample Data</AlertTitle>
+          <AlertTitle className="text-blue-800 dark:text-blue-200">{t('sample.banner')}</AlertTitle>
           <AlertDescription className="text-blue-700 dark:text-blue-300">
-            This is demo data to help you explore the app.{' '}
+            {t('sample.hint')}{' '}
             <a
               href="#upload"
               className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100 inline-flex items-center gap-1"
             >
               <Upload className="h-3 w-3" />
-              Upload your data
+              {t('sample.uploadPrompt')}
             </a>{' '}
-            to see your real followers.
+            {t('sample.toSeeReal')}
           </AlertDescription>
         </Alert>
       )}
@@ -101,10 +103,10 @@ export function AccountListSection({
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="text-3xl md:text-5xl font-display font-extrabold mb-2 tracking-tight">
-            Analysis Results
+            {t('header.title')}
           </h1>
           <p className="text-zinc-500 text-[10px] md:text-sm font-bold uppercase tracking-widest">
-            {filename} • {totalCount.toLocaleString()} Total
+            {t('header.fileInfo', { filename, count: totalCount })}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -112,7 +114,7 @@ export function AccountListSection({
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
             <input
               type="text"
-              placeholder="Search usernames..."
+              placeholder={t('search.placeholder')}
               value={query}
               onChange={e => setQuery(e.target.value)}
               className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-border bg-card focus:ring-2 focus:ring-primary outline-none transition-all font-semibold text-sm shadow-sm"
@@ -125,7 +127,7 @@ export function AccountListSection({
                 ? 'bg-primary text-white border-primary'
                 : 'bg-card border-border text-zinc-500 hover:text-primary'
             }`}
-            title={sortOrder === 'asc' ? 'Sort Z→A' : 'Sort A→Z'}
+            title={sortOrder === 'asc' ? t('sort.desc') : t('sort.asc')}
           >
             <ArrowUpDown size={20} />
           </button>
@@ -136,7 +138,7 @@ export function AccountListSection({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         <StatCard
           icon={<UserPlus size={24} />}
-          label="Followers"
+          label={t('stats.followers')}
           value={followersCount}
           colorClass="bg-emerald-500/10 text-emerald-500"
           badgeType="followers"
@@ -145,7 +147,7 @@ export function AccountListSection({
         />
         <StatCard
           icon={<Users size={24} />}
-          label="Following"
+          label={t('stats.following')}
           value={followingCount}
           colorClass="bg-blue-500/10 text-blue-500"
           badgeType="following"
@@ -154,7 +156,7 @@ export function AccountListSection({
         />
         <StatCard
           icon={<XCircle size={24} />}
-          label="Unfollowed"
+          label={t('stats.unfollowed')}
           value={unfollowedCount}
           colorClass="bg-rose-500/10 text-rose-500"
           badgeType="unfollowed"
@@ -163,7 +165,7 @@ export function AccountListSection({
         />
         <StatCard
           icon={<TrendingDown size={24} />}
-          label="Not Following"
+          label={t('stats.notFollowing')}
           value={notFollowingBackCount}
           colorClass="bg-amber-500/10 text-amber-500"
           badgeType="notFollowingBack"

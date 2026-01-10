@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "Geri",
+    "next": "İleri",
+    "cancel": "İptal",
+    "tryAgain": "Tekrar Dene",
+    "clearData": "Verileri Temizle",
+    "viewResults": "Sonuçlar",
+    "uploadFile": "Dosya Yükle",
+    "delete": "Sil"
+  },
+  "badges": {
+    "followers": "Takipçiler",
+    "following": "Takip edilenler",
+    "unfollowed": "Son takibi bırakanlar",
+    "notFollowingBack": "Geri takip etmeyenler",
+    "mutuals": "Karşılıklı takip",
+    "notFollowedBack": "Seni takip etmeyenler",
+    "pending": "Bekleyen istek",
+    "permanent": "Bekleyen (kalıcı)",
+    "restricted": "Kısıtlanmış",
+    "close": "Yakın arkadaş",
+    "dismissed": "Reddedilen öneri"
+  },
+  "theme": {
+    "light": "Açık Mod",
+    "dark": "Koyu Mod",
+    "switchToLight": "Açık moda geç",
+    "switchToDark": "Koyu moda geç"
+  },
+  "header": {
+    "clearDataTitle": "Tüm veriler silinsin mi?",
+    "clearDataDescription": "Bu işlem yüklenen tüm Instagram verilerini silecek ve seni ana sayfaya geri götürecek. Bu işlem geri alınamaz.",
+    "deleteData": "Verileri Sil"
+  },
+  "footer": {
+    "description": "Tamamen tarayıcında çalışan tek ilişki analizörü. Sunucu yok, kayıt yok, sadece senin verin ve cihazın.",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Kullanım Koşulları",
+    "contactSupport": "Destek İletişim",
+    "trackingOff": "Takip Kapalı",
+    "dontTrackMe": "Beni Takip Etme",
+    "trackingDisabled": "Analitik devre dışı",
+    "trackingEnabled": "Anonim analitiği devre dışı bırak",
+    "keepItFree": "Ücretsiz ve gizli tut",
+    "supportPrivacy": "Gizliliği destekle",
+    "madeWithLove": "Sevgiyle yapıldı",
+    "forTheCommunity": "Topluluk için",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "MIT Lisanslı"
+  },
+  "nav": {
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Koşulları"
+  },
+  "language": {
+    "changeLanguage": "Dili Değiştir"
+  },
+  "cta": {
+    "title": "Özel Analizine Bugün Başla",
+    "subtitle": "Hesaplarını riske atmadan takipçilerini izleyen binlerce kullanıcıya katıl.",
+    "getStarted": "Başla",
+    "trySample": "Demo Dene",
+    "tagline": "100% Ücretsiz • Giriş Yok • Gizlilik Garantili"
+  }
+}

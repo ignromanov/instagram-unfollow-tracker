@@ -1,3 +1,4 @@
+import { useTranslation, Trans } from 'react-i18next';
 import { ChevronRight, Play } from 'lucide-react';
 
 interface HowToStep {
@@ -8,72 +9,42 @@ interface HowToStep {
   visual?: string;
 }
 
-const WIZARD_STEPS: HowToStep[] = [
+// Step metadata (visuals and warnings are not translated)
+const STEP_META: Array<{ isWarning?: boolean; visual?: string }> = [
+  {},
+  { visual: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80' },
+  { visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80' },
   {
-    id: 1,
-    title: 'Open Data Export Page',
-    description:
-      "Tap the button below to go directly to the platform's data export page. You may need to log in first.",
-  },
-  {
-    id: 2,
-    title: "Select 'Some of your information'",
-    description:
-      "Don't download everything — we only need your followers and following data to speed this up.",
-    visual: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80',
-  },
-  {
-    id: 3,
-    title: "Check only 'Followers and following'",
-    description:
-      'Uncheck all other options like messages or media. This makes your file much smaller.',
-    visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80',
-  },
-  {
-    id: 4,
-    title: 'Select JSON format',
-    description:
-      'This is critical: Choose JSON, not HTML. HTML files will not work with our analyzer.',
     isWarning: true,
     visual: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
   },
-  {
-    id: 5,
-    title: "Choose 'All time' and tap 'Create files'",
-    description:
-      'The platform will now start preparing your data. This can take anywhere from 5 minutes to a few hours.',
-    visual: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
-  },
-  {
-    id: 6,
-    title: 'Wait for email notification',
-    description:
-      "Keep an eye on your inbox (and spam folder!). You'll get an email when your file is ready to download.",
-    visual: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800&q=80',
-  },
-  {
-    id: 7,
-    title: 'Download the ZIP file',
-    description:
-      "Download the file to your device. Once you have it, you're ready to analyze it here!",
-    visual: 'https://images.unsplash.com/photo-1590212151175-e58edd96d85c?w=800&q=80',
-  },
-  {
-    id: 8,
-    title: 'Upload & Reveal Results',
-    description:
-      'Head back here, upload your ZIP file, and instantly see who unfollowed you and more!',
-    visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80',
-  },
+  { visual: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' },
+  { visual: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800&q=80' },
+  { visual: 'https://images.unsplash.com/photo-1590212151175-e58edd96d85c?w=800&q=80' },
+  { visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80' },
 ];
 
-function generateHowToSchema() {
-  return {
+interface HowToSectionProps {
+  onStart?: (step?: number) => void;
+}
+
+export function HowToSection({ onStart }: HowToSectionProps) {
+  const { t } = useTranslation('howto');
+
+  // Build steps from translations (using 'as any' for dynamic keys)
+  const steps: HowToStep[] = Array.from({ length: 8 }, (_, i) => ({
+    id: i + 1,
+    title: t(`steps.${i + 1}.title` as any),
+    description: t(`steps.${i + 1}.description` as any),
+    ...STEP_META[i],
+  }));
+
+  // Generate Schema.org HowTo structured data (safe: uses our own translation strings)
+  const howToSchema = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    name: 'How to Check Who Unfollowed You on Instagram Without Login',
-    description:
-      'Step-by-step guide to find Instagram unfollowers using your official data export. No login required, 100% private.',
+    name: t('schema.name'),
+    description: t('schema.description'),
     totalTime: 'PT5M',
     estimatedCost: {
       '@type': 'MonetaryAmount',
@@ -81,22 +52,11 @@ function generateHowToSchema() {
       value: '0',
     },
     supply: [
-      {
-        '@type': 'HowToSupply',
-        name: 'Instagram account',
-      },
-      {
-        '@type': 'HowToSupply',
-        name: 'Email access',
-      },
+      { '@type': 'HowToSupply', name: t('schema.supplies.account') },
+      { '@type': 'HowToSupply', name: t('schema.supplies.email') },
     ],
-    tool: [
-      {
-        '@type': 'HowToTool',
-        name: 'Instagram Unfollow Tracker (this website)',
-      },
-    ],
-    step: WIZARD_STEPS.map(step => ({
+    tool: [{ '@type': 'HowToTool', name: t('schema.tool') }],
+    step: steps.map(step => ({
       '@type': 'HowToStep',
       position: step.id,
       name: step.title,
@@ -104,13 +64,7 @@ function generateHowToSchema() {
       image: step.visual,
     })),
   };
-}
 
-interface HowToSectionProps {
-  onStart?: (step?: number) => void;
-}
-
-export function HowToSection({ onStart }: HowToSectionProps) {
   const handleStepClick = (stepIndex: number) => {
     if (onStart) {
       onStart(stepIndex);
@@ -130,24 +84,30 @@ export function HowToSection({ onStart }: HowToSectionProps) {
 
   return (
     <>
+      {/* Schema.org HowTo structured data - safe: uses our own translation strings */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateHowToSchema()),
+          __html: JSON.stringify(howToSchema),
         }}
       />
       <section id="how-it-works" className="py-24 md:py-40 border-t border-border">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl md:text-6xl font-display font-extrabold mb-8 text-center tracking-tight leading-[1.1]">
-            How to Check Your <span className="text-gradient">Instagram Unfollowers</span>
+            <Trans
+              i18nKey="title"
+              ns="howto"
+              components={{ gradient: <span className="text-gradient" /> }}
+            >
+              How to Check Your <span className="text-gradient">Instagram Unfollowers</span>
+            </Trans>
           </h2>
           <p className="text-zinc-500 dark:text-zinc-400 text-center mb-20 md:mb-32 max-w-2xl mx-auto text-base md:text-xl font-medium leading-relaxed">
-            Follow these 8 simple steps to securely analyze your account without sharing your
-            password.
+            {t('subtitle')}
           </p>
 
           <ol className="space-y-16 md:space-y-24 relative before:absolute before:left-6 md:before:left-8 before:top-4 before:bottom-4 before:w-0.5 before:bg-border">
-            {WIZARD_STEPS.map((step, idx) => (
+            {steps.map((step, idx) => (
               <li
                 key={step.id}
                 className="relative pl-16 md:pl-24 group cursor-pointer"
@@ -161,7 +121,7 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                     {step.title}
                     {step.isWarning && (
                       <span className="text-[10px] bg-amber-400 text-black px-3 py-1 rounded-full font-black uppercase tracking-widest shadow-sm">
-                        Important
+                        {t('important')}
                       </span>
                     )}
                   </h3>
@@ -179,7 +139,7 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                     </div>
                   )}
                   <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    Open step in guide <ChevronRight size={14} />
+                    {t('openStep')} <ChevronRight size={14} />
                   </div>
                 </div>
               </li>
@@ -189,17 +149,17 @@ export function HowToSection({ onStart }: HowToSectionProps) {
           <div className="mt-24 md:mt-40 p-10 md:p-16 rounded-4xl bg-primary text-white flex flex-col md:flex-row items-center justify-between gap-10 shadow-2xl shadow-primary/30">
             <div className="text-center md:text-left space-y-4">
               <h4 className="text-3xl md:text-5xl font-display font-black tracking-tight leading-none">
-                Ready to start?
+                {t('cta.title')}
               </h4>
               <p className="opacity-90 font-bold text-base md:text-xl leading-relaxed">
-                Analyze your data export privately in seconds.
+                {t('cta.subtitle')}
               </p>
             </div>
             <button
               onClick={handleStartClick}
               className="cursor-pointer w-full md:w-auto px-10 py-5 bg-white text-primary font-black rounded-3xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 text-lg shadow-xl"
             >
-              Open Analysis Guide <Play size={22} fill="currentColor" />
+              {t('cta.button')} <Play size={22} fill="currentColor" />
             </button>
           </div>
         </div>

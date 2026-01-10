@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "Back",
+    "next": "Next",
+    "cancel": "Cancel",
+    "tryAgain": "Try Again",
+    "clearData": "Clear Data",
+    "viewResults": "Results",
+    "uploadFile": "Upload File",
+    "delete": "Delete"
+  },
+  "badges": {
+    "followers": "Followers",
+    "following": "Following",
+    "unfollowed": "Recently unfollowed",
+    "notFollowingBack": "Not following back",
+    "mutuals": "Mutuals",
+    "notFollowedBack": "Not followed back",
+    "pending": "Pending request",
+    "permanent": "Pending (permanent)",
+    "restricted": "Restricted",
+    "close": "Close friend",
+    "dismissed": "Dismissed suggestion"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "header": {
+    "clearDataTitle": "Clear all data?",
+    "clearDataDescription": "This will remove all loaded Instagram data and return you to the home screen. This action cannot be undone.",
+    "deleteData": "Delete Data"
+  },
+  "footer": {
+    "description": "The only relationship analyzer that works 100% in your browser. No server, no logs, just your data and your device.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contactSupport": "Contact Support",
+    "trackingOff": "Tracking Off",
+    "dontTrackMe": "Don't Track Me",
+    "trackingDisabled": "Analytics disabled",
+    "trackingEnabled": "Disable anonymous analytics",
+    "keepItFree": "Keep it free & private",
+    "supportPrivacy": "Support privacy",
+    "madeWithLove": "Made with",
+    "forTheCommunity": "for the Community",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "MIT Licensed"
+  },
+  "nav": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "language": {
+    "changeLanguage": "Change language"
+  },
+  "cta": {
+    "title": "Start Your Private Analysis Today",
+    "subtitle": "Join thousands of privacy-conscious users who track their followers without risking their accounts.",
+    "getStarted": "Get Started",
+    "trySample": "Try Sample",
+    "tagline": "100% Free • No Login • Privacy First"
+  }
+}

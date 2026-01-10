@@ -1,41 +1,28 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface FAQItem {
+  key: string;
   question: string;
   answer: string;
 }
 
-const faqItems: FAQItem[] = [
-  {
-    question: 'Is this really private?',
-    answer:
-      "Yes. All processing happens entirely within your web browser. Your data is never uploaded to any server. You can even use this app offline once it's loaded.",
-  },
-  {
-    question: 'Why do I need to download a ZIP file?',
-    answer:
-      "Platforms restrict apps from seeing certain data through their official API to prevent 'spam'. The only safe, authorized way to get this data without risking your account is through their official 'Download Your Information' tool.",
-  },
-  {
-    question: 'Will my account be safe?',
-    answer:
-      "Yes. Unlike other apps that ask for your password and 'scrape' data (which violates Terms of Service), this tool uses your official data export. It's 100% safe.",
-  },
-  {
-    question: 'How many accounts can this handle?',
-    answer:
-      "We've tested this tool with exports containing over 1,000,000 accounts. We use high-performance virtual scrolling and local indexing to keep the experience smooth even for huge datasets.",
-  },
-  {
-    question: 'Is this really free?',
-    answer:
-      'Yes. This tool is open-source and free to use. There are no subscriptions, paywalls, or hidden limits.',
-  },
-];
+const FAQ_KEYS = ['privacy', 'zipFile', 'accountSafety', 'scale', 'free'] as const;
 
-function generateFAQSchema() {
-  return {
+export function FAQSection() {
+  const { t } = useTranslation('faq');
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  // Build FAQ items from translations
+  const faqItems: FAQItem[] = FAQ_KEYS.map(key => ({
+    key,
+    question: t(`items.${key}.question`),
+    answer: t(`items.${key}.answer`),
+  }));
+
+  // Generate Schema.org FAQ structured data (safe: uses our own translation strings)
+  const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faqItems.map(item => ({
@@ -47,17 +34,13 @@ function generateFAQSchema() {
       },
     })),
   };
-}
-
-export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateFAQSchema()),
+          __html: JSON.stringify(faqSchema),
         }}
       />
       <section
@@ -70,7 +53,7 @@ export function FAQSection() {
             id="faq-heading"
             className="text-3xl md:text-5xl font-display font-extrabold mb-12 md:mb-24 text-center tracking-tight leading-[1.15] px-4"
           >
-            Frequently Asked Questions
+            {t('title')}
           </h2>
           <div className="space-y-6">
             {faqItems.map((item, index) => (

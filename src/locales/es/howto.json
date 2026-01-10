@@ -1,0 +1,54 @@
+{
+  "title": "Cómo ver quién <gradient>dejó de seguirte en Instagram</gradient>",
+  "subtitle": "Sigue estos 8 simples pasos para analizar tu cuenta de forma segura sin compartir tu contraseña.",
+  "important": "Importante",
+  "openStep": "Abrir paso en la guía",
+  "steps": {
+    "1": {
+      "title": "Abre la página de exportación de datos",
+      "description": "Toca el botón de abajo para ir directamente a la página de exportación de datos de la plataforma. Es posible que debas iniciar sesión primero."
+    },
+    "2": {
+      "title": "Selecciona 'Parte de tu información'",
+      "description": "No descargues todo — solo necesitamos los datos de seguidores y seguidos para acelerar el proceso."
+    },
+    "3": {
+      "title": "Marca solo 'Seguidores y seguidos'",
+      "description": "Desmarca todas las demás opciones como mensajes o contenido multimedia. Esto hace que tu archivo sea mucho más pequeño."
+    },
+    "4": {
+      "title": "Selecciona formato JSON",
+      "description": "Esto es crítico: Elige JSON, no HTML. Los archivos HTML no funcionarán con nuestro analizador."
+    },
+    "5": {
+      "title": "Elige 'Todo el tiempo' y toca 'Crear archivos'",
+      "description": "La plataforma comenzará a preparar tus datos. Esto puede tomar desde 5 minutos hasta unas horas."
+    },
+    "6": {
+      "title": "Espera la notificación por correo",
+      "description": "Revisa tu bandeja de entrada (¡y la carpeta de spam!). Recibirás un correo cuando tu archivo esté listo para descargar."
+    },
+    "7": {
+      "title": "Descarga el archivo ZIP",
+      "description": "Descarga el archivo a tu dispositivo. Una vez que lo tengas, ¡estarás listo para analizarlo aquí!"
+    },
+    "8": {
+      "title": "Sube y descubre los resultados",
+      "description": "Regresa aquí, sube tu archivo ZIP y ¡descubre al instante quién dejó de seguirte y más!"
+    }
+  },
+  "cta": {
+    "title": "¿Listo para empezar?",
+    "subtitle": "Analiza tu exportación de datos de forma privada en segundos.",
+    "button": "Abrir guía de análisis"
+  },
+  "schema": {
+    "name": "Cómo ver quién dejó de seguirte en Instagram sin iniciar sesión",
+    "description": "Guía paso a paso para encontrar quién dejó de seguirte en Instagram usando tu exportación oficial de datos. Sin necesidad de iniciar sesión, 100% privado.",
+    "supplies": {
+      "account": "Cuenta de Instagram",
+      "email": "Acceso al correo electrónico"
+    },
+    "tool": "Rastreador de Unfollows de Instagram (este sitio web)"
+  }
+}

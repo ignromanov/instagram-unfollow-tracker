@@ -1,4 +1,5 @@
 import { Users, User, Heart, TrendingDown, LucideIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 interface StatCardProps {
@@ -49,31 +50,33 @@ export function ResultsSection({
   filteredCount,
   stats,
 }: ResultsSectionProps) {
+  const { t } = useTranslation('results');
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-8 md:space-y-12">
       {/* Stat Cards Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
         <StatCard
           icon={Users}
-          label="Following"
+          label={t('stats.following')}
           value={stats.following}
           colorClass="bg-blue-500/10 text-blue-500"
         />
         <StatCard
           icon={User}
-          label="Followers"
+          label={t('stats.followers')}
           value={stats.followers}
           colorClass="bg-emerald-500/10 text-emerald-500"
         />
         <StatCard
           icon={Heart}
-          label="Mutuals"
+          label={t('badges.mutuals')}
           value={stats.mutuals}
           colorClass="bg-indigo-500/10 text-indigo-500"
         />
         <StatCard
           icon={TrendingDown}
-          label="Non-Mutual"
+          label={t('stats.notFollowing')}
           value={stats.notFollowingBack}
           colorClass="bg-rose-500/10 text-rose-500"
         />
@@ -89,7 +92,10 @@ export function ResultsSection({
           {/* Account list will be rendered here via composition */}
           <div className="p-6">
             <div className="text-sm text-muted-foreground mb-4">
-              Showing {filteredCount.toLocaleString()} of {totalCount.toLocaleString()} accounts
+              {t('header.showing', {
+                filtered: filteredCount.toLocaleString(),
+                total: totalCount.toLocaleString(),
+              })}
             </div>
             {/* Account list component will be inserted here */}
           </div>

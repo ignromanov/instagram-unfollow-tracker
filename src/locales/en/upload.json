@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "Back",
+    "title": "Upload Your Data",
+    "description": "Your data remains 100% private. We analyze everything locally in your browser.",
+    "dropHere": "Drop your Instagram ZIP",
+    "orBrowse": "Or tap to browse your local storage.",
+    "jsonOnly": "JSON Format Only",
+    "processing": "Analyzing locally...",
+    "processingHint": "Processing large datasets (up to 1M+) can take a moment.",
+    "ariaLabel": "Upload Instagram data ZIP file"
+  },
+  "checklist": {
+    "title": "Pre-upload Checklist",
+    "format": "Format: JSON (not HTML)",
+    "includes": "Includes: 'Followers and following'",
+    "timeframe": "Timeframe: 'All Time'",
+    "fileType": "File type: .zip"
+  },
+  "errors": {
+    "commonTitle": "Most Common Error",
+    "commonHint": "If your export has 0 followers, you likely exported in <1>HTML</1> format or didn't select the \"Followers and following\" information category.",
+    "learnFix": "Learn how to fix"
+  },
+  "diagnostic": {
+    "back": "Back",
+    "howToFix": "How to fix this",
+    "tryAgain": "Try Again",
+    "showMistakes": "Show Where I Went Wrong",
+    "commonMistakes": "Common Mistakes",
+    "mistakes": {
+      "html": {
+        "title": "HTML instead of JSON",
+        "description": "Make sure to select \"JSON\" format when requesting your data"
+      },
+      "missingData": {
+        "title": "Missing data category",
+        "description": "You need to select \"Followers and following\" in the data types"
+      },
+      "wrongFile": {
+        "title": "Wrong file",
+        "description": "Upload the .zip file, not a folder or extracted files"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Waiting for Instagram...",
+    "description": "Instagram is preparing your data export. You'll receive an email within 48 hours (usually much faster!).",
+    "addReminder": "Add Reminder to Calendar",
+    "reminderHint": "Remind me to check in 2 days",
+    "calendarTitle": "Check Instagram Export Email",
+    "calendarDetails": "Check your email for Instagram data export and upload to Unfollow Tracker",
+    "haveFile": "Already have your file?",
+    "haveFileHint": "If you already downloaded the ZIP export from your email, jump straight to analysis.",
+    "uploadNow": "Upload Now",
+    "proTip": "Pro Tip: Check your Spam Folder",
+    "proTipHint": "Instagram emails often end up there. Look for emails from <b>Meta</b> or <b>Instagram</b>. The download link expires in 4 days.",
+    "skip": "Skip for now"
+  }
+}

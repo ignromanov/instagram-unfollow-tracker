@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "Analysis Results",
+    "fileInfo": "{{filename}} • {{count, number}} Total",
+    "showing": "Showing {{filtered}} of {{total}} accounts"
+  },
+  "sample": {
+    "banner": "Viewing Sample Data",
+    "hint": "This is demo data to help you explore the app.",
+    "uploadPrompt": "Upload your data",
+    "toSeeReal": "to see your real followers."
+  },
+  "search": {
+    "placeholder": "Search usernames...",
+    "ariaLabel": "Search accounts by username",
+    "clearAriaLabel": "Clear search",
+    "resultsCount": "Showing {{result}} of {{total}}",
+    "accounts": "accounts",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Sort A→Z",
+    "desc": "Sort Z→A"
+  },
+  "stats": {
+    "followers": "Followers",
+    "following": "Following",
+    "unfollowed": "Unfollowed",
+    "notFollowing": "Not Following"
+  },
+  "filters": {
+    "title": "Filter Results",
+    "reset": "Reset",
+    "emptyCategories": "Empty Categories ({{count, number}})",
+    "addFilter": "Add {{label}} filter ({{count, number}} accounts)",
+    "removeFilter": "Remove {{label}} filter ({{count, number}} accounts)"
+  },
+  "badges": {
+    "followers": "Followers",
+    "following": "Following",
+    "unfollowed": "Recently unfollowed",
+    "notFollowingBack": "Not following back",
+    "mutuals": "Mutuals",
+    "notFollowedBack": "Not followed back",
+    "pending": "Pending request",
+    "permanent": "Pending (permanent)",
+    "restricted": "Restricted",
+    "close": "Close friend",
+    "dismissed": "Dismissed suggestion"
+  },
+  "empty": {
+    "noUsers": "No users found",
+    "resetFilters": "Reset Filters"
+  },
+  "list": {
+    "header": "Accounts ({{count, number}})",
+    "viewProfile": "View Profile"
+  }
+}

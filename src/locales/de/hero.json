@@ -1,0 +1,38 @@
+{
+  "version": "V1.1 Optimiert für 1.000.000+ Accounts",
+  "headline": {
+    "prefix": "Finde",
+    "highlight": "Entfolger",
+    "suffix": "kostenlos ohne Login."
+  },
+  "subheadline": "Das einzige kostenlose Tool, das deine Instagram ZIP-Datei lokal ohne Login analysiert. 100% Privat. Kein Kontorisiko. Keine Serverspeicherung.",
+  "buttons": {
+    "getGuide": "Entfolger Kostenlos Prüfen",
+    "trySample": "Mit Demo testen",
+    "haveFile": "Ich habe meine ZIP-Datei bereits",
+    "viewResults": "Analyseergebnisse ansehen"
+  },
+  "trust": {
+    "free": "100% Kostenlos • Für Immer",
+    "noPassword": "Kein Passwort • Kein Risiko",
+    "privacy": "DSGVO-konform • Lokale Analyse"
+  },
+  "features": {
+    "local": {
+      "title": "100% Lokal",
+      "description": "Deine Daten verlassen niemals dein Gerät"
+    },
+    "noLogin": {
+      "title": "Kein Login",
+      "description": "Kein Risiko für Kontosperren oder Hacking"
+    },
+    "scale": {
+      "title": "Hohe Skalierung",
+      "description": "Verarbeitet 1M+ Accounts blitzschnell"
+    },
+    "openSource": {
+      "title": "Open Source",
+      "description": "Prüfe unseren Code, wir schätzen dein Vertrauen"
+    }
+  }
+}

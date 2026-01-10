@@ -1,0 +1,33 @@
+{
+  "title": "Pertanyaan yang Sering Diajukan",
+  "items": {
+    "privacy": {
+      "question": "Apakah ini benar-benar privat?",
+      "answer": "Ya. Semua pemrosesan terjadi sepenuhnya di dalam browser web Anda. Data Anda tidak pernah diunggah ke server manapun. Anda bahkan bisa menggunakan aplikasi ini offline setelah dimuat."
+    },
+    "zipFile": {
+      "question": "Mengapa saya perlu mengunduh file ZIP?",
+      "answer": "Platform membatasi aplikasi dari melihat data tertentu melalui API resmi mereka untuk mencegah 'spam'. Satu-satunya cara yang aman dan resmi untuk mendapatkan data ini tanpa mempertaruhkan akun Anda adalah melalui alat 'Unduh Informasi Anda' resmi mereka."
+    },
+    "accountSafety": {
+      "question": "Apakah akun saya akan aman?",
+      "answer": "Ya. Berbeda dengan aplikasi lain yang meminta password Anda dan 'scrape' data (yang melanggar Ketentuan Layanan), alat ini menggunakan ekspor data resmi Anda. 100% aman."
+    },
+    "scale": {
+      "question": "Berapa banyak akun yang bisa ditangani?",
+      "answer": "Kami telah menguji alat ini dengan ekspor yang berisi lebih dari 1.000.000 akun. Kami menggunakan virtual scrolling berperforma tinggi dan pengindeksan lokal untuk menjaga pengalaman tetap lancar bahkan untuk dataset yang sangat besar."
+    },
+    "free": {
+      "question": "Apakah ini benar-benar gratis?",
+      "answer": "Ya. Alat ini open-source dan gratis untuk digunakan. Tidak ada langganan, paywall, atau batasan tersembunyi."
+    },
+    "safety": {
+      "question": "Apakah pelacak unfollower ini aman?",
+      "answer": "Ya, 100% aman. Berbeda dengan aplikasi yang meminta kata sandi Instagram Anda, alat ini menggunakan ekspor data Instagram resmi (file ZIP). Data Anda tidak pernah meninggalkan perangkat Anda - semua pemrosesan terjadi secara lokal di browser Anda."
+    },
+    "howToFind": {
+      "question": "Bagaimana cara mengetahui siapa yang berhenti follow di Instagram tanpa aplikasi?",
+      "answer": "Minta ekspor data Instagram dari Pengaturan, unduh file ZIP saat sudah siap, dan unggah ke alat gratis ini. Alat ini menganalisis pengikut Anda secara lokal tanpa perlu login."
+    }
+  }
+}

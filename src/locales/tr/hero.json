@@ -1,0 +1,38 @@
+{
+  "version": "V1.1 1.000.000+ Hesap İçin Optimize Edildi",
+  "headline": {
+    "prefix": "Kim",
+    "highlight": "Takibi Bıraktı",
+    "suffix": "Giriş Yapmadan Öğren"
+  },
+  "subheadline": "Instagram ZIP dosyanızı giriş yapmadan yerel olarak analiz eden tek ücretsiz araç. %100 Gizli. Hesap riski yok. Sunucu depolaması yok.",
+  "buttons": {
+    "getGuide": "Takibi Bırakanları Ücretsiz Gör",
+    "trySample": "Örnek Veriyle Dene",
+    "haveFile": "ZIP dosyam zaten var",
+    "viewResults": "Analiz Sonuçlarını Gör"
+  },
+  "trust": {
+    "free": "Sonsuza Kadar Ücretsiz",
+    "noPassword": "Şifre Gerekmez",
+    "privacy": "Gizlilik Garantili"
+  },
+  "features": {
+    "local": {
+      "title": "%100 Yerel",
+      "description": "Verin asla cihazından çıkmaz"
+    },
+    "noLogin": {
+      "title": "Giriş Yok",
+      "description": "Hesap yasaklanma veya hacklenme riski yok"
+    },
+    "scale": {
+      "title": "Yüksek Ölçek",
+      "description": "1M+ hesabı ışık hızında işler"
+    },
+    "openSource": {
+      "title": "Açık Kaynak",
+      "description": "Kodumuzu incele, güvenine değer veriyoruz"
+    }
+  }
+}

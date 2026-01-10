@@ -2,6 +2,7 @@
 
 import { Moon, Sun, ShieldCheck, Trash2, LayoutDashboard, Upload } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useTranslation } from 'react-i18next';
 import { analytics } from '@/lib/analytics';
 import { AppState } from '@/core/types';
 import {
@@ -15,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface HeaderV2Props {
   hasData?: boolean;
@@ -33,6 +35,7 @@ export function HeaderV2({
   onLogoClick,
   activeScreen = AppState.HERO,
 }: HeaderV2Props) {
+  const { t } = useTranslation('common');
   const { theme, setTheme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -79,16 +82,16 @@ export function HeaderV2({
                 }`}
               >
                 <LayoutDashboard size={18} />
-                <span className="hidden md:inline">Results</span>
+                <span className="hidden md:inline">{t('buttons.viewResults')}</span>
               </button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button
                     className="cursor-pointer flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all"
-                    title="Delete Data"
+                    title={t('header.deleteData')}
                   >
                     <Trash2 size={18} />
-                    <span className="hidden md:inline">Delete</span>
+                    <span className="hidden md:inline">{t('buttons.delete')}</span>
                   </button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -96,19 +99,18 @@ export function HeaderV2({
                     <div className="mx-auto w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center mb-2">
                       <Trash2 size={28} className="text-rose-500" />
                     </div>
-                    <AlertDialogTitle>Clear all data?</AlertDialogTitle>
+                    <AlertDialogTitle>{t('header.clearDataTitle')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will remove all loaded Instagram data and return you to the home screen.
-                      This action cannot be undone.
+                      {t('header.clearDataDescription')}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>{t('buttons.cancel')}</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={handleClear}
                       className="bg-rose-500 text-white hover:bg-rose-600"
                     >
-                      Clear Data
+                      {t('buttons.clearData')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -124,19 +126,22 @@ export function HeaderV2({
               }`}
             >
               <Upload size={18} />
-              <span className="hidden md:inline">Upload File</span>
+              <span className="hidden md:inline">{t('buttons.uploadFile')}</span>
             </button>
           )}
 
           {/* Divider */}
           <div className="w-[1px] h-6 md:h-8 bg-border" />
 
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
           {/* Theme Toggle */}
           <button
             onClick={handleThemeToggle}
             className="cursor-pointer p-2 md:p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
-            title={isDark ? 'Light Mode' : 'Dark Mode'}
-            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? t('theme.light') : t('theme.dark')}
+            aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>

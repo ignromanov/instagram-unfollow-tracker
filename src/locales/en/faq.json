@@ -1,0 +1,33 @@
+{
+  "title": "Frequently Asked Questions",
+  "items": {
+    "privacy": {
+      "question": "Is this really private?",
+      "answer": "Yes. All processing happens entirely within your web browser. Your data is never uploaded to any server. You can even use this app offline once it's loaded."
+    },
+    "zipFile": {
+      "question": "Why do I need to download a ZIP file?",
+      "answer": "Platforms restrict apps from seeing certain data through their official API to prevent 'spam'. The only safe, authorized way to get this data without risking your account is through their official 'Download Your Information' tool."
+    },
+    "accountSafety": {
+      "question": "Will my account be safe?",
+      "answer": "Yes. Unlike other apps that ask for your password and 'scrape' data (which violates Terms of Service), this tool uses your official data export. It's 100% safe."
+    },
+    "scale": {
+      "question": "How many accounts can this handle?",
+      "answer": "We've tested this tool with exports containing over 1,000,000 accounts. We use high-performance virtual scrolling and local indexing to keep the experience smooth even for huge datasets."
+    },
+    "free": {
+      "question": "Is this really free?",
+      "answer": "Yes. This tool is open-source and free to use. There are no subscriptions, paywalls, or hidden limits."
+    },
+    "safety": {
+      "question": "Is it safe to use this unfollower tracker?",
+      "answer": "Yes, 100% safe. Unlike apps that require your Instagram password, this tool uses your official Instagram data export (ZIP file). Your data never leaves your device - all processing happens locally in your browser. We can't access your data because we never receive it."
+    },
+    "howToFind": {
+      "question": "How do I find out who unfollowed me on Instagram without an app?",
+      "answer": "Request your Instagram data export from Settings, download the ZIP file when ready, then upload it to this free tool. It analyzes your followers locally without requiring login or installing any app."
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "Zurück",
+    "next": "Weiter",
+    "cancel": "Abbrechen",
+    "tryAgain": "Erneut versuchen",
+    "clearData": "Daten löschen",
+    "viewResults": "Ergebnisse",
+    "uploadFile": "Datei hochladen",
+    "delete": "Löschen"
+  },
+  "badges": {
+    "followers": "Follower",
+    "following": "Folge ich",
+    "unfollowed": "Kürzlich entfolgt",
+    "notFollowingBack": "Folgt dir nicht zurück",
+    "mutuals": "Gegenseitig",
+    "notFollowedBack": "Du folgst nicht zurück",
+    "pending": "Ausstehende Anfrage",
+    "permanent": "Ausstehend (permanent)",
+    "restricted": "Eingeschränkt",
+    "close": "Enge Freunde",
+    "dismissed": "Abgelehnter Vorschlag"
+  },
+  "theme": {
+    "light": "Heller Modus",
+    "dark": "Dunkler Modus",
+    "switchToLight": "Zum hellen Modus wechseln",
+    "switchToDark": "Zum dunklen Modus wechseln"
+  },
+  "header": {
+    "clearDataTitle": "Alle Daten löschen?",
+    "clearDataDescription": "Dadurch werden alle geladenen Instagram-Daten entfernt und du kehrst zum Startbildschirm zurück. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleteData": "Daten löschen"
+  },
+  "footer": {
+    "description": "Der einzige Beziehungsanalyzer, der 100% in deinem Browser funktioniert. Kein Server, keine Logs, nur deine Daten und dein Gerät.",
+    "privacyPolicy": "Datenschutz",
+    "termsOfService": "Nutzungsbedingungen",
+    "contactSupport": "Support kontaktieren",
+    "trackingOff": "Tracking aus",
+    "dontTrackMe": "Nicht tracken",
+    "trackingDisabled": "Analytics deaktiviert",
+    "trackingEnabled": "Anonyme Analytics deaktivieren",
+    "keepItFree": "Kostenlos & privat halten",
+    "supportPrivacy": "Datenschutz unterstützen",
+    "madeWithLove": "Mit",
+    "forTheCommunity": "für die Community",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "MIT Lizenz"
+  },
+  "nav": {
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen"
+  },
+  "language": {
+    "changeLanguage": "Sprache ändern"
+  },
+  "cta": {
+    "title": "Starte deine private Analyse heute",
+    "subtitle": "Schließe dich Tausenden von Nutzern an, die ihre Follower verfolgen, ohne ihr Konto zu gefährden.",
+    "getStarted": "Loslegen",
+    "trySample": "Demo testen",
+    "tagline": "100% Kostenlos • Kein Login • Datenschutz garantiert"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Preguntas frecuentes",
+  "items": {
+    "privacy": {
+      "question": "¿Es realmente privado?",
+      "answer": "Sí. Todo el procesamiento ocurre completamente dentro de tu navegador web. Tus datos nunca se suben a ningún servidor. Incluso puedes usar esta app sin conexión una vez que se haya cargado."
+    },
+    "zipFile": {
+      "question": "¿Por qué necesito descargar un archivo ZIP?",
+      "answer": "Las plataformas restringen a las apps el acceso a ciertos datos a través de su API oficial para prevenir 'spam'. La única forma segura y autorizada de obtener estos datos sin arriesgar tu cuenta es a través de su herramienta oficial 'Descargar tu información'."
+    },
+    "accountSafety": {
+      "question": "¿Mi cuenta estará segura?",
+      "answer": "Sí. A diferencia de otras apps que piden tu contraseña y 'extraen' datos (lo cual viola los Términos de Servicio), esta herramienta usa tu exportación oficial de datos. Es 100% seguro."
+    },
+    "scale": {
+      "question": "¿Cuántas cuentas puede manejar?",
+      "answer": "Hemos probado esta herramienta con exportaciones que contienen más de 1,000,000 de cuentas. Usamos scroll virtual de alto rendimiento e indexación local para mantener una experiencia fluida incluso con conjuntos de datos enormes."
+    },
+    "free": {
+      "question": "¿Es realmente gratis?",
+      "answer": "Sí. Esta herramienta es de código abierto y gratuita. No hay suscripciones, muros de pago ni límites ocultos."
+    },
+    "safety": {
+      "question": "¿Es seguro usar este rastreador de unfollowers?",
+      "answer": "Sí, 100% seguro. A diferencia de las apps que requieren tu contraseña de Instagram, esta herramienta usa tu exportación oficial de datos de Instagram (archivo ZIP). Tus datos nunca salen de tu dispositivo - todo el procesamiento ocurre localmente en tu navegador."
+    },
+    "howToFind": {
+      "question": "¿Cómo puedo saber quién dejó de seguirme en Instagram sin una app?",
+      "answer": "Solicita tu exportación de datos de Instagram desde Configuración, descarga el archivo ZIP cuando esté listo, y súbelo a esta herramienta gratuita. Analiza tus seguidores localmente sin requerir inicio de sesión."
+    }
+  }
+}

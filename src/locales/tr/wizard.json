@@ -1,0 +1,56 @@
+{
+  "header": {
+    "stepOf": "Adım {{current}} / {{total}}"
+  },
+  "buttons": {
+    "back": "Geri",
+    "next": "Sonraki Adım",
+    "done": "Tamam, başlayalım!",
+    "openInstagram": "Instagram'ı Aç"
+  },
+  "format": {
+    "warning": "SADECE JSON FORMATI"
+  },
+  "steps": {
+    "1": {
+      "title": "Veri Dışa Aktarma Sayfasını Aç",
+      "description": "Platformun veri dışa aktarma sayfasına doğrudan gitmek için aşağıdaki butona dokun. Önce giriş yapman gerekebilir.",
+      "alt": "Adım 1: Veri Dışa Aktarma Sayfasını Aç"
+    },
+    "2": {
+      "title": "'Bilgilerinin bir kısmı' seçeneğini seç",
+      "description": "Her şeyi indirme — süreci hızlandırmak için sadece takipçi ve takip edilen verilerine ihtiyacımız var.",
+      "alt": "Adım 2: 'Bilgilerinin bir kısmı' seçeneğini seç"
+    },
+    "3": {
+      "title": "Sadece 'Takipçiler ve takip edilenler' işaretle",
+      "description": "Mesajlar veya medya gibi diğer tüm seçeneklerin işaretini kaldır. Bu dosyanı çok daha küçük yapar.",
+      "alt": "Adım 3: Sadece 'Takipçiler ve takip edilenler' işaretle"
+    },
+    "4": {
+      "title": "⚠️ JSON formatını seç",
+      "description": "Bu çok önemli: HTML değil, JSON seç. HTML dosyaları analizörümüzle çalışmaz.",
+      "alt": "Adım 4: JSON formatını seç"
+    },
+    "5": {
+      "title": "'Tüm zamanlar' seç ve 'Dosyaları oluştur' dokun",
+      "description": "Platform şimdi verilerini hazırlamaya başlayacak. Bu 5 dakika ile birkaç saat arasında sürebilir.",
+      "alt": "Adım 5: 'Tüm zamanlar' seç ve 'Dosyaları oluştur' dokun"
+    },
+    "6": {
+      "title": "E-posta bildirimini bekle",
+      "description": "Gelen kutunu (ve spam klasörünü!) kontrol et. Dosyan indirilmeye hazır olduğunda bir e-posta alacaksın.",
+      "alt": "Adım 6: E-posta bildirimini bekle"
+    },
+    "7": {
+      "title": "ZIP dosyasını indir",
+      "description": "Dosyayı cihazına indir. Aldıktan sonra, burada analiz etmeye hazırsın!",
+      "alt": "Adım 7: ZIP dosyasını indir"
+    },
+    "8": {
+      "title": "Yükle ve Sonuçları Gör",
+      "description": "Buraya geri dön, ZIP dosyanı yükle ve seni kimin takibi bıraktığını anında gör!",
+      "alt": "Adım 8: Yükle ve Sonuçları Gör"
+    }
+  }
+}

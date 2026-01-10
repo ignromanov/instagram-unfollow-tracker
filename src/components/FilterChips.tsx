@@ -18,6 +18,7 @@ import type { FilterChipsProps } from '@/types/components';
 import { analytics } from '@/lib/analytics';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Icon components for each badge type
 const BADGE_ICON_COMPONENTS: Record<BadgeKey, { icon: typeof Users; defaultClass: string }> = {
@@ -41,19 +42,19 @@ function getBadgeIcon(type: BadgeKey, isActive: boolean): ReactNode {
   return <IconComponent size={18} className={isActive ? 'text-white' : config.defaultClass} />;
 }
 
-// Filter configuration with labels
-const FILTER_CONFIGS: Array<{ type: BadgeKey; label: string }> = [
-  { type: 'followers', label: 'Followers' },
-  { type: 'following', label: 'Following' },
-  { type: 'unfollowed', label: 'Recently unfollowed' },
-  { type: 'notFollowingBack', label: 'Not following back' },
-  { type: 'mutuals', label: 'Mutuals' },
-  { type: 'notFollowedBack', label: 'Not followed back' },
-  { type: 'pending', label: 'Pending request' },
-  { type: 'permanent', label: 'Pending (permanent)' },
-  { type: 'restricted', label: 'Restricted' },
-  { type: 'close', label: 'Close friend' },
-  { type: 'dismissed', label: 'Dismissed suggestion' },
+// Filter configuration with badge types (labels come from i18n)
+const FILTER_CONFIGS: Array<{ type: BadgeKey }> = [
+  { type: 'followers' },
+  { type: 'following' },
+  { type: 'unfollowed' },
+  { type: 'notFollowingBack' },
+  { type: 'mutuals' },
+  { type: 'notFollowedBack' },
+  { type: 'pending' },
+  { type: 'permanent' },
+  { type: 'restricted' },
+  { type: 'close' },
+  { type: 'dismissed' },
 ];
 
 export function FilterChips({
@@ -62,6 +63,7 @@ export function FilterChips({
   filterCounts,
   isFiltering: _isFiltering = false,
 }: FilterChipsProps) {
+  const { t } = useTranslation('results');
   const [showEmptyFilters, setShowEmptyFilters] = useState(false);
 
   const handleFilterToggle = (filter: BadgeKey) => {
@@ -93,14 +95,14 @@ export function FilterChips({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h4 className="flex items-center gap-2 text-[10px] font-black text-zinc-900 dark:text-zinc-100 uppercase tracking-widest">
-          <Filter size={14} className="text-primary" /> Filter Results
+          <Filter size={14} className="text-primary" /> {t('filters.title')}
         </h4>
         {selectedFilters.size > 0 && (
           <button
             onClick={handleClearAll}
             className="cursor-pointer text-[10px] font-black text-rose-500 uppercase tracking-widest hover:underline"
           >
-            Reset
+            {t('filters.reset')}
           </button>
         )}
       </div>
@@ -110,6 +112,7 @@ export function FilterChips({
         {availableFilters.map(cfg => {
           const isActive = selectedFilters.has(cfg.type);
           const count = getBadgeCount(cfg.type);
+          const label = t(`badges.${cfg.type}`);
           return (
             <button
               key={cfg.type}
@@ -119,7 +122,11 @@ export function FilterChips({
                   ? 'bg-primary text-white border-primary shadow-md'
                   : 'text-zinc-600 dark:text-zinc-400 border-border bg-zinc-50/50 dark:bg-zinc-900/20 hover:border-primary/40'
               }`}
-              aria-label={`${isActive ? 'Remove' : 'Add'} ${cfg.label} filter (${count.toLocaleString()} accounts)`}
+              aria-label={
+                isActive
+                  ? t('filters.removeFilter', { label, count })
+                  : t('filters.addFilter', { label, count })
+              }
               aria-pressed={isActive}
             >
               <div className="flex items-center justify-between w-full">
@@ -134,7 +141,7 @@ export function FilterChips({
                   {count.toLocaleString()}
                 </span>
               </div>
-              <span className="mt-3 block leading-snug text-left text-xs">{cfg.label}</span>
+              <span className="mt-3 block leading-snug text-left text-xs">{label}</span>
             </button>
           );
         })}
@@ -147,7 +154,7 @@ export function FilterChips({
             onClick={() => setShowEmptyFilters(!showEmptyFilters)}
             className="cursor-pointer flex items-center justify-between w-full text-[10px] font-black text-zinc-400 uppercase tracking-widest hover:text-primary transition-colors"
           >
-            <span>Empty Categories ({emptyFilters.length})</span>
+            <span>{t('filters.emptyCategories', { count: emptyFilters.length })}</span>
             {showEmptyFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
 
@@ -165,7 +172,7 @@ export function FilterChips({
                     </span>
                   </div>
                   <span className="mt-3 block leading-snug text-left text-xs text-zinc-400">
-                    {cfg.label}
+                    {t(`badges.${cfg.type}`)}
                   </span>
                 </div>
               ))}

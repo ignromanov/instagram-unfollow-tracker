@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "戻る",
+    "next": "次へ",
+    "cancel": "キャンセル",
+    "tryAgain": "もう一度試す",
+    "clearData": "データを削除",
+    "viewResults": "結果を見る",
+    "uploadFile": "ファイルをアップロード",
+    "delete": "削除"
+  },
+  "badges": {
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "unfollowed": "最近フォロー解除",
+    "notFollowingBack": "フォローバックなし",
+    "mutuals": "相互フォロー",
+    "notFollowedBack": "フォローされていない",
+    "pending": "リクエスト中",
+    "permanent": "リクエスト中（長期）",
+    "restricted": "制限中",
+    "close": "親しい友達",
+    "dismissed": "非表示にした候補"
+  },
+  "theme": {
+    "light": "ライトモード",
+    "dark": "ダークモード",
+    "switchToLight": "ライトモードに切り替え",
+    "switchToDark": "ダークモードに切り替え"
+  },
+  "header": {
+    "clearDataTitle": "すべてのデータを削除しますか？",
+    "clearDataDescription": "読み込んだInstagramデータがすべて削除され、ホーム画面に戻ります。この操作は取り消せません。",
+    "deleteData": "データを削除"
+  },
+  "footer": {
+    "description": "100%ブラウザ内で動作する唯一の分析ツール。サーバーなし、ログなし、あなたのデータとデバイスだけ。",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfService": "利用規約",
+    "contactSupport": "サポートに連絡",
+    "trackingOff": "トラッキングオフ",
+    "dontTrackMe": "トラッキングしない",
+    "trackingDisabled": "アナリティクス無効",
+    "trackingEnabled": "匿名アナリティクスを無効にする",
+    "keepItFree": "無料でプライベートに",
+    "supportPrivacy": "プライバシーを支援",
+    "madeWithLove": "愛を込めて",
+    "forTheCommunity": "コミュニティのために",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "MITライセンス"
+  },
+  "nav": {
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約"
+  },
+  "language": {
+    "changeLanguage": "言語を変更"
+  },
+  "cta": {
+    "title": "今日からプライベート分析を始めよう",
+    "subtitle": "アカウントを危険にさらさずにフォロワーを追跡する何千人ものユーザーに参加しましょう。",
+    "getStarted": "始める",
+    "trySample": "デモを試す",
+    "tagline": "100%無料 • ログイン不要 • プライバシー保証"
+  }
+}

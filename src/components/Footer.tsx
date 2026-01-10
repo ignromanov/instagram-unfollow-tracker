@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { Heart, Shield, EyeOff, Eye } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { analytics, isTrackingOptedOut, optOutOfTracking, optIntoTracking } from '@/lib/analytics';
 import { Logo } from './Logo';
 
 export function Footer() {
+  const { t } = useTranslation('common');
   const [isOptedOut, setIsOptedOut] = useState(false);
 
   useEffect(() => {
@@ -37,8 +39,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-zinc-500 dark:text-zinc-400 max-w-sm text-base md:text-lg leading-relaxed font-medium mx-auto md:mx-0">
-              The only relationship analyzer that works 100% in your browser. No server, no logs,
-              just your data and your device.
+              {t('footer.description')}
             </p>
           </div>
 
@@ -51,37 +52,37 @@ export function Footer() {
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('privacy-policy')}
               >
-                Privacy Policy
+                {t('footer.privacyPolicy')}
               </a>
               <a
                 href="#terms"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('terms-of-service')}
               >
-                Terms of Service
+                {t('footer.termsOfService')}
               </a>
               <a
                 href="mailto:support@safeunfollow.app"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
               >
-                Contact Support
+                {t('footer.contactSupport')}
               </a>
               <button
                 onClick={handleTrackingToggle}
                 className={`cursor-pointer hover:text-primary transition-colors py-2 px-1 flex items-center gap-1.5 ${
                   isOptedOut ? 'text-emerald-500' : ''
                 }`}
-                title={isOptedOut ? 'Analytics disabled' : 'Disable anonymous analytics'}
+                title={isOptedOut ? t('footer.trackingDisabled') : t('footer.trackingEnabled')}
               >
                 {isOptedOut ? <Eye size={14} /> : <EyeOff size={14} />}
-                {isOptedOut ? 'Tracking Off' : "Don't Track Me"}
+                {isOptedOut ? t('footer.trackingOff') : t('footer.dontTrackMe')}
               </button>
             </div>
 
             {/* BuyMeaCoffee Section */}
             <div className="bg-[oklch(0.5_0_0_/_0.03)] p-6 md:p-8 rounded-3xl border border-border flex flex-col items-center gap-5 shadow-sm w-full md:w-auto">
               <p className="text-xs md:text-sm font-black text-zinc-500 uppercase tracking-widest leading-none">
-                Keep it free & private
+                {t('footer.keepItFree')}
               </p>
               <a
                 href="https://www.buymeacoffee.com/ignromanov"
@@ -91,7 +92,7 @@ export function Footer() {
                 onClick={() => analytics.linkClick('buy-me-coffee')}
               >
                 <Shield size={22} className="fill-current" />
-                <span>Support privacy</span>
+                <span>{t('footer.supportPrivacy')}</span>
               </a>
             </div>
           </div>
@@ -100,13 +101,16 @@ export function Footer() {
         {/* Bottom Section */}
         <div className="mt-12 md:mt-16 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border pt-8 text-sm text-zinc-400 font-bold">
           <div className="flex items-center gap-2">
-            Made with <Heart size={16} className="text-rose-500 fill-current animate-pulse" /> for
-            the Community
+            {t('footer.madeWithLove')}{' '}
+            <Heart size={16} className="text-rose-500 fill-current animate-pulse" />{' '}
+            {t('footer.forTheCommunity')}
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-10">
-            <span>© 2026 SafeUnfollow.app</span>
+            <span>{t('footer.copyright')}</span>
             <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-border" />
-            <span className="text-primary opacity-90 uppercase tracking-tighter">MIT Licensed</span>
+            <span className="text-primary opacity-90 uppercase tracking-tighter">
+              {t('footer.license')}
+            </span>
           </div>
         </div>
       </div>

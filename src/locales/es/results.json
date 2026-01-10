@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "Resultados del análisis",
+    "fileInfo": "{{filename}} • {{count, number}} en total",
+    "showing": "Mostrando {{filtered}} de {{total}} cuentas"
+  },
+  "sample": {
+    "banner": "Viendo datos de ejemplo",
+    "hint": "Estos son datos de demostración para que explores la app.",
+    "uploadPrompt": "Sube tus datos",
+    "toSeeReal": "para ver tus seguidores reales."
+  },
+  "search": {
+    "placeholder": "Buscar nombres de usuario...",
+    "ariaLabel": "Buscar cuentas por nombre de usuario",
+    "clearAriaLabel": "Limpiar búsqueda",
+    "resultsCount": "Mostrando {{result}} de {{total}}",
+    "accounts": "cuentas",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Ordenar A→Z",
+    "desc": "Ordenar Z→A"
+  },
+  "stats": {
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "unfollowed": "Dejaron de seguirte",
+    "notFollowing": "No te siguen"
+  },
+  "filters": {
+    "title": "Filtrar resultados",
+    "reset": "Restablecer",
+    "emptyCategories": "Categorías vacías ({{count, number}})",
+    "addFilter": "Agregar filtro {{label}} ({{count, number}} cuentas)",
+    "removeFilter": "Quitar filtro {{label}} ({{count, number}} cuentas)"
+  },
+  "badges": {
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "unfollowed": "Dejaron de seguirte",
+    "notFollowingBack": "No te siguen de vuelta",
+    "mutuals": "Mutuos",
+    "notFollowedBack": "No sigues de vuelta",
+    "pending": "Solicitud pendiente",
+    "permanent": "Pendiente (permanente)",
+    "restricted": "Restringido",
+    "close": "Amigo cercano",
+    "dismissed": "Sugerencia descartada"
+  },
+  "empty": {
+    "noUsers": "No se encontraron usuarios",
+    "resetFilters": "Restablecer filtros"
+  },
+  "list": {
+    "header": "Cuentas ({{count, number}})",
+    "viewProfile": "Ver Perfil"
+  }
+}

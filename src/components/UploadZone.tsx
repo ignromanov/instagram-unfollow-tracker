@@ -4,6 +4,7 @@ import type { ParseWarning } from '@/core/types';
 import { AlertCircle, ArrowLeft, CheckCircle2, Info, Loader2, Upload } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { DiagnosticErrorScreen } from './DiagnosticErrorScreen';
 
 export interface UploadError {
@@ -28,6 +29,7 @@ export function UploadZone({
   error: _error,
   parseWarnings,
 }: UploadZoneProps) {
+  const { t } = useTranslation('upload');
   const [isDragOver, setIsDragOver] = useState(false);
   const [showDiagnostic, setShowDiagnostic] = useState(true);
 
@@ -93,7 +95,7 @@ export function UploadZone({
           onClick={onBack}
           className="mb-8 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-500 transition-colors hover:text-primary md:mb-12"
         >
-          <ArrowLeft size={18} /> Back
+          <ArrowLeft size={18} /> {t('zone.back')}
         </button>
       )}
 
@@ -103,10 +105,10 @@ export function UploadZone({
           {/* Title */}
           <div className="text-center md:text-left">
             <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white md:text-6xl">
-              Upload Your Data
+              {t('zone.title')}
             </h1>
             <p className="text-base font-medium text-zinc-500 md:text-lg">
-              Your data remains 100% private. We analyze everything locally in your browser.
+              {t('zone.description')}
             </p>
           </div>
 
@@ -131,7 +133,7 @@ export function UploadZone({
               onChange={handleFileInput}
               className="absolute inset-0 cursor-pointer opacity-0"
               disabled={isProcessing}
-              aria-label="Upload Instagram data ZIP file"
+              aria-label={t('zone.ariaLabel')}
             />
 
             {isProcessing ? (
@@ -141,11 +143,9 @@ export function UploadZone({
                   aria-hidden="true"
                 />
                 <h3 className="text-2xl font-bold text-zinc-900 dark:text-white md:text-3xl">
-                  Analyzing locally...
+                  {t('zone.processing')}
                 </h3>
-                <p className="font-medium text-zinc-500">
-                  Processing large datasets (up to 1M+) can take a moment.
-                </p>
+                <p className="font-medium text-zinc-500">{t('zone.processingHint')}</p>
               </div>
             ) : (
               <div className="text-center">
@@ -166,15 +166,15 @@ export function UploadZone({
 
                 {/* Upload prompt */}
                 <h3 className="mb-4 text-xl font-bold text-zinc-900 dark:text-white md:text-4xl">
-                  Drop your Instagram ZIP
+                  {t('zone.dropHere')}
                 </h3>
                 <p className="mx-auto mb-8 max-w-sm text-sm font-medium text-zinc-500 md:text-lg">
-                  Or tap to browse your local storage.
+                  {t('zone.orBrowse')}
                 </p>
 
                 {/* JSON Format badge */}
                 <div className="inline-flex items-center gap-2 rounded-xl bg-amber-100 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-amber-700 shadow-sm dark:bg-amber-900/30 dark:text-amber-400">
-                  <AlertCircle size={14} aria-hidden="true" /> JSON Format Only
+                  <AlertCircle size={14} aria-hidden="true" /> {t('zone.jsonOnly')}
                 </div>
               </div>
             )}
@@ -186,15 +186,15 @@ export function UploadZone({
           {/* Pre-upload Checklist */}
           <div className="rounded-4xl border border-border bg-card p-8 shadow-sm">
             <h4 className="mb-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-              <CheckCircle2 size={16} className="text-emerald-500" aria-hidden="true" /> Pre-upload
-              Checklist
+              <CheckCircle2 size={16} className="text-emerald-500" aria-hidden="true" />{' '}
+              {t('checklist.title')}
             </h4>
             <ul className="space-y-5">
               {[
-                'Format: JSON (not HTML)',
-                "Includes: 'Followers and following'",
-                "Timeframe: 'All Time'",
-                'File type: .zip',
+                t('checklist.format'),
+                t('checklist.includes'),
+                t('checklist.timeframe'),
+                t('checklist.fileType'),
               ].map((item, i) => (
                 <li
                   key={i}
@@ -210,18 +210,21 @@ export function UploadZone({
           {/* Most Common Error */}
           <div className="rounded-4xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/40">
             <h4 className="mb-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-              <Info size={16} className="text-primary" aria-hidden="true" /> Most Common Error
+              <Info size={16} className="text-primary" aria-hidden="true" />{' '}
+              {t('errors.commonTitle')}
             </h4>
             <p className="text-xs font-medium leading-relaxed text-zinc-500 md:text-sm">
-              If your export has 0 followers, you likely exported in <strong>HTML</strong> format or
-              didn't select the "Followers and following" information category.
+              <Trans i18nKey="errors.commonHint" ns="upload">
+                <strong />
+              </Trans>
             </p>
             {onOpenWizard && (
               <button
                 onClick={onOpenWizard}
                 className="mt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline"
               >
-                Learn how to fix <ArrowLeft className="rotate-180" size={14} aria-hidden="true" />
+                {t('errors.learnFix')}{' '}
+                <ArrowLeft className="rotate-180" size={14} aria-hidden="true" />
               </button>
             )}
           </div>

@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "Zurück",
+    "title": "Deine Daten hochladen",
+    "description": "Deine Daten bleiben 100% privat. Wir analysieren alles lokal in deinem Browser.",
+    "dropHere": "Instagram-ZIP hier ablegen",
+    "orBrowse": "Oder tippen, um deine Dateien zu durchsuchen.",
+    "jsonOnly": "Nur JSON-Format",
+    "processing": "Lokal analysieren...",
+    "processingHint": "Die Verarbeitung großer Datensätze (bis zu 1M+) kann einen Moment dauern.",
+    "ariaLabel": "Instagram-Daten-ZIP-Datei hochladen"
+  },
+  "checklist": {
+    "title": "Checkliste vor dem Upload",
+    "format": "Format: JSON (nicht HTML)",
+    "includes": "Enthält: 'Follower und Gefolgte'",
+    "timeframe": "Zeitraum: 'Gesamter Zeitraum'",
+    "fileType": "Dateityp: .zip"
+  },
+  "errors": {
+    "commonTitle": "Häufigster Fehler",
+    "commonHint": "Wenn dein Export 0 Follower zeigt, hast du wahrscheinlich im <1>HTML</1>-Format exportiert oder die Kategorie \"Follower und Gefolgte\" nicht ausgewählt.",
+    "learnFix": "So behebst du das"
+  },
+  "diagnostic": {
+    "back": "Zurück",
+    "howToFix": "So behebst du das",
+    "tryAgain": "Erneut versuchen",
+    "showMistakes": "Zeig mir, was schiefging",
+    "commonMistakes": "Häufige Fehler",
+    "mistakes": {
+      "html": {
+        "title": "HTML statt JSON",
+        "description": "Achte darauf, beim Anfordern deiner Daten \"JSON\"-Format auszuwählen"
+      },
+      "missingData": {
+        "title": "Fehlende Datenkategorie",
+        "description": "Du musst \"Follower und Gefolgte\" bei den Datentypen auswählen"
+      },
+      "wrongFile": {
+        "title": "Falsche Datei",
+        "description": "Lade die .zip-Datei hoch, nicht einen Ordner oder entpackte Dateien"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Warten auf Instagram...",
+    "description": "Instagram bereitet deinen Datenexport vor. Du erhältst innerhalb von 48 Stunden eine E-Mail (normalerweise viel schneller!).",
+    "addReminder": "Erinnerung zum Kalender hinzufügen",
+    "reminderHint": "Erinnere mich in 2 Tagen",
+    "calendarTitle": "Instagram-Export-E-Mail prüfen",
+    "calendarDetails": "E-Mail auf Instagram-Datenexport prüfen und bei Unfollow Tracker hochladen",
+    "haveFile": "Hast du deine Datei schon?",
+    "haveFileHint": "Wenn du den ZIP-Export bereits aus deiner E-Mail heruntergeladen hast, spring direkt zur Analyse.",
+    "uploadNow": "Jetzt hochladen",
+    "proTip": "Profi-Tipp: Schau im Spam-Ordner",
+    "proTipHint": "Instagram-E-Mails landen oft dort. Suche nach E-Mails von <b>Meta</b> oder <b>Instagram</b>. Der Download-Link läuft nach 4 Tagen ab.",
+    "skip": "Erstmal überspringen"
+  }
+}

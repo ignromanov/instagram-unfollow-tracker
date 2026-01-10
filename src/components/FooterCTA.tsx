@@ -1,5 +1,5 @@
-import React from 'react';
 import { Play, Database } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Logo } from './Logo';
 
 interface FooterCTAProps {
@@ -8,6 +8,8 @@ interface FooterCTAProps {
 }
 
 export function FooterCTA({ onStart, onSample }: FooterCTAProps) {
+  const { t } = useTranslation('common');
+
   return (
     <section className="py-32 md:py-48 border-t border-border text-center flex flex-col items-center animate-in fade-in duration-1000">
       <Logo
@@ -16,12 +18,11 @@ export function FooterCTA({ onStart, onSample }: FooterCTAProps) {
       />
 
       <h2 className="text-3xl md:text-6xl font-display font-extrabold tracking-tight mb-8 leading-[1.1] max-w-3xl px-4">
-        Start Your Private Analysis Today
+        {t('cta.title')}
       </h2>
 
       <p className="text-lg md:text-2xl text-zinc-500 dark:text-zinc-400 mb-12 md:mb-16 max-w-2xl mx-auto font-medium px-6 leading-relaxed">
-        Join thousands of privacy-conscious users who track their followers without risking their
-        accounts.
+        {t('cta.subtitle')}
       </p>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full max-w-lg px-6">
@@ -30,19 +31,19 @@ export function FooterCTA({ onStart, onSample }: FooterCTAProps) {
           className="w-full sm:w-auto px-12 py-5 rounded-2xl bg-primary text-white font-black text-base md:text-xl shadow-2xl shadow-primary/40 hover:scale-[1.05] active:scale-95 transition-all flex items-center justify-center gap-3 cursor-pointer"
         >
           <Play size={22} fill="currentColor" />
-          Get Started
+          {t('cta.getStarted')}
         </button>
         <button
           onClick={onSample}
           className="w-full sm:w-auto px-10 py-5 rounded-2xl border-2 border-border bg-surface font-black text-base md:text-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 cursor-pointer"
         >
           <Database size={22} />
-          Try Sample
+          {t('cta.trySample')}
         </button>
       </div>
 
       <p className="mt-16 text-xs md:text-sm text-zinc-400 uppercase tracking-[0.2em] font-black opacity-60">
-        100% Free • No Login • Privacy First
+        {t('cta.tagline')}
       </p>
     </section>
   );

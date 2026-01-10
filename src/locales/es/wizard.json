@@ -1,0 +1,56 @@
+{
+  "header": {
+    "stepOf": "Paso {{current}} de {{total}}"
+  },
+  "buttons": {
+    "back": "Atrás",
+    "next": "Siguiente paso",
+    "done": "¡Listo, vamos!",
+    "openInstagram": "Abrir Instagram"
+  },
+  "format": {
+    "warning": "SOLO FORMATO JSON"
+  },
+  "steps": {
+    "1": {
+      "title": "Abre la página de exportación de datos",
+      "description": "Toca el botón de abajo para ir directamente a la página de exportación de datos de la plataforma. Es posible que debas iniciar sesión primero.",
+      "alt": "Paso 1: Abre la página de exportación de datos"
+    },
+    "2": {
+      "title": "Selecciona 'Parte de tu información'",
+      "description": "No descargues todo — solo necesitamos los datos de seguidores y seguidos para acelerar el proceso.",
+      "alt": "Paso 2: Selecciona 'Parte de tu información'"
+    },
+    "3": {
+      "title": "Marca solo 'Seguidores y seguidos'",
+      "description": "Desmarca todas las demás opciones como mensajes o contenido multimedia. Esto hace que tu archivo sea mucho más pequeño.",
+      "alt": "Paso 3: Marca solo 'Seguidores y seguidos'"
+    },
+    "4": {
+      "title": "⚠️ Selecciona formato JSON",
+      "description": "Esto es crítico: Elige JSON, no HTML. Los archivos HTML no funcionarán con nuestro analizador.",
+      "alt": "Paso 4: Selecciona formato JSON"
+    },
+    "5": {
+      "title": "Elige 'Todo el tiempo' y toca 'Crear archivos'",
+      "description": "La plataforma comenzará a preparar tus datos. Esto puede tomar desde 5 minutos hasta unas horas.",
+      "alt": "Paso 5: Elige 'Todo el tiempo' y toca 'Crear archivos'"
+    },
+    "6": {
+      "title": "Espera la notificación por correo",
+      "description": "Revisa tu bandeja de entrada (¡y la carpeta de spam!). Recibirás un correo cuando tu archivo esté listo para descargar.",
+      "alt": "Paso 6: Espera la notificación por correo"
+    },
+    "7": {
+      "title": "Descarga el archivo ZIP",
+      "description": "Descarga el archivo a tu dispositivo. Una vez que lo tengas, ¡estarás listo para analizarlo aquí!",
+      "alt": "Paso 7: Descarga el archivo ZIP"
+    },
+    "8": {
+      "title": "Sube y descubre los resultados",
+      "description": "Regresa aquí, sube tu archivo ZIP y ¡descubre al instante quién dejó de seguirte y más!",
+      "alt": "Paso 8: Sube y descubre los resultados"
+    }
+  }
+}

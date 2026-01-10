@@ -1,0 +1,33 @@
+{
+  "title": "Sıkça Sorulan Sorular",
+  "items": {
+    "privacy": {
+      "question": "Bu gerçekten gizli mi?",
+      "answer": "Evet. Tüm işlemler tamamen web tarayıcında gerçekleşir. Verilerin hiçbir zaman herhangi bir sunucuya yüklenmez. Yüklendikten sonra bu uygulamayı çevrimdışı bile kullanabilirsin."
+    },
+    "zipFile": {
+      "question": "Neden ZIP dosyası indirmem gerekiyor?",
+      "answer": "Platformlar, 'spam'i önlemek için uygulamaların resmi API aracılığıyla belirli verileri görmesini kısıtlar. Hesabını riske atmadan bu verileri almanın tek güvenli ve yetkili yolu, resmi 'Bilgilerini İndir' aracını kullanmaktır."
+    },
+    "accountSafety": {
+      "question": "Hesabım güvende olacak mı?",
+      "answer": "Evet. Şifreni isteyen ve veri 'kazıyan' (Hizmet Koşullarını ihlal eden) diğer uygulamaların aksine, bu araç resmi veri dışa aktarımını kullanır. %100 güvenlidir."
+    },
+    "scale": {
+      "question": "Bu kaç hesabı işleyebilir?",
+      "answer": "Bu aracı 1.000.000'dan fazla hesap içeren dışa aktarımlarla test ettik. Deneyimi büyük veri setlerinde bile akıcı tutmak için yüksek performanslı sanal kaydırma ve yerel indeksleme kullanıyoruz."
+    },
+    "free": {
+      "question": "Bu gerçekten ücretsiz mi?",
+      "answer": "Evet. Bu araç açık kaynaklı ve kullanımı ücretsizdir. Abonelik, ödeme duvarı veya gizli limit yoktur."
+    },
+    "safety": {
+      "question": "Bu takipçi takip aracı güvenli mi?",
+      "answer": "Evet, %100 güvenli. Instagram şifrenizi isteyen uygulamaların aksine, bu araç resmi Instagram veri dışa aktarımınızı (ZIP dosyası) kullanır. Verileriniz asla cihazınızdan çıkmaz - tüm işleme tarayıcınızda yerel olarak gerçekleşir."
+    },
+    "howToFind": {
+      "question": "Uygulama olmadan Instagram'da kimin takibi bıraktığını nasıl öğrenebilirim?",
+      "answer": "Ayarlardan Instagram veri dışa aktarımı talep edin, hazır olduğunda ZIP dosyasını indirin ve bu ücretsiz araca yükleyin. Giriş yapmadan takipçilerinizi yerel olarak analiz eder."
+    }
+  }
+}

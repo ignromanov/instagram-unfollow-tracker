@@ -1,0 +1,38 @@
+{
+  "version": "V1.1 Optimizado para más de 1,000,000 de cuentas",
+  "headline": {
+    "prefix": "Descubre quién",
+    "highlight": "dejó de seguirte",
+    "suffix": "gratis y sin login."
+  },
+  "subheadline": "La única herramienta gratuita que analiza tu archivo ZIP de Instagram localmente sin iniciar sesión. 100% privado. Sin riesgo para tu cuenta. Sin servidores.",
+  "buttons": {
+    "getGuide": "Ver Mis Unfollowers Gratis",
+    "trySample": "Probar con datos de ejemplo",
+    "haveFile": "Ya tengo mi archivo ZIP",
+    "viewResults": "Ver resultados del análisis"
+  },
+  "trust": {
+    "free": "100% Gratis • Para Siempre",
+    "noPassword": "Sin Contraseña • Sin Riesgo",
+    "privacy": "100% Privado • Análisis Local"
+  },
+  "features": {
+    "local": {
+      "title": "100% Local",
+      "description": "Tus datos nunca salen de tu dispositivo"
+    },
+    "noLogin": {
+      "title": "Sin iniciar sesión",
+      "description": "Sin riesgo de suspensión o hackeo"
+    },
+    "scale": {
+      "title": "Alta escala",
+      "description": "Maneja más de 1M de cuentas a toda velocidad"
+    },
+    "openSource": {
+      "title": "Código abierto",
+      "description": "Revisa nuestro código, valoramos tu confianza"
+    }
+  }
+}

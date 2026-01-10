@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "वापस",
+    "next": "आगे",
+    "cancel": "रद्द करें",
+    "tryAgain": "फिर से कोशिश करें",
+    "clearData": "डेटा हटाएं",
+    "viewResults": "परिणाम देखें",
+    "uploadFile": "फाइल अपलोड करें",
+    "delete": "हटाएं"
+  },
+  "badges": {
+    "followers": "फॉलोअर्स",
+    "following": "फॉलोइंग",
+    "unfollowed": "हाल ही में अनफॉलो किया",
+    "notFollowingBack": "वापस फॉलो नहीं करते",
+    "mutuals": "म्यूचुअल्स",
+    "notFollowedBack": "आपको फॉलो नहीं करते",
+    "pending": "पेंडिंग रिक्वेस्ट",
+    "permanent": "पेंडिंग (परमानेंट)",
+    "restricted": "प्रतिबंधित",
+    "close": "क्लोज़ फ्रेंड",
+    "dismissed": "सुझाव हटाया"
+  },
+  "theme": {
+    "light": "लाइट मोड",
+    "dark": "डार्क मोड",
+    "switchToLight": "लाइट मोड पर जाएं",
+    "switchToDark": "डार्क मोड पर जाएं"
+  },
+  "header": {
+    "clearDataTitle": "सारा डेटा हटाएं?",
+    "clearDataDescription": "इससे आपका सारा Instagram डेटा हट जाएगा और आप होम स्क्रीन पर वापस आ जाएंगे। यह वापस नहीं हो सकता।",
+    "deleteData": "डेटा हटाएं"
+  },
+  "footer": {
+    "description": "एकमात्र रिलेशनशिप एनालाइज़र जो 100% आपके ब्राउज़र में काम करता है। कोई सर्वर नहीं, कोई लॉग नहीं, बस आपका डेटा और आपका डिवाइस।",
+    "privacyPolicy": "प्राइवेसी पॉलिसी",
+    "termsOfService": "सेवा की शर्तें",
+    "contactSupport": "सहायता से संपर्क करें",
+    "trackingOff": "ट्रैकिंग बंद",
+    "dontTrackMe": "मुझे ट्रैक न करें",
+    "trackingDisabled": "एनालिटिक्स बंद है",
+    "trackingEnabled": "गुमनाम एनालिटिक्स बंद करें",
+    "keepItFree": "इसे फ्री और प्राइवेट रखें",
+    "supportPrivacy": "प्राइवेसी का समर्थन करें",
+    "madeWithLove": "बनाया गया",
+    "forTheCommunity": "कम्युनिटी के लिए",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "MIT लाइसेंस"
+  },
+  "nav": {
+    "privacy": "प्राइवेसी पॉलिसी",
+    "terms": "सेवा की शर्तें"
+  },
+  "language": {
+    "changeLanguage": "भाषा बदलें"
+  },
+  "cta": {
+    "title": "आज ही अपना प्राइवेट एनालिसिस शुरू करें",
+    "subtitle": "हज़ारों यूज़र्स से जुड़ें जो अपने अकाउंट को रिस्क में डाले बिना फॉलोअर्स ट्रैक करते हैं।",
+    "getStarted": "शुरू करें",
+    "trySample": "डेमो देखें",
+    "tagline": "100% मुफ़्त • बिना लॉगिन • प्राइवेसी गारंटी"
+  }
+}

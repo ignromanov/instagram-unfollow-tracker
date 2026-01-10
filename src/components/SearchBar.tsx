@@ -3,6 +3,7 @@
 import { Search, X, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface SearchBarProps {
   value: string;
@@ -21,6 +22,7 @@ export function SearchBar({
   isFiltering = false,
   processingTime,
 }: SearchBarProps) {
+  const { t } = useTranslation('results');
   return (
     <div className="space-y-2">
       <form role="search" onSubmit={e => e.preventDefault()}>
@@ -36,11 +38,11 @@ export function SearchBar({
           <Input
             id="account-search"
             type="text"
-            placeholder="Search accounts..."
+            placeholder={t('search.placeholder')}
             value={value}
             onChange={e => onChange(e.target.value)}
             className="pl-10 pr-12 sm:pr-10 text-base h-12 sm:h-10"
-            aria-label="Search accounts by username"
+            aria-label={t('search.ariaLabel')}
           />
           {value && (
             <Button
@@ -48,7 +50,7 @@ export function SearchBar({
               size="sm"
               onClick={() => onChange('')}
               className="absolute right-1 top-1/2 h-10 w-10 sm:h-7 sm:w-7 -translate-y-1/2 p-0"
-              aria-label="Clear search"
+              aria-label={t('search.clearAriaLabel')}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -57,11 +59,16 @@ export function SearchBar({
       </form>
       <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
         <p>
-          Showing {resultCount.toLocaleString()} of {totalCount.toLocaleString()}
-          <span className="hidden sm:inline"> accounts</span>
+          {t('search.resultsCount', {
+            result: resultCount.toLocaleString(),
+            total: totalCount.toLocaleString(),
+          })}
+          <span className="hidden sm:inline"> {t('search.accounts')}</span>
         </p>
         {processingTime !== undefined && processingTime > 0 && !isFiltering && (
-          <p className="text-xs">{processingTime < 1 ? '<1' : Math.round(processingTime)}ms</p>
+          <p className="text-xs">
+            {t('search.time', { time: processingTime < 1 ? '<1' : Math.round(processingTime) })}
+          </p>
         )}
       </div>
     </div>

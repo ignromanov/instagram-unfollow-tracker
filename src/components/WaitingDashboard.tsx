@@ -2,8 +2,8 @@
 
 import { useCallback } from 'react';
 import { Clock, Calendar, ArrowRight, FileUp } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 import { Button } from './ui/button';
-// Button is used for "Upload Now" and "Skip" buttons
 
 interface WaitingDashboardProps {
   onUploadNow: () => void;
@@ -11,6 +11,8 @@ interface WaitingDashboardProps {
 }
 
 export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps) {
+  const { t } = useTranslation('upload');
+
   const handleCalendarReminder = useCallback(() => {
     // Create calendar event data
     const startDate = new Date();
@@ -19,15 +21,13 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
     endDate.setHours(endDate.getHours() + 1);
 
     const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
-      'Check Instagram Export Email'
+      t('waiting.calendarTitle')
     )}&dates=${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${
       endDate.toISOString().replace(/[-:]/g, '').split('.')[0]
-    }Z&details=${encodeURIComponent(
-      'Check your email for Instagram data export and upload to Unfollow Tracker'
-    )}`;
+    }Z&details=${encodeURIComponent(t('waiting.calendarDetails'))}`;
 
     window.open(calendarUrl, '_blank', 'noopener,noreferrer');
-  }, []);
+  }, [t]);
 
   return (
     <div className="max-w-2xl mx-auto text-center py-12 px-4">
@@ -37,10 +37,9 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
       </div>
 
       {/* Title and description */}
-      <h1 className="text-4xl font-bold mb-4">Waiting for Instagram...</h1>
+      <h1 className="text-4xl font-bold mb-4">{t('waiting.title')}</h1>
       <p className="text-lg text-muted-foreground mb-12 leading-relaxed">
-        Instagram is preparing your data export. You'll receive an email within 48 hours (usually
-        much faster!).
+        {t('waiting.description')}
       </p>
 
       {/* Reminder buttons - horizontal layout */}
@@ -53,8 +52,8 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
             <Calendar size={24} />
           </div>
           <div className="flex-grow">
-            <div className="font-bold text-lg text-foreground">Add Reminder to Calendar</div>
-            <div className="text-sm text-muted-foreground">Remind me to check in 2 days</div>
+            <div className="font-bold text-lg text-foreground">{t('waiting.addReminder')}</div>
+            <div className="text-sm text-muted-foreground">{t('waiting.reminderHint')}</div>
           </div>
           <ArrowRight className="text-muted-foreground" size={20} />
         </button>
@@ -67,12 +66,10 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
             <FileUp size={24} />
           </div>
           <div className="space-y-2">
-            <h3 className="text-xl font-bold">Already have your file?</h3>
-            <p className="text-muted-foreground mb-4">
-              If you already downloaded the ZIP export from your email, jump straight to analysis.
-            </p>
+            <h3 className="text-xl font-bold">{t('waiting.haveFile')}</h3>
+            <p className="text-muted-foreground mb-4">{t('waiting.haveFileHint')}</p>
             <Button onClick={onUploadNow} size="lg" className="group">
-              Upload Now
+              {t('waiting.uploadNow')}
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
@@ -84,11 +81,13 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
         <div className="text-2xl mt-0.5">💡</div>
         <div>
           <div className="font-bold text-yellow-700 dark:text-yellow-500 text-lg mb-1">
-            Pro Tip: Check your Spam Folder
+            {t('waiting.proTip')}
           </div>
           <p className="text-yellow-600/90 dark:text-yellow-600/80">
-            Instagram emails often end up there. Look for emails from <b>Meta</b> or{' '}
-            <b>Instagram</b>. The download link expires in 4 days.
+            <Trans i18nKey="waiting.proTipHint" ns="upload">
+              Instagram emails often end up there. Look for emails from <b>Meta</b> or{' '}
+              <b>Instagram</b>. The download link expires in 4 days.
+            </Trans>
           </p>
         </div>
       </div>
@@ -97,7 +96,7 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
       {onSkip && (
         <div className="text-center mt-6">
           <Button variant="ghost" onClick={onSkip} className="text-muted-foreground">
-            Skip for now
+            {t('waiting.skip')}
           </Button>
         </div>
       )}

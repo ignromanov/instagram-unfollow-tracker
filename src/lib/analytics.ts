@@ -79,6 +79,7 @@ export const AnalyticsEvents = {
   THEME_TOGGLE: 'theme_toggle',
   CLEAR_DATA: 'clear_data',
   SAMPLE_DATA_CLICK: 'sample_data_click',
+  LANGUAGE_CHANGE: 'language_change',
 
   // V2: Wizard
   WIZARD_STEP_VIEW: 'wizard_step_view',
@@ -239,6 +240,10 @@ export const analytics = {
 
   sampleDataClick: () => {
     trackEvent(AnalyticsEvents.SAMPLE_DATA_CLICK);
+  },
+
+  languageChange: (language: string) => {
+    trackEvent(AnalyticsEvents.LANGUAGE_CHANGE, { language });
   },
 
   // V2: Wizard events

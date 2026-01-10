@@ -1,3 +1,4 @@
+import './locales'; // Initialize i18n before React renders
 import { ThemeProvider } from '@/components/theme-provider';
 import { App } from '@/ui/App';
 import React from 'react';

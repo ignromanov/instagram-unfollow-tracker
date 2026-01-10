@@ -1,0 +1,54 @@
+{
+  "title": "So prüfst du deine <gradient>Instagram-Entfolger</gradient>",
+  "subtitle": "Folge diesen 8 einfachen Schritten, um dein Konto sicher zu analysieren, ohne dein Passwort zu teilen.",
+  "important": "Wichtig",
+  "openStep": "Schritt in Anleitung öffnen",
+  "steps": {
+    "1": {
+      "title": "Datenexport-Seite öffnen",
+      "description": "Tippe auf den Button unten, um direkt zur Datenexport-Seite der Plattform zu gelangen. Möglicherweise musst du dich zuerst anmelden."
+    },
+    "2": {
+      "title": "'Einige deiner Informationen' auswählen",
+      "description": "Lade nicht alles herunter — wir brauchen nur deine Follower- und Following-Daten, um den Prozess zu beschleunigen."
+    },
+    "3": {
+      "title": "Nur 'Follower und Gefolgte' ankreuzen",
+      "description": "Deaktiviere alle anderen Optionen wie Nachrichten oder Medien. Das macht deine Datei viel kleiner."
+    },
+    "4": {
+      "title": "JSON-Format auswählen",
+      "description": "Das ist entscheidend: Wähle JSON, nicht HTML. HTML-Dateien funktionieren nicht mit unserem Analyzer."
+    },
+    "5": {
+      "title": "'Gesamter Zeitraum' wählen und auf 'Dateien erstellen' tippen",
+      "description": "Die Plattform beginnt jetzt mit der Vorbereitung deiner Daten. Das kann zwischen 5 Minuten und einigen Stunden dauern."
+    },
+    "6": {
+      "title": "Auf E-Mail-Benachrichtigung warten",
+      "description": "Behalte deinen Posteingang im Auge (und den Spam-Ordner!). Du erhältst eine E-Mail, wenn deine Datei zum Download bereit ist."
+    },
+    "7": {
+      "title": "ZIP-Datei herunterladen",
+      "description": "Lade die Datei auf dein Gerät herunter. Sobald du sie hast, kannst du sie hier analysieren!"
+    },
+    "8": {
+      "title": "Hochladen & Ergebnisse anzeigen",
+      "description": "Komm hierher zurück, lade deine ZIP-Datei hoch und sieh sofort, wer dir entfolgt ist und mehr!"
+    }
+  },
+  "cta": {
+    "title": "Bereit loszulegen?",
+    "subtitle": "Analysiere deinen Datenexport privat in Sekunden.",
+    "button": "Analyse-Anleitung öffnen"
+  },
+  "schema": {
+    "name": "So prüfst du, wer dir auf Instagram entfolgt ist — ohne Login",
+    "description": "Schritt-für-Schritt-Anleitung zum Finden von Instagram-Entfolgern mit deinem offiziellen Datenexport. Kein Login erforderlich, 100% privat.",
+    "supplies": {
+      "account": "Instagram-Konto",
+      "email": "E-Mail-Zugang"
+    },
+    "tool": "Instagram Unfollow Tracker (diese Website)"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "header": {
+    "stepOf": "Langkah {{current}} dari {{total}}"
+  },
+  "buttons": {
+    "back": "Kembali",
+    "next": "Langkah Berikutnya",
+    "done": "Selesai, ayo mulai!",
+    "openInstagram": "Buka Instagram"
+  },
+  "format": {
+    "warning": "FORMAT JSON SAJA"
+  },
+  "steps": {
+    "1": {
+      "title": "Buka Halaman Ekspor Data",
+      "description": "Ketuk tombol di bawah untuk langsung ke halaman ekspor data platform. Anda mungkin perlu login terlebih dahulu.",
+      "alt": "Langkah 1: Buka Halaman Ekspor Data"
+    },
+    "2": {
+      "title": "Pilih 'Sebagian informasi Anda'",
+      "description": "Jangan unduh semuanya — kita hanya butuh data pengikut dan mengikuti untuk mempercepat proses.",
+      "alt": "Langkah 2: Pilih 'Sebagian informasi Anda'"
+    },
+    "3": {
+      "title": "Centang hanya 'Pengikut dan mengikuti'",
+      "description": "Hapus centang opsi lain seperti pesan atau media. Ini membuat file Anda jauh lebih kecil.",
+      "alt": "Langkah 3: Centang hanya 'Pengikut dan mengikuti'"
+    },
+    "4": {
+      "title": "⚠️ Pilih format JSON",
+      "description": "Ini sangat penting: Pilih JSON, bukan HTML. File HTML tidak akan berfungsi dengan alat analisis kami.",
+      "alt": "Langkah 4: Pilih format JSON"
+    },
+    "5": {
+      "title": "Pilih 'Sepanjang waktu' dan ketuk 'Buat file'",
+      "description": "Platform akan mulai menyiapkan data Anda. Ini bisa memakan waktu dari 5 menit hingga beberapa jam.",
+      "alt": "Langkah 5: Pilih 'Sepanjang waktu' dan ketuk 'Buat file'"
+    },
+    "6": {
+      "title": "Tunggu notifikasi email",
+      "description": "Pantau kotak masuk Anda (dan folder spam!). Anda akan mendapat email saat file siap diunduh.",
+      "alt": "Langkah 6: Tunggu notifikasi email"
+    },
+    "7": {
+      "title": "Unduh file ZIP",
+      "description": "Unduh file ke perangkat Anda. Setelah mendapatkannya, Anda siap menganalisisnya di sini!",
+      "alt": "Langkah 7: Unduh file ZIP"
+    },
+    "8": {
+      "title": "Unggah & Lihat Hasil",
+      "description": "Kembali ke sini, unggah file ZIP Anda, dan langsung lihat siapa yang berhenti mengikuti Anda!",
+      "alt": "Langkah 8: Unggah & Lihat Hasil"
+    }
+  }
+}

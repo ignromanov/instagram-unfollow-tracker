@@ -1,0 +1,33 @@
+{
+  "title": "Häufig gestellte Fragen",
+  "items": {
+    "privacy": {
+      "question": "Ist das wirklich privat?",
+      "answer": "Ja. Die gesamte Verarbeitung erfolgt vollständig in deinem Webbrowser. Deine Daten werden niemals auf einen Server hochgeladen. Du kannst diese App sogar offline nutzen, sobald sie geladen ist."
+    },
+    "zipFile": {
+      "question": "Warum muss ich eine ZIP-Datei herunterladen?",
+      "answer": "Plattformen beschränken Apps darin, bestimmte Daten über ihre offizielle API einzusehen, um 'Spam' zu verhindern. Der einzige sichere, autorisierte Weg, diese Daten zu erhalten, ohne dein Konto zu gefährden, ist über das offizielle 'Deine Informationen herunterladen'-Tool."
+    },
+    "accountSafety": {
+      "question": "Ist mein Konto sicher?",
+      "answer": "Ja. Im Gegensatz zu anderen Apps, die nach deinem Passwort fragen und Daten 'scrapen' (was gegen die Nutzungsbedingungen verstößt), verwendet dieses Tool deinen offiziellen Datenexport. Es ist 100% sicher."
+    },
+    "scale": {
+      "question": "Wie viele Accounts kann das verarbeiten?",
+      "answer": "Wir haben dieses Tool mit Exporten getestet, die über 1.000.000 Accounts enthalten. Wir verwenden leistungsstarkes virtuelles Scrollen und lokale Indizierung, um die Erfahrung auch bei riesigen Datensätzen flüssig zu halten."
+    },
+    "free": {
+      "question": "Ist das wirklich kostenlos?",
+      "answer": "Ja. Dieses Tool ist Open Source und kostenlos nutzbar. Es gibt keine Abonnements, Paywalls oder versteckten Limits."
+    },
+    "safety": {
+      "question": "Ist dieser Unfollower-Tracker sicher?",
+      "answer": "Ja, 100% sicher. Im Gegensatz zu Apps, die Ihr Instagram-Passwort benötigen, verwendet dieses Tool Ihren offiziellen Instagram-Datenexport (ZIP-Datei). Ihre Daten verlassen niemals Ihr Gerät – die gesamte Verarbeitung erfolgt lokal in Ihrem Browser. DSGVO-konform."
+    },
+    "howToFind": {
+      "question": "Wie finde ich heraus, wer mir auf Instagram nicht mehr folgt ohne App?",
+      "answer": "Fordern Sie Ihren Instagram-Datenexport in den Einstellungen an, laden Sie die ZIP-Datei herunter und laden Sie sie in dieses kostenlose Tool hoch. Es analysiert Ihre Follower lokal ohne Anmeldung."
+    }
+  }
+}

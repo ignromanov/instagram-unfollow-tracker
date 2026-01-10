@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "Результаты анализа",
+    "fileInfo": "{{filename}} • {{count, number}} всего",
+    "showing": "Показано {{filtered}} из {{total}} аккаунтов"
+  },
+  "sample": {
+    "banner": "Просмотр демо-данных",
+    "hint": "Это демонстрационные данные для знакомства с приложением.",
+    "uploadPrompt": "Загрузи свои данные",
+    "toSeeReal": ", чтобы увидеть настоящих подписчиков."
+  },
+  "search": {
+    "placeholder": "Поиск по имени...",
+    "ariaLabel": "Поиск аккаунтов по имени пользователя",
+    "clearAriaLabel": "Очистить поиск",
+    "resultsCount": "Показано {{result}} из {{total}}",
+    "accounts": "аккаунтов",
+    "time": "{{time}} мс"
+  },
+  "sort": {
+    "asc": "Сортировка А→Я",
+    "desc": "Сортировка Я→А"
+  },
+  "stats": {
+    "followers": "Подписчики",
+    "following": "Подписки",
+    "unfollowed": "Отписались",
+    "notFollowing": "Не подписаны"
+  },
+  "filters": {
+    "title": "Фильтр результатов",
+    "reset": "Сбросить",
+    "emptyCategories": "Пустые категории ({{count, number}})",
+    "addFilter": "Добавить фильтр «{{label}}» ({{count, number}} аккаунтов)",
+    "removeFilter": "Убрать фильтр «{{label}}» ({{count, number}} аккаунтов)"
+  },
+  "badges": {
+    "followers": "Подписчики",
+    "following": "Подписки",
+    "unfollowed": "Недавно отписались",
+    "notFollowingBack": "Не подписаны в ответ",
+    "mutuals": "Взаимные",
+    "notFollowedBack": "Не подписались в ответ",
+    "pending": "Ожидает подтверждения",
+    "permanent": "Ожидает (навсегда)",
+    "restricted": "Ограниченный доступ",
+    "close": "Близкий друг",
+    "dismissed": "Отклонённое предложение"
+  },
+  "empty": {
+    "noUsers": "Пользователи не найдены",
+    "resetFilters": "Сбросить фильтры"
+  },
+  "list": {
+    "header": "Аккаунты ({{count, number}})",
+    "viewProfile": "Открыть профиль"
+  }
+}

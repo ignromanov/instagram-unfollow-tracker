@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "戻る",
+    "title": "データをアップロード",
+    "description": "データは100%プライベートです。すべてブラウザ内でローカル分析します。",
+    "dropHere": "InstagramのZIPをドロップ",
+    "orBrowse": "またはタップしてローカルストレージを参照",
+    "jsonOnly": "JSON形式のみ",
+    "processing": "ローカルで分析中...",
+    "processingHint": "大規模データセット（100万件以上）の処理には少し時間がかかることがあります。",
+    "ariaLabel": "InstagramデータのZIPファイルをアップロード"
+  },
+  "checklist": {
+    "title": "アップロード前チェックリスト",
+    "format": "形式: JSON（HTMLではない）",
+    "includes": "含む: 「フォロワーとフォロー中」",
+    "timeframe": "期間: 「全期間」",
+    "fileType": "ファイル形式: .zip"
+  },
+  "errors": {
+    "commonTitle": "よくあるエラー",
+    "commonHint": "エクスポートのフォロワー数が0の場合、<1>HTML</1>形式でエクスポートしたか、「フォロワーとフォロー中」カテゴリを選択していない可能性があります。",
+    "learnFix": "修正方法を見る"
+  },
+  "diagnostic": {
+    "back": "戻る",
+    "howToFix": "修正方法",
+    "tryAgain": "もう一度試す",
+    "showMistakes": "間違いを確認",
+    "commonMistakes": "よくある間違い",
+    "mistakes": {
+      "html": {
+        "title": "JSONではなくHTML",
+        "description": "データをリクエストする際に「JSON」形式を選択してください"
+      },
+      "missingData": {
+        "title": "データカテゴリの未選択",
+        "description": "データタイプで「フォロワーとフォロー中」を選択する必要があります"
+      },
+      "wrongFile": {
+        "title": "間違ったファイル",
+        "description": "フォルダや展開したファイルではなく、.zipファイルをアップロードしてください"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Instagramを待っています...",
+    "description": "Instagramがデータエクスポートを準備中です。48時間以内にメールが届きます（通常はもっと早いです！）。",
+    "addReminder": "カレンダーにリマインダーを追加",
+    "reminderHint": "2日後にチェックするリマインド",
+    "calendarTitle": "Instagramエクスポートのメールを確認",
+    "calendarDetails": "Instagramデータエクスポートのメールを確認し、アンフォロートラッカーにアップロード",
+    "haveFile": "すでにファイルをお持ちですか？",
+    "haveFileHint": "メールからZIPエクスポートをダウンロード済みなら、すぐに分析に進めます。",
+    "uploadNow": "今すぐアップロード",
+    "proTip": "ヒント: 迷惑メールフォルダを確認",
+    "proTipHint": "Instagramのメールは迷惑メールに入ることがよくあります。<b>Meta</b>または<b>Instagram</b>からのメールを探してください。ダウンロードリンクは4日で期限切れになります。",
+    "skip": "今はスキップ"
+  }
+}

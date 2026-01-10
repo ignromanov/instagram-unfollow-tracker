@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "एनालिसिस रिज़ल्ट",
+    "fileInfo": "{{filename}} • {{count, number}} कुल",
+    "showing": "{{total}} में से {{filtered}} अकाउंट दिखा रहे हैं"
+  },
+  "sample": {
+    "banner": "सैंपल डेटा देख रहे हैं",
+    "hint": "यह ऐप को एक्सप्लोर करने के लिए डेमो डेटा है।",
+    "uploadPrompt": "अपना डेटा अपलोड करें",
+    "toSeeReal": "अपने असली फॉलोअर्स देखने के लिए।"
+  },
+  "search": {
+    "placeholder": "यूज़रनेम खोजें...",
+    "ariaLabel": "यूज़रनेम से अकाउंट खोजें",
+    "clearAriaLabel": "सर्च क्लियर करें",
+    "resultsCount": "{{total}} में से {{result}} दिखा रहे हैं",
+    "accounts": "अकाउंट्स",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "A→Z सॉर्ट करें",
+    "desc": "Z→A सॉर्ट करें"
+  },
+  "stats": {
+    "followers": "फॉलोअर्स",
+    "following": "फॉलोइंग",
+    "unfollowed": "अनफॉलो किया",
+    "notFollowing": "फॉलो नहीं करते"
+  },
+  "filters": {
+    "title": "रिज़ल्ट फ़िल्टर करें",
+    "reset": "रीसेट",
+    "emptyCategories": "खाली कैटेगरीज़ ({{count, number}})",
+    "addFilter": "{{label}} फ़िल्टर जोड़ें ({{count, number}} अकाउंट्स)",
+    "removeFilter": "{{label}} फ़िल्टर हटाएं ({{count, number}} अकाउंट्स)"
+  },
+  "badges": {
+    "followers": "फॉलोअर्स",
+    "following": "फॉलोइंग",
+    "unfollowed": "हाल ही में अनफॉलो किया",
+    "notFollowingBack": "वापस फॉलो नहीं करते",
+    "mutuals": "म्यूचुअल्स",
+    "notFollowedBack": "आपको फॉलो नहीं करते",
+    "pending": "पेंडिंग रिक्वेस्ट",
+    "permanent": "पेंडिंग (परमानेंट)",
+    "restricted": "प्रतिबंधित",
+    "close": "क्लोज़ फ्रेंड",
+    "dismissed": "सुझाव हटाया"
+  },
+  "empty": {
+    "noUsers": "कोई यूज़र नहीं मिला",
+    "resetFilters": "फ़िल्टर रीसेट करें"
+  },
+  "list": {
+    "header": "अकाउंट ({{count, number}})",
+    "viewProfile": "प्रोफ़ाइल देखें"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "title": "<gradient>Instagram Takibi Bırakanlarını</gradient> Nasıl Kontrol Edersin",
+  "subtitle": "Şifreni paylaşmadan hesabını güvenle analiz etmek için bu 8 basit adımı izle.",
+  "important": "Önemli",
+  "openStep": "Adımı rehberde aç",
+  "steps": {
+    "1": {
+      "title": "Veri Dışa Aktarma Sayfasını Aç",
+      "description": "Platformun veri dışa aktarma sayfasına doğrudan gitmek için aşağıdaki butona dokun. Önce giriş yapman gerekebilir."
+    },
+    "2": {
+      "title": "'Bilgilerinin bir kısmı' seçeneğini seç",
+      "description": "Her şeyi indirme — süreci hızlandırmak için sadece takipçi ve takip edilen verilerine ihtiyacımız var."
+    },
+    "3": {
+      "title": "Sadece 'Takipçiler ve takip edilenler' işaretle",
+      "description": "Mesajlar veya medya gibi diğer tüm seçeneklerin işaretini kaldır. Bu dosyanı çok daha küçük yapar."
+    },
+    "4": {
+      "title": "JSON formatını seç",
+      "description": "Bu çok önemli: HTML değil, JSON seç. HTML dosyaları analizörümüzle çalışmaz."
+    },
+    "5": {
+      "title": "'Tüm zamanlar' seç ve 'Dosyaları oluştur' dokun",
+      "description": "Platform şimdi verilerini hazırlamaya başlayacak. Bu 5 dakika ile birkaç saat arasında sürebilir."
+    },
+    "6": {
+      "title": "E-posta bildirimini bekle",
+      "description": "Gelen kutunu (ve spam klasörünü!) kontrol et. Dosyan indirilmeye hazır olduğunda bir e-posta alacaksın."
+    },
+    "7": {
+      "title": "ZIP dosyasını indir",
+      "description": "Dosyayı cihazına indir. Aldıktan sonra, burada analiz etmeye hazırsın!"
+    },
+    "8": {
+      "title": "Yükle ve Sonuçları Gör",
+      "description": "Buraya geri dön, ZIP dosyanı yükle ve seni kimin takibi bıraktığını anında gör!"
+    }
+  },
+  "cta": {
+    "title": "Başlamaya hazır mısın?",
+    "subtitle": "Veri dışa aktarımını saniyeler içinde gizlice analiz et.",
+    "button": "Analiz Rehberini Aç"
+  },
+  "schema": {
+    "name": "Instagram'da Seni Kimin Takibi Bıraktığını Giriş Yapmadan Nasıl Kontrol Edersin",
+    "description": "Resmi veri dışa aktarımını kullanarak Instagram takibi bırakanları bulma adım adım rehberi. Giriş gerekmez, %100 gizli.",
+    "supplies": {
+      "account": "Instagram hesabı",
+      "email": "E-posta erişimi"
+    },
+    "tool": "Instagram Unfollow Tracker (bu web sitesi)"
+  }
+}

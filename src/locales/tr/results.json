@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "Analiz Sonuçları",
+    "fileInfo": "{{filename}} • {{count, number}} Toplam",
+    "showing": "{{filtered}} / {{total}} hesap gösteriliyor"
+  },
+  "sample": {
+    "banner": "Örnek Veri Görüntüleniyor",
+    "hint": "Bu, uygulamayı keşfetmene yardımcı olan demo verisidir.",
+    "uploadPrompt": "Verilerini yükle",
+    "toSeeReal": "gerçek takipçilerini görmek için."
+  },
+  "search": {
+    "placeholder": "Kullanıcı adı ara...",
+    "ariaLabel": "Hesapları kullanıcı adına göre ara",
+    "clearAriaLabel": "Aramayı temizle",
+    "resultsCount": "{{result}} / {{total}} gösteriliyor",
+    "accounts": "hesap",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "A→Z Sırala",
+    "desc": "Z→A Sırala"
+  },
+  "stats": {
+    "followers": "Takipçiler",
+    "following": "Takip Edilenler",
+    "unfollowed": "Takibi Bırakanlar",
+    "notFollowing": "Takip Etmeyenler"
+  },
+  "filters": {
+    "title": "Sonuçları Filtrele",
+    "reset": "Sıfırla",
+    "emptyCategories": "Boş Kategoriler ({{count, number}})",
+    "addFilter": "{{label}} filtresi ekle ({{count, number}} hesap)",
+    "removeFilter": "{{label}} filtresini kaldır ({{count, number}} hesap)"
+  },
+  "badges": {
+    "followers": "Takipçiler",
+    "following": "Takip edilenler",
+    "unfollowed": "Son takibi bırakanlar",
+    "notFollowingBack": "Geri takip etmeyenler",
+    "mutuals": "Karşılıklı takip",
+    "notFollowedBack": "Seni takip etmeyenler",
+    "pending": "Bekleyen istek",
+    "permanent": "Bekleyen (kalıcı)",
+    "restricted": "Kısıtlanmış",
+    "close": "Yakın arkadaş",
+    "dismissed": "Reddedilen öneri"
+  },
+  "empty": {
+    "noUsers": "Kullanıcı bulunamadı",
+    "resetFilters": "Filtreleri Sıfırla"
+  },
+  "list": {
+    "header": "Hesaplar ({{count, number}})",
+    "viewProfile": "Profili Görüntüle"
+  }
+}

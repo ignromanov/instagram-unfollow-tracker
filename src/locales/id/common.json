@@ -1,0 +1,66 @@
+{
+  "buttons": {
+    "back": "Kembali",
+    "next": "Lanjut",
+    "cancel": "Batal",
+    "tryAgain": "Coba Lagi",
+    "clearData": "Hapus Data",
+    "viewResults": "Hasil",
+    "uploadFile": "Unggah File",
+    "delete": "Hapus"
+  },
+  "badges": {
+    "followers": "Pengikut",
+    "following": "Mengikuti",
+    "unfollowed": "Baru berhenti mengikuti",
+    "notFollowingBack": "Tidak mengikuti balik",
+    "mutuals": "Saling mengikuti",
+    "notFollowedBack": "Tidak diikuti balik",
+    "pending": "Permintaan tertunda",
+    "permanent": "Tertunda (permanen)",
+    "restricted": "Dibatasi",
+    "close": "Teman dekat",
+    "dismissed": "Saran ditolak"
+  },
+  "theme": {
+    "light": "Mode Terang",
+    "dark": "Mode Gelap",
+    "switchToLight": "Beralih ke mode terang",
+    "switchToDark": "Beralih ke mode gelap"
+  },
+  "header": {
+    "clearDataTitle": "Hapus semua data?",
+    "clearDataDescription": "Ini akan menghapus semua data Instagram yang dimuat dan mengembalikan Anda ke halaman utama. Tindakan ini tidak dapat dibatalkan.",
+    "deleteData": "Hapus Data"
+  },
+  "footer": {
+    "description": "Satu-satunya alat analisis hubungan yang bekerja 100% di browser Anda. Tanpa server, tanpa log, hanya data Anda dan perangkat Anda.",
+    "privacyPolicy": "Kebijakan Privasi",
+    "termsOfService": "Syarat Layanan",
+    "contactSupport": "Hubungi Dukungan",
+    "trackingOff": "Pelacakan Mati",
+    "dontTrackMe": "Jangan Lacak Saya",
+    "trackingDisabled": "Analitik dinonaktifkan",
+    "trackingEnabled": "Nonaktifkan analitik anonim",
+    "keepItFree": "Tetap gratis & privat",
+    "supportPrivacy": "Dukung privasi",
+    "madeWithLove": "Dibuat dengan",
+    "forTheCommunity": "untuk Komunitas",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "Lisensi MIT"
+  },
+  "nav": {
+    "privacy": "Kebijakan Privasi",
+    "terms": "Syarat Layanan"
+  },
+  "language": {
+    "changeLanguage": "Ganti Bahasa"
+  },
+  "cta": {
+    "title": "Mulai Analisis Privatmu Hari Ini",
+    "subtitle": "Bergabung dengan ribuan pengguna yang melacak follower tanpa mempertaruhkan akun mereka.",
+    "getStarted": "Mulai",
+    "trySample": "Coba Demo",
+    "tagline": "100% Gratis • Tanpa Login • Privasi Terjamin"
+  }
+}

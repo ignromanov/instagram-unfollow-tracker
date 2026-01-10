@@ -1,0 +1,33 @@
+{
+  "title": "Perguntas Frequentes",
+  "items": {
+    "privacy": {
+      "question": "Isso é realmente privado?",
+      "answer": "Sim. Todo o processamento acontece inteiramente no seu navegador. Seus dados nunca são enviados para nenhum servidor. Você pode até usar este app offline depois que ele carregar."
+    },
+    "zipFile": {
+      "question": "Por que preciso baixar um arquivo ZIP?",
+      "answer": "As plataformas restringem apps de ver certos dados através da sua API oficial para evitar 'spam'. A única maneira segura e autorizada de obter esses dados sem arriscar sua conta é através da ferramenta oficial 'Baixar Suas Informações'."
+    },
+    "accountSafety": {
+      "question": "Minha conta estará segura?",
+      "answer": "Sim. Diferente de outros apps que pedem sua senha e 'raspam' dados (o que viola os Termos de Serviço), esta ferramenta usa sua exportação de dados oficial. É 100% seguro."
+    },
+    "scale": {
+      "question": "Quantas contas isso consegue processar?",
+      "answer": "Testamos esta ferramenta com exportações contendo mais de 1.000.000 de contas. Usamos rolagem virtual de alto desempenho e indexação local para manter a experiência fluida mesmo para grandes conjuntos de dados."
+    },
+    "free": {
+      "question": "Isso é realmente gratuito?",
+      "answer": "Sim. Esta ferramenta é de código aberto e gratuita para usar. Não há assinaturas, paywalls ou limites ocultos."
+    },
+    "safety": {
+      "question": "É seguro usar este rastreador de unfollowers?",
+      "answer": "Sim, 100% seguro. Diferente de apps que pedem sua senha do Instagram, esta ferramenta usa sua exportação oficial de dados do Instagram (arquivo ZIP). Seus dados nunca saem do seu dispositivo - todo o processamento acontece localmente no seu navegador."
+    },
+    "howToFind": {
+      "question": "Como descobrir quem deixou de me seguir no Instagram sem app?",
+      "answer": "Solicite sua exportação de dados do Instagram nas Configurações, baixe o arquivo ZIP quando estiver pronto e envie para esta ferramenta gratuita. Ela analisa seus seguidores localmente sem exigir login."
+    }
+  }
+}

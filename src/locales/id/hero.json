@@ -1,0 +1,38 @@
+{
+  "version": "V1.1 Dioptimalkan untuk 1.000.000+ Akun",
+  "headline": {
+    "prefix": "Siapa yang",
+    "highlight": "Berhenti Follow",
+    "suffix": "Tanpa Login"
+  },
+  "subheadline": "Satu-satunya alat gratis yang menganalisis file ZIP Instagram Anda secara lokal tanpa login. 100% Privat. Tanpa risiko akun. Tanpa penyimpanan server.",
+  "buttons": {
+    "getGuide": "Cek Unfollowers Gratis",
+    "trySample": "Coba dengan Sampel",
+    "haveFile": "Saya sudah punya file ZIP",
+    "viewResults": "Lihat Hasil Analisis"
+  },
+  "trust": {
+    "free": "Gratis Selamanya",
+    "noPassword": "Tanpa Password",
+    "privacy": "Privasi Terjamin"
+  },
+  "features": {
+    "local": {
+      "title": "100% Lokal",
+      "description": "Data tidak pernah keluar dari perangkat Anda"
+    },
+    "noLogin": {
+      "title": "Tanpa Login",
+      "description": "Tanpa risiko banned atau diretas"
+    },
+    "scale": {
+      "title": "Skala Besar",
+      "description": "Mampu memproses 1 juta+ akun dengan cepat"
+    },
+    "openSource": {
+      "title": "Open Source",
+      "description": "Audit kode kami, kami menghargai kepercayaan Anda"
+    }
+  }
+}
