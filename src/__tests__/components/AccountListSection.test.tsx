@@ -7,12 +7,51 @@ import { beforeEach, vi } from 'vitest';
 // Mock the useAccountFiltering hook
 vi.mock('@/hooks/useAccountFiltering');
 
+// Mock child components
+vi.mock('@/components/FilterChips', () => ({
+  FilterChips: ({
+    selectedFilters,
+    onFiltersChange,
+  }: {
+    selectedFilters: Set<BadgeKey>;
+    onFiltersChange: (filters: Set<BadgeKey>) => void;
+  }) => (
+    <div data-testid="filter-chips">
+      <p>Active filters: {selectedFilters.size}</p>
+      <button onClick={() => onFiltersChange(new Set(['following']))}>Toggle Following</button>
+    </div>
+  ),
+}));
+
+vi.mock('@/components/AccountList', () => ({
+  AccountList: ({ accountIndices }: { accountIndices: number[] }) => (
+    <div data-testid="account-list">
+      <p>Accounts ({accountIndices.length})</p>
+      {accountIndices.length === 0 && <p>No accounts match your filters</p>}
+    </div>
+  ),
+}));
+
+vi.mock('@/components/StatCard', () => ({
+  StatCard: ({ label, value }: { label: string; value: number }) => (
+    <div data-testid={`stat-card-${label.toLowerCase()}`}>
+      {label}: {value}
+    </div>
+  ),
+}));
+
 const mockUseAccountFiltering = vi.mocked(useAccountFiltering);
 
 describe('AccountListSection', () => {
   const mockSetQuery = vi.fn();
   const mockSetFilters = vi.fn();
-  const mockClearFilters = vi.fn();
+
+  const defaultProps = {
+    fileHash: 'test-hash-123',
+    accountCount: 21,
+    filename: 'test.zip',
+    isSample: false,
+  };
 
   // Default filter counts for most tests
   const defaultFilterCounts = {
@@ -38,7 +77,6 @@ describe('AccountListSection', () => {
     setFilters: mockSetFilters,
     filterCounts: defaultFilterCounts,
     isFiltering: false,
-    clearFilters: mockClearFilters,
     totalCount: 21,
     hasLoadedData: true,
     processingTime: 0,
@@ -50,16 +88,54 @@ describe('AccountListSection', () => {
     mockUseAccountFiltering.mockReturnValue(createMockReturnValue());
   });
 
-  it('should render all components', () => {
-    render(<AccountListSection />);
+  it('should render all main components', () => {
+    render(<AccountListSection {...defaultProps} />);
 
-    expect(screen.getByPlaceholderText('Search accounts...')).toBeInTheDocument();
-    expect(screen.getByText('Filter by badge')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Add Following filter/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Add Followers filter/ })).toBeInTheDocument();
+    expect(screen.getByText('Analysis Results')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Search usernames...')).toBeInTheDocument();
+    expect(screen.getByTestId('filter-chips')).toBeInTheDocument();
+    expect(screen.getByTestId('account-list')).toBeInTheDocument();
   });
 
-  it('should pass correct props to SearchBar', () => {
+  it('should render stat cards with correct values', () => {
+    render(<AccountListSection {...defaultProps} />);
+
+    expect(screen.getByTestId('stat-card-followers')).toHaveTextContent('Followers: 15');
+    expect(screen.getByTestId('stat-card-following')).toHaveTextContent('Following: 10');
+    expect(screen.getByTestId('stat-card-unfollowed')).toHaveTextContent('Unfollowed: 4');
+    expect(screen.getByTestId('stat-card-not following')).toHaveTextContent('Not Following: 3');
+  });
+
+  it('should display filename and total count', () => {
+    render(<AccountListSection {...defaultProps} />);
+
+    expect(screen.getByText(/test\.zip/)).toBeInTheDocument();
+    expect(screen.getByText(/21 Total/)).toBeInTheDocument();
+  });
+
+  it('should show sample data banner when isSample is true', () => {
+    render(<AccountListSection {...defaultProps} isSample={true} />);
+
+    expect(screen.getByText('Viewing Sample Data')).toBeInTheDocument();
+    expect(screen.getByText(/This is demo data/)).toBeInTheDocument();
+  });
+
+  it('should not show sample data banner when isSample is false', () => {
+    render(<AccountListSection {...defaultProps} isSample={false} />);
+
+    expect(screen.queryByText('Viewing Sample Data')).not.toBeInTheDocument();
+  });
+
+  it('should handle search input changes', () => {
+    render(<AccountListSection {...defaultProps} />);
+
+    const searchInput = screen.getByPlaceholderText('Search usernames...');
+    fireEvent.change(searchInput, { target: { value: 'alice' } });
+
+    expect(mockSetQuery).toHaveBeenCalledWith('alice');
+  });
+
+  it('should update search input value from hook', () => {
     mockUseAccountFiltering.mockReturnValue(
       createMockReturnValue({
         query: 'alice',
@@ -67,44 +143,36 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection />);
+    render(<AccountListSection {...defaultProps} />);
 
-    // Check that at least one search input has the correct value
-    const searchInputs = screen.getAllByPlaceholderText('Search accounts...');
-    expect(searchInputs.length).toBeGreaterThan(0);
-
-    // Find the input with the correct value
-    const inputWithValue = searchInputs.find(
-      input => (input as HTMLInputElement).value === 'alice'
-    );
-    expect(inputWithValue).toBeTruthy();
-    expect(screen.getByText('Showing 2 of 21 accounts')).toBeInTheDocument();
+    const searchInput = screen.getByPlaceholderText('Search usernames...') as HTMLInputElement;
+    expect(searchInput.value).toBe('alice');
   });
 
-  it('should pass correct props to FilterChips', () => {
+  it('should pass filters to FilterChips', () => {
     const selectedFilters = new Set<BadgeKey>(['following', 'followers']);
 
     mockUseAccountFiltering.mockReturnValue(
       createMockReturnValue({
         filters: selectedFilters,
-        isFiltering: true,
       })
     );
 
-    render(<AccountListSection />);
+    render(<AccountListSection {...defaultProps} />);
 
-    // Check that filters are passed correctly (there might be multiple instances)
-    const followingButtons = screen.getAllByRole('button', { name: /Following filter/ });
-    const followersButtons = screen.getAllByRole('button', { name: /Followers filter/ });
-    expect(followingButtons.length).toBeGreaterThan(0);
-    expect(followersButtons.length).toBeGreaterThan(0);
-
-    // Check that isFiltering is passed (should show loading spinner)
-    const loadingSpinner = document.querySelector('.animate-spin');
-    expect(loadingSpinner).toBeInTheDocument();
+    expect(screen.getByText('Active filters: 2')).toBeInTheDocument();
   });
 
-  it('should pass correct props to AccountList', () => {
+  it('should handle filter changes from FilterChips', () => {
+    render(<AccountListSection {...defaultProps} />);
+
+    const toggleButton = screen.getByText('Toggle Following');
+    fireEvent.click(toggleButton);
+
+    expect(mockSetFilters).toHaveBeenCalled();
+  });
+
+  it('should pass filtered indices to AccountList', () => {
     const filteredIndices = [0, 1, 2]; // 3 indices
 
     mockUseAccountFiltering.mockReturnValue(
@@ -113,45 +181,10 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection />);
+    render(<AccountListSection {...defaultProps} />);
 
-    // Check that filtered accounts are passed to AccountList
+    // AccountList should show correct count
     expect(screen.getByText('Accounts (3)')).toBeInTheDocument();
-  });
-
-  it('should handle search input changes', () => {
-    render(<AccountListSection />);
-
-    const searchInput = screen.getByPlaceholderText('Search accounts...');
-    fireEvent.change(searchInput, { target: { value: 'alice' } });
-
-    expect(mockSetQuery).toHaveBeenCalledWith('alice');
-  });
-
-  it('should handle filter changes', () => {
-    render(<AccountListSection />);
-
-    const followingChip = screen.getByRole('button', { name: /Add Following filter/ });
-    fireEvent.click(followingChip);
-
-    expect(mockSetFilters).toHaveBeenCalled();
-  });
-
-  it('should show loading state when filtering', () => {
-    mockUseAccountFiltering.mockReturnValue(
-      createMockReturnValue({
-        isFiltering: true,
-      })
-    );
-
-    render(<AccountListSection />);
-
-    // Should show loading spinner in FilterChips
-    const loadingSpinner = document.querySelector('.animate-spin');
-    expect(loadingSpinner).toBeInTheDocument();
-
-    // Should pass isLoading=true to AccountList
-    expect(screen.getByText('Accounts (21)')).toBeInTheDocument();
   });
 
   it('should handle empty filtered results', () => {
@@ -162,13 +195,42 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection />);
+    render(<AccountListSection {...defaultProps} />);
 
-    expect(screen.getByText('Showing 0 of 21 accounts')).toBeInTheDocument();
+    expect(screen.getByText('Accounts (0)')).toBeInTheDocument();
     expect(screen.getByText('No accounts match your filters')).toBeInTheDocument();
   });
 
-  it('should handle no loaded data', () => {
+  it('should handle sort order toggle', () => {
+    const filteredIndices = [0, 1, 2, 3, 4];
+
+    mockUseAccountFiltering.mockReturnValue(
+      createMockReturnValue({
+        filteredIndices,
+      })
+    );
+
+    render(<AccountListSection {...defaultProps} />);
+
+    const sortButton = screen.getByTitle('Sort Z→A');
+    expect(sortButton).toBeInTheDocument();
+
+    fireEvent.click(sortButton);
+
+    // After click, should show "Sort A→Z"
+    expect(screen.getByTitle('Sort A→Z')).toBeInTheDocument();
+  });
+
+  it('should call useAccountFiltering with correct options', () => {
+    render(<AccountListSection {...defaultProps} />);
+
+    expect(mockUseAccountFiltering).toHaveBeenCalledWith({
+      fileHash: 'test-hash-123',
+      accountCount: 21,
+    });
+  });
+
+  it('should handle zero filter counts', () => {
     const emptyFilterCounts = {
       following: 0,
       followers: 0,
@@ -191,24 +253,9 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection />);
+    render(<AccountListSection {...defaultProps} accountCount={0} />);
 
-    expect(screen.getByText('Showing 0 of 0 accounts')).toBeInTheDocument();
-    expect(screen.getByText('No accounts match your filters')).toBeInTheDocument();
-  });
-
-  it('should display correct result count', () => {
-    const filteredIndices = [0, 1, 2, 3, 4]; // 5 indices
-
-    mockUseAccountFiltering.mockReturnValue(
-      createMockReturnValue({
-        query: 'test',
-        filteredIndices,
-      })
-    );
-
-    render(<AccountListSection />);
-
-    expect(screen.getByText('Showing 5 of 21 accounts')).toBeInTheDocument();
+    expect(screen.getByTestId('stat-card-followers')).toHaveTextContent('Followers: 0');
+    expect(screen.getByTestId('stat-card-following')).toHaveTextContent('Following: 0');
   });
 });

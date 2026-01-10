@@ -77,14 +77,26 @@ describe('useFileUpload', () => {
     const { buildAccountBadgeIndex } = await import('@/core/badges');
 
     vi.mocked(parseInstagramZipFile).mockResolvedValue({
-      following: new Set(['user1']),
-      followers: new Set(['user2']),
-      pendingSent: new Map(),
-      permanentRequests: new Map(),
-      restricted: new Map(),
-      closeFriends: new Map(),
-      unfollowed: new Map(),
-      dismissed: new Map(),
+      data: {
+        following: new Set(['user1']),
+        followers: new Set(['user2']),
+        pendingSent: new Map(),
+        permanentRequests: new Map(),
+        restricted: new Map(),
+        closeFriends: new Map(),
+        unfollowed: new Map(),
+        dismissedSuggestions: new Map(),
+        followingTimestamps: new Map(),
+        followersTimestamps: new Map(),
+      },
+      warnings: [],
+      discovery: {
+        format: 'json',
+        isInstagramExport: true,
+        basePath: '',
+        files: [],
+      },
+      hasMinimalData: true,
     });
 
     vi.mocked(buildAccountBadgeIndex).mockReturnValue([

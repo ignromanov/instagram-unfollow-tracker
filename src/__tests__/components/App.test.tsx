@@ -1,50 +1,90 @@
-import type { BadgeKey, FileMetadata } from '@/core/types';
-import { useAppStore } from '@/lib/store';
+import type { FileMetadata } from '@/core/types';
 import { App } from '@/ui/App';
-import { fireEvent, render, screen, waitFor } from '@tests/utils/testUtils';
+import { render, screen, waitFor } from '@tests/utils/testUtils';
 
-// Mock components
-vi.mock('@/components/Header', () => ({
-  Header: ({ onHelpClick }: { onHelpClick: () => void }) => (
-    <div data-testid="header">
-      <button onClick={onHelpClick}>Help</button>
-    </div>
+// Mock all major components
+vi.mock('@/components/Hero', () => ({
+  Hero: ({ hasData }: { hasData: boolean }) => (
+    <div data-testid="hero">Hero Screen {hasData && '(has data)'}</div>
   ),
 }));
 
-vi.mock('@/components/FileUploadSection', () => ({
-  FileUploadSection: ({ onHelpClick }: { onHelpClick: () => void }) => (
-    <div data-testid="file-upload-section">
-      <button onClick={onHelpClick}>Help</button>
-    </div>
-  ),
+vi.mock('@/components/HeaderV2', () => ({
+  HeaderV2: () => <div data-testid="header">Header</div>,
+}));
+
+vi.mock('@/components/Wizard', () => ({
+  Wizard: () => <div data-testid="wizard">Wizard</div>,
+}));
+
+vi.mock('@/components/WaitingDashboard', () => ({
+  WaitingDashboard: () => <div data-testid="waiting-dashboard">Waiting Dashboard</div>,
+}));
+
+vi.mock('@/components/UploadZone', () => ({
+  UploadZone: () => <div data-testid="upload-zone">Upload Zone</div>,
 }));
 
 vi.mock('@/components/AccountListSection', () => ({
-  AccountListSection: () => <div data-testid="account-list-section">Account List</div>,
+  AccountListSection: ({ isSample }: { isSample: boolean }) => (
+    <div data-testid="account-list-section">Account List {isSample && '(sample)'}</div>
+  ),
 }));
 
 vi.mock('@/components/Footer', () => ({
   Footer: () => <div data-testid="footer">Footer</div>,
 }));
 
-vi.mock('@/components/InstructionsModal', () => ({
-  InstructionsModal: ({ open }: { open: boolean }) =>
-    open ? <div data-testid="instructions-modal">Instructions</div> : null,
+vi.mock('@/components/HowToSection', () => ({
+  HowToSection: () => <div data-testid="how-to-section">How To</div>,
 }));
 
-// Mock store
-vi.mock('@/lib/store', () => ({
-  useAppStore: vi.fn(),
+vi.mock('@/components/FAQSection', () => ({
+  FAQSection: () => <div data-testid="faq-section">FAQ</div>,
 }));
 
-// Mock useHydration
+vi.mock('@/components/FooterCTA', () => ({
+  FooterCTA: () => <div data-testid="footer-cta">Footer CTA</div>,
+}));
+
+vi.mock('@/components/BuyMeCoffeeWidget', () => ({
+  BuyMeCoffeeWidget: () => <div data-testid="bmc-widget">BMC Widget</div>,
+}));
+
+vi.mock('@/components/PrivacyPolicy', () => ({
+  PrivacyPolicy: () => <div data-testid="privacy-policy">Privacy Policy</div>,
+}));
+
+vi.mock('@/components/TermsOfService', () => ({
+  TermsOfService: () => <div data-testid="terms-of-service">Terms of Service</div>,
+}));
+
+// Mock hooks
 vi.mock('@/hooks/useHydration', () => ({
-  useHydration: vi.fn(() => true), // Default: Always hydrated
+  useHydration: vi.fn(() => true), // Default: hydrated
 }));
 
-const mockUseAppStore = vi.mocked(useAppStore);
+vi.mock('@/hooks/useInstagramData', () => ({
+  useInstagramData: vi.fn(() => ({
+    uploadState: { status: 'idle', error: null },
+    handleZipUpload: vi.fn(),
+    handleClearData: vi.fn(),
+    fileMetadata: null,
+    parseWarnings: [],
+  })),
+}));
+
+vi.mock('@/hooks/useSampleData', () => ({
+  useSampleData: vi.fn(() => ({
+    load: vi.fn(),
+    state: 'idle',
+    data: null,
+  })),
+}));
+
 const mockUseHydration = vi.mocked((await import('@/hooks/useHydration')).useHydration);
+const mockUseInstagramData = vi.mocked((await import('@/hooks/useInstagramData')).useInstagramData);
+const mockUseSampleData = vi.mocked((await import('@/hooks/useSampleData')).useSampleData);
 
 describe('App Component', () => {
   const mockFileMetadata: FileMetadata = {
@@ -55,123 +95,144 @@ describe('App Component', () => {
     accountCount: 100,
   };
 
-  // Helper function to create default mock state
-  const createMockState = (
-    overrides: Partial<{
-      fileMetadata: FileMetadata | null;
-      filters: Set<BadgeKey>;
-      currentFileName: string | null;
-      uploadStatus: 'idle' | 'loading' | 'success' | 'error';
-      uploadError: string | null;
-    }> = {}
-  ) => ({
-    filters: new Set([] as BadgeKey[]),
-    fileMetadata: null,
-    currentFileName: null,
-    uploadStatus: 'idle' as const,
-    uploadError: null,
-    _hasHydrated: true,
-    setFilters: vi.fn(),
-    setUploadInfo: vi.fn(),
-    clearData: vi.fn(),
-    ...overrides,
-  });
-
   beforeEach(() => {
     vi.clearAllMocks();
-    mockUseAppStore.mockImplementation(selector => selector(createMockState()));
-    mockUseHydration.mockReturnValue(true); // Default: hydrated
+    // Reset window.location.hash
+    window.location.hash = '';
+
+    // Default mocks
+    mockUseHydration.mockReturnValue(true);
+    mockUseInstagramData.mockReturnValue({
+      uploadState: { status: 'idle', error: null },
+      handleZipUpload: vi.fn(),
+      handleClearData: vi.fn(),
+      fileMetadata: null,
+      parseWarnings: [],
+      uploadProgress: 0,
+      processedCount: 0,
+      totalCount: 0,
+    });
+    mockUseSampleData.mockReturnValue({
+      load: vi.fn(),
+      clear: vi.fn(),
+      state: 'idle',
+      data: null,
+      error: null,
+    });
   });
 
-  it('should render main components', () => {
-    // Set up state with no data to show file upload section
-    mockUseAppStore.mockImplementation(selector =>
-      selector(
-        createMockState({
-          fileMetadata: null,
-        })
-      )
-    );
-
+  it('should render header and footer', () => {
     render(<App />);
 
     expect(screen.getByTestId('header')).toBeInTheDocument();
-    expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
     expect(screen.getByTestId('footer')).toBeInTheDocument();
   });
 
-  it('should show file upload section when no data is loaded', () => {
-    mockUseAppStore.mockImplementation(selector =>
-      selector(
-        createMockState({
-          fileMetadata: null,
-        })
-      )
-    );
-
+  it('should show Hero screen by default (no hash)', () => {
     render(<App />);
 
-    expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
-    expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
+    expect(screen.getByTestId('hero')).toBeInTheDocument();
   });
 
-  it('should show account list section when data is loaded', () => {
-    mockUseAppStore.mockImplementation(selector =>
-      selector(
-        createMockState({
-          fileMetadata: mockFileMetadata,
-        })
-      )
-    );
-
+  it('should show SEO sections on Hero screen', () => {
     render(<App />);
 
-    expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
-    expect(screen.queryByTestId('file-upload-section')).not.toBeInTheDocument();
+    expect(screen.getByTestId('how-to-section')).toBeInTheDocument();
+    expect(screen.getByTestId('faq-section')).toBeInTheDocument();
+    expect(screen.getByTestId('footer-cta')).toBeInTheDocument();
   });
 
-  it('should open instructions modal when help button is clicked', async () => {
-    render(<App />);
+  it('should show UploadZone when hash is #upload', async () => {
+    window.location.hash = 'upload';
 
-    const helpButtons = screen.getAllByText('Help');
-    fireEvent.click(helpButtons[0]);
+    render(<App />);
 
     await waitFor(() => {
-      expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
+      expect(screen.getByTestId('upload-zone')).toBeInTheDocument();
     });
   });
 
-  it('should close instructions modal when onOpenChange is called', async () => {
+  it('should show WaitingDashboard when hash is #waiting', async () => {
+    window.location.hash = 'waiting';
+
     render(<App />);
 
-    // Open modal
-    const helpButtons = screen.getAllByText('Help');
-    fireEvent.click(helpButtons[0]);
-
     await waitFor(() => {
-      expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
+      expect(screen.getByTestId('waiting-dashboard')).toBeInTheDocument();
+    });
+  });
+
+  it('should show AccountListSection when hash is #results and has data', async () => {
+    window.location.hash = 'results';
+
+    mockUseInstagramData.mockReturnValue({
+      uploadState: { status: 'success', error: null },
+      handleZipUpload: vi.fn(),
+      handleClearData: vi.fn(),
+      fileMetadata: mockFileMetadata,
+      parseWarnings: [],
+      uploadProgress: 100,
+      processedCount: 100,
+      totalCount: 100,
     });
 
-    // Modal should be closed by default after opening
-    // This tests the modal state management
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+    });
+  });
+
+  it('should redirect to #upload when trying to access #results without data', async () => {
+    window.location.hash = 'results';
+
+    mockUseInstagramData.mockReturnValue({
+      uploadState: { status: 'idle', error: null },
+      handleZipUpload: vi.fn(),
+      handleClearData: vi.fn(),
+      fileMetadata: null,
+      parseWarnings: [],
+      uploadProgress: 0,
+      processedCount: 0,
+      totalCount: 0,
+    });
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(window.location.hash).toBe('#upload');
+      expect(screen.getByTestId('upload-zone')).toBeInTheDocument();
+    });
+  });
+
+  it('should show PrivacyPolicy when hash is #privacy', async () => {
+    window.location.hash = 'privacy';
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('privacy-policy')).toBeInTheDocument();
+    });
+  });
+
+  it('should show TermsOfService when hash is #terms', async () => {
+    window.location.hash = 'terms';
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('terms-of-service')).toBeInTheDocument();
+    });
   });
 
   describe('Hydration states', () => {
     it('should show loading spinner when not hydrated', () => {
       mockUseHydration.mockReturnValue(false);
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: null,
-          })
-        )
-      );
 
       render(<App />);
 
       expect(screen.getByText('Loading...')).toBeInTheDocument();
-      expect(screen.queryByTestId('file-upload-section')).not.toBeInTheDocument();
-      expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('hero')).not.toBeInTheDocument();
     });
 
     it('should show loading spinner with animation', () => {
@@ -183,91 +244,33 @@ describe('App Component', () => {
       expect(spinner).toHaveClass('animate-spin');
     });
 
-    it('should show file upload section after hydration with no data', () => {
+    it('should show Hero after hydration with no data', () => {
       mockUseHydration.mockReturnValue(true);
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: null,
-          })
-        )
-      );
 
       render(<App />);
 
       expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+      expect(screen.getByTestId('hero')).toBeInTheDocument();
     });
 
-    it('should show account list after hydration with data', () => {
+    it('should show Hero after hydration even with data (no auto-redirect)', () => {
       mockUseHydration.mockReturnValue(true);
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: mockFileMetadata,
-          })
-        )
-      );
-
-      render(<App />);
-
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
-    });
-
-    it('should transition from loading to file upload', async () => {
-      mockUseHydration.mockReturnValue(false);
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: null,
-          })
-        )
-      );
-
-      const { rerender } = render(<App />);
-
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-      // Simulate hydration complete
-      mockUseHydration.mockReturnValue(true);
-      rerender(<App />);
-
-      await waitFor(() => {
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-        expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+      mockUseInstagramData.mockReturnValue({
+        uploadState: { status: 'success', error: null },
+        handleZipUpload: vi.fn(),
+        handleClearData: vi.fn(),
+        fileMetadata: mockFileMetadata,
+        parseWarnings: [],
+        uploadProgress: 100,
+        processedCount: 100,
+        totalCount: 100,
       });
-    });
-
-    it('should handle hydration with existing data', () => {
-      mockUseHydration.mockReturnValue(false);
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: mockFileMetadata,
-          })
-        )
-      );
-
-      const { rerender } = render(<App />);
-
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-      // Simulate hydration complete
-      mockUseHydration.mockReturnValue(true);
-      rerender(<App />);
-
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
-    });
-
-    it('should not show file upload or account list during hydration', () => {
-      mockUseHydration.mockReturnValue(false);
 
       render(<App />);
 
-      expect(screen.queryByTestId('file-upload-section')).not.toBeInTheDocument();
-      expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
+      expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+      expect(screen.getByTestId('hero')).toBeInTheDocument();
+      expect(screen.getByText('Hero Screen (has data)')).toBeInTheDocument();
     });
 
     it('should always show header and footer regardless of hydration', () => {
@@ -276,79 +279,67 @@ describe('App Component', () => {
       render(<App />);
 
       expect(screen.getByTestId('header')).toBeInTheDocument();
-      expect(screen.getByTestId('footer')).toBeInTheDocument();
+      // Note: Footer is not shown during loading in V3
     });
   });
 
-  describe('File metadata validation', () => {
-    it('should treat null fileMetadata as no data', () => {
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: null,
-          })
-        )
-      );
+  describe('Sample data route', () => {
+    it('should show loading state when loading sample data', async () => {
+      window.location.hash = 'sample';
+
+      mockUseSampleData.mockReturnValue({
+        load: vi.fn(),
+        clear: vi.fn(),
+        state: 'loading',
+        data: null,
+        error: null,
+      });
 
       render(<App />);
 
-      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Loading sample data...')).toBeInTheDocument();
+      });
     });
 
-    it('should treat fileMetadata with 0 accounts as no data', () => {
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: { ...mockFileMetadata, accountCount: 0 },
-          })
-        )
-      );
+    it('should show AccountListSection when sample data is loaded', async () => {
+      window.location.hash = 'sample';
+
+      mockUseSampleData.mockReturnValue({
+        load: vi.fn(),
+        clear: vi.fn(),
+        state: 'success',
+        data: {
+          fileHash: 'sample-hash',
+          accountCount: 1180,
+        },
+        error: null,
+      });
 
       render(<App />);
 
-      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+        expect(screen.getByText('Account List (sample)')).toBeInTheDocument();
+      });
     });
 
-    it('should treat fileMetadata with undefined accountCount as no data', () => {
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: { ...mockFileMetadata, accountCount: undefined as any },
-          })
-        )
-      );
+    it('should show error state when sample data fails to load', async () => {
+      window.location.hash = 'sample';
+
+      mockUseSampleData.mockReturnValue({
+        load: vi.fn(),
+        clear: vi.fn(),
+        state: 'error',
+        data: null,
+        error: 'Failed to load',
+      });
 
       render(<App />);
 
-      expect(screen.getByTestId('file-upload-section')).toBeInTheDocument();
-    });
-
-    it('should show account list with valid accountCount', () => {
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: { ...mockFileMetadata, accountCount: 1 },
-          })
-        )
-      );
-
-      render(<App />);
-
-      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
-    });
-
-    it('should show account list with large accountCount', () => {
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: { ...mockFileMetadata, accountCount: 1000000 },
-          })
-        )
-      );
-
-      render(<App />);
-
-      expect(screen.getByTestId('account-list-section')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Failed to generate sample data')).toBeInTheDocument();
+      });
     });
   });
 
@@ -361,61 +352,45 @@ describe('App Component', () => {
       expect(mainDiv).toHaveClass('bg-background', 'flex', 'flex-col');
     });
 
-    it('should have proper spacing and responsive padding', () => {
-      const { container } = render(<App />);
+    it('should have skip to content link for accessibility', () => {
+      render(<App />);
 
-      const contentDiv = container.querySelector('.mx-auto');
-      expect(contentDiv).toHaveClass('max-w-7xl', 'px-4', 'py-8', 'sm:px-6', 'lg:px-8');
+      const skipLink = screen.getByText('Skip to main content');
+      expect(skipLink).toHaveClass('sr-only');
     });
 
-    it('should have footer with bottom spacing', () => {
+    it('should have main element with id for skip link', () => {
       const { container } = render(<App />);
 
-      const flexDiv = container.querySelector('.flex-1');
-      expect(flexDiv).toHaveClass('pb-20');
+      const main = container.querySelector('#main-content');
+      expect(main).toBeInTheDocument();
+      expect(main?.tagName).toBe('MAIN');
     });
   });
 
-  describe('Instructions modal integration', () => {
-    it('should pass correct props to InstructionsModal', () => {
-      render(<App />);
+  describe('Auto-navigation after upload', () => {
+    it('should navigate to results after successful upload', async () => {
+      window.location.hash = 'upload';
 
-      // Modal should not be visible initially
-      expect(screen.queryByTestId('instructions-modal')).not.toBeInTheDocument();
-    });
+      const { rerender } = render(<App />);
 
-    it('should open modal from header help button', async () => {
-      render(<App />);
+      // Simulate successful upload
+      mockUseInstagramData.mockReturnValue({
+        uploadState: { status: 'success', error: null },
+        handleZipUpload: vi.fn(),
+        handleClearData: vi.fn(),
+        fileMetadata: mockFileMetadata,
+        parseWarnings: [],
+        uploadProgress: 100,
+        processedCount: 100,
+        totalCount: 100,
+      });
 
-      const headerHelpButton = screen.getByTestId('header').querySelector('button');
-      if (headerHelpButton) {
-        fireEvent.click(headerHelpButton);
+      rerender(<App />);
 
-        await waitFor(() => {
-          expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
-        });
-      }
-    });
-
-    it('should open modal from file upload section help button', async () => {
-      mockUseAppStore.mockImplementation(selector =>
-        selector(
-          createMockState({
-            fileMetadata: null,
-          })
-        )
-      );
-
-      render(<App />);
-
-      const uploadHelpButton = screen.getByTestId('file-upload-section').querySelector('button');
-      if (uploadHelpButton) {
-        fireEvent.click(uploadHelpButton);
-
-        await waitFor(() => {
-          expect(screen.getByTestId('instructions-modal')).toBeInTheDocument();
-        });
-      }
+      await waitFor(() => {
+        expect(window.location.hash).toBe('#results');
+      });
     });
   });
 });

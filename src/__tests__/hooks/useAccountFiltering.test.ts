@@ -74,11 +74,15 @@ describe('useAccountFiltering', () => {
 
   describe('Initialization', () => {
     it('should initialize with default values', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       expect(result.current.query).toBe('');
       expect(result.current.totalCount).toBe(10);
-      expect(result.current.hasLoadedData).toBe(true);
       expect(result.current.filters).toEqual(new Set());
       expect(result.current.isFiltering).toBe(false);
       expect(result.current.processingTime).toBe(0);
@@ -92,7 +96,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should initialize engine with fileHash and totalCount', async () => {
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(mockEngine.init).toHaveBeenCalledWith('test-hash-123', 10);
@@ -102,7 +111,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should load filter counts from IndexedDB', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(indexedDBService.getBadgeStats).toHaveBeenCalledWith('test-hash-123');
@@ -124,10 +138,14 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: null,
+          accountCount: 0,
+        })
+      );
 
       expect(result.current.totalCount).toBe(0);
-      expect(result.current.hasLoadedData).toBe(false);
       expect(result.current.filteredIndices).toEqual([]);
 
       unmount();
@@ -136,7 +154,12 @@ describe('useAccountFiltering', () => {
 
   describe('Interface', () => {
     it('should return correct interface', () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       expect(typeof result.current.setQuery).toBe('function');
       expect(typeof result.current.setFilters).toBe('function');
@@ -156,7 +179,12 @@ describe('useAccountFiltering', () => {
 
   describe('Query handling', () => {
     it('should update query when setQuery is called', () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('alice');
@@ -168,7 +196,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should call filterToIndices when query changes', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('alice');
@@ -184,7 +217,12 @@ describe('useAccountFiltering', () => {
     it('should update filteredIndices when query results are received', async () => {
       mockEngine.filterToIndices.mockResolvedValue([0, 2, 4]);
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -200,7 +238,12 @@ describe('useAccountFiltering', () => {
     it('should handle empty query results', async () => {
       mockEngine.filterToIndices.mockResolvedValue([]);
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('nonexistent');
@@ -216,7 +259,12 @@ describe('useAccountFiltering', () => {
 
   describe('Filter handling', () => {
     it('should update filters when setFilters is called', () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       const newFilters = new Set<BadgeKey>(['following']);
 
@@ -242,7 +290,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(mockEngine.filterToIndices).toHaveBeenCalledWith('', ['following']);
@@ -252,7 +305,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should show all indices when no filters and no query', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(result.current.filteredIndices).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -273,7 +331,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(mockEngine.filterToIndices).toHaveBeenCalledWith(
@@ -288,7 +351,12 @@ describe('useAccountFiltering', () => {
 
   describe('Clear filters', () => {
     it('should clear query and filters when clearFilters is called', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -317,7 +385,12 @@ describe('useAccountFiltering', () => {
         () => new Promise(resolve => setTimeout(() => resolve([0, 1]), 50))
       );
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -340,7 +413,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should set isFiltering to false after successful filtering', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -359,7 +437,12 @@ describe('useAccountFiltering', () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockEngine.filterToIndices.mockRejectedValue(new Error('Filter failed'));
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -384,7 +467,12 @@ describe('useAccountFiltering', () => {
 
       vi.mocked(IndexedDBFilterEngine).mockImplementation(() => failingEngine as any);
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       // Hook should still initialize despite engine init failure
       expect(result.current.totalCount).toBe(10);
@@ -402,7 +490,12 @@ describe('useAccountFiltering', () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       vi.mocked(indexedDBService.getBadgeStats).mockRejectedValue(new Error('Stats failed'));
 
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(consoleErrorSpy).toHaveBeenCalled();
@@ -415,7 +508,12 @@ describe('useAccountFiltering', () => {
 
   describe('Cleanup', () => {
     it('should cleanup engine on unmount', () => {
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       unmount();
 
@@ -427,7 +525,12 @@ describe('useAccountFiltering', () => {
         () => new Promise(resolve => setTimeout(() => resolve([0, 1]), 100))
       );
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -457,7 +560,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('alice');
@@ -484,7 +592,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: 0,
+        })
+      );
 
       expect(result.current.totalCount).toBe(0);
       expect(result.current.filteredIndices).toEqual([]);
@@ -504,7 +617,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: null,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       expect(result.current.filteredIndices).toEqual([]);
 
@@ -512,7 +630,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should handle whitespace-only query', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('   ');
@@ -558,7 +681,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       // Wait for initial filtering to start
       await waitFor(() => {
@@ -588,32 +716,41 @@ describe('useAccountFiltering', () => {
     });
 
     it('should handle null engine during filtering', async () => {
-      // This test verifies lines 119-124: if (!engine) { ... return }
-      // We need to make filterEngineRef.current null during filtering
+      // This test verifies that when fileHash becomes null, the hook returns empty results
 
       // First, render with a valid engine
-      const { result, unmount, rerender } = renderHook(() => useAccountFiltering());
+      const { result, unmount, rerender } = renderHook(
+        ({ fileHash, accountCount }) =>
+          useAccountFiltering({
+            fileHash,
+            accountCount,
+          }),
+        {
+          initialProps: {
+            fileHash: mockFileMetadata.fileHash,
+            accountCount: mockFileMetadata.accountCount,
+          },
+        }
+      );
 
       // Wait for initial state
       await waitFor(() => {
         expect(result.current.filteredIndices).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
       });
 
-      // Now simulate a scenario where engine becomes null
-      // This can happen if fileHash changes to null/empty
+      // Update store to have empty filters
       const mockEmptyFilters = new Set<BadgeKey>();
-
       vi.mocked(useAppStore).mockImplementation((selector: any) => {
         const state = {
-          fileMetadata: null, // No file metadata = no engine
+          fileMetadata: null,
           filters: mockEmptyFilters,
           setFilters: mockSetFilters,
         };
         return selector(state);
       });
 
-      // Trigger rerender with null fileMetadata
-      rerender();
+      // Trigger rerender with null fileHash
+      rerender({ fileHash: null, accountCount: 0 });
 
       // Should handle null engine gracefully
       await waitFor(() => {
@@ -641,7 +778,12 @@ describe('useAccountFiltering', () => {
         .mockReturnValueOnce(firstPromise)
         .mockReturnValueOnce(secondPromise);
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       // Start first filtering
       act(() => {
@@ -684,7 +826,19 @@ describe('useAccountFiltering', () => {
 
   describe('Engine lifecycle', () => {
     it('should reinitialize engine when fileHash changes', async () => {
-      const { rerender, unmount } = renderHook(() => useAccountFiltering());
+      const { rerender, unmount } = renderHook(
+        ({ fileHash, accountCount }) =>
+          useAccountFiltering({
+            fileHash,
+            accountCount,
+          }),
+        {
+          initialProps: {
+            fileHash: mockFileMetadata.fileHash,
+            accountCount: mockFileMetadata.accountCount,
+          },
+        }
+      );
 
       // Initial engine init
       await waitFor(() => {
@@ -695,22 +849,21 @@ describe('useAccountFiltering', () => {
 
       // Change fileHash
       const newMockFilters = new Set<BadgeKey>();
-      const newFileMetadata = {
-        ...mockFileMetadata,
-        fileHash: 'new-hash-456',
-        accountCount: 20,
-      };
 
       vi.mocked(useAppStore).mockImplementation((selector: any) => {
         const state = {
-          fileMetadata: newFileMetadata,
+          fileMetadata: {
+            ...mockFileMetadata,
+            fileHash: 'new-hash-456',
+            accountCount: 20,
+          },
           filters: newMockFilters,
           setFilters: mockSetFilters,
         };
         return selector(state);
       });
 
-      rerender();
+      rerender({ fileHash: 'new-hash-456', accountCount: 20 });
 
       // Should clear old engine and init new one
       await waitFor(() => {
@@ -733,7 +886,12 @@ describe('useAccountFiltering', () => {
 
       vi.mocked(IndexedDBFilterEngine).mockImplementation(() => failingEngine as any);
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       // Wait for init to fail
       await waitFor(() => {
@@ -751,7 +909,19 @@ describe('useAccountFiltering', () => {
 
   describe('Filter counts', () => {
     it('should update filter counts when fileHash changes', async () => {
-      const { rerender, result, unmount } = renderHook(() => useAccountFiltering());
+      const { rerender, result, unmount } = renderHook(
+        ({ fileHash, accountCount }) =>
+          useAccountFiltering({
+            fileHash,
+            accountCount,
+          }),
+        {
+          initialProps: {
+            fileHash: mockFileMetadata.fileHash,
+            accountCount: mockFileMetadata.accountCount,
+          },
+        }
+      );
 
       // Initial counts
       await waitFor(() => {
@@ -768,21 +938,20 @@ describe('useAccountFiltering', () => {
       vi.mocked(indexedDBService.getBadgeStats).mockResolvedValue(newFilterCounts);
 
       const newMockFilters = new Set<BadgeKey>();
-      const newFileMetadata = {
-        ...mockFileMetadata,
-        fileHash: 'new-hash-789',
-      };
 
       vi.mocked(useAppStore).mockImplementation((selector: any) => {
         const state = {
-          fileMetadata: newFileMetadata,
+          fileMetadata: {
+            ...mockFileMetadata,
+            fileHash: 'new-hash-789',
+          },
           filters: newMockFilters,
           setFilters: mockSetFilters,
         };
         return selector(state);
       });
 
-      rerender();
+      rerender({ fileHash: 'new-hash-789', accountCount: mockFileMetadata.accountCount });
 
       // Should load new counts
       await waitFor(() => {
@@ -805,7 +974,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: null,
+          accountCount: 0,
+        })
+      );
 
       // Wait a bit to ensure no calls are made
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -827,7 +1001,12 @@ describe('useAccountFiltering', () => {
         return [debouncedValue, vi.fn()] as any;
       });
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       // Rapid query changes
       act(() => {
@@ -851,7 +1030,12 @@ describe('useAccountFiltering', () => {
 
   describe('Memory management', () => {
     it('should clear engine on unmount', () => {
-      const { unmount } = renderHook(() => useAccountFiltering());
+      const { unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       unmount();
 
@@ -863,7 +1047,12 @@ describe('useAccountFiltering', () => {
         () => new Promise(resolve => setTimeout(() => resolve([0, 1]), 200))
       );
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -880,7 +1069,12 @@ describe('useAccountFiltering', () => {
     });
 
     it('should reset filtering state on unmount', () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -896,7 +1090,12 @@ describe('useAccountFiltering', () => {
 
   describe('Filter array stability', () => {
     it('should maintain stable filter array when content unchanged', async () => {
-      const { result, rerender, unmount } = renderHook(() => useAccountFiltering());
+      const { result, rerender, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       const initialCallCount = mockEngine.filterToIndices.mock.calls.length;
 
@@ -925,7 +1124,12 @@ describe('useAccountFiltering', () => {
         return selector(state);
       });
 
-      const { rerender, unmount } = renderHook(() => useAccountFiltering());
+      const { rerender, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       await waitFor(() => {
         expect(mockEngine.filterToIndices).toHaveBeenCalledWith('', ['following']);
@@ -958,7 +1162,12 @@ describe('useAccountFiltering', () => {
 
   describe('Processing time', () => {
     it('should reset processing time after filtering', async () => {
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');
@@ -975,7 +1184,12 @@ describe('useAccountFiltering', () => {
     it('should reset processing time on error', async () => {
       mockEngine.filterToIndices.mockRejectedValue(new Error('Filter failed'));
 
-      const { result, unmount } = renderHook(() => useAccountFiltering());
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
 
       act(() => {
         result.current.setQuery('test');

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AccountList } from '@/components/AccountList';
 import type { AccountBadges } from '@/core/types';
 
@@ -18,6 +18,8 @@ vi.mock('@tanstack/react-virtual', () => ({
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
   ExternalLink: () => <span data-testid="external-link-icon">→</span>,
+  User: () => <span data-testid="user-icon">👤</span>,
+  Ghost: () => <span data-testid="ghost-icon">👻</span>,
 }));
 
 // Mock store
@@ -50,20 +52,25 @@ vi.mock('@/hooks/useAccountDataSource', () => ({
 }));
 
 describe('AccountList Virtual List', () => {
+  const defaultProps = {
+    fileHash: 'test-hash',
+    accountCount: 100,
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('should render virtual list with correct structure', () => {
     const accountIndices = [0, 1, 2];
-    render(<AccountList accountIndices={accountIndices} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
 
     expect(screen.getByText('Accounts (3)')).toBeInTheDocument();
   });
 
   it('should render visible accounts', () => {
     const accountIndices = [0, 1, 2];
-    render(<AccountList accountIndices={accountIndices} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
 
     expect(screen.getByText('@test_user_0')).toBeInTheDocument();
     expect(screen.getByText('@test_user_1')).toBeInTheDocument();
@@ -72,7 +79,7 @@ describe('AccountList Virtual List', () => {
 
   it('should handle large datasets efficiently', () => {
     const largeIndices = Array.from({ length: 10000 }, (_, i) => i);
-    render(<AccountList accountIndices={largeIndices} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={largeIndices} hasLoadedData={true} />);
 
     // Should only render visible items (3 mocked)
     expect(screen.getByText('Accounts (10,000)')).toBeInTheDocument();
@@ -80,55 +87,46 @@ describe('AccountList Virtual List', () => {
   });
 
   it('should handle empty dataset', () => {
-    render(<AccountList accountIndices={[]} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={[]} hasLoadedData={true} />);
 
-    expect(screen.getByText('No accounts match your filters')).toBeInTheDocument();
+    expect(screen.getByText('No users found')).toBeInTheDocument();
   });
 
   it('should handle single item', () => {
     const singleIndices = [0];
-    render(<AccountList accountIndices={singleIndices} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={singleIndices} hasLoadedData={true} />);
 
     expect(screen.getByText('Accounts (1)')).toBeInTheDocument();
     expect(screen.getByText('@test_user_0')).toBeInTheDocument();
   });
 
   it('should not render when data not loaded', () => {
-    const { container } = render(<AccountList accountIndices={[0, 1]} hasLoadedData={false} />);
+    const { container } = render(
+      <AccountList {...defaultProps} accountIndices={[0, 1]} hasLoadedData={false} />
+    );
 
     expect(container.firstChild).toBeNull();
   });
 
   it('should handle external links correctly', () => {
     const accountIndices = [0, 1, 2];
-    render(<AccountList accountIndices={accountIndices} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
 
-    // Mock window.open
-    const originalOpen = window.open;
-    window.open = vi.fn();
+    // Find links to Instagram profiles
+    const profileLinks = screen.getAllByRole('link');
+    expect(profileLinks.length).toBeGreaterThan(0);
 
-    // Find account items by role="button"
-    const accountItems = screen.getAllByRole('button');
-    expect(accountItems.length).toBeGreaterThan(0);
-
-    // Click the first account item
-    const firstItem = accountItems[0];
-    fireEvent.click(firstItem);
-
-    // Verify window.open was called with correct URL
-    expect(window.open).toHaveBeenCalledWith(
-      'https://instagram.com/test_user_0',
-      '_blank',
-      'noopener,noreferrer'
-    );
-
-    // Restore window.open
-    window.open = originalOpen;
+    // Check that the first username link has correct href
+    const firstUsernameLink = profileLinks.find(link => link.textContent?.includes('@test_user_0'));
+    expect(firstUsernameLink).toBeDefined();
+    expect(firstUsernameLink).toHaveAttribute('href', 'https://instagram.com/test_user_0');
+    expect(firstUsernameLink).toHaveAttribute('target', '_blank');
+    expect(firstUsernameLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('should display badges correctly', () => {
     const accountIndices = [0, 1, 2];
-    render(<AccountList accountIndices={accountIndices} hasLoadedData={true} />);
+    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
 
     expect(screen.getByText('Following')).toBeInTheDocument();
     expect(screen.getByText('Followers')).toBeInTheDocument();

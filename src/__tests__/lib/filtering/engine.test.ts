@@ -1,17 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import type { FilterEngine, FilterEngineResult, FilterEngineConfig } from '@/lib/filtering/engine';
+import type { FilterEngine, FilterEngineConfig, FilterEngineResult } from '@/lib/filtering/engine';
 import type { AccountBadges } from '@/core/types';
 
-describe('FilterEngine interface', () => {
-  const mockAccounts: AccountBadges[] = [
-    { username: 'user1', badges: { following: 123 } },
-    { username: 'user2', badges: { followers: 456 } },
-  ];
-
+describe('FilterEngine interface types', () => {
   describe('FilterEngineResult', () => {
-    it('should have correct structure', () => {
+    it('should define correct structure for filter results', () => {
       const result: FilterEngineResult = {
-        filteredAccounts: mockAccounts,
+        filteredAccounts: [],
         processingTime: 10,
       };
 
@@ -20,156 +14,348 @@ describe('FilterEngine interface', () => {
       expect(Array.isArray(result.filteredAccounts)).toBe(true);
       expect(typeof result.processingTime).toBe('number');
     });
+
+    it('should allow optional engineType field', () => {
+      const resultWithEngine: FilterEngineResult = {
+        filteredAccounts: [],
+        processingTime: 5,
+        engineType: 'optimized',
+      };
+
+      expect(resultWithEngine.engineType).toBe('optimized');
+    });
+
+    it('should work with actual account data', () => {
+      const accounts: AccountBadges[] = [
+        {
+          username: 'user1',
+          href: 'https://instagram.com/user1',
+          badges: new Set(['following', 'followers']),
+        },
+        {
+          username: 'user2',
+          href: 'https://instagram.com/user2',
+          badges: new Set(['following']),
+        },
+      ];
+
+      const result: FilterEngineResult = {
+        filteredAccounts: accounts,
+        processingTime: 3.5,
+        engineType: 'sync',
+      };
+
+      expect(result.filteredAccounts.length).toBe(2);
+      expect(result.filteredAccounts[0].username).toBe('user1');
+      expect(result.processingTime).toBe(3.5);
+    });
   });
 
   describe('FilterEngineConfig', () => {
-    it('should have correct structure with all optional properties', () => {
-      const config: FilterEngineConfig = {
-        mode: 'auto',
-        autoThreshold: 1000,
-      };
+    it('should allow all mode options', () => {
+      const configs: FilterEngineConfig[] = [
+        { mode: 'worker' },
+        { mode: 'sync' },
+        { mode: 'auto' },
+        { mode: 'optimized' },
+      ];
 
-      expect(config).toHaveProperty('mode');
-      expect(config).toHaveProperty('autoThreshold');
-      expect(['worker', 'sync', 'auto']).toContain(config.mode);
-      expect(typeof config.autoThreshold).toBe('number');
+      configs.forEach(config => {
+        expect(config).toHaveProperty('mode');
+        expect(['worker', 'sync', 'auto', 'optimized']).toContain(config.mode);
+      });
     });
 
-    it('should work with minimal config', () => {
+    it('should allow autoThreshold configuration', () => {
+      const config: FilterEngineConfig = {
+        mode: 'auto',
+        autoThreshold: 10000,
+      };
+
+      expect(config.autoThreshold).toBe(10000);
+    });
+
+    it('should allow empty config', () => {
       const config: FilterEngineConfig = {};
 
       expect(config).toBeDefined();
+      expect(config.mode).toBeUndefined();
+      expect(config.autoThreshold).toBeUndefined();
     });
 
-    it('should accept all mode values', () => {
-      const workerConfig: FilterEngineConfig = { mode: 'worker' };
-      const syncConfig: FilterEngineConfig = { mode: 'sync' };
-      const autoConfig: FilterEngineConfig = { mode: 'auto' };
+    it('should allow only mode without threshold', () => {
+      const config: FilterEngineConfig = {
+        mode: 'worker',
+      };
 
-      expect(workerConfig.mode).toBe('worker');
-      expect(syncConfig.mode).toBe('sync');
-      expect(autoConfig.mode).toBe('auto');
+      expect(config.mode).toBe('worker');
+      expect(config.autoThreshold).toBeUndefined();
+    });
+
+    it('should allow only threshold without mode', () => {
+      const config: FilterEngineConfig = {
+        autoThreshold: 5000,
+      };
+
+      expect(config.autoThreshold).toBe(5000);
+      expect(config.mode).toBeUndefined();
     });
   });
 
   describe('FilterEngine interface contract', () => {
-    // Mock implementation to test interface compliance
     class MockFilterEngine implements FilterEngine {
+      private engineType: string;
+
+      constructor(type: string = 'mock') {
+        this.engineType = type;
+      }
+
       async filter(
         accounts: AccountBadges[],
         searchQuery: string,
         activeFilters: string[]
       ): Promise<FilterEngineResult> {
+        const start = performance.now();
+
+        const filtered = accounts.filter(account => {
+          const matchesSearch =
+            !searchQuery || account.username.toLowerCase().includes(searchQuery.toLowerCase());
+          const matchesFilters =
+            activeFilters.length === 0 || activeFilters.some(filter => account.badges.has(filter));
+
+          return matchesSearch && matchesFilters;
+        });
+
         return {
-          filteredAccounts: accounts.filter(
-            acc => !searchQuery || acc.username.includes(searchQuery)
-          ),
-          processingTime: 5,
+          filteredAccounts: filtered,
+          processingTime: performance.now() - start,
+          engineType: this.engineType,
         };
       }
 
       dispose(): void {
-        // Mock implementation
+        // Mock cleanup
       }
 
-      getType(): 'worker' | 'sync' {
-        return 'sync';
+      getType(): string {
+        return this.engineType;
       }
     }
 
-    it('should implement all required methods', () => {
-      const engine = new MockFilterEngine();
+    it('should implement filter method correctly', async () => {
+      const engine = new MockFilterEngine('test');
+      const accounts: AccountBadges[] = [
+        {
+          username: 'alice',
+          href: 'https://instagram.com/alice',
+          badges: new Set(['following', 'followers']),
+        },
+        {
+          username: 'bob',
+          href: 'https://instagram.com/bob',
+          badges: new Set(['following']),
+        },
+      ];
 
-      expect(typeof engine.filter).toBe('function');
-      expect(typeof engine.dispose).toBe('function');
-      expect(typeof engine.getType).toBe('function');
+      const result = await engine.filter(accounts, '', []);
+
+      expect(result.filteredAccounts.length).toBe(2);
+      expect(result.processingTime).toBeGreaterThanOrEqual(0);
     });
 
-    it('should return correct types from methods', async () => {
+    it('should filter by search query', async () => {
       const engine = new MockFilterEngine();
+      const accounts: AccountBadges[] = [
+        {
+          username: 'alice',
+          href: 'https://instagram.com/alice',
+          badges: new Set(['following']),
+        },
+        {
+          username: 'bob',
+          href: 'https://instagram.com/bob',
+          badges: new Set(['following']),
+        },
+      ];
 
-      const result = await engine.filter(mockAccounts, 'user1', []);
-      expect(result).toHaveProperty('filteredAccounts');
-      expect(result).toHaveProperty('processingTime');
-      expect(Array.isArray(result.filteredAccounts)).toBe(true);
-      expect(typeof result.processingTime).toBe('number');
+      const result = await engine.filter(accounts, 'alice', []);
+
+      expect(result.filteredAccounts.length).toBe(1);
+      expect(result.filteredAccounts[0].username).toBe('alice');
+    });
+
+    it('should filter by active filters', async () => {
+      const engine = new MockFilterEngine();
+      const accounts: AccountBadges[] = [
+        {
+          username: 'alice',
+          href: 'https://instagram.com/alice',
+          badges: new Set(['following', 'followers']),
+        },
+        {
+          username: 'bob',
+          href: 'https://instagram.com/bob',
+          badges: new Set(['following']),
+        },
+      ];
+
+      const result = await engine.filter(accounts, '', ['followers']);
+
+      expect(result.filteredAccounts.length).toBe(1);
+      expect(result.filteredAccounts[0].username).toBe('alice');
+    });
+
+    it('should combine search and filters', async () => {
+      const engine = new MockFilterEngine();
+      const accounts: AccountBadges[] = [
+        {
+          username: 'alice',
+          href: 'https://instagram.com/alice',
+          badges: new Set(['following', 'followers']),
+        },
+        {
+          username: 'alice2',
+          href: 'https://instagram.com/alice2',
+          badges: new Set(['following']),
+        },
+        {
+          username: 'bob',
+          href: 'https://instagram.com/bob',
+          badges: new Set(['followers']),
+        },
+      ];
+
+      const result = await engine.filter(accounts, 'alice', ['followers']);
+
+      expect(result.filteredAccounts.length).toBe(1);
+      expect(result.filteredAccounts[0].username).toBe('alice');
+    });
+
+    it('should implement dispose method', () => {
+      const engine = new MockFilterEngine();
 
       expect(() => engine.dispose()).not.toThrow();
-
-      const type = engine.getType();
-      expect(['worker', 'sync']).toContain(type);
     });
 
-    it('should handle filter method with various inputs', async () => {
+    it('should implement getType method', () => {
+      const engine = new MockFilterEngine('custom-type');
+
+      expect(engine.getType()).toBe('custom-type');
+    });
+
+    it('should return processing time', async () => {
+      const engine = new MockFilterEngine();
+      const accounts: AccountBadges[] = Array.from({ length: 1000 }, (_, i) => ({
+        username: `user${i}`,
+        href: `https://instagram.com/user${i}`,
+        badges: new Set(['following']),
+      }));
+
+      const result = await engine.filter(accounts, '', []);
+
+      expect(result.processingTime).toBeGreaterThanOrEqual(0);
+      expect(typeof result.processingTime).toBe('number');
+    });
+
+    it('should handle empty accounts array', async () => {
       const engine = new MockFilterEngine();
 
-      // Test with empty accounts
-      const emptyResult = await engine.filter([], 'test', []);
-      expect(emptyResult.filteredAccounts).toEqual([]);
+      const result = await engine.filter([], 'query', ['filter']);
 
-      // Test with no search query
-      const noQueryResult = await engine.filter(mockAccounts, '', []);
-      expect(noQueryResult.filteredAccounts).toEqual(mockAccounts);
+      expect(result.filteredAccounts).toEqual([]);
+      expect(result.processingTime).toBeGreaterThanOrEqual(0);
+    });
 
-      // Test with no filters
-      const noFiltersResult = await engine.filter(mockAccounts, 'user1', []);
-      expect(noFiltersResult.filteredAccounts).toHaveLength(1);
-      expect(noFiltersResult.filteredAccounts[0]?.username).toBe('user1');
+    it('should handle empty search query', async () => {
+      const engine = new MockFilterEngine();
+      const accounts: AccountBadges[] = [
+        {
+          username: 'alice',
+          href: 'https://instagram.com/alice',
+          badges: new Set(['following']),
+        },
+      ];
 
-      // Test with filters
-      const withFiltersResult = await engine.filter(mockAccounts, 'user', ['following']);
-      expect(withFiltersResult.filteredAccounts).toHaveLength(2);
+      const result = await engine.filter(accounts, '', []);
+
+      expect(result.filteredAccounts.length).toBe(1);
+    });
+
+    it('should handle empty filters array', async () => {
+      const engine = new MockFilterEngine();
+      const accounts: AccountBadges[] = [
+        {
+          username: 'alice',
+          href: 'https://instagram.com/alice',
+          badges: new Set(['following']),
+        },
+      ];
+
+      const result = await engine.filter(accounts, 'alice', []);
+
+      expect(result.filteredAccounts.length).toBe(1);
+    });
+
+    it('should include optional engineType in result', async () => {
+      const engine = new MockFilterEngine('optimized-v2');
+      const accounts: AccountBadges[] = [];
+
+      const result = await engine.filter(accounts, '', []);
+
+      expect(result.engineType).toBe('optimized-v2');
     });
   });
 
-  describe('type safety', () => {
-    it('should enforce correct parameter types', () => {
-      // This test ensures TypeScript compilation works correctly
-      const engine: FilterEngine = {
-        async filter(accounts, searchQuery, activeFilters) {
-          // TypeScript should enforce these types
-          expect(Array.isArray(accounts)).toBe(true);
-          expect(typeof searchQuery).toBe('string');
-          expect(Array.isArray(activeFilters)).toBe(true);
-
-          return {
-            filteredAccounts: accounts,
-            processingTime: 0,
-          };
-        },
-        dispose() {},
-        getType() {
-          return 'sync';
-        },
+  describe('type compatibility', () => {
+    it('should accept AccountBadges with required fields', () => {
+      const account: AccountBadges = {
+        username: 'test',
+        href: 'https://test.com',
+        badges: new Set(['following']),
       };
 
-      expect(engine).toBeDefined();
+      expect(account.username).toBe('test');
+      expect(account.href).toBe('https://test.com');
+      expect(account.badges.has('following')).toBe(true);
     });
 
-    it('should enforce correct return types', async () => {
-      const engine: FilterEngine = {
-        async filter() {
-          return {
-            filteredAccounts: mockAccounts,
-            processingTime: 10,
-          };
-        },
-        dispose() {},
-        getType() {
-          return 'worker';
-        },
+    it('should work with Set of badges', () => {
+      const badges = new Set(['following', 'followers', 'mutuals']);
+      const account: AccountBadges = {
+        username: 'user',
+        href: 'https://instagram.com/user',
+        badges,
       };
 
-      const result = await engine.filter(mockAccounts, '', []);
+      expect(account.badges.size).toBe(3);
+      expect(account.badges.has('mutuals')).toBe(true);
+    });
 
-      // TypeScript should enforce these return types
-      expect(Array.isArray(result.filteredAccounts)).toBe(true);
-      expect(typeof result.processingTime).toBe('number');
-      expect(
-        result.filteredAccounts.every(
-          acc => typeof acc.username === 'string' && typeof acc.badges === 'object'
-        )
-      ).toBe(true);
+    it('should accept filter result with minimal fields', () => {
+      const result: FilterEngineResult = {
+        filteredAccounts: [],
+        processingTime: 0,
+      };
+
+      expect(result.engineType).toBeUndefined();
+    });
+
+    it('should accept filter result with all fields', () => {
+      const result: FilterEngineResult = {
+        filteredAccounts: [
+          {
+            username: 'user1',
+            href: 'https://instagram.com/user1',
+            badges: new Set(['following']),
+          },
+        ],
+        processingTime: 5.5,
+        engineType: 'worker',
+      };
+
+      expect(result.filteredAccounts.length).toBe(1);
+      expect(result.processingTime).toBe(5.5);
+      expect(result.engineType).toBe('worker');
     });
   });
 });
