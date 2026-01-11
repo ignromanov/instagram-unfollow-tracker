@@ -1,33 +1,89 @@
 {
   "title": "Häufig gestellte Fragen",
   "items": {
+    "howToFind": {
+      "question": "Wie kann ich ohne App sehen, wer mir auf Instagram entfolgt ist?",
+      "answer": "Fordere deinen Instagram-Datenexport an unter Einstellungen → Deine Informationen herunterladen → JSON-Format wählen. Lade die ZIP-Datei herunter, wenn sie bereit ist (1-2 Tage), und lade sie in diesen kostenlosen Tracker hoch. Das Tool analysiert deine Follower lokal—sieh Entfolger, Nicht-Gegenseitige und Gegenseitige sofort. Keine Anmeldung, keine App-Installation nötig.",
+      "relatedLink": {
+        "text": "Export-Anleitung starten",
+        "href": "/wizard"
+      }
+    },
+    "withoutDownload": {
+      "question": "Kann ich Instagram-Entfolger ohne Daten-Download oder Apps prüfen?",
+      "answer": "Nein. Instagram bietet keine native Entfolger-Liste. Die einzigen sicheren Methoden sind: (1) Manuelles Prüfen von gefolgten Konten vs. Followern, oder (2) Deinen offiziellen Daten-Download mit diesem Tool verwenden. Dieser Tracker macht Methode 2 sofort und kostenlos—kein Passwort, keine Anmeldung, kein Kontorisiko.",
+      "relatedLink": {
+        "text": "Erfahre, wie du deine Daten bekommst",
+        "href": "/wizard"
+      }
+    },
     "privacy": {
-      "question": "Ist das wirklich privat?",
-      "answer": "Ja. Die gesamte Verarbeitung erfolgt vollständig in deinem Webbrowser. Deine Daten werden niemals auf einen Server hochgeladen. Du kannst diese App sogar offline nutzen, sobald sie geladen ist."
-    },
-    "zipFile": {
-      "question": "Warum muss ich eine ZIP-Datei herunterladen?",
-      "answer": "Plattformen beschränken Apps darin, bestimmte Daten über ihre offizielle API einzusehen, um 'Spam' zu verhindern. Der einzige sichere, autorisierte Weg, diese Daten zu erhalten, ohne dein Konto zu gefährden, ist über das offizielle 'Deine Informationen herunterladen'-Tool."
-    },
-    "accountSafety": {
-      "question": "Ist mein Konto sicher?",
-      "answer": "Ja. Im Gegensatz zu anderen Apps, die nach deinem Passwort fragen und Daten 'scrapen' (was gegen die Nutzungsbedingungen verstößt), verwendet dieses Tool deinen offiziellen Datenexport. Es ist 100% sicher."
-    },
-    "scale": {
-      "question": "Wie viele Accounts kann das verarbeiten?",
-      "answer": "Wir haben dieses Tool mit Exporten getestet, die über 1.000.000 Accounts enthalten. Wir verwenden leistungsstarkes virtuelles Scrollen und lokale Indizierung, um die Erfahrung auch bei riesigen Datensätzen flüssig zu halten."
-    },
-    "free": {
-      "question": "Ist das wirklich kostenlos?",
-      "answer": "Ja. Dieses Tool ist Open Source und kostenlos nutzbar. Es gibt keine Abonnements, Paywalls oder versteckten Limits."
+      "question": "Wie funktioniert der Instagram-Entfolger-Tracker ohne Anmeldung?",
+      "answer": "Dieser Tracker verwendet deinen offiziellen Instagram-Datenexport (ZIP-Datei), um Follower lokal in deinem Browser zu analysieren. Keine Anmeldung erforderlich. Die gesamte Verarbeitung erfolgt auf deinem Gerät—deine Daten erreichen niemals unsere Server. Diese Methode ist sicher, weil sie Instagrams offizielles Export-Tool verwendet, nicht Passwort-Scraping.",
+      "relatedLink": {
+        "text": "Lies unsere Datenschutzrichtlinie",
+        "href": "/privacy"
+      }
     },
     "safety": {
-      "question": "Ist dieser Unfollower-Tracker sicher?",
-      "answer": "Ja, 100% sicher. Im Gegensatz zu Apps, die Ihr Instagram-Passwort benötigen, verwendet dieses Tool Ihren offiziellen Instagram-Datenexport (ZIP-Datei). Ihre Daten verlassen niemals Ihr Gerät – die gesamte Verarbeitung erfolgt lokal in Ihrem Browser. DSGVO-konform."
+      "question": "Ist es sicher, Instagram-Entfolger-Tracker-Apps zu verwenden?",
+      "answer": "Ja, wenn sie deinen offiziellen Instagram-Datenexport verwenden. Apps, die dein Instagram-Passwort verlangen, verstoßen gegen die Nutzungsbedingungen und bergen Sicherheitsrisiken. Sichere Tracker verwenden nur die ZIP-Datei von Instagrams Daten-Download-Tool—keine Anmeldung, kein Passwort erforderlich. Dieses Tool verwendet ausschließlich diese Methode.",
+      "relatedLink": {
+        "text": "Lies unsere Datenschutzrichtlinie",
+        "href": "/privacy"
+      }
     },
-    "howToFind": {
-      "question": "Wie finde ich heraus, wer mir auf Instagram nicht mehr folgt ohne App?",
-      "answer": "Fordern Sie Ihren Instagram-Datenexport in den Einstellungen an, laden Sie die ZIP-Datei herunter und laden Sie sie in dieses kostenlose Tool hoch. Es analysiert Ihre Follower lokal ohne Anmeldung."
+    "dataIncluded": {
+      "question": "Welche Daten enthält Instagram in meiner Daten-Download-Datei?",
+      "answer": "Die ZIP-Datei enthält deine Profilinformationen, Follower-Liste, Following-Liste, Kommentare, Beiträge, Nachrichten, gespeicherte Elemente und mehr. Für die Entfolger-Verfolgung sind die Schlüsseldateien followers_1.json (deine Follower) und following.json (wem du folgst). Der Tracker verwendet diese beiden Dateien, um Entfolger und Nicht-Gegenseitige zu identifizieren."
+    },
+    "zipFile": {
+      "question": "Was ist der Instagram-Daten-Download und warum ihn verwenden?",
+      "answer": "Instagram-Daten-Download ist Metas offizielles Tool zum Exportieren deiner Kontoinformationen (Follower, Following, Profildaten). Es ist der einzige sichere, autorisierte Weg, auf diese Daten zuzugreifen, ohne dein Konto zu gefährden. Apps, die nach deinem Passwort fragen, verstoßen gegen Instagrams Nutzungsbedingungen. DSGVO-konform.",
+      "relatedLink": {
+        "text": "Folge unserer Schritt-für-Schritt-Anleitung",
+        "href": "/wizard"
+      }
+    },
+    "accountSafety": {
+      "question": "Ist mein Instagram-Konto bei der Nutzung dieses Trackers sicher?",
+      "answer": "Ja, 100% sicher. Im Gegensatz zu Apps, die nach deinem Passwort fragen und Daten 'scrapen' (was gegen die Nutzungsbedingungen verstößt), verwendet dieses Tool deinen offiziellen Datenexport. Keine Anmeldung erforderlich—du lädst die ZIP direkt von Instagram herunter und lädst sie lokal in deinen Browser hoch. Wir greifen niemals auf dein Konto zu.",
+      "relatedLink": {
+        "text": "Unsere Nutzungsbedingungen ansehen",
+        "href": "/terms"
+      }
+    },
+    "downloadTime": {
+      "question": "Wie lange dauert es, meinen Instagram-Daten-Download zu erhalten?",
+      "answer": "Meta verarbeitet deine Anfrage normalerweise innerhalb von 1-2 Tagen und sendet dir einen Download-Link per E-Mail. Die Zeit variiert je nach Kontoalter und Aktivität. Nach dem Download der ZIP ist das Hochladen zu diesem Tracker für die Analyse sofort—die Verarbeitung dauert Sekunden selbst bei Millionen-Konto-Exporten dank lokaler Browser-Verarbeitung."
+    },
+    "scale": {
+      "question": "Welche Größe von Instagram-Konto-Export kannst du analysieren?",
+      "answer": "Dieser Tracker verarbeitet Exporte bis zu 1.000.000+ Konten. Wir verwenden spaltenbasierte Speicherung und Bitset-Indizierung für blitzschnelles Filtern—massive Datensätze werden in unter 5ms verarbeitet. Ob du 100 Follower oder 1M+ hast, das Tool bleibt schnell und reaktionsfreudig. Getestet und verifiziert mit echten Exporten.",
+      "relatedLink": {
+        "text": "Mit Beispieldaten ausprobieren",
+        "href": "/sample"
+      }
+    },
+    "free": {
+      "question": "Gibt es kostenlose Instagram-Entfolger-Tracker?",
+      "answer": "Ja. Dieses Tool ist 100% kostenlos, Open-Source (MIT-Lizenz), und enthält keine Abonnements, Paywalls oder versteckten Limits. Die meisten Alternativen verlangen 5-10€/Monat. Dieser Tracker verwendet deinen offiziellen Instagram-Datenexport, der lokal verarbeitet wird, und eliminiert Serverkosten vollständig."
+    },
+    "analyzeData": {
+      "question": "Wie analysiere ich meinen Instagram-Daten-Download, um Entfolger zu finden?",
+      "answer": "Lade deine Instagram-ZIP-Datei in diesen Tracker hoch. Das Tool entpackt deine Follower/Following-Listen lokal in deinem Browser, vergleicht sie und hebt hervor, wer dir entfolgt ist. Ergebnisse zeigen Entfolger, Nicht-Gegenseitige, gegenseitige Follower und mehr—alles offline verarbeitet ohne Server-Beteiligung. Dauert unter 30 Sekunden für typische Exporte.",
+      "relatedLink": {
+        "text": "Lade jetzt deine Datei hoch",
+        "href": "/upload"
+      }
+    },
+    "shareDataSafely": {
+      "question": "Ist es sicher, Instagram-Daten-Download zu Drittanbieter-Tools hochzuladen?",
+      "answer": "Ja, wenn die App Daten lokal in deinem Browser verarbeitet, ohne sie auf Server hochzuladen. Dieser Tracker verarbeitet deine ZIP-Datei vollständig auf deinem Gerät—keine Server speichern oder greifen auf deine Daten zu. Lade niemals deine ZIP zu cloud-basierten Entfolger-Trackern hoch. Überprüfe immer, dass die App Daten lokal verarbeitet.",
+      "relatedLink": {
+        "text": "Lies unser Datenschutz-Versprechen",
+        "href": "/privacy"
+      }
     }
   }
 }

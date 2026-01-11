@@ -8,6 +8,7 @@ import { HeaderV2 } from '@/components/HeaderV2';
 import { Footer } from '@/components/Footer';
 import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
 import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
+import { OrganizationSchema } from '@/components/OrganizationSchema';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
@@ -156,8 +157,9 @@ export function Layout({ lang }: LayoutProps) {
 
         <Analytics />
 
-        {/* Breadcrumb structured data for SEO */}
+        {/* Structured data for SEO */}
         <BreadcrumbSchema />
+        <OrganizationSchema />
       </div>
     </ThemeProvider>
   );

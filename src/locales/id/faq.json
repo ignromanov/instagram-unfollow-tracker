@@ -1,33 +1,89 @@
 {
   "title": "Pertanyaan yang Sering Diajukan",
   "items": {
+    "howToFind": {
+      "question": "Bagaimana cara melihat siapa yang berhenti follow di Instagram tanpa aplikasi?",
+      "answer": "Minta ekspor data Instagram dari Pengaturan → Unduh Informasi Anda → Pilih format JSON. Unduh file ZIP saat sudah siap (1-2 hari), lalu unggah ke pelacak gratis ini. Alat ini menganalisis pengikut Anda secara lokal—lihat unfollower, non-mutual, dan mutual secara instan. Tidak perlu login, tidak perlu instal aplikasi.",
+      "relatedLink": {
+        "text": "Mulai panduan ekspor",
+        "href": "/wizard"
+      }
+    },
+    "withoutDownload": {
+      "question": "Bisakah saya memeriksa unfollower Instagram tanpa mengunduh data atau aplikasi?",
+      "answer": "Tidak. Instagram tidak menyediakan daftar unfollower bawaan. Satu-satunya metode aman adalah: (1) Memeriksa secara manual akun yang diikuti vs pengikut, atau (2) Menggunakan unduhan data resmi Anda dengan alat ini. Pelacak ini membuat metode 2 instan dan gratis—tanpa kata sandi, tanpa login, tanpa risiko akun.",
+      "relatedLink": {
+        "text": "Pelajari cara mendapatkan data Anda",
+        "href": "/wizard"
+      }
+    },
     "privacy": {
-      "question": "Apakah ini benar-benar privat?",
-      "answer": "Ya. Semua pemrosesan terjadi sepenuhnya di dalam browser web Anda. Data Anda tidak pernah diunggah ke server manapun. Anda bahkan bisa menggunakan aplikasi ini offline setelah dimuat."
-    },
-    "zipFile": {
-      "question": "Mengapa saya perlu mengunduh file ZIP?",
-      "answer": "Platform membatasi aplikasi dari melihat data tertentu melalui API resmi mereka untuk mencegah 'spam'. Satu-satunya cara yang aman dan resmi untuk mendapatkan data ini tanpa mempertaruhkan akun Anda adalah melalui alat 'Unduh Informasi Anda' resmi mereka."
-    },
-    "accountSafety": {
-      "question": "Apakah akun saya akan aman?",
-      "answer": "Ya. Berbeda dengan aplikasi lain yang meminta password Anda dan 'scrape' data (yang melanggar Ketentuan Layanan), alat ini menggunakan ekspor data resmi Anda. 100% aman."
-    },
-    "scale": {
-      "question": "Berapa banyak akun yang bisa ditangani?",
-      "answer": "Kami telah menguji alat ini dengan ekspor yang berisi lebih dari 1.000.000 akun. Kami menggunakan virtual scrolling berperforma tinggi dan pengindeksan lokal untuk menjaga pengalaman tetap lancar bahkan untuk dataset yang sangat besar."
-    },
-    "free": {
-      "question": "Apakah ini benar-benar gratis?",
-      "answer": "Ya. Alat ini open-source dan gratis untuk digunakan. Tidak ada langganan, paywall, atau batasan tersembunyi."
+      "question": "Bagaimana pelacak unfollower Instagram bekerja tanpa login?",
+      "answer": "Pelacak ini menggunakan ekspor data Instagram resmi Anda (file ZIP) untuk menganalisis pengikut secara lokal di browser Anda. Tidak perlu login. Semua pemrosesan terjadi di perangkat Anda—data Anda tidak pernah mencapai server kami. Metode ini aman karena menggunakan alat ekspor resmi Instagram.",
+      "relatedLink": {
+        "text": "Baca kebijakan privasi kami",
+        "href": "/privacy"
+      }
     },
     "safety": {
-      "question": "Apakah pelacak unfollower ini aman?",
-      "answer": "Ya, 100% aman. Berbeda dengan aplikasi yang meminta kata sandi Instagram Anda, alat ini menggunakan ekspor data Instagram resmi (file ZIP). Data Anda tidak pernah meninggalkan perangkat Anda - semua pemrosesan terjadi secara lokal di browser Anda."
+      "question": "Apakah aplikasi pelacak unfollower Instagram aman?",
+      "answer": "Ya, jika menggunakan ekspor data Instagram resmi Anda. Aplikasi yang meminta kata sandi Instagram Anda melanggar Ketentuan Layanan dan menimbulkan risiko keamanan. Pelacak yang aman hanya menggunakan file ZIP dari alat Unduh Data Instagram—tidak perlu login, tidak perlu kata sandi. Alat ini secara eksklusif menggunakan metode tersebut.",
+      "relatedLink": {
+        "text": "Baca kebijakan privasi kami",
+        "href": "/privacy"
+      }
     },
-    "howToFind": {
-      "question": "Bagaimana cara mengetahui siapa yang berhenti follow di Instagram tanpa aplikasi?",
-      "answer": "Minta ekspor data Instagram dari Pengaturan, unduh file ZIP saat sudah siap, dan unggah ke alat gratis ini. Alat ini menganalisis pengikut Anda secara lokal tanpa perlu login."
+    "dataIncluded": {
+      "question": "Data apa yang Instagram sertakan dalam file unduhan data saya?",
+      "answer": "File ZIP berisi info profil, daftar pengikut, daftar mengikuti, komentar, postingan, pesan, item tersimpan, dan lainnya. Untuk pelacakan unfollower, file kuncinya adalah followers_1.json (pengikut Anda) dan following.json (siapa yang Anda ikuti). Pelacak menggunakan kedua file ini untuk mengidentifikasi unfollower dan non-mutual."
+    },
+    "zipFile": {
+      "question": "Apa itu unduhan data Instagram dan mengapa menggunakannya?",
+      "answer": "Unduhan Data Instagram adalah alat resmi Meta untuk mengekspor informasi akun Anda (pengikut, mengikuti, data profil). Ini satu-satunya cara yang aman dan resmi untuk mengakses data ini tanpa mempertaruhkan akun Anda. Aplikasi yang meminta kata sandi Anda melanggar Ketentuan Layanan Instagram.",
+      "relatedLink": {
+        "text": "Ikuti panduan langkah demi langkah kami",
+        "href": "/wizard"
+      }
+    },
+    "accountSafety": {
+      "question": "Apakah akun Instagram saya akan aman menggunakan pelacak ini?",
+      "answer": "Ya, 100% aman. Berbeda dengan aplikasi yang meminta kata sandi Anda dan 'scrape' data (yang melanggar Ketentuan Layanan), alat ini menggunakan ekspor data resmi Anda. Tidak perlu login—Anda mengunduh ZIP langsung dari Instagram, lalu mengunggahnya secara lokal ke browser Anda. Kami tidak pernah mengakses akun Anda.",
+      "relatedLink": {
+        "text": "Lihat ketentuan kami",
+        "href": "/terms"
+      }
+    },
+    "downloadTime": {
+      "question": "Berapa lama waktu untuk menerima unduhan data Instagram saya?",
+      "answer": "Meta biasanya memproses permintaan Anda dalam 1-2 hari dan mengirimkan tautan unduhan melalui email. Waktu bervariasi berdasarkan usia dan aktivitas akun. Setelah mengunduh ZIP, mengunggahnya ke pelacak ini untuk analisis bersifat instan—pemrosesan memakan waktu detik bahkan untuk ekspor jutaan akun berkat pemrosesan browser lokal."
+    },
+    "scale": {
+      "question": "Berapa ukuran ekspor akun Instagram yang bisa Anda analisis?",
+      "answer": "Pelacak ini menangani ekspor hingga 1.000.000+ akun. Kami menggunakan penyimpanan kolom dan pengindeksan bitset untuk pemfilteran sangat cepat—memproses dataset masif dalam waktu kurang dari 5ms. Baik Anda memiliki 100 pengikut atau 1M+, alat ini tetap cepat dan responsif. Diuji dan diverifikasi dengan ekspor nyata.",
+      "relatedLink": {
+        "text": "Coba dengan data sampel",
+        "href": "/sample"
+      }
+    },
+    "free": {
+      "question": "Apakah ada pelacak unfollower Instagram gratis?",
+      "answer": "Ya. Alat ini 100% gratis, open-source (lisensi MIT), dan tidak termasuk langganan, paywall, atau batasan tersembunyi. Kebanyakan alternatif mengenakan biaya Rp75.000-150.000/bulan. Pelacak ini menggunakan ekspor data Instagram resmi Anda yang diproses secara lokal, menghilangkan biaya server sepenuhnya."
+    },
+    "analyzeData": {
+      "question": "Bagaimana cara menganalisis unduhan data Instagram saya untuk menemukan unfollower?",
+      "answer": "Unggah file ZIP Instagram Anda ke pelacak ini. Alat ini membongkar daftar pengikut/mengikuti Anda secara lokal di browser Anda, membandingkannya, dan menyorot siapa yang berhenti mengikuti Anda. Hasil menunjukkan unfollower, non-mutual, pengikut mutual, dan lainnya—semua diproses offline tanpa keterlibatan server. Memakan waktu kurang dari 30 detik untuk ekspor tipikal.",
+      "relatedLink": {
+        "text": "Unggah file Anda sekarang",
+        "href": "/upload"
+      }
+    },
+    "shareDataSafely": {
+      "question": "Apakah aman mengunggah unduhan data Instagram ke alat pihak ketiga?",
+      "answer": "Ya, jika aplikasi memproses data secara lokal di browser Anda tanpa mengunggah ke server. Pelacak ini memproses file ZIP Anda sepenuhnya di perangkat Anda—tidak ada server yang menyimpan atau mengakses data Anda. Jangan pernah mengunggah ZIP Anda ke pelacak unfollower berbasis cloud. Selalu verifikasi bahwa aplikasi memproses data secara lokal.",
+      "relatedLink": {
+        "text": "Baca komitmen privasi kami",
+        "href": "/privacy"
+      }
     }
   }
 }

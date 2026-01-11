@@ -1,33 +1,89 @@
 {
   "title": "Frequently Asked Questions",
   "items": {
+    "howToFind": {
+      "question": "How to check who unfollowed you on Instagram without app?",
+      "answer": "Request your Instagram data export from Settings → Download Your Information → Select JSON format. Download the ZIP file when ready (1-2 days), then upload it to this free tracker. The tool analyzes your followers locally—see unfollowers, non-mutuals, and mutuals instantly. No login, no app install needed.",
+      "relatedLink": {
+        "text": "Start the export guide",
+        "href": "/wizard"
+      }
+    },
+    "withoutDownload": {
+      "question": "Can I check Instagram unfollowers without data download or apps?",
+      "answer": "No. Instagram doesn't provide a native unfollower list. The only safe methods are: (1) Manually checking followed accounts vs followers, or (2) Using your official data download with this tool. This tracker makes method 2 instant and free—no password, no login, no account risk.",
+      "relatedLink": {
+        "text": "Learn how to get your data",
+        "href": "/wizard"
+      }
+    },
     "privacy": {
-      "question": "Is this really private?",
-      "answer": "Yes. All processing happens entirely within your web browser. Your data is never uploaded to any server. You can even use this app offline once it's loaded."
-    },
-    "zipFile": {
-      "question": "Why do I need to download a ZIP file?",
-      "answer": "Platforms restrict apps from seeing certain data through their official API to prevent 'spam'. The only safe, authorized way to get this data without risking your account is through their official 'Download Your Information' tool."
-    },
-    "accountSafety": {
-      "question": "Will my account be safe?",
-      "answer": "Yes. Unlike other apps that ask for your password and 'scrape' data (which violates Terms of Service), this tool uses your official data export. It's 100% safe."
-    },
-    "scale": {
-      "question": "How many accounts can this handle?",
-      "answer": "We've tested this tool with exports containing over 1,000,000 accounts. We use high-performance virtual scrolling and local indexing to keep the experience smooth even for huge datasets."
-    },
-    "free": {
-      "question": "Is this really free?",
-      "answer": "Yes. This tool is open-source and free to use. There are no subscriptions, paywalls, or hidden limits."
+      "question": "How does Instagram unfollower tracker work without login?",
+      "answer": "This tracker uses your official Instagram data export (ZIP file) to analyze followers locally in your browser. No login required. All processing happens on your device—your data never reaches our servers. This method is safe because it uses Instagram's official export tool, not password scraping.",
+      "relatedLink": {
+        "text": "Read our privacy policy",
+        "href": "/privacy"
+      }
     },
     "safety": {
-      "question": "Is it safe to use this unfollower tracker?",
-      "answer": "Yes, 100% safe. Unlike apps that require your Instagram password, this tool uses your official Instagram data export (ZIP file). Your data never leaves your device - all processing happens locally in your browser. We can't access your data because we never receive it."
+      "question": "Is it safe to use Instagram unfollower tracker apps?",
+      "answer": "Yes, if they use your official Instagram data export. Apps requiring your Instagram password violate Terms of Service and pose security risks. Safe trackers use only the ZIP file from Instagram's Data Download tool—no login, no password required. This tool uses that method exclusively.",
+      "relatedLink": {
+        "text": "Read our privacy policy",
+        "href": "/privacy"
+      }
     },
-    "howToFind": {
-      "question": "How do I find out who unfollowed me on Instagram without an app?",
-      "answer": "Request your Instagram data export from Settings, download the ZIP file when ready, then upload it to this free tool. It analyzes your followers locally without requiring login or installing any app."
+    "dataIncluded": {
+      "question": "What data does Instagram include in my data download file?",
+      "answer": "The ZIP file contains your profile info, followers list, following list, comments, posts, messages, saved items, and more. For unfollower tracking, the key files are followers_1.json (your followers) and following.json (who you follow). The tracker uses these two files to identify unfollowers and non-mutuals."
+    },
+    "zipFile": {
+      "question": "What is Instagram data download and why use it?",
+      "answer": "Instagram Data Download is Meta's official tool for exporting your account information (followers, following, profile data). It's the only safe, authorized way to access this data without risking your account. Apps that ask for your password violate Instagram's Terms of Service and risk account bans.",
+      "relatedLink": {
+        "text": "Follow our step-by-step guide",
+        "href": "/wizard"
+      }
+    },
+    "accountSafety": {
+      "question": "Will my Instagram account be safe using this tracker?",
+      "answer": "Yes, 100% safe. Unlike apps that ask for your password and 'scrape' data (which violates Terms of Service), this tool uses your official data export. No login required—you download the ZIP directly from Instagram, then upload it locally to your browser. We never access your account.",
+      "relatedLink": {
+        "text": "View our terms",
+        "href": "/terms"
+      }
+    },
+    "downloadTime": {
+      "question": "How long does it take to receive my Instagram data download?",
+      "answer": "Meta typically processes your request within 1-2 days and emails you a download link. The time varies based on account age and activity. After you download the ZIP, uploading it to this tracker for analysis is instant—processing takes seconds even for million-account exports thanks to local browser processing."
+    },
+    "scale": {
+      "question": "What size Instagram account export can you analyze?",
+      "answer": "This tracker handles exports up to 1,000,000+ accounts. We use columnar storage and bitset indexing for lightning-fast filtering—processing massive datasets in under 5ms. Whether you have 100 followers or 1M+, the tool remains fast and responsive. Tested and verified with real exports.",
+      "relatedLink": {
+        "text": "Try with sample data",
+        "href": "/sample"
+      }
+    },
+    "free": {
+      "question": "Are there free Instagram unfollower trackers?",
+      "answer": "Yes. This tool is 100% free, open-source (MIT license), and includes no subscriptions, paywalls, or hidden limits. Most alternatives charge $5-10/month. This tracker uses your official Instagram data export processed locally, eliminating server costs entirely. View our code on GitHub."
+    },
+    "analyzeData": {
+      "question": "How do I analyze my Instagram data download to find unfollowers?",
+      "answer": "Upload your Instagram ZIP file to this tracker. The tool unpacks your follower/following lists locally in your browser, compares them, and highlights who unfollowed you. Results show unfollowers, non-mutuals, mutual followers, and more—all processed offline with zero server involvement. Takes under 30 seconds for typical exports.",
+      "relatedLink": {
+        "text": "Upload your file now",
+        "href": "/upload"
+      }
+    },
+    "shareDataSafely": {
+      "question": "Is it safe to upload Instagram data download to third-party tools?",
+      "answer": "Yes, if the app processes data locally in your browser without uploading to servers. This tracker processes your ZIP file entirely on your device—no servers store or access your data. Never upload your ZIP to cloud-based unfollower trackers. Always verify the app processes data locally and doesn't require login.",
+      "relatedLink": {
+        "text": "Read our privacy commitment",
+        "href": "/privacy"
+      }
     }
   }
 }
