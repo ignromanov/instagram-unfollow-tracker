@@ -14,6 +14,7 @@
 
 import { useCallback, useState } from 'react';
 import { generateAndStoreSampleData, clearSampleData } from '@/lib/sample-data';
+import { analytics } from '@/lib/analytics';
 
 export interface SampleDataResult {
   fileHash: string;
@@ -43,9 +44,13 @@ export function useSampleData(): UseSampleDataReturn {
   const load = useCallback(async (): Promise<SampleDataResult> => {
     setState('loading');
     setError(null);
+    const startTime = performance.now();
 
     try {
       const result = await generateAndStoreSampleData();
+      const loadTimeMs = performance.now() - startTime;
+
+      analytics.sampleDataLoad(result.accountCount, loadTimeMs);
 
       setState('success');
       setData(result);

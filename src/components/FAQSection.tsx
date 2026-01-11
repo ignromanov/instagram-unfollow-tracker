@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { analytics } from '@/lib/analytics';
 
 interface FAQItem {
   key: string;
@@ -62,7 +63,13 @@ export function FAQSection() {
                 className="rounded-3xl md:rounded-4xl border border-border bg-card overflow-hidden transition-all duration-200 shadow-sm"
               >
                 <button
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  onClick={() => {
+                    const isOpening = openIndex !== index;
+                    if (isOpening) {
+                      analytics.faqExpand(index, item.question);
+                    }
+                    setOpenIndex(openIndex === index ? null : index);
+                  }}
                   className="cursor-pointer w-full px-6 py-6 md:px-10 md:py-10 flex items-center justify-between text-left hover:bg-[oklch(0.5_0_0_/_0.02)] transition-colors group"
                   aria-expanded={openIndex === index}
                 >

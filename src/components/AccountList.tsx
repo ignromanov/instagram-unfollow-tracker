@@ -4,7 +4,7 @@ import { useAccountDataSource } from '@/hooks/useAccountDataSource';
 import { analytics } from '@/lib/analytics';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ExternalLink, User, Ghost } from 'lucide-react';
-import { memo, useCallback, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -35,6 +35,7 @@ export const AccountList = memo(function AccountList({
 }: AccountListProps) {
   const { t } = useTranslation('results');
   const parentRef = useRef<HTMLDivElement>(null);
+  const trackedDepthsRef = useRef<Set<25 | 50 | 75 | 100>>(new Set());
 
   // Initialize data source for lazy loading (uses passed fileHash, not store)
   const { getAccount } = useAccountDataSource({
@@ -64,6 +65,33 @@ export const AccountList = memo(function AccountList({
 
   const virtualItems = virtualizer.getVirtualItems();
 
+  // Track scroll depth milestones
+  useEffect(() => {
+    const scrollElement = parentRef.current;
+    if (!scrollElement || displayCount === 0) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollElement;
+      const scrollPercent = Math.round((scrollTop / (scrollHeight - clientHeight)) * 100);
+
+      const depths = [25, 50, 75, 100] as const;
+      for (const depth of depths) {
+        if (scrollPercent >= depth && !trackedDepthsRef.current.has(depth)) {
+          trackedDepthsRef.current.add(depth);
+          analytics.resultsScrollDepth(depth, displayCount);
+        }
+      }
+    };
+
+    scrollElement.addEventListener('scroll', handleScroll, { passive: true });
+    return () => scrollElement.removeEventListener('scroll', handleScroll);
+  }, [displayCount]);
+
+  // Reset tracked depths when data changes
+  useEffect(() => {
+    trackedDepthsRef.current.clear();
+  }, [fileHash, accountIndices]);
+
   if (!hasLoadedData) {
     return null;
   }
@@ -92,6 +120,7 @@ export const AccountList = memo(function AccountList({
   const trackAccountClick = (account: AccountBadges) => {
     const badgeCount = Object.values(account.badges).filter(Boolean).length;
     analytics.accountClick(badgeCount);
+    analytics.externalProfileClick(account.username);
   };
 
   const SkeletonItem = () => (

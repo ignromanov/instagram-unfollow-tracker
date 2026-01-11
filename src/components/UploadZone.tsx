@@ -1,6 +1,7 @@
 'use client';
 
 import type { ParseWarning } from '@/core/types';
+import { analytics } from '@/lib/analytics';
 import { AlertCircle, ArrowLeft, CheckCircle2, Info, Loader2, Upload } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
@@ -39,12 +40,19 @@ export function UploadZone({
     return parseWarnings.some(w => w.severity === 'error');
   }, [parseWarnings]);
 
-  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  }, []);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      if (!isDragOver) {
+        analytics.uploadDragEnter();
+      }
+      setIsDragOver(true);
+    },
+    [isDragOver]
+  );
 
   const handleDragLeave = useCallback(() => {
+    analytics.uploadDragLeave();
     setIsDragOver(false);
   }, []);
 
@@ -52,6 +60,7 @@ export function UploadZone({
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       setIsDragOver(false);
+      analytics.uploadDrop();
 
       const file = e.dataTransfer.files[0];
       if (file && file.name.endsWith('.zip')) {
@@ -65,6 +74,7 @@ export function UploadZone({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
+        analytics.uploadClick();
         onUploadStart(file);
       }
     },

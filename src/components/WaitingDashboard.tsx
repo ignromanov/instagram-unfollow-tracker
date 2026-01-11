@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import { Clock, Calendar, ArrowRight, FileUp } from 'lucide-react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Button } from './ui/button';
+import { analytics } from '@/lib/analytics';
 
 interface WaitingDashboardProps {
   onUploadNow: () => void;
@@ -68,7 +69,14 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
           <div className="space-y-2">
             <h3 className="text-xl font-bold">{t('waiting.haveFile')}</h3>
             <p className="text-muted-foreground mb-4">{t('waiting.haveFileHint')}</p>
-            <Button onClick={onUploadNow} size="lg" className="group">
+            <Button
+              onClick={() => {
+                analytics.waitingUploadClick();
+                onUploadNow();
+              }}
+              size="lg"
+              className="group"
+            >
               {t('waiting.uploadNow')}
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>

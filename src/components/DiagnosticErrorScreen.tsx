@@ -12,8 +12,9 @@ import {
   FolderX,
   RefreshCw,
 } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { analytics } from '@/lib/analytics';
 
 export interface DiagnosticErrorScreenProps {
   /** Error code for direct error display */
@@ -102,6 +103,21 @@ export function DiagnosticErrorScreen({
   const colors = getColorScheme(diagnosticError.severity);
   const Icon = getErrorIcon(diagnosticError.icon);
 
+  // Track error view on mount
+  useEffect(() => {
+    analytics.diagnosticErrorView(diagnosticError.code);
+  }, [diagnosticError.code]);
+
+  const handleTryAgain = () => {
+    analytics.diagnosticErrorRetry(diagnosticError.code);
+    onTryAgain?.();
+  };
+
+  const handleOpenWizard = () => {
+    analytics.diagnosticErrorHelp(diagnosticError.code);
+    onOpenWizard?.();
+  };
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 md:py-16">
       {/* Back button */}
@@ -148,7 +164,7 @@ export function DiagnosticErrorScreen({
         <div className="flex flex-col gap-3 sm:flex-row">
           {onTryAgain && (
             <button
-              onClick={onTryAgain}
+              onClick={handleTryAgain}
               className="flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3 text-sm font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg"
             >
               <RefreshCw size={18} />
@@ -158,7 +174,7 @@ export function DiagnosticErrorScreen({
 
           {onOpenWizard && (
             <button
-              onClick={onOpenWizard}
+              onClick={handleOpenWizard}
               className={`flex cursor-pointer items-center justify-center gap-2 rounded-2xl border-2 ${colors.border} px-6 py-3 text-sm font-bold ${colors.title} transition-all hover:bg-white/50 dark:hover:bg-black/20`}
             >
               {t('diagnostic.showMistakes')}

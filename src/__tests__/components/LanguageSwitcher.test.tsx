@@ -5,6 +5,13 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import * as store from '@/lib/store';
 import * as analytics from '@/lib/analytics';
 
+// Mock react-router-dom
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  useLocation: () => ({ pathname: '/' }),
+  useNavigate: () => mockNavigate,
+}));
+
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({
   analytics: {

@@ -79,6 +79,7 @@ export const AnalyticsEvents = {
   THEME_TOGGLE: 'theme_toggle',
   CLEAR_DATA: 'clear_data',
   SAMPLE_DATA_CLICK: 'sample_data_click',
+  SAMPLE_DATA_LOAD: 'sample_data_load',
   LANGUAGE_CHANGE: 'language_change',
 
   // V2: Wizard
@@ -90,6 +91,30 @@ export const AnalyticsEvents = {
 
   // V2: Results
   EXTERNAL_PROFILE_CLICK: 'external_profile_click',
+
+  // V3: Funnel / Page Views
+  PAGE_VIEW: 'page_view',
+
+  // V3: Upload Zone
+  UPLOAD_DRAG_ENTER: 'upload_drag_enter',
+  UPLOAD_DRAG_LEAVE: 'upload_drag_leave',
+  UPLOAD_DROP: 'upload_drop',
+  UPLOAD_CLICK: 'upload_click',
+
+  // V3: Diagnostic Errors
+  DIAGNOSTIC_ERROR_VIEW: 'diagnostic_error_view',
+  DIAGNOSTIC_ERROR_RETRY: 'diagnostic_error_retry',
+  DIAGNOSTIC_ERROR_HELP: 'diagnostic_error_help',
+
+  // V3: Waiting Dashboard
+  WAITING_UPLOAD_CLICK: 'waiting_upload_click',
+  WAITING_BACK_CLICK: 'waiting_back_click',
+
+  // V3: FAQ
+  FAQ_EXPAND: 'faq_expand',
+
+  // V3: Results Engagement
+  RESULTS_SCROLL_DEPTH: 'results_scroll_depth',
 } as const;
 
 export type AnalyticsEventName = (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents];
@@ -104,6 +129,19 @@ type LinkType =
   | 'buy-me-coffee';
 type HelpSource = 'header' | 'upload_section';
 type FilterAction = 'enable' | 'disable';
+type PageName =
+  | 'hero'
+  | 'wizard'
+  | 'waiting'
+  | 'upload'
+  | 'results'
+  | 'sample'
+  | 'privacy'
+  | 'terms';
+type ScrollDepth = 25 | 50 | 75 | 100;
+
+// Re-export DiagnosticErrorCode from core/types to ensure consistency
+export type { DiagnosticErrorCode } from '@/core/types';
 
 /**
  * Track event with Umami
@@ -274,6 +312,84 @@ export const analytics = {
   externalProfileClick: (username: string) => {
     trackEvent(AnalyticsEvents.EXTERNAL_PROFILE_CLICK, {
       username_hash: username.slice(0, 2) + '***', // Privacy: only prefix
+    });
+  },
+
+  // V3: Funnel / Page Views
+  pageView: (page: PageName, language?: string) => {
+    trackEvent(AnalyticsEvents.PAGE_VIEW, {
+      page,
+      ...(language && { language }),
+    });
+  },
+
+  // V3: Upload Zone
+  uploadDragEnter: () => {
+    trackEvent(AnalyticsEvents.UPLOAD_DRAG_ENTER);
+  },
+
+  uploadDragLeave: () => {
+    trackEvent(AnalyticsEvents.UPLOAD_DRAG_LEAVE);
+  },
+
+  uploadDrop: () => {
+    trackEvent(AnalyticsEvents.UPLOAD_DROP);
+  },
+
+  uploadClick: () => {
+    trackEvent(AnalyticsEvents.UPLOAD_CLICK);
+  },
+
+  // V3: Diagnostic Errors
+  diagnosticErrorView: (code: string, source?: string) => {
+    trackEvent(AnalyticsEvents.DIAGNOSTIC_ERROR_VIEW, {
+      error_code: code,
+      ...(source && { source }),
+    });
+  },
+
+  diagnosticErrorRetry: (code: string) => {
+    trackEvent(AnalyticsEvents.DIAGNOSTIC_ERROR_RETRY, {
+      error_code: code,
+    });
+  },
+
+  diagnosticErrorHelp: (code: string) => {
+    trackEvent(AnalyticsEvents.DIAGNOSTIC_ERROR_HELP, {
+      error_code: code,
+    });
+  },
+
+  // V3: Waiting Dashboard
+  waitingUploadClick: () => {
+    trackEvent(AnalyticsEvents.WAITING_UPLOAD_CLICK);
+  },
+
+  waitingBackClick: () => {
+    trackEvent(AnalyticsEvents.WAITING_BACK_CLICK);
+  },
+
+  // V3: FAQ
+  faqExpand: (questionId: number, questionText: string) => {
+    trackEvent(AnalyticsEvents.FAQ_EXPAND, {
+      question_id: questionId,
+      question_text: questionText.slice(0, 100), // Limit length
+    });
+  },
+
+  // V3: Results Engagement
+  resultsScrollDepth: (depth: ScrollDepth, totalAccounts: number) => {
+    trackEvent(AnalyticsEvents.RESULTS_SCROLL_DEPTH, {
+      depth,
+      total_accounts: totalAccounts,
+    });
+  },
+
+  // V3: Sample Data Load
+  sampleDataLoad: (accountCount: number, loadTimeMs: number) => {
+    trackEvent(AnalyticsEvents.SAMPLE_DATA_LOAD, {
+      account_count: accountCount,
+      load_time_ms: Math.round(loadTimeMs),
     });
   },
 };
