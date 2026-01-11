@@ -104,7 +104,7 @@ export default defineConfig({
       preload: "swap",
     },
 
-    // Hook to inject correct canonical and hreflang tags for each page
+    // Hook to inject correct canonical, hreflang, and og:image tags for each page
     async onPageRendered(route, renderedHTML) {
       const BASE_URL = "https://safeunfollow.app";
       const SUPPORTED_LANGUAGES = [
@@ -127,6 +127,10 @@ export default defineConfig({
       const langPrefixPattern = /^\/(es|pt|hi|id|tr|ja|ru|de)(\/|$)/;
       const basePath = route.replace(langPrefixPattern, "/") || "/";
       const normalizedBasePath = basePath === "/" ? "" : basePath;
+
+      // Extract language from route for og:image
+      const langMatch = route.match(/^\/(es|pt|hi|id|tr|ja|ru|de)(\/|$)/);
+      const currentLang = langMatch ? langMatch[1] : "en";
 
       // Generate hreflang links
       const hreflangLinks = SUPPORTED_LANGUAGES.map((lang) => {
@@ -152,7 +156,14 @@ export default defineConfig({
     ${xDefaultLink}
   `;
 
-      return renderedHTML.replace("</head>", `${seoTags}</head>`);
+      // Replace og:image URL with language parameter
+      const ogImageUrl = `${BASE_URL}/api/og?lang=${currentLang}`;
+      let html = renderedHTML.replace(
+        /<meta property="og:image" content="[^"]*"/,
+        `<meta property="og:image" content="${ogImageUrl}"`
+      );
+
+      return html.replace("</head>", `${seoTags}</head>`);
     },
   },
   build: {

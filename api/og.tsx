@@ -4,7 +4,78 @@ export const config = {
   runtime: 'edge',
 };
 
-export default function handler() {
+type SupportedLang = 'en' | 'es' | 'pt' | 'ru' | 'de' | 'hi' | 'ja' | 'tr' | 'id';
+
+interface OgTranslations {
+  subtitle: string;
+  free: string;
+  noPassword: string;
+  privacy: string;
+}
+
+const translations: Record<SupportedLang, OgTranslations> = {
+  en: {
+    subtitle: 'Check who unfollowed you on Instagram — 100% private, no login required',
+    free: '✓ Free Forever',
+    noPassword: '✓ No Password',
+    privacy: '✓ 100% Local',
+  },
+  es: {
+    subtitle: 'Descubre quién dejó de seguirte en Instagram — 100% privado, sin login',
+    free: '✓ 100% Gratis',
+    noPassword: '✓ Sin Contraseña',
+    privacy: '✓ Análisis Local',
+  },
+  pt: {
+    subtitle: 'Descubra quem parou de te seguir no Instagram — 100% privado, sem login',
+    free: '✓ Gratuito',
+    noPassword: '✓ Sem Senha',
+    privacy: '✓ 100% Local',
+  },
+  ru: {
+    subtitle: 'Узнай, кто отписался в Instagram — 100% приватно, без входа в аккаунт',
+    free: '✓ Бесплатно',
+    noPassword: '✓ Без пароля',
+    privacy: '✓ Локально',
+  },
+  de: {
+    subtitle: 'Finde Entfolger auf Instagram — 100% privat, kein Login erforderlich',
+    free: '✓ Kostenlos',
+    noPassword: '✓ Kein Passwort',
+    privacy: '✓ 100% Lokal',
+  },
+  hi: {
+    subtitle: 'इंस्टाग्राम पर अनफॉलोअर्स देखें — 100% प्राइवेट, बिना लॉगिन',
+    free: '✓ फ्री',
+    noPassword: '✓ बिना पासवर्ड',
+    privacy: '✓ 100% लोकल',
+  },
+  ja: {
+    subtitle: 'Instagramのフォロー解除を確認 — 100%プライベート、ログイン不要',
+    free: '✓ 永久無料',
+    noPassword: '✓ パスワード不要',
+    privacy: '✓ 100%ローカル',
+  },
+  tr: {
+    subtitle: 'Instagram takibi bırakanları gör — 100% gizli, giriş yok',
+    free: '✓ Ücretsiz',
+    noPassword: '✓ Şifre Yok',
+    privacy: '✓ %100 Yerel',
+  },
+  id: {
+    subtitle: 'Cek siapa yang unfollow di Instagram — 100% privat, tanpa login',
+    free: '✓ Gratis',
+    noPassword: '✓ Tanpa Password',
+    privacy: '✓ 100% Lokal',
+  },
+};
+
+export default function handler(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const langParam = searchParams.get('lang') || 'en';
+  const lang = (Object.keys(translations).includes(langParam) ? langParam : 'en') as SupportedLang;
+  const t = translations[lang];
+
   return new ImageResponse(
     <div
       style={{
@@ -44,7 +115,7 @@ export default function handler() {
         </svg>
       </div>
 
-      {/* Title */}
+      {/* Title - brand name stays in English */}
       <div
         style={{
           display: 'flex',
@@ -58,32 +129,33 @@ export default function handler() {
         Safe Unfollow
       </div>
 
-      {/* Subtitle */}
+      {/* Subtitle - localized */}
       <div
         style={{
           display: 'flex',
-          fontSize: 32,
+          fontSize: 28,
           color: '#a1a1aa',
           textAlign: 'center',
-          maxWidth: 800,
+          maxWidth: 900,
+          lineHeight: 1.4,
         }}
       >
-        Check who unfollowed you on Instagram — 100% private, no login required
+        {t.subtitle}
       </div>
 
-      {/* Trust badges */}
+      {/* Trust badges - localized */}
       <div
         style={{
           display: 'flex',
           gap: 40,
           marginTop: 50,
-          fontSize: 24,
+          fontSize: 22,
           color: '#71717a',
         }}
       >
-        <span>✓ Free Forever</span>
-        <span>✓ No Password</span>
-        <span>✓ 100% Local</span>
+        <span>{t.free}</span>
+        <span>{t.noPassword}</span>
+        <span>{t.privacy}</span>
       </div>
     </div>,
     {
