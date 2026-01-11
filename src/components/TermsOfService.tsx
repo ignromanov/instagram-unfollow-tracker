@@ -268,8 +268,8 @@ export function TermsOfService({ onBack }: TermsOfServiceProps) {
           </h2>
           <p className="text-muted-foreground">
             For questions about these Terms of Service, please contact us at:{' '}
-            <a href="mailto:support@safeunfollow.app" className="text-primary hover:underline">
-              support@safeunfollow.app
+            <a href="mailto:hello@safeunfollow.app" className="text-primary hover:underline">
+              hello@safeunfollow.app
             </a>
           </p>
         </section>

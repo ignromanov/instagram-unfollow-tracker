@@ -256,9 +256,10 @@ export function PrivacyPolicy({ onBack }: PrivacyPolicyProps) {
             9. Contact Us
           </h2>
           <p className="text-muted-foreground">
-            If you have questions about this Privacy Policy, please contact us at:{' '}
-            <a href="mailto:support@safeunfollow.app" className="text-primary hover:underline">
-              support@safeunfollow.app
+            If you have questions about this Privacy Policy or want to exercise your data rights,
+            please contact us at:{' '}
+            <a href="mailto:privacy@safeunfollow.app" className="text-primary hover:underline">
+              privacy@safeunfollow.app
             </a>
           </p>
         </section>

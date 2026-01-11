@@ -62,10 +62,10 @@ export function Footer() {
                 {t('footer.termsOfService')}
               </a>
               <a
-                href="mailto:support@safeunfollow.app"
+                href="mailto:hello@safeunfollow.app"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
               >
-                {t('footer.contactSupport')}
+                {t('footer.contact')}
               </a>
               <button
                 onClick={handleTrackingToggle}
