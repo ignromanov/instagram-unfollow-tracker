@@ -117,7 +117,7 @@ If you deploy your own version:
 
 ### Verification
 - **Source Code**: [GitHub Repository](https://github.com/ignromanov/instagram-unfollow-tracker)
-- **Live Demo**: [Try the app](https://instagram-unfollow-tracker.vercel.app)
+- **Live Demo**: [Try the app](https://safeunfollow.app)
 
 ## Changes to This Policy
 

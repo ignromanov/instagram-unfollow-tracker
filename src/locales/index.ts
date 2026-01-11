@@ -50,10 +50,10 @@ i18n
       escapeValue: false,
     },
     detection: {
-      // Zustand store is the source of truth for language
-      // We only use navigator for initial detection in useLanguageSync
+      // Path-based routing is the source of truth for language
+      // Navigator is used for initial detection when no path prefix
       order: ['navigator'],
-      caches: [], // Don't cache - Zustand handles persistence
+      caches: [], // Don't cache - path handles persistence
     },
   });
 

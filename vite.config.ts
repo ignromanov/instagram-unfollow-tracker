@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react()],
   base: "/",
+  // Include font assets from @fontsource packages
+  assetsInclude: ["**/*.woff2", "**/*.woff"],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

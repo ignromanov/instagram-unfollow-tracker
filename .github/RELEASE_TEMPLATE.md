@@ -66,7 +66,7 @@ See our [Roadmap](../docs/roadmap.md) for more details.
 ## 📦 Installation
 
 **Online (Recommended):**
-Visit [instagram-unfollow-tracker.vercel.app](https://instagram-unfollow-tracker.vercel.app)
+Visit [safeunfollow.app](https://safeunfollow.app)
 
 **Local Development:**
 

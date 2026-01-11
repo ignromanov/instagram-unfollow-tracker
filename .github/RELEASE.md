@@ -62,20 +62,20 @@
 
 ### 🚀 Getting Started
 
-1. Visit [https://instagram-unfollow-tracker.vercel.app](https://instagram-unfollow-tracker.vercel.app)
+1. Visit [https://safeunfollow.app](https://safeunfollow.app)
 2. Download your Instagram data from [Meta Accounts Center](https://accountscenter.instagram.com/)
 3. Upload your ZIP file to the app
 4. Explore your follower relationships!
 
 ### 📚 Documentation
 
-- **[User Guide](https://instagram-unfollow-tracker.vercel.app/docs/user-guide)** - Complete step-by-step tutorial
-- **[FAQ](https://instagram-unfollow-tracker.vercel.app/docs/faq)** - Common questions and answers
-- **[Troubleshooting](https://instagram-unfollow-tracker.vercel.app/docs/troubleshooting)** - Problem-solving guide
-- **[Data Download Guide](https://instagram-unfollow-tracker.vercel.app/docs/instagram-export)** - How to get your data
-- **[Accessibility](https://instagram-unfollow-tracker.vercel.app/docs/accessibility)** - Accessibility features and support
-- **[Privacy Policy](https://instagram-unfollow-tracker.vercel.app/docs/privacy)** - Data handling principles
-- **[Roadmap](https://instagram-unfollow-tracker.vercel.app/docs/roadmap)** - Future features
+- **[User Guide](https://safeunfollow.app/docs/user-guide)** - Complete step-by-step tutorial
+- **[FAQ](https://safeunfollow.app/docs/faq)** - Common questions and answers
+- **[Troubleshooting](https://safeunfollow.app/docs/troubleshooting)** - Problem-solving guide
+- **[Data Download Guide](https://safeunfollow.app/docs/instagram-export)** - How to get your data
+- **[Accessibility](https://safeunfollow.app/docs/accessibility)** - Accessibility features and support
+- **[Privacy Policy](https://safeunfollow.app/docs/privacy)** - Data handling principles
+- **[Roadmap](https://safeunfollow.app/docs/roadmap)** - Future features
 
 ### 🤝 Contributing
 

@@ -17,17 +17,17 @@
 
   <!-- English (default) -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -35,17 +35,17 @@
 
   <!-- Spanish -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/es/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -53,17 +53,17 @@
 
   <!-- Portuguese -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/pt/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/pt/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -71,17 +71,17 @@
 
   <!-- Hindi -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/hi/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/hi/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -89,17 +89,17 @@
 
   <!-- Indonesian -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/id/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/id/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -107,17 +107,17 @@
 
   <!-- Turkish -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/tr/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/tr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -125,17 +125,17 @@
 
   <!-- Japanese -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/ja/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/ja/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -143,17 +143,17 @@
 
   <!-- Russian -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/ru/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -161,17 +161,17 @@
 
   <!-- German -->
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/de/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/"/>
+    <loc>https://safeunfollow.app/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -180,17 +180,17 @@
   <!-- ==================== WIZARD PAGE ==================== -->
 
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/wizard</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/wizard"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/wizard"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/wizard"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/wizard"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/wizard"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/wizard"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/wizard"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/wizard"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/wizard"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/wizard"/>
+    <loc>https://safeunfollow.app/wizard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/wizard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/wizard"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/wizard"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/wizard"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/wizard"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/wizard"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/wizard"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/wizard"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/wizard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/wizard"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -199,17 +199,17 @@
   <!-- ==================== UPLOAD PAGE ==================== -->
 
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/upload</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/upload"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/upload"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/upload"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/upload"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/upload"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/upload"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/upload"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/upload"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/upload"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/upload"/>
+    <loc>https://safeunfollow.app/upload</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/upload"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/upload"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/upload"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/upload"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/upload"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/upload"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/upload"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/upload"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/upload"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/upload"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -218,17 +218,17 @@
   <!-- ==================== PRIVACY PAGE ==================== -->
 
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/privacy</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/privacy"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/privacy"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/privacy"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/privacy"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/privacy"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/privacy"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/privacy"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/privacy"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/privacy"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/privacy"/>
+    <loc>https://safeunfollow.app/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/privacy"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/privacy"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/privacy"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/privacy"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/privacy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/privacy"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/privacy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/privacy"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
@@ -237,17 +237,17 @@
   <!-- ==================== TERMS PAGE ==================== -->
 
   <url>
-    <loc>https://instagram-unfollow-tracker.vercel.app/terms</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://instagram-unfollow-tracker.vercel.app/terms"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://instagram-unfollow-tracker.vercel.app/es/terms"/>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://instagram-unfollow-tracker.vercel.app/pt/terms"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://instagram-unfollow-tracker.vercel.app/hi/terms"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://instagram-unfollow-tracker.vercel.app/id/terms"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://instagram-unfollow-tracker.vercel.app/tr/terms"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://instagram-unfollow-tracker.vercel.app/ja/terms"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://instagram-unfollow-tracker.vercel.app/ru/terms"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://instagram-unfollow-tracker.vercel.app/de/terms"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://instagram-unfollow-tracker.vercel.app/terms"/>
+    <loc>https://safeunfollow.app/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://safeunfollow.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://safeunfollow.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://safeunfollow.app/pt/terms"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://safeunfollow.app/hi/terms"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://safeunfollow.app/id/terms"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://safeunfollow.app/tr/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://safeunfollow.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://safeunfollow.app/ru/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://safeunfollow.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://safeunfollow.app/terms"/>
     <lastmod>2026-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

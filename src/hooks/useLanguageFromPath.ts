@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import i18n, { SUPPORTED_LANGUAGES, loadLanguage, type SupportedLanguage } from '@/locales';
 
-const BASE_URL = 'https://instagram-unfollow-tracker.vercel.app';
+const BASE_URL = 'https://safeunfollow.app';
 
 /**
  * Updates the HTML lang attribute
