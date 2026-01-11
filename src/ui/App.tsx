@@ -326,12 +326,12 @@ export const App: React.FC = () => {
       {/* Wizard Modal */}
       {showWizard && <Wizard onComplete={handleWizardComplete} onCancel={handleWizardCancel} />}
 
-      {/* BMC Widget - expands after data load (real: once, sample: always) */}
+      {/* BMC Widget - shows only on results pages, expands after 30s */}
       <BuyMeCoffeeWidget
-        expandOnSuccess={hasResults}
-        isSample={hasSampleData}
-        delay={3000}
+        show={activeScreen === AppState.RESULTS || activeScreen === AppState.SAMPLE}
+        expandDelay={30000}
         autoCollapseAfter={10000}
+        skipStorageCheck={activeScreen === AppState.SAMPLE}
       />
 
       <Analytics />

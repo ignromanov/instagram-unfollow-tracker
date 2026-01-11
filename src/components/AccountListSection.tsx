@@ -89,10 +89,9 @@ export function AccountListSection({
             {t('sample.hint')}{' '}
             <a
               href="#upload"
-              className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100 inline-flex items-center gap-1"
+              className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100"
             >
-              <Upload className="h-3 w-3" />
-              {t('sample.uploadPrompt')}
+              <Upload className="h-3 w-3 inline align-text-bottom" /> {t('sample.uploadPrompt')}
             </a>{' '}
             {t('sample.toSeeReal')}
           </AlertDescription>

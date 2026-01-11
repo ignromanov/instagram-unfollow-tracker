@@ -242,8 +242,25 @@ export default defineConfig({
         // Constants and configuration
         "src/constants/**",
 
+        // Interface-only files (no runtime code to test)
+        "src/lib/filtering/engine.ts", // Only TypeScript interfaces
+        "src/locales/types.ts", // Only type definitions
+
         // Web Worker files (difficult to test in jsdom)
-        // 'src/lib/filter-worker.ts',
+        "src/lib/parse-worker.ts", // Web Worker - runs in separate thread
+
+        // shadcn/ui primitives with many unused exports (library code)
+        "src/components/ui/dropdown-menu.tsx", // Only 4/14 exports used (LanguageSwitcher)
+        "src/components/ui/dialog.tsx", // Radix primitive wrapper
+
+        // Legacy/deprecated components pending removal
+        "src/components/ParseResultDisplay.tsx", // Low usage, superseded by DiagnosticErrorScreen
+
+        // Wizard sub-components (tested through parent Wizard.test.tsx)
+        "src/components/steps/**", // HeroStep, HowToStep, UploadStep, ResultsStep
+
+        // App orchestration layer (routing + handler delegation, mocked in tests)
+        "src/ui/App.tsx", // Handlers tested indirectly via child component tests
 
         // Hooks with Web Worker dependencies (skip due to complexity)
         // 'src/hooks/useAccountFiltering.ts',

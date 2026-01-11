@@ -1,86 +1,140 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 const BMC_STORAGE_KEY = 'bmc_widget_shown_v1';
+const BMC_SCRIPT_ID = 'bmc-script';
 const BMC_WIDGET_ID = 'bmc-wbtn';
 
 interface BuyMeCoffeeWidgetProps {
-  /** Trigger to expand the widget panel (e.g., file upload success) */
-  expandOnSuccess: boolean;
-  /** Whether this is sample/demo data */
-  isSample: boolean;
-  /** Delay before expanding for real uploads (ms) */
-  delay?: number;
-  /** Delay before expanding for sample data (ms) */
-  sampleDelay?: number;
+  /** Show the widget (controls mounting/unmounting) */
+  show: boolean;
+  /** Delay before expanding the panel (ms) */
+  expandDelay?: number;
   /** Auto-collapse after this time (ms), 0 = don't collapse */
   autoCollapseAfter?: number;
+  /** Skip localStorage check (for sample data - show every session) */
+  skipStorageCheck?: boolean;
 }
 
 /**
- * Controller for the BuyMeACoffee widget loaded in index.html.
+ * BuyMeACoffee widget with dynamic script loading.
  *
- * The widget button is always visible. This component controls:
- * - Auto-expanding the panel on first real file upload (not sample data)
- * - Auto-collapsing after a timeout
- * - One-time behavior persisted in localStorage
+ * Features:
+ * - Loads BMC script only when `show=true`
+ * - Removes script and widget on unmount (page navigation)
+ * - Timer resets on unmount (navigation cancels pending expand)
+ * - localStorage persistence (optional via skipStorageCheck)
  */
 export function BuyMeCoffeeWidget({
-  expandOnSuccess,
-  isSample,
-  delay = 3000,
-  sampleDelay = 30000,
+  show,
+  expandDelay = 30000,
   autoCollapseAfter = 10000,
+  skipStorageCheck = false,
 }: BuyMeCoffeeWidgetProps) {
   const hasExpandedRef = useRef(false);
-  const hasExpandedSampleRef = useRef(false);
+  const expandTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const collapseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Effect for real uploads
+  const cleanup = useCallback(() => {
+    // Clear timers
+    if (expandTimerRef.current) {
+      clearTimeout(expandTimerRef.current);
+      expandTimerRef.current = null;
+    }
+    if (collapseTimerRef.current) {
+      clearTimeout(collapseTimerRef.current);
+      collapseTimerRef.current = null;
+    }
+
+    // Remove script
+    const script = document.getElementById(BMC_SCRIPT_ID);
+    if (script) {
+      script.remove();
+    }
+
+    // Remove widget button
+    const widget = document.getElementById(BMC_WIDGET_ID);
+    if (widget) {
+      widget.remove();
+    }
+
+    // Remove any BMC iframes
+    const iframes = document.querySelectorAll('iframe[title*="BMC"]');
+    iframes.forEach(iframe => iframe.remove());
+  }, []);
+
   useEffect(() => {
-    if (isSample) return;
+    if (!show) {
+      cleanup();
+      return;
+    }
 
-    const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
-    if (alreadyShown) return;
+    // Check localStorage (unless skipped for sample data)
+    if (!skipStorageCheck) {
+      const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
+      if (alreadyShown) return;
+    }
 
-    if (!expandOnSuccess) return;
+    // Don't re-expand in same session
     if (hasExpandedRef.current) return;
 
-    const expandTimer = setTimeout(() => {
+    // Load BMC script dynamically
+    loadBMCScript();
+
+    // Set expand timer
+    expandTimerRef.current = setTimeout(() => {
       expandBMCWidget();
       hasExpandedRef.current = true;
-      localStorage.setItem(BMC_STORAGE_KEY, 'true');
 
+      // Save to localStorage (only for non-sample)
+      if (!skipStorageCheck) {
+        localStorage.setItem(BMC_STORAGE_KEY, 'true');
+      }
+
+      // Auto-collapse
       if (autoCollapseAfter > 0) {
-        setTimeout(() => {
+        collapseTimerRef.current = setTimeout(() => {
           collapseBMCWidget();
         }, autoCollapseAfter);
       }
-    }, delay);
+    }, expandDelay);
 
-    return () => clearTimeout(expandTimer);
-  }, [expandOnSuccess, isSample, delay, autoCollapseAfter]);
-
-  // Effect for sample data (separate, longer delay)
-  useEffect(() => {
-    if (!isSample) return;
-    if (hasExpandedSampleRef.current) return;
-
-    const expandTimer = setTimeout(() => {
-      expandBMCWidget();
-      hasExpandedSampleRef.current = true;
-
-      if (autoCollapseAfter > 0) {
-        setTimeout(() => {
-          collapseBMCWidget();
-        }, autoCollapseAfter);
-      }
-    }, sampleDelay);
-
-    return () => clearTimeout(expandTimer);
-  }, [isSample, sampleDelay, autoCollapseAfter]);
+    // Cleanup on unmount or when show changes to false
+    return cleanup;
+  }, [show, expandDelay, autoCollapseAfter, skipStorageCheck, cleanup]);
 
   return null;
+}
+
+/**
+ * Load BMC script dynamically into document head
+ */
+function loadBMCScript(): void {
+  // Don't load twice
+  if (document.getElementById(BMC_SCRIPT_ID)) return;
+
+  const script = document.createElement('script');
+  script.id = BMC_SCRIPT_ID;
+  script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
+  script.async = true;
+  script.setAttribute('data-name', 'BMC-Widget');
+  script.setAttribute('data-id', 'ignromanov');
+  script.setAttribute('data-description', 'Support privacy-first tools');
+  script.setAttribute('data-message', 'Thanks for using a private tool! 🛡️');
+  script.setAttribute('data-color', '#6366F1');
+  script.setAttribute('data-position', 'Left');
+  script.setAttribute('data-x_margin', '18');
+  script.setAttribute('data-y_margin', '18');
+
+  script.onload = () => {
+    // Dispatch DOMContentLoaded to trigger BMC widget initialization
+    const evt = document.createEvent('Event');
+    evt.initEvent('DOMContentLoaded', false, false);
+    window.dispatchEvent(evt);
+  };
+
+  document.head.appendChild(script);
 }
 
 /**
@@ -89,29 +143,22 @@ export function BuyMeCoffeeWidget({
 function expandBMCWidget(): void {
   const widget = document.getElementById(BMC_WIDGET_ID);
   if (widget) {
-    // BMC widget uses a button inside, click it to expand
     const button = widget.querySelector('button') || widget;
     if (button instanceof HTMLElement) {
       button.click();
-      console.log('[BMC Widget] Expanded');
     }
-  } else {
-    console.warn('[BMC Widget] Element not found');
   }
 }
 
 /**
- * Collapse the BMC widget panel by clicking the close button or the widget again
+ * Collapse the BMC widget panel
  */
 function collapseBMCWidget(): void {
-  // BMC creates an iframe when expanded, look for the close mechanism
   const widget = document.getElementById(BMC_WIDGET_ID);
   if (widget) {
-    // Clicking the widget button again should toggle/close it
     const button = widget.querySelector('button') || widget;
     if (button instanceof HTMLElement) {
       button.click();
-      console.log('[BMC Widget] Collapsed');
     }
   }
 }
