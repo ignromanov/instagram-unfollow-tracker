@@ -19,6 +19,7 @@ import { PrivacyPolicy } from '@/components/PrivacyPolicy';
 import { TermsOfService } from '@/components/TermsOfService';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
+import { useLanguageSync } from '@/hooks/useLanguageSync';
 import { useSampleData } from '@/hooks/useSampleData';
 
 /**
@@ -36,6 +37,9 @@ export const App: React.FC = () => {
   const [activeScreen, setActiveScreen] = useState<AppState>(AppState.HERO);
   const [showWizard, setShowWizard] = useState(false);
   const hasHydrated = useHydration();
+
+  // Sync language: browser detection, HTML lang, hreflang tags
+  useLanguageSync();
 
   const { uploadState, handleZipUpload, handleClearData, fileMetadata, parseWarnings } =
     useInstagramData();

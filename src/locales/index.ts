@@ -50,9 +50,10 @@ i18n
       escapeValue: false,
     },
     detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'unfollow-radar-language',
+      // Zustand store is the source of truth for language
+      // We only use navigator for initial detection in useLanguageSync
+      order: ['navigator'],
+      caches: [], // Don't cache - Zustand handles persistence
     },
   });
 
