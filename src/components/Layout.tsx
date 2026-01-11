@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { HeaderV2 } from '@/components/HeaderV2';
 import { Footer } from '@/components/Footer';
 import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
+import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
@@ -124,7 +125,7 @@ export function Layout({ lang }: LayoutProps) {
       <div className="min-h-screen bg-background flex flex-col transition-colors duration-300">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
         >
           Skip to main content
         </a>
@@ -153,6 +154,9 @@ export function Layout({ lang }: LayoutProps) {
         />
 
         <Analytics />
+
+        {/* Breadcrumb structured data for SEO */}
+        <BreadcrumbSchema />
       </div>
     </ThemeProvider>
   );

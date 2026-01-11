@@ -20,7 +20,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Instagram Unfollow" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <!-- PWA manifest is injected by vite-plugin-pwa -->
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -60,13 +60,13 @@
     <link rel="canonical" href="https://safeunfollow.app/" />
     <title>Instagram Unfollowers — Free ZIP Upload, No Login Required</title>
 
-    <!-- Schema.org structured data -->
+    <!-- Schema.org structured data: SoftwareApplication -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "Instagram Unfollow Tracker",
-        "alternateName": "Unfollow Radar",
+        "alternateName": "Safe Unfollow",
         "description": "Privacy-first Instagram data analyzer that helps you find who unfollowed you. 100% local processing, no login required, handles 1M+ accounts.",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Web Browser",
@@ -75,7 +75,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "softwareVersion": "1.0.0",
+        "softwareVersion": "1.3.0",
         "author": {
           "@type": "Person",
           "name": "Ignat Romanov",
@@ -83,21 +83,14 @@
         },
         "provider": {
           "@type": "Organization",
-          "name": "Unfollow Radar",
-          "url": "https://github.com/ignromanov/instagram-unfollow-tracker"
+          "name": "Safe Unfollow",
+          "url": "https://safeunfollow.app"
         },
         "url": "https://safeunfollow.app/",
         "license": "https://opensource.org/licenses/MIT",
         "softwareHelp": {
           "@type": "CreativeWork",
-          "url": "https://safeunfollow.app/docs/"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5",
-          "reviewCount": "1",
-          "bestRating": "5",
-          "worstRating": "1"
+          "url": "https://safeunfollow.app/wizard"
         },
         "featureList": [
           "Find Instagram unfollowers",
@@ -108,6 +101,20 @@
           "Free and open source",
           "Works offline",
           "Lightning-fast search and filtering"
+        ]
+      }
+    </script>
+
+    <!-- Schema.org structured data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Safe Unfollow",
+        "url": "https://safeunfollow.app",
+        "logo": "https://safeunfollow.app/logo.png",
+        "sameAs": [
+          "https://github.com/ignromanov/instagram-unfollow-tracker"
         ]
       }
     </script>

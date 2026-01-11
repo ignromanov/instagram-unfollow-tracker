@@ -57,6 +57,16 @@ export function SearchBar({
           )}
         </div>
       </form>
+      {/* Screen reader announcement for search results */}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {!isFiltering &&
+          t('search.liveResults', {
+            result: resultCount,
+            total: totalCount,
+            defaultValue: '{{result}} of {{total}} accounts match your search',
+          })}
+      </div>
+
       <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
         <p>
           {t('search.resultsCount', {

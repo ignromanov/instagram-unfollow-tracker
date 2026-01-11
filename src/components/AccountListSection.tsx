@@ -80,6 +80,15 @@ export function AccountListSection({
 
   return (
     <div className="max-w-7xl mx-auto py-6 md:py-16 space-y-6 md:space-y-12 animate-in fade-in duration-500 mb-12 px-4">
+      {/* Screen reader announcement for results count */}
+      <span aria-live="polite" aria-atomic="true" className="sr-only">
+        {t('results.liveCount', {
+          count: sortedIndices.length,
+          total: totalCount,
+          defaultValue: 'Showing {{count}} of {{total}} accounts',
+        })}
+      </span>
+
       {/* Sample Data Indicator Banner */}
       {isSample && (
         <Alert className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/50">
