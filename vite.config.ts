@@ -103,6 +103,57 @@ export default defineConfig({
       // Inline critical CSS
       preload: "swap",
     },
+
+    // Hook to inject correct canonical and hreflang tags for each page
+    async onPageRendered(route, renderedHTML) {
+      const BASE_URL = "https://safeunfollow.app";
+      const SUPPORTED_LANGUAGES = [
+        "en",
+        "es",
+        "pt",
+        "hi",
+        "id",
+        "tr",
+        "ja",
+        "ru",
+        "de",
+      ];
+
+      // Normalize route for canonical URL
+      const canonicalPath = route === "/" ? "" : route.replace(/\/$/, "");
+      const canonicalUrl = `${BASE_URL}${canonicalPath || "/"}`;
+
+      // Get base path without language prefix for hreflang
+      const langPrefixPattern = /^\/(es|pt|hi|id|tr|ja|ru|de)(\/|$)/;
+      const basePath = route.replace(langPrefixPattern, "/") || "/";
+      const normalizedBasePath = basePath === "/" ? "" : basePath;
+
+      // Generate hreflang links
+      const hreflangLinks = SUPPORTED_LANGUAGES.map((lang) => {
+        const url =
+          lang === "en"
+            ? `${BASE_URL}${normalizedBasePath || "/"}`
+            : `${BASE_URL}/${lang}${normalizedBasePath}`;
+        return `<link rel="alternate" hreflang="${lang}" href="${url}"/>`;
+      }).join("\n    ");
+
+      // Add x-default (English)
+      const xDefaultUrl = `${BASE_URL}${normalizedBasePath || "/"}`;
+      const xDefaultLink = `<link rel="alternate" hreflang="x-default" href="${xDefaultUrl}"/>`;
+
+      // Canonical link
+      const canonicalLink = `<link rel="canonical" href="${canonicalUrl}"/>`;
+
+      // Inject into head (before </head>)
+      const seoTags = `
+    <!-- SSG SEO: canonical and hreflang -->
+    ${canonicalLink}
+    ${hreflangLinks}
+    ${xDefaultLink}
+  `;
+
+      return renderedHTML.replace("</head>", `${seoTags}</head>`);
+    },
   },
   build: {
     // Enable source maps for detailed bundle analysis

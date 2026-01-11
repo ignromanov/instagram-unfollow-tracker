@@ -122,6 +122,7 @@ export function Layout({ lang }: LayoutProps) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      {/* SEO canonical/hreflang are injected at build time via vite.config.ts onPageRendered hook */}
       <div className="min-h-screen bg-background flex flex-col transition-colors duration-300">
         <a
           href="#main-content"
