@@ -120,7 +120,7 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                   <h3 className="text-2xl md:text-3xl font-display font-bold flex items-center flex-wrap gap-3 text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
                     {step.title}
                     {step.isWarning && (
-                      <span className="text-[10px] bg-amber-400 text-black px-3 py-1 rounded-full font-black uppercase tracking-widest shadow-sm">
+                      <span className="text-xs bg-amber-400 text-black px-3 py-1 rounded-full font-black uppercase tracking-widest shadow-sm">
                         {t('important')}
                       </span>
                     )}

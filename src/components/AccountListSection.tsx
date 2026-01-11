@@ -104,7 +104,7 @@ export function AccountListSection({
           <h1 className="text-3xl md:text-5xl font-display font-extrabold mb-2 tracking-tight">
             {t('header.title')}
           </h1>
-          <p className="text-zinc-500 text-[10px] md:text-sm font-bold uppercase tracking-widest">
+          <p className="text-zinc-500 text-xs md:text-sm font-bold uppercase tracking-widest">
             {t('header.fileInfo', { filename, count: totalCount })}
           </p>
         </div>

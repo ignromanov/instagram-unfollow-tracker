@@ -57,9 +57,46 @@ export default defineConfig({
         manualChunks: (id) => {
           // Only split chunks for client build
           if (id.includes('node_modules')) {
-            if (id.includes('@radix-ui') || id.includes('lucide-react')) {
-              return 'ui';
+            // Radix primitives and slots (shared dependencies) go to core
+            if (id.includes('@radix-ui/primitive') ||
+                id.includes('@radix-ui/react-primitive') ||
+                id.includes('@radix-ui/react-slot') ||
+                id.includes('@radix-ui/react-compose-refs') ||
+                id.includes('@radix-ui/react-context') ||
+                id.includes('@radix-ui/react-id') ||
+                id.includes('@radix-ui/react-use-') ||
+                id.includes('@radix-ui/react-presence') ||
+                id.includes('@radix-ui/react-portal') ||
+                id.includes('@radix-ui/react-focus-') ||
+                id.includes('@radix-ui/react-dismissable-layer') ||
+                id.includes('@radix-ui/react-popper')) {
+              return 'radix-core';
             }
+
+            // Dialog-related (alert-dialog depends on dialog)
+            if (id.includes('@radix-ui/react-dialog') ||
+                id.includes('@radix-ui/react-alert-dialog')) {
+              return 'radix-dialog';
+            }
+
+            // Dropdown menu
+            if (id.includes('@radix-ui/react-dropdown-menu') ||
+                id.includes('@radix-ui/react-menu')) {
+              return 'radix-menu';
+            }
+
+            // Other Radix components
+            if (id.includes('@radix-ui/react-accordion')) return 'radix-accordion';
+            if (id.includes('@radix-ui/react-tabs')) return 'radix-tabs';
+            if (id.includes('@radix-ui/react-collapsible')) return 'radix-accordion';
+
+            // Remaining Radix goes to core
+            if (id.includes('@radix-ui')) return 'radix-core';
+
+            // Icons in separate chunk
+            if (id.includes('lucide-react')) return 'icons';
+
+            // Utils
             if (id.includes('zustand') || id.includes('clsx') || id.includes('tailwind-merge')) {
               return 'utils';
             }

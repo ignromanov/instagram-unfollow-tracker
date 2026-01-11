@@ -70,6 +70,30 @@ vi.mock('react-i18next', () => ({
   },
 }));
 
+// Mock the locales module to prevent i18next initialization issues in tests
+vi.mock('@/locales', () => ({
+  default: {
+    language: 'en',
+    changeLanguage: vi.fn().mockResolvedValue(undefined),
+    hasResourceBundle: vi.fn().mockReturnValue(true),
+    addResourceBundle: vi.fn(),
+  },
+  SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de'],
+  LANGUAGE_NAMES: {
+    en: 'English',
+    es: 'Español',
+    pt: 'Português',
+    hi: 'हिन्दी',
+    id: 'Indonesia',
+    tr: 'Türkçe',
+    ja: '日本語',
+    ru: 'Русский',
+    de: 'Deutsch',
+  },
+  initI18n: vi.fn().mockResolvedValue(undefined),
+  loadLanguage: vi.fn().mockResolvedValue(undefined),
+}));
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

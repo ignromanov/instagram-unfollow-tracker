@@ -32,7 +32,7 @@ export function Hero({
   return (
     <section className="py-12 md:py-32 text-center max-w-5xl mx-auto flex flex-col items-center animate-in fade-in duration-700">
       {/* Version Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] md:text-xs mb-8 md:mb-12 border border-primary/20 backdrop-blur-md shadow-sm">
+      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary font-bold text-xs mb-8 md:mb-12 border border-primary/20 backdrop-blur-md shadow-sm">
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
@@ -120,6 +120,7 @@ export function Hero({
       </div>
 
       {/* Feature Cards */}
+      <h2 className="sr-only">{t('features.heading', 'Key Features')}</h2>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 w-full max-w-6xl px-4">
         <div className="p-6 md:p-10 rounded-4xl border border-border bg-card text-left shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-default group flex flex-col items-start">
           <div className="mb-6 flex justify-center group-hover:scale-110 transition-transform">

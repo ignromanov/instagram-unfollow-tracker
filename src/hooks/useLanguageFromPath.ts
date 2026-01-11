@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
-import i18n, { SUPPORTED_LANGUAGES, loadLanguage, type SupportedLanguage } from '@/locales';
+import i18n, {
+  SUPPORTED_LANGUAGES,
+  loadLanguage,
+  initI18n,
+  type SupportedLanguage,
+} from '@/locales';
 
 const BASE_URL = 'https://safeunfollow.app';
 
@@ -133,10 +138,10 @@ export function useLanguageFromPath(langFromRoute?: SupportedLanguage): void {
     // Update canonical URL
     updateCanonical(location.pathname);
 
-    // Ensure i18next is synced
+    // Ensure i18next is synced (initI18n ensures i18n is ready)
     if (i18n.language !== language) {
-      loadLanguage(language).then(() => {
-        i18n.changeLanguage(language);
+      initI18n().then(() => {
+        loadLanguage(language);
       });
     }
   }, [language, location.pathname, _hasHydrated]);

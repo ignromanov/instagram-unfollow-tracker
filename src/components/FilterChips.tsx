@@ -94,13 +94,13 @@ export function FilterChips({
     <div className="bg-card p-5 md:p-6 rounded-4xl border border-border shadow-sm sticky top-24">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h4 className="flex items-center gap-2 text-[10px] font-black text-zinc-900 dark:text-zinc-100 uppercase tracking-widest">
+        <h4 className="flex items-center gap-2 text-xs font-black text-zinc-900 dark:text-zinc-100 uppercase tracking-widest">
           <Filter size={14} className="text-primary" /> {t('filters.title')}
         </h4>
         {selectedFilters.size > 0 && (
           <button
             onClick={handleClearAll}
-            className="cursor-pointer text-[10px] font-black text-rose-500 uppercase tracking-widest hover:underline"
+            className="cursor-pointer text-xs font-black text-rose-500 uppercase tracking-widest hover:underline"
           >
             {t('filters.reset')}
           </button>
@@ -117,7 +117,7 @@ export function FilterChips({
             <button
               key={cfg.type}
               onClick={() => handleFilterToggle(cfg.type)}
-              className={`cursor-pointer flex flex-col items-start justify-between p-4 rounded-2xl text-[11px] font-bold transition-all border min-h-[85px] relative ${
+              className={`cursor-pointer flex flex-col items-start justify-between p-4 rounded-2xl text-xs font-bold transition-all border min-h-[85px] relative ${
                 isActive
                   ? 'bg-primary text-white border-primary shadow-md'
                   : 'text-zinc-600 dark:text-zinc-400 border-border bg-zinc-50/50 dark:bg-zinc-900/20 hover:border-primary/40'
@@ -132,7 +132,7 @@ export function FilterChips({
               <div className="flex items-center justify-between w-full">
                 <span>{getBadgeIcon(cfg.type, isActive)}</span>
                 <span
-                  className={`px-2 py-0.5 rounded-lg text-[10px] font-black ${
+                  className={`px-2 py-0.5 rounded-lg text-xs font-black ${
                     isActive
                       ? 'bg-white/20 text-white'
                       : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-500'
@@ -152,7 +152,7 @@ export function FilterChips({
         <div className="mt-6 pt-6 border-t border-border">
           <button
             onClick={() => setShowEmptyFilters(!showEmptyFilters)}
-            className="cursor-pointer flex items-center justify-between w-full text-[10px] font-black text-zinc-400 uppercase tracking-widest hover:text-primary transition-colors"
+            className="cursor-pointer flex items-center justify-between w-full text-xs font-black text-zinc-400 uppercase tracking-widest hover:text-primary transition-colors"
           >
             <span>{t('filters.emptyCategories', { count: emptyFilters.length })}</span>
             {showEmptyFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -163,11 +163,11 @@ export function FilterChips({
               {emptyFilters.map(cfg => (
                 <div
                   key={cfg.type}
-                  className="flex flex-col items-start justify-between p-4 rounded-2xl text-[11px] font-bold border border-border bg-zinc-50/20 dark:bg-zinc-900/10 opacity-60 min-h-[85px]"
+                  className="flex flex-col items-start justify-between p-4 rounded-2xl text-xs font-bold border border-border bg-zinc-50/20 dark:bg-zinc-900/10 opacity-60 min-h-[85px]"
                 >
                   <div className="flex items-center justify-between w-full">
                     <span>{getBadgeIcon(cfg.type, false)}</span>
-                    <span className="px-2 py-0.5 rounded-lg text-[10px] font-black bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
+                    <span className="px-2 py-0.5 rounded-lg text-xs font-black bg-zinc-100 dark:bg-zinc-800 text-zinc-400">
                       0
                     </span>
                   </div>

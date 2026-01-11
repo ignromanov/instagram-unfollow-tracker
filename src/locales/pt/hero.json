@@ -2,8 +2,8 @@
   "version": "V1.1 Otimizado para mais de 1.000.000 de Contas",
   "headline": {
     "prefix": "Descubra quem",
-    "highlight": "Deixou de Seguir",
-    "suffix": "Sem Fazer Login."
+    "highlight": "Parou de Te Seguir no Instagram",
+    "suffix": "Sem Precisar de Login."
   },
   "subheadline": "O único rastreador grátis que analisa seu arquivo ZIP do Instagram localmente sem login. 100% Privado. Sem risco para sua conta. Sem servidores.",
   "buttons": {
@@ -18,6 +18,7 @@
     "privacy": "Privacidade Garantida"
   },
   "features": {
+    "heading": "Principais Recursos",
     "local": {
       "title": "100% Local",
       "description": "Seus dados nunca saem do seu dispositivo"

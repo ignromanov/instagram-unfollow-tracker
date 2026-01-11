@@ -183,7 +183,7 @@ export function UploadZone({
                 </p>
 
                 {/* JSON Format badge */}
-                <div className="inline-flex items-center gap-2 rounded-xl bg-amber-100 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-amber-700 shadow-sm dark:bg-amber-900/30 dark:text-amber-400">
+                <div className="inline-flex items-center gap-2 rounded-xl bg-amber-100 px-4 py-2 text-xs font-black uppercase tracking-widest text-amber-700 shadow-sm dark:bg-amber-900/30 dark:text-amber-400">
                   <AlertCircle size={14} aria-hidden="true" /> {t('zone.jsonOnly')}
                 </div>
               </div>
@@ -229,7 +229,7 @@ export function UploadZone({
             {onOpenWizard && (
               <button
                 onClick={onOpenWizard}
-                className="mt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline"
+                className="mt-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary hover:underline"
               >
                 {t('errors.learnFix')}{' '}
                 <ArrowLeft className="rotate-180" size={14} aria-hidden="true" />

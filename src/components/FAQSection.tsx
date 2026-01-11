@@ -9,7 +9,15 @@ interface FAQItem {
   answer: string;
 }
 
-const FAQ_KEYS = ['privacy', 'zipFile', 'accountSafety', 'scale', 'free'] as const;
+const FAQ_KEYS = [
+  'privacy',
+  'zipFile',
+  'accountSafety',
+  'scale',
+  'free',
+  'safety',
+  'howToFind',
+] as const;
 
 export function FAQSection() {
   const { t } = useTranslation('faq');
@@ -73,11 +81,11 @@ export function FAQSection() {
                   className="cursor-pointer w-full px-6 py-6 md:px-10 md:py-10 flex items-center justify-between text-left hover:bg-[oklch(0.5_0_0_/_0.02)] transition-colors group"
                   aria-expanded={openIndex === index}
                 >
-                  <span className="font-bold text-lg md:text-2xl pr-8 group-hover:text-primary transition-colors leading-tight">
+                  <h3 className="font-bold text-lg md:text-2xl pr-8 group-hover:text-primary transition-colors leading-tight">
                     {item.question}
-                  </span>
+                  </h3>
                   <div
-                    className={`shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all ${
+                    className={`shrink-0 w-11 h-11 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all ${
                       openIndex === index
                         ? 'bg-primary text-white'
                         : 'bg-[oklch(0.5_0_0_/_0.05)] text-zinc-400'

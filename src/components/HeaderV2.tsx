@@ -75,7 +75,7 @@ export function HeaderV2({
             <div className="flex items-center gap-2">
               <button
                 onClick={onViewResults}
-                className={`cursor-pointer flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+                className={`cursor-pointer flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
                   activeScreen === AppState.RESULTS
                     ? 'bg-primary text-white shadow-md'
                     : 'text-zinc-500 hover:bg-[oklch(0.5_0_0_/_0.05)]'
@@ -87,7 +87,7 @@ export function HeaderV2({
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button
-                    className="cursor-pointer flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all"
+                    className="cursor-pointer flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all"
                     title={t('header.deleteData')}
                   >
                     <Trash2 size={18} />
@@ -119,7 +119,7 @@ export function HeaderV2({
           ) : (
             <button
               onClick={onUpload}
-              className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+              className={`cursor-pointer flex items-center gap-2 px-4 py-2.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
                 activeScreen === AppState.UPLOAD
                   ? 'bg-primary text-white shadow-md'
                   : 'text-zinc-500 hover:bg-[oklch(0.5_0_0_/_0.05)]'
@@ -139,7 +139,7 @@ export function HeaderV2({
           {/* Theme Toggle */}
           <button
             onClick={handleThemeToggle}
-            className="cursor-pointer p-2 md:p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
+            className="cursor-pointer p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
             title={isDark ? t('theme.light') : t('theme.dark')}
             aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
           >

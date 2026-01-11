@@ -18,6 +18,7 @@
     "privacy": "Gizlilik Garantili"
   },
   "features": {
+    "heading": "Temel Ozellikler",
     "local": {
       "title": "%100 Yerel",
       "description": "Verin asla cihazından çıkmaz"

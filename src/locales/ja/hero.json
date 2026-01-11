@@ -18,6 +18,7 @@
     "privacy": "プライバシー保証"
   },
   "features": {
+    "heading": "主な機能",
     "local": {
       "title": "100%ローカル",
       "description": "データがデバイスから出ることはありません"

@@ -118,7 +118,7 @@ describe('FAQSection Component', () => {
       const script = container.querySelector('script[type="application/ld+json"]');
       const schema = JSON.parse(script!.textContent!);
 
-      expect(schema.mainEntity).toHaveLength(5);
+      expect(schema.mainEntity).toHaveLength(7);
       schema.mainEntity.forEach(
         (item: { '@type': string; acceptedAnswer: { '@type': string } }) => {
           expect(item['@type']).toBe('Question');

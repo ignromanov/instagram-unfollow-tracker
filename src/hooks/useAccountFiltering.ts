@@ -6,6 +6,8 @@ import { useAppStore } from '@/lib/store';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
+import { useFilterWorker } from './useFilterWorker';
+
 /**
  * Options for useAccountFiltering hook
  * fileHash and accountCount are now passed as parameters
@@ -34,7 +36,14 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
     return Array.from(filters).sort();
   }, [filters]);
 
-  // Create filter engine instance
+  // Use Web Worker for filtering (keeps main thread responsive)
+  const {
+    filterToIndices: workerFilterToIndices,
+    isReady: isWorkerReady,
+    hasError: workerHasError,
+  } = useFilterWorker({ fileHash, totalAccounts: totalCount });
+
+  // Fallback filter engine for SSR/testing or when worker fails
   const filterEngineRef = useRef<IndexedDBFilterEngine | null>(null);
 
   // Debounce search query
@@ -71,13 +80,13 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
   // AbortController to cancel previous filter requests (fixes race condition)
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Initialize filter engine when fileHash changes
+  // Initialize fallback filter engine when fileHash changes (only if worker fails)
   useEffect(() => {
-    if (fileHash && totalCount > 0) {
+    // Only initialize fallback engine if worker has error or not supported
+    if (workerHasError && fileHash && totalCount > 0) {
       const engine = new IndexedDBFilterEngine();
-      // Initialize engine asynchronously but don't block
       engine.init(fileHash, totalCount).catch(error => {
-        console.error('[useAccountFiltering] Failed to initialize engine:', error);
+        console.error('[useAccountFiltering] Failed to initialize fallback engine:', error);
       });
       filterEngineRef.current = engine;
     }
@@ -88,7 +97,7 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
         filterEngineRef.current = null;
       }
     };
-  }, [fileHash, totalCount]);
+  }, [fileHash, totalCount, workerHasError]);
 
   // Memoize allIndices array to prevent recreation
   const allIndices = useMemo(() => {
@@ -126,6 +135,12 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
       return;
     }
 
+    // Wait for worker to be ready (or fallback if worker failed)
+    if (!isWorkerReady && !workerHasError) {
+      // Worker still initializing, wait
+      return;
+    }
+
     // If already filtering, cancel previous request and start new one
     if (isFilteringRef.current && abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -136,17 +151,19 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
     abortControllerRef.current = abortController;
     isFilteringRef.current = true;
 
-    // Run filtering asynchronously using IndexedDB engine
-    const engine = filterEngineRef.current;
-    if (!engine) {
-      setFilteredIndices([]);
-      setIsFiltering(false);
-      isFilteringRef.current = false;
-      return;
-    }
+    // Choose filter method: worker (preferred) or fallback engine
+    const performFilter = async (): Promise<number[]> => {
+      if (isWorkerReady) {
+        // Use Web Worker (off main thread)
+        return workerFilterToIndices(debouncedQuery, new Set(activeFilters));
+      } else if (filterEngineRef.current) {
+        // Fallback to sync engine (main thread)
+        return filterEngineRef.current.filterToIndices(debouncedQuery, activeFilters);
+      }
+      return [];
+    };
 
-    engine
-      .filterToIndices(debouncedQuery, activeFilters)
+    performFilter()
       .then(indices => {
         // Check if this request was cancelled
         if (abortController.signal.aborted) {
@@ -180,6 +197,8 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
           return;
         }
 
+        console.error('[useAccountFiltering] Filter failed:', error);
+
         // Only update state if component is still mounted and request not cancelled
         if (isMountedRef.current && !abortController.signal.aborted) {
           setFilteredIndices([]);
@@ -198,7 +217,17 @@ export function useAccountFiltering(options: UseAccountFilteringOptions) {
       isFilteringRef.current = false;
     };
     // Use filtersKey (string) instead of filtersArray (array) to prevent reruns
-  }, [fileHash, totalCount, filtersKey, debouncedQuery, allIndices]);
+  }, [
+    fileHash,
+    totalCount,
+    filtersKey,
+    debouncedQuery,
+    allIndices,
+    isWorkerReady,
+    workerHasError,
+    workerFilterToIndices,
+    filtersArray,
+  ]);
 
   // Calculate filter counts from IndexedDB
   const [filterCounts, setFilterCounts] = useState<Record<BadgeKey, number>>(

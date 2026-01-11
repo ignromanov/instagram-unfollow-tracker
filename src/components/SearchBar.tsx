@@ -49,7 +49,7 @@ export function SearchBar({
               variant="ghost"
               size="sm"
               onClick={() => onChange('')}
-              className="absolute right-1 top-1/2 h-10 w-10 sm:h-7 sm:w-7 -translate-y-1/2 p-0"
+              className="absolute right-1 top-1/2 h-11 w-11 sm:h-8 sm:w-8 -translate-y-1/2 p-0"
               aria-label={t('search.clearAriaLabel')}
             >
               <X className="h-4 w-4" />

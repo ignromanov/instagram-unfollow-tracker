@@ -50,7 +50,7 @@ export function StatCard({
           {value.toLocaleString()}
         </div>
         <div
-          className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest leading-none ${
+          className={`text-xs font-black uppercase tracking-widest leading-none ${
             isActive ? 'text-white/80' : 'text-zinc-400'
           }`}
         >

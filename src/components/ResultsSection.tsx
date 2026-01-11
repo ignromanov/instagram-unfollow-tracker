@@ -25,7 +25,7 @@ function StatCard({ icon: Icon, label, value, colorClass }: StatCardProps) {
       <div className="text-xl md:text-3xl font-extrabold mb-1 md:mb-2">
         {value.toLocaleString()}
       </div>
-      <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+      <div className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
         {label}
       </div>
     </div>

@@ -169,7 +169,7 @@ export const AccountList = memo(function AccountList({
                 .map(([badgeKey]) => (
                   <span
                     key={badgeKey}
-                    className={`shrink-0 text-[8px] md:text-[10px] uppercase tracking-wider font-black px-2.5 py-1 rounded-lg border leading-none ${
+                    className={`shrink-0 text-xs uppercase tracking-wider font-black px-2.5 py-1 rounded-lg border leading-none ${
                       BADGE_STYLES[badgeKey] || 'bg-muted text-muted-foreground'
                     }`}
                   >
@@ -199,7 +199,7 @@ export const AccountList = memo(function AccountList({
     <div className="flex-grow bg-card rounded-4xl border border-border shadow-sm overflow-hidden flex flex-col h-[75vh] md:h-[85vh]">
       {/* List Header */}
       <div className="px-5 md:px-8 py-4 md:py-5 border-b border-border bg-zinc-50/50 dark:bg-zinc-900/30">
-        <h3 className="text-[10px] md:text-xs font-black text-zinc-500 uppercase tracking-widest">
+        <h3 className="text-xs font-black text-zinc-500 uppercase tracking-widest">
           {t('list.header', { count: displayCount })}
         </h3>
       </div>
