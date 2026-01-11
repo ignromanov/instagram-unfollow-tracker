@@ -214,9 +214,7 @@ export function UploadZone({
               {t('errors.commonTitle')}
             </h4>
             <p className="text-xs font-medium leading-relaxed text-zinc-500 md:text-sm">
-              <Trans i18nKey="errors.commonHint" ns="upload">
-                <strong />
-              </Trans>
+              <Trans i18nKey="errors.commonHint" ns="upload" components={{ strong: <strong /> }} />
             </p>
             {onOpenWizard && (
               <button

@@ -19,7 +19,7 @@
   },
   "errors": {
     "commonTitle": "Häufigster Fehler",
-    "commonHint": "Wenn dein Export 0 Follower zeigt, hast du wahrscheinlich im <1>HTML</1>-Format exportiert oder die Kategorie \"Follower und Gefolgte\" nicht ausgewählt.",
+    "commonHint": "Wenn dein Export 0 Follower zeigt, hast du wahrscheinlich im <strong>HTML</strong>-Format exportiert oder die Kategorie \"Follower und Gefolgte\" nicht ausgewählt.",
     "learnFix": "So behebst du das"
   },
   "diagnostic": {

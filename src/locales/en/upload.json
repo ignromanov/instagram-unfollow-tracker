@@ -19,7 +19,7 @@
   },
   "errors": {
     "commonTitle": "Most Common Error",
-    "commonHint": "If your export has 0 followers, you likely exported in <1>HTML</1> format or didn't select the \"Followers and following\" information category.",
+    "commonHint": "If your export has 0 followers, you likely exported in <strong>HTML</strong> format or didn't select the \"Followers and following\" information category.",
     "learnFix": "Learn how to fix"
   },
   "diagnostic": {

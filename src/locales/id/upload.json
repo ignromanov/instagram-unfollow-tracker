@@ -19,7 +19,7 @@
   },
   "errors": {
     "commonTitle": "Kesalahan Paling Umum",
-    "commonHint": "Jika ekspor Anda memiliki 0 pengikut, kemungkinan Anda mengekspor dalam format <1>HTML</1> atau tidak memilih kategori informasi \"Pengikut dan mengikuti\".",
+    "commonHint": "Jika ekspor Anda memiliki 0 pengikut, kemungkinan Anda mengekspor dalam format <strong>HTML</strong> atau tidak memilih kategori informasi \"Pengikut dan mengikuti\".",
     "learnFix": "Pelajari cara memperbaiki"
   },
   "diagnostic": {

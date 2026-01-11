@@ -19,7 +19,7 @@
   },
   "errors": {
     "commonTitle": "Error más común",
-    "commonHint": "Si tu exportación tiene 0 seguidores, probablemente exportaste en formato <1>HTML</1> o no seleccionaste la categoría de información \"Seguidores y seguidos\".",
+    "commonHint": "Si tu exportación tiene 0 seguidores, probablemente exportaste en formato <strong>HTML</strong> o no seleccionaste la categoría de información \"Seguidores y seguidos\".",
     "learnFix": "Aprende cómo solucionarlo"
   },
   "diagnostic": {

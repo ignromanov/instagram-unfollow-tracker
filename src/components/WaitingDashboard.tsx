@@ -84,7 +84,7 @@ export function WaitingDashboard({ onUploadNow, onSkip }: WaitingDashboardProps)
             {t('waiting.proTip')}
           </div>
           <p className="text-yellow-600/90 dark:text-yellow-600/80">
-            <Trans i18nKey="waiting.proTipHint" ns="upload">
+            <Trans i18nKey="waiting.proTipHint" ns="upload" components={{ b: <b /> }}>
               Instagram emails often end up there. Look for emails from <b>Meta</b> or{' '}
               <b>Instagram</b>. The download link expires in 4 days.
             </Trans>

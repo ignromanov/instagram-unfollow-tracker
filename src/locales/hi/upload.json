@@ -19,7 +19,7 @@
   },
   "errors": {
     "commonTitle": "सबसे आम गलती",
-    "commonHint": "अगर आपके एक्सपोर्ट में 0 फॉलोअर्स हैं, तो शायद आपने <1>HTML</1> फॉर्मेट में एक्सपोर्ट किया है या \"Followers and following\" कैटेगरी नहीं चुनी।",
+    "commonHint": "अगर आपके एक्सपोर्ट में 0 फॉलोअर्स हैं, तो शायद आपने <strong>HTML</strong> फॉर्मेट में एक्सपोर्ट किया है या \"Followers and following\" कैटेगरी नहीं चुनी।",
     "learnFix": "ठीक करना सीखें"
   },
   "diagnostic": {

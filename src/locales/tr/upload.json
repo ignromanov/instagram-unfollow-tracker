@@ -19,7 +19,7 @@
   },
   "errors": {
     "commonTitle": "En Yaygın Hata",
-    "commonHint": "Dışa aktarımında 0 takipçi varsa, muhtemelen <1>HTML</1> formatında dışa aktardın veya \"Takipçiler ve takip edilenler\" bilgi kategorisini seçmedin.",
+    "commonHint": "Dışa aktarımında 0 takipçi varsa, muhtemelen <strong>HTML</strong> formatında dışa aktardın veya \"Takipçiler ve takip edilenler\" bilgi kategorisini seçmedin.",
     "learnFix": "Nasıl düzeltilir öğren"
   },
   "diagnostic": {
