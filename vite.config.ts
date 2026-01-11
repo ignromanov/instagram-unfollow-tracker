@@ -15,6 +15,17 @@ export default defineConfig({
       "@tests": path.resolve(__dirname, "src/__tests__"),
     },
   },
+  // SSG Configuration
+  ssgOptions: {
+    // Pages to prerender at build time
+    // Client-only pages (results, sample) will be handled by SPA fallback
+    script: "async",
+    formatting: "minify",
+    crittersOptions: {
+      // Inline critical CSS
+      preload: "swap",
+    },
+  },
   build: {
     // Enable source maps for detailed bundle analysis
     sourcemap: true,
@@ -40,17 +51,17 @@ export default defineConfig({
       },
       output: {
         // Manual chunk splitting for better caching
-        manualChunks: {
-          // Vendor chunk for third-party libraries
-          vendor: ["react", "react-dom"],
-          // UI components chunk
-          ui: [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-tabs",
-            "lucide-react",
-          ],
-          // Utils chunk
-          utils: ["zustand", "clsx", "tailwind-merge"],
+        // Note: react/react-dom excluded - they're externalized during SSR build
+        manualChunks: (id) => {
+          // Only split chunks for client build
+          if (id.includes('node_modules')) {
+            if (id.includes('@radix-ui') || id.includes('lucide-react')) {
+              return 'ui';
+            }
+            if (id.includes('zustand') || id.includes('clsx') || id.includes('tailwind-merge')) {
+              return 'utils';
+            }
+          }
         },
       },
     },

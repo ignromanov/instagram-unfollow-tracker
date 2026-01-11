@@ -1,6 +1,7 @@
 'use client';
 
 import { Globe, ChevronDown } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, type SupportedLanguage } from '@/locales';
 import {
@@ -12,13 +13,40 @@ import {
 import { analytics } from '@/lib/analytics';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Get current path without language prefix
+ */
+function getPathWithoutLang(pathname: string): string {
+  const langPrefixes = SUPPORTED_LANGUAGES.filter(l => l !== 'en').map(l => `/${l}`);
+
+  for (const prefix of langPrefixes) {
+    if (pathname === prefix) {
+      return '/';
+    }
+    if (pathname.startsWith(`${prefix}/`)) {
+      return pathname.slice(prefix.length);
+    }
+  }
+
+  return pathname;
+}
+
 export function LanguageSwitcher() {
   const { t } = useTranslation('common');
   const { language, setLanguage } = useAppStore();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLanguageChange = (lang: SupportedLanguage) => {
+    // Update store
     setLanguage(lang);
     analytics.languageChange(lang);
+
+    // Navigate to new language path
+    const basePath = getPathWithoutLang(location.pathname);
+    const newPath = lang === 'en' ? basePath : `/${lang}${basePath === '/' ? '' : basePath}`;
+
+    navigate(newPath || '/');
   };
 
   return (
