@@ -3,7 +3,7 @@
   "items": {
     "howToFind": {
       "question": "How to check who unfollowed you on Instagram without app?",
-      "answer": "Request your Instagram data export from Settings → Download Your Information → Select JSON format. Download the ZIP file when ready (1-2 days), then upload it to this free tracker. The tool analyzes your followers locally—see unfollowers, non-mutuals, and mutuals instantly. No login, no app install needed.",
+      "answer": "Open Meta Accounts Center → Create export → Select your profile → Choose \"Export to device\" → Select only \"Followers and following\" → Set format to JSON. Download the ZIP when ready (usually 5-30 minutes), then upload it here. The tool analyzes followers locally—see unfollowers instantly. No login needed.",
       "relatedLink": {
         "text": "Start the export guide",
         "href": "/wizard"
@@ -39,7 +39,7 @@
     },
     "zipFile": {
       "question": "What is Instagram data download and why use it?",
-      "answer": "Instagram Data Download is Meta's official tool for exporting your account information (followers, following, profile data). It's the only safe, authorized way to access this data without risking your account. Apps that ask for your password violate Instagram's Terms of Service and risk account bans.",
+      "answer": "Instagram Data Download (via Meta Accounts Center) is the official tool for exporting your account information including followers and following lists. It's the only safe, authorized way to access this data without risking your account. Apps that ask for your password violate Instagram's Terms of Service.",
       "relatedLink": {
         "text": "Follow our step-by-step guide",
         "href": "/wizard"
@@ -55,7 +55,11 @@
     },
     "downloadTime": {
       "question": "How long does it take to receive my Instagram data download?",
-      "answer": "Meta typically processes your request within 1-2 days and emails you a download link. The time varies based on account age and activity. After you download the ZIP, uploading it to this tracker for analysis is instant—processing takes seconds even for million-account exports thanks to local browser processing."
+      "answer": "Meta typically sends your data within 5-30 minutes via email. Larger accounts or high server load may take up to a few hours. After you download the ZIP, uploading it to this tracker for analysis is instant—processing takes seconds even for million-account exports thanks to local browser processing.",
+      "relatedLink": {
+        "text": "Set a calendar reminder",
+        "href": "/wizard#wizard/step/8"
+      }
     },
     "scale": {
       "question": "What size Instagram account export can you analyze?",

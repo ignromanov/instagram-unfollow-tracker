@@ -3,7 +3,7 @@
   "items": {
     "howToFind": {
       "question": "Bagaimana cara melihat siapa yang berhenti follow di Instagram tanpa aplikasi?",
-      "answer": "Minta ekspor data Instagram dari Pengaturan → Unduh Informasi Anda → Pilih format JSON. Unduh file ZIP saat sudah siap (1-2 hari), lalu unggah ke pelacak gratis ini. Alat ini menganalisis pengikut Anda secara lokal—lihat unfollower, non-mutual, dan mutual secara instan. Tidak perlu login, tidak perlu instal aplikasi.",
+      "answer": "Buka Meta Accounts Center → Buat ekspor → Pilih profil Anda → \"Ekspor ke perangkat\" → Hanya \"Pengikut dan mengikuti\" → Format JSON. Unduh ZIP saat siap (biasanya 5-30 menit) dan unggah di sini. Alat ini menganalisis pengikut secara lokal—lihat unfollower secara instan. Tidak perlu login.",
       "relatedLink": {
         "text": "Mulai panduan ekspor",
         "href": "/wizard"
@@ -39,7 +39,7 @@
     },
     "zipFile": {
       "question": "Apa itu unduhan data Instagram dan mengapa menggunakannya?",
-      "answer": "Unduhan Data Instagram adalah alat resmi Meta untuk mengekspor informasi akun Anda (pengikut, mengikuti, data profil). Ini satu-satunya cara yang aman dan resmi untuk mengakses data ini tanpa mempertaruhkan akun Anda. Aplikasi yang meminta kata sandi Anda melanggar Ketentuan Layanan Instagram.",
+      "answer": "Unduhan Data Instagram (melalui Meta Accounts Center) adalah alat resmi untuk mengekspor informasi akun Anda termasuk daftar pengikut dan mengikuti. Ini satu-satunya cara yang aman dan resmi untuk mengakses data ini tanpa mempertaruhkan akun Anda. Aplikasi yang meminta kata sandi Anda melanggar Ketentuan Layanan Instagram.",
       "relatedLink": {
         "text": "Ikuti panduan langkah demi langkah kami",
         "href": "/wizard"
@@ -55,7 +55,11 @@
     },
     "downloadTime": {
       "question": "Berapa lama waktu untuk menerima unduhan data Instagram saya?",
-      "answer": "Meta biasanya memproses permintaan Anda dalam 1-2 hari dan mengirimkan tautan unduhan melalui email. Waktu bervariasi berdasarkan usia dan aktivitas akun. Setelah mengunduh ZIP, mengunggahnya ke pelacak ini untuk analisis bersifat instan—pemrosesan memakan waktu detik bahkan untuk ekspor jutaan akun berkat pemrosesan browser lokal."
+      "answer": "Meta biasanya mengirim data Anda dalam 5-30 menit melalui email. Akun besar atau beban server tinggi mungkin memakan waktu hingga beberapa jam. Setelah mengunduh ZIP, mengunggahnya ke pelacak ini untuk analisis bersifat instan—pemrosesan memakan waktu detik bahkan untuk ekspor jutaan akun berkat pemrosesan browser lokal.",
+      "relatedLink": {
+        "text": "Tambah pengingat kalender",
+        "href": "/wizard#wizard/step/8"
+      }
     },
     "scale": {
       "question": "Berapa ukuran ekspor akun Instagram yang bisa Anda analisis?",

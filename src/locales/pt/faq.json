@@ -3,7 +3,7 @@
   "items": {
     "howToFind": {
       "question": "Como ver quem deixou de te seguir no Instagram sem app?",
-      "answer": "Solicite sua exportação de dados do Instagram em Configurações → Baixar Suas Informações → Selecione formato JSON. Baixe o arquivo ZIP quando estiver pronto (1-2 dias) e envie para este rastreador gratuito. A ferramenta analisa seus seguidores localmente—veja unfollowers, não-mútuos e mútuos instantaneamente. Sem login, sem instalar app.",
+      "answer": "Abra o Meta Accounts Center → Criar exportação → Selecione seu perfil → \"Exportar para dispositivo\" → Apenas \"Seguidores e seguindo\" → Formato JSON. Baixe o ZIP quando estiver pronto (normalmente 5-30 minutos) e envie aqui. A ferramenta analisa seus seguidores localmente—veja unfollowers instantaneamente. Sem login.",
       "relatedLink": {
         "text": "Iniciar o guia de exportação",
         "href": "/wizard"
@@ -39,7 +39,7 @@
     },
     "zipFile": {
       "question": "O que é o download de dados do Instagram e por que usá-lo?",
-      "answer": "O Download de Dados do Instagram é a ferramenta oficial da Meta para exportar as informações da sua conta (seguidores, seguindo, dados do perfil). É a única forma segura e autorizada de acessar esses dados sem arriscar sua conta. Apps que pedem sua senha violam os Termos de Serviço do Instagram.",
+      "answer": "O Download de Dados do Instagram (via Meta Accounts Center) é a ferramenta oficial para exportar as informações da sua conta incluindo listas de seguidores e seguindo. É a única forma segura e autorizada de acessar esses dados sem arriscar sua conta. Apps que pedem sua senha violam os Termos de Serviço do Instagram.",
       "relatedLink": {
         "text": "Siga nosso guia passo a passo",
         "href": "/wizard"
@@ -55,7 +55,11 @@
     },
     "downloadTime": {
       "question": "Quanto tempo leva para receber meu download de dados do Instagram?",
-      "answer": "A Meta normalmente processa sua solicitação em 1-2 dias e envia um link de download por email. O tempo varia com base na idade e atividade da conta. Após baixar o ZIP, enviá-lo para este rastreador para análise é instantâneo—o processamento leva segundos mesmo para exportações de um milhão de contas graças ao processamento local no navegador."
+      "answer": "A Meta normalmente envia seus dados em 5-30 minutos por email. Contas maiores ou alta carga do servidor podem levar até algumas horas. Após baixar o ZIP, enviá-lo para este rastreador para análise é instantâneo—o processamento leva segundos mesmo para exportações de um milhão de contas graças ao processamento local no navegador.",
+      "relatedLink": {
+        "text": "Adicionar lembrete ao calendário",
+        "href": "/wizard#wizard/step/8"
+      }
     },
     "scale": {
       "question": "Qual tamanho de exportação de conta do Instagram você pode analisar?",
