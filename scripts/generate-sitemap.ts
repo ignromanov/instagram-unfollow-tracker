@@ -15,23 +15,18 @@
 import { readdirSync, statSync, writeFileSync } from "fs";
 import { resolve, relative } from "path";
 
+// Import from shared config (single source of truth)
+import {
+  SUPPORTED_LANGUAGES,
+  type SupportedLanguage,
+} from "../src/config/languages";
+
 // Configuration
 const BASE_URL = "https://safeunfollow.app";
 const DIST_DIR = resolve(process.cwd(), "dist");
 
-// Supported languages (order matters: first is default)
-const SUPPORTED_LANGUAGES = [
-  "en",
-  "es",
-  "pt",
-  "hi",
-  "id",
-  "tr",
-  "ja",
-  "ru",
-  "de",
-] as const;
-type Language = (typeof SUPPORTED_LANGUAGES)[number];
+// Use shared type
+type Language = SupportedLanguage;
 
 // Files to exclude from sitemap
 const EXCLUDE_PATTERNS = [

@@ -2,36 +2,17 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-export const SUPPORTED_LANGUAGES = [
-  'en',
-  'es',
-  'pt',
-  'hi',
-  'id',
-  'tr',
-  'ja',
-  'ru',
-  'de',
-  'ar',
-] as const;
+// Import for local use
+import type { SupportedLanguage } from '@/config/languages';
 
-export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
-
-export const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {
-  en: 'English',
-  es: 'Español',
-  pt: 'Português',
-  hi: 'हिन्दी',
-  id: 'Indonesia',
-  tr: 'Türkçe',
-  ja: '日本語',
-  ru: 'Русский',
-  de: 'Deutsch',
-  ar: 'العربية',
-};
-
-/** RTL languages that require dir="rtl" attribute */
-export const RTL_LANGUAGES: SupportedLanguage[] = ['ar'];
+// Re-export from shared config (single source of truth)
+export {
+  SUPPORTED_LANGUAGES,
+  LANGUAGE_NAMES,
+  RTL_LANGUAGES,
+  DEFAULT_LANGUAGE,
+  type SupportedLanguage,
+} from '@/config/languages';
 
 // Track initialization state
 let isInitialized = false;
