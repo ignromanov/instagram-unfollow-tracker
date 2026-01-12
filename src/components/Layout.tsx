@@ -15,7 +15,7 @@ import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 import { analytics } from '@/lib/analytics';
-import type { SupportedLanguage } from '@/locales';
+import { RTL_LANGUAGES, type SupportedLanguage } from '@/locales';
 
 interface LayoutProps {
   lang?: SupportedLanguage;
@@ -80,6 +80,9 @@ export function Layout({ lang }: LayoutProps) {
   // Get language prefix for navigation
   const prefix = useLanguagePrefix();
 
+  // Determine text direction for RTL languages (Arabic, etc.)
+  const isRTL = lang ? RTL_LANGUAGES.includes(lang) : false;
+
   const hasResults = uploadState.status === 'success' && fileMetadata !== null;
   const activeScreen = getActiveScreen(location.pathname);
 
@@ -125,10 +128,13 @@ export function Layout({ lang }: LayoutProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       {/* SEO canonical/hreflang are injected at build time via vite.config.ts onPageRendered hook */}
-      <div className="min-h-screen bg-background flex flex-col transition-colors duration-300">
+      <div
+        dir={isRTL ? 'rtl' : 'ltr'}
+        className="min-h-screen bg-background flex flex-col transition-colors duration-300"
+      >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:inset-inline-start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
         >
           Skip to main content
         </a>

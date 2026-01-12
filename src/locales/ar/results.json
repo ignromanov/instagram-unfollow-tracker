@@ -1,0 +1,59 @@
+{
+  "header": {
+    "title": "نتائج التحليل",
+    "fileInfo": "{{filename}} • {{count, number}} إجمالي",
+    "showing": "عرض {{filtered}} من {{total}} حساب"
+  },
+  "sample": {
+    "banner": "عرض بيانات العينة",
+    "hint": "هذه بيانات تجريبية لمساعدتك في استكشاف التطبيق.",
+    "uploadPrompt": "ارفع بياناتك",
+    "toSeeReal": "لرؤية متابعيك الحقيقيين."
+  },
+  "search": {
+    "placeholder": "البحث في أسماء المستخدمين...",
+    "ariaLabel": "البحث في الحسابات باسم المستخدم",
+    "clearAriaLabel": "مسح البحث",
+    "resultsCount": "عرض {{result}} من {{total}}",
+    "accounts": "حسابات",
+    "time": "{{time}} مللي ثانية"
+  },
+  "sort": {
+    "asc": "ترتيب أ→ي",
+    "desc": "ترتيب ي→أ"
+  },
+  "stats": {
+    "followers": "المتابعون",
+    "following": "المتابَعون",
+    "unfollowed": "ألغوا المتابعة",
+    "notFollowing": "لا يتابعون"
+  },
+  "filters": {
+    "title": "تصفية النتائج",
+    "reset": "إعادة تعيين",
+    "emptyCategories": "فئات فارغة ({{count, number}})",
+    "addFilter": "إضافة فلتر {{label}} ({{count, number}} حسابات)",
+    "removeFilter": "إزالة فلتر {{label}} ({{count, number}} حسابات)"
+  },
+  "badges": {
+    "followers": "المتابعون",
+    "following": "المتابَعون",
+    "unfollowed": "ألغوا المتابعة مؤخراً",
+    "notFollowingBack": "لا يتابعونك",
+    "mutuals": "متبادلون",
+    "notFollowedBack": "لا تتابعهم",
+    "pending": "طلب معلق",
+    "permanent": "معلق (دائم)",
+    "restricted": "مقيّد",
+    "close": "صديق مقرب",
+    "dismissed": "اقتراح مرفوض"
+  },
+  "empty": {
+    "noUsers": "لم يتم العثور على مستخدمين",
+    "resetFilters": "إعادة تعيين الفلاتر"
+  },
+  "list": {
+    "header": "الحسابات ({{count, number}})",
+    "viewProfile": "عرض الملف الشخصي"
+  }
+}

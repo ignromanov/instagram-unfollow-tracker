@@ -1,9 +1,10 @@
 import type { BadgeKey, FileDiscovery, FileMetadata, ParseWarning } from '@/core/types';
+import type { SupportedLanguage } from '@/locales';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Supported languages for i18n
-export type SupportedLanguage = 'en' | 'es' | 'pt' | 'hi' | 'id' | 'tr' | 'ja' | 'ru' | 'de';
+// Re-export for backwards compatibility
+export type { SupportedLanguage };
 
 // Journey step definition for guided user experience
 export type JourneyStep =

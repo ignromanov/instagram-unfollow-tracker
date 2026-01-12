@@ -138,6 +138,10 @@
     letter-spacing: -0.04em;
     line-height: 1.15;
   }
+  /* RTL: Arabic text needs different letter-spacing */
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] .font-display {
+    letter-spacing: 0;
+  }
   /* Interactive elements should always show pointer cursor */
   button, [role="button"], a[href], input[type="button"], input[type="submit"] {
     cursor: pointer;

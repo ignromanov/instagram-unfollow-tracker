@@ -27,7 +27,7 @@ function updateHreflangTags(currentPath: string): void {
   const head = document.head;
 
   // Get base path without language prefix
-  const pathWithoutLang = currentPath.replace(/^\/(es|pt|hi|id|tr|ja|ru|de)/, '') || '/';
+  const pathWithoutLang = currentPath.replace(/^\/(es|pt|hi|id|tr|ja|ru|de|ar)/, '') || '/';
 
   // Add hreflang for each supported language
   for (const lang of SUPPORTED_LANGUAGES) {
@@ -62,6 +62,7 @@ function updateOgLocale(lang: SupportedLanguage): void {
     ja: 'ja_JP',
     ru: 'ru_RU',
     de: 'de_DE',
+    ar: 'ar_SA',
   };
 
   let ogLocale = document.querySelector('meta[property="og:locale"]');
