@@ -107,8 +107,17 @@ export function HowToSection({ onStart }: HowToSectionProps) {
             {steps.map((step, idx) => (
               <li
                 key={step.id}
+                role="button"
+                tabIndex={0}
+                aria-label={t('openStepAria', { step: step.id, title: step.title })}
                 className="relative pl-16 md:pl-24 group cursor-pointer"
                 onClick={() => handleStepClick(idx)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleStepClick(idx);
+                  }
+                }}
               >
                 <div className="absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-3xl bg-card border-2 border-primary flex items-center justify-center font-black text-lg md:text-2xl text-primary z-10 group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300">
                   {step.id}
@@ -126,12 +135,15 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                     {step.description}
                   </p>
                   {step.visual && (
-                    <div className="rounded-3xl md:rounded-4xl overflow-hidden border border-border shadow-md max-w-xl mt-6 group-hover:border-primary/30 transition-all">
+                    <div className="rounded-3xl md:rounded-4xl overflow-hidden border border-border shadow-md max-w-xl mt-6 group-hover:border-primary/30 transition-all aspect-[4/3]">
                       <img
                         src={step.visual}
                         alt={step.title}
-                        className="w-full h-auto grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 object-cover"
+                        width={800}
+                        height={600}
+                        className="w-full h-full grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 object-cover"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                   )}

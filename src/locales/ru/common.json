@@ -29,6 +29,7 @@
     "switchToDark": "Переключить на тёмную тему"
   },
   "header": {
+    "logoAria": "SafeUnfollow.app — Перейти на главную",
     "clearDataTitle": "Очистить все данные?",
     "clearDataDescription": "Это удалит все загруженные данные Instagram и вернёт тебя на главную страницу. Это действие нельзя отменить.",
     "deleteData": "Удалить данные"

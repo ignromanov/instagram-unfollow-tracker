@@ -160,9 +160,10 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
         </div>
         <button
           onClick={handleCancel}
+          aria-label={t('buttons.close')}
           className="cursor-pointer p-2.5 rounded-full hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors"
         >
-          <X size={24} />
+          <X size={24} aria-hidden="true" />
         </button>
       </div>
 
@@ -176,12 +177,15 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
           }`}
         >
           {/* Image */}
-          <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative">
+          <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative aspect-[4/3]">
             <img
-              src={step.visual || `https://picsum.photos/seed/${step.id}/800/450`}
+              src={step.visual || `https://picsum.photos/seed/${step.id}/800/600`}
               alt={t(`steps.${currentStep}.alt` as any)}
-              className="w-full h-auto block"
+              width={800}
+              height={600}
+              className="w-full h-full block object-cover"
               loading="lazy"
+              decoding="async"
             />
             {step.isWarning && (
               <div className="absolute top-4 left-4 p-2.5 bg-amber-400 text-black rounded-xl shadow-lg flex items-center gap-2 font-black text-xs animate-bounce">

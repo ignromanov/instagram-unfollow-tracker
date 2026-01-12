@@ -29,6 +29,7 @@
     "switchToDark": "ダークモードに切り替え"
   },
   "header": {
+    "logoAria": "SafeUnfollow.app — ホームへ移動",
     "clearDataTitle": "すべてのデータを削除しますか？",
     "clearDataDescription": "読み込んだInstagramデータがすべて削除され、ホーム画面に戻ります。この操作は取り消せません。",
     "deleteData": "データを削除"

@@ -29,6 +29,7 @@
     "switchToDark": "Beralih ke mode gelap"
   },
   "header": {
+    "logoAria": "SafeUnfollow.app — Ke halaman utama",
     "clearDataTitle": "Hapus semua data?",
     "clearDataDescription": "Ini akan menghapus semua data Instagram yang dimuat dan mengembalikan Anda ke halaman utama. Tindakan ini tidak dapat dibatalkan.",
     "deleteData": "Hapus Data"

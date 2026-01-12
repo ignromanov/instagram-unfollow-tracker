@@ -3,6 +3,7 @@
   "subtitle": "Şifreni paylaşmadan hesabını güvenle analiz etmek için bu 8 basit adımı izle.",
   "important": "Kritik",
   "openStep": "Adımı rehberde aç",
+  "openStepAria": "Adım {{step}}: {{title}}. Açmak için tıkla",
   "steps": {
     "1": {
       "title": "Instagram Dışa Aktarma Sayfasını Aç",

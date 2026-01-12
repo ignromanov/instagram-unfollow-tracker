@@ -11,7 +11,8 @@
     "back": "戻る",
     "next": "次のステップ",
     "done": "完了、始めましょう！",
-    "openInstagram": "エクスポートページを開く"
+    "openInstagram": "エクスポートページを開く",
+    "close": "ガイドを閉じる"
   },
   "format": {
     "warning": "重要なステップ"

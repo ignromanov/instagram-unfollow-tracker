@@ -3,6 +3,7 @@
   "subtitle": "Follow these 8 simple steps to securely analyze your account without sharing your password.",
   "important": "Critical",
   "openStep": "Open step in guide",
+  "openStepAria": "Step {{step}}: {{title}}. Click to open in guide",
   "steps": {
     "1": {
       "title": "Open Instagram Export Page",

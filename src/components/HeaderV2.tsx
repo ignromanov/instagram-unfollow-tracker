@@ -59,6 +59,7 @@ export function HeaderV2({
           onClick={onLogoClick}
           role="button"
           tabIndex={0}
+          aria-label={t('header.logoAria')}
           onKeyDown={e => e.key === 'Enter' && onLogoClick?.()}
         >
           <div className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-gradient-brand flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">

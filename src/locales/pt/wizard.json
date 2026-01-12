@@ -11,7 +11,8 @@
     "back": "Voltar",
     "next": "Próximo Passo",
     "done": "Pronto, vamos lá!",
-    "openInstagram": "Abrir página de exportação"
+    "openInstagram": "Abrir página de exportação",
+    "close": "Fechar guia"
   },
   "format": {
     "warning": "PASSO CRÍTICO"

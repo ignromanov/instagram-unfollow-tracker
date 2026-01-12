@@ -29,6 +29,7 @@
     "switchToDark": "Koyu moda geç"
   },
   "header": {
+    "logoAria": "SafeUnfollow.app — Ana sayfaya git",
     "clearDataTitle": "Tüm veriler silinsin mi?",
     "clearDataDescription": "Bu işlem yüklenen tüm Instagram verilerini silecek ve seni ana sayfaya geri götürecek. Bu işlem geri alınamaz.",
     "deleteData": "Verileri Sil"

@@ -3,6 +3,7 @@
   "subtitle": "Ikuti 8 langkah sederhana ini untuk menganalisis akun Anda dengan aman tanpa membagikan password.",
   "important": "Penting",
   "openStep": "Buka langkah di panduan",
+  "openStepAria": "Langkah {{step}}: {{title}}. Klik untuk membuka",
   "steps": {
     "1": {
       "title": "Buka Halaman Ekspor Instagram",

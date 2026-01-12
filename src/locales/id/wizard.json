@@ -11,7 +11,8 @@
     "back": "Kembali",
     "next": "Langkah Berikutnya",
     "done": "Selesai, ayo mulai!",
-    "openInstagram": "Buka halaman ekspor"
+    "openInstagram": "Buka halaman ekspor",
+    "close": "Tutup panduan"
   },
   "format": {
     "warning": "LANGKAH PENTING"

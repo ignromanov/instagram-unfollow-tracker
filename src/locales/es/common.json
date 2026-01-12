@@ -29,6 +29,7 @@
     "switchToDark": "Cambiar a modo oscuro"
   },
   "header": {
+    "logoAria": "SafeUnfollow.app — Ir a la página principal",
     "clearDataTitle": "¿Borrar todos los datos?",
     "clearDataDescription": "Esto eliminará todos los datos de Instagram cargados y te llevará a la pantalla de inicio. Esta acción no se puede deshacer.",
     "deleteData": "Eliminar datos"

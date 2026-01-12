@@ -11,7 +11,8 @@
     "back": "Geri",
     "next": "Sonraki Adım",
     "done": "Tamam, başlayalım!",
-    "openInstagram": "Dışa aktarma sayfasını aç"
+    "openInstagram": "Dışa aktarma sayfasını aç",
+    "close": "Rehberi kapat"
   },
   "format": {
     "warning": "KRİTİK ADIM"

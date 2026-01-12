@@ -3,6 +3,7 @@
   "subtitle": "パスワードを共有せずにアカウントを安全に分析する8つの簡単なステップ。",
   "important": "重要",
   "openStep": "ガイドでステップを開く",
+  "openStepAria": "ステップ{{step}}: {{title}}。クリックして開く",
   "steps": {
     "1": {
       "title": "Instagramエクスポートページを開く",

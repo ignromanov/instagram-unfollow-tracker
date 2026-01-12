@@ -3,6 +3,7 @@
   "subtitle": "Siga estes 8 passos simples para analisar sua conta com segurança sem compartilhar sua senha.",
   "important": "Crítico",
   "openStep": "Abrir passo no guia",
+  "openStepAria": "Passo {{step}}: {{title}}. Clique para abrir no guia",
   "steps": {
     "1": {
       "title": "Abra a página de exportação do Instagram",

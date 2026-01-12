@@ -29,6 +29,7 @@
     "switchToDark": "Switch to dark mode"
   },
   "header": {
+    "logoAria": "SafeUnfollow.app - Go to home page",
     "clearDataTitle": "Clear all data?",
     "clearDataDescription": "This will remove all loaded Instagram data and return you to the home screen. This action cannot be undone.",
     "deleteData": "Delete Data"
