@@ -4,6 +4,7 @@ import { UploadZone } from '@/components/UploadZone';
 import { HowToSection } from '@/components/HowToSection';
 import { FAQSection } from '@/components/FAQSection';
 import { FooterCTA } from '@/components/FooterCTA';
+import { PageLoader } from '@/components/PageLoader';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 
@@ -19,9 +20,14 @@ export function Component() {
   // Auto-navigate to results after successful upload
   useEffect(() => {
     if (uploadState.status === 'success') {
-      navigate(`${prefix}/results`);
+      navigate(`${prefix}/results`, { replace: true });
     }
   }, [uploadState.status, navigate, prefix]);
+
+  // Show loader during redirect to prevent flash of upload page
+  if (uploadState.status === 'success') {
+    return <PageLoader />;
+  }
 
   const handleUploadStart = (file: File) => {
     handleZipUpload(file);

@@ -2,6 +2,20 @@ import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Wizard } from '@/components/Wizard';
 
+// Mock react-router-dom
+const mockNavigate = vi.fn();
+let mockPathname = '/wizard';
+
+vi.mock('react-router-dom', () => ({
+  useLocation: () => ({ pathname: mockPathname }),
+  useNavigate: () => mockNavigate,
+}));
+
+// Mock useLanguagePrefix
+vi.mock('@/hooks/useLanguagePrefix', () => ({
+  useLanguagePrefix: () => '',
+}));
+
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({
   analytics: {
@@ -19,8 +33,7 @@ describe('Wizard', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset location hash
-    window.location.hash = '';
+    mockPathname = '/wizard';
   });
 
   it('should render without crashing', () => {
@@ -118,14 +131,17 @@ describe('Wizard', () => {
     expect(image).toBeInTheDocument();
   });
 
-  it('should update URL hash when step changes', () => {
+  it('should update URL path when step changes', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(window.location.hash).toBe('#wizard/step/1');
+    // Initial navigation to step 1
+    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/1', { replace: true });
 
+    mockNavigate.mockClear();
     fireEvent.click(screen.getByText('Next Step'));
 
-    expect(window.location.hash).toBe('#wizard/step/2');
+    // Navigation to step 2
+    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/2', { replace: true });
   });
 
   it('should render all 8 steps when navigating through', () => {

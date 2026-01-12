@@ -58,7 +58,7 @@
       "answer": "Meta sendet deine Daten normalerweise innerhalb von 5-30 Minuten per E-Mail. Größere Konten oder hohe Serverlast können bis zu einigen Stunden dauern. Nach dem Download der ZIP ist das Hochladen zu diesem Tracker für die Analyse sofort—die Verarbeitung dauert Sekunden selbst bei Millionen-Konto-Exporten dank lokaler Browser-Verarbeitung.",
       "relatedLink": {
         "text": "Kalender-Erinnerung hinzufügen",
-        "href": "/wizard#wizard/step/8"
+        "href": "/wizard/step/8"
       }
     },
     "scale": {

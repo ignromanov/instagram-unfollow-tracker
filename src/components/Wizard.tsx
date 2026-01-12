@@ -1,10 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, X, ExternalLink, AlertTriangle, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { analytics } from '@/lib/analytics';
+import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 
 interface WizardStep {
   id: number;
@@ -60,27 +62,32 @@ interface WizardProps {
 
 export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
   const { t } = useTranslation('wizard');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const prefix = useLanguagePrefix();
   const [currentStep, setCurrentStep] = useState(initialStep);
 
-  // Initialize step from URL hash (overrides initialStep prop)
+  // Initialize step from URL path (overrides initialStep prop)
   useEffect(() => {
-    const hash = window.location.hash;
-    const match = hash.match(/#wizard\/step\/(\d+)/);
+    const match = location.pathname.match(/\/wizard\/step\/(\d+)/);
     if (match?.[1]) {
-      const stepFromHash = parseInt(match[1], 10);
-      if (stepFromHash >= 1 && stepFromHash <= WIZARD_STEPS.length) {
-        setCurrentStep(stepFromHash);
+      const stepFromPath = parseInt(match[1], 10);
+      if (stepFromPath >= 1 && stepFromPath <= WIZARD_STEPS.length) {
+        setCurrentStep(stepFromPath);
       }
     }
-  }, []);
+  }, [location.pathname]);
 
-  // Update hash when step changes and track analytics
+  // Update URL path when step changes and track analytics
   useEffect(() => {
-    window.location.hash = `#wizard/step/${currentStep}`;
+    const newPath = `${prefix}/wizard/step/${currentStep}`;
+    if (location.pathname !== newPath) {
+      navigate(newPath, { replace: true });
+    }
 
     const stepTitle = t(`steps.${currentStep}.title` as any);
     analytics.wizardStepView(currentStep, String(stepTitle));
-  }, [currentStep, t]);
+  }, [currentStep, t, prefix, navigate, location.pathname]);
 
   const step = WIZARD_STEPS.find(s => s.id === currentStep);
   if (!step) {

@@ -58,7 +58,7 @@
       "answer": "Meta biasanya mengirim data Anda dalam 5-30 menit melalui email. Akun besar atau beban server tinggi mungkin memakan waktu hingga beberapa jam. Setelah mengunduh ZIP, mengunggahnya ke pelacak ini untuk analisis bersifat instan—pemrosesan memakan waktu detik bahkan untuk ekspor jutaan akun berkat pemrosesan browser lokal.",
       "relatedLink": {
         "text": "Tambah pengingat kalender",
-        "href": "/wizard#wizard/step/8"
+        "href": "/wizard/step/8"
       }
     },
     "scale": {

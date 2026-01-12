@@ -55,6 +55,11 @@ export const routes: RouteRecord[] = [
         path: 'wizard',
         lazy: () => import('./pages/WizardPage'),
       },
+      // Wizard step deep links (e.g., /wizard/step/8 for calendar reminder)
+      {
+        path: 'wizard/step/:stepId',
+        lazy: () => import('./pages/WizardPage'),
+      },
       // Upload
       {
         path: 'upload',
@@ -95,6 +100,10 @@ export const routes: RouteRecord[] = [
         },
         {
           path: 'wizard',
+          lazy: () => import('./pages/WizardPage'),
+        },
+        {
+          path: 'wizard/step/:stepId',
           lazy: () => import('./pages/WizardPage'),
         },
         {

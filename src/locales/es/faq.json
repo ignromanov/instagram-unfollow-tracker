@@ -58,7 +58,7 @@
       "answer": "Meta normalmente envía tus datos en 5-30 minutos por email. Cuentas grandes o alta carga del servidor pueden tardar hasta unas horas. Después de descargar el ZIP, subirlo a este rastreador para análisis es instantáneo—el procesamiento toma segundos incluso para exportaciones de un millón de cuentas.",
       "relatedLink": {
         "text": "Añadir recordatorio al calendario",
-        "href": "/wizard#wizard/step/8"
+        "href": "/wizard/step/8"
       }
     },
     "scale": {

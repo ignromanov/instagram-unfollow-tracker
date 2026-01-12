@@ -58,7 +58,7 @@
       "answer": "A Meta normalmente envia seus dados em 5-30 minutos por email. Contas maiores ou alta carga do servidor podem levar até algumas horas. Após baixar o ZIP, enviá-lo para este rastreador para análise é instantâneo—o processamento leva segundos mesmo para exportações de um milhão de contas graças ao processamento local no navegador.",
       "relatedLink": {
         "text": "Adicionar lembrete ao calendário",
-        "href": "/wizard#wizard/step/8"
+        "href": "/wizard/step/8"
       }
     },
     "scale": {

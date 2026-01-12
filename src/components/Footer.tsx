@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { Heart, Shield, EyeOff, Eye } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { analytics, isTrackingOptedOut, optOutOfTracking, optIntoTracking } from '@/lib/analytics';
+import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 import { Logo } from './Logo';
 
 export function Footer() {
   const { t } = useTranslation('common');
+  const prefix = useLanguagePrefix();
   const [isOptedOut, setIsOptedOut] = useState(false);
 
   useEffect(() => {
@@ -48,14 +50,14 @@ export function Footer() {
             {/* Navigation Links */}
             <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-12 gap-y-6 text-xs md:text-sm font-black uppercase tracking-widest text-zinc-400">
               <a
-                href="#privacy"
+                href={`${prefix}/privacy`}
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('privacy-policy')}
               >
                 {t('footer.privacyPolicy')}
               </a>
               <a
-                href="#terms"
+                href={`${prefix}/terms`}
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('terms-of-service')}
               >

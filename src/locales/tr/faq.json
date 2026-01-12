@@ -58,7 +58,7 @@
       "answer": "Meta genellikle 5-30 dakika içinde e-posta ile verilerinizi gönderir. Büyük hesaplar veya yüksek sunucu yükü birkaç saat sürebilir. ZIP'i indirdikten sonra, bu izleyiciye analiz için yüklemek anındadır—yerel tarayıcı işleme sayesinde milyon hesaplık dışa aktarımlarda bile saniyeler içinde işlenir.",
       "relatedLink": {
         "text": "Takvim hatırlatıcısı ekle",
-        "href": "/wizard#wizard/step/8"
+        "href": "/wizard/step/8"
       }
     },
     "scale": {

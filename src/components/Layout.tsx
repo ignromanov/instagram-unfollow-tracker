@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -9,6 +9,7 @@ import { Footer } from '@/components/Footer';
 import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
 import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import { OrganizationSchema } from '@/components/OrganizationSchema';
+import { PageLoader } from '@/components/PageLoader';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
@@ -142,7 +143,9 @@ export function Layout({ lang }: LayoutProps) {
         />
 
         <main id="main-content" className="flex-1 container mx-auto px-4">
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </main>
 
         <Footer />

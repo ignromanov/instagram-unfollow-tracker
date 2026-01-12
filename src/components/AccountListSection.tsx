@@ -15,6 +15,7 @@ import { AccountList } from './AccountList';
 import { StatCard } from './StatCard';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
+import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -40,6 +41,7 @@ export function AccountListSection({
   isSample = false,
 }: AccountListSectionProps) {
   const { t } = useTranslation('results');
+  const prefix = useLanguagePrefix();
   const {
     query,
     setQuery,
@@ -97,7 +99,7 @@ export function AccountListSection({
           <AlertDescription className="block text-blue-700 dark:text-blue-300">
             {t('sample.hint')}{' '}
             <a
-              href="#upload"
+              href={`${prefix}/upload`}
               className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100"
             >
               <Upload className="h-3 w-3 inline align-text-bottom" /> {t('sample.uploadPrompt')}

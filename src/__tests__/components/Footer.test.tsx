@@ -3,6 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Footer } from '@/components/Footer';
 import * as analytics from '@/lib/analytics';
 
+// Mock useLanguagePrefix
+vi.mock('@/hooks/useLanguagePrefix', () => ({
+  useLanguagePrefix: () => '',
+}));
+
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({
   analytics: {
@@ -38,7 +43,7 @@ describe('Footer', () => {
 
     const privacyLink = screen.getByText('Privacy Policy');
     expect(privacyLink).toBeInTheDocument();
-    expect(privacyLink).toHaveAttribute('href', '#privacy');
+    expect(privacyLink).toHaveAttribute('href', '/privacy');
   });
 
   it('should render Terms of Service link', () => {
@@ -46,7 +51,7 @@ describe('Footer', () => {
 
     const termsLink = screen.getByText('Terms of Service');
     expect(termsLink).toBeInTheDocument();
-    expect(termsLink).toHaveAttribute('href', '#terms');
+    expect(termsLink).toHaveAttribute('href', '/terms');
   });
 
   it('should render Contact Support link', () => {
