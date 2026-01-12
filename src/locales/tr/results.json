@@ -55,5 +55,16 @@
   "list": {
     "header": "Hesaplar ({{count, number}})",
     "viewProfile": "Profili Görüntüle"
+  },
+  "rescue": {
+    "title": "📉 Hesabınız takipçi kaybediyor!",
+    "subtitle": "2026 trendlerine göre onları nasıl geri kazanırsınız:",
+    "tools": {
+      "submagic": "AI otomatik olarak viral Reels oluşturur",
+      "predis": "AI ile gönderi oluşturun (metin + tasarım)",
+      "manychat": "Tüm DM'lere ve yorumlara otomatik yanıt"
+    },
+    "dismiss": "Kapat",
+    "disclaimer": "Ortaklık bağlantıları – komisyon alabiliriz"
   }
 }

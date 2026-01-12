@@ -57,6 +57,11 @@
       "title": "Auf E-Mail warten & herunterladen",
       "description": "Instagram schickt dir eine E-Mail, wenn es fertig ist (normalerweise 5-30 Minuten). Klicke auf den Download-Link in der E-Mail, um deine ZIP-Datei zu bekommen.",
       "alt": "Schritt 8: Auf E-Mail warten und ZIP-Datei herunterladen"
+    },
+    "9": {
+      "title": "Lade deine Datei hoch",
+      "description": "Du bist bereit! Klicke auf den Button unten, um deine Instagram-Daten hochzuladen und zu sehen, wer dir entfolgt ist.",
+      "alt": "Schritt 9: Lade deine Instagram-Datendatei hoch"
     }
   }
 }

@@ -1,5 +1,7 @@
 import { useTranslation, Trans } from 'react-i18next';
 import { ChevronRight, Play } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 
 interface HowToStep {
   id: number;
@@ -19,6 +21,7 @@ const STEP_META: Array<{ isWarning?: boolean; visual?: string }> = [
   { isWarning: true, visual: '/wizard/step-6.gif' },
   { visual: '/wizard/step-7.gif' },
   { visual: '/wizard/step-8.gif' },
+  { visual: '/wizard/step-9.png' },
 ];
 
 interface HowToSectionProps {
@@ -27,9 +30,11 @@ interface HowToSectionProps {
 
 export function HowToSection({ onStart }: HowToSectionProps) {
   const { t } = useTranslation('howto');
+  const navigate = useNavigate();
+  const prefix = useLanguagePrefix();
 
   // Build steps from translations (using 'as any' for dynamic keys)
-  const steps: HowToStep[] = Array.from({ length: 8 }, (_, i) => ({
+  const steps: HowToStep[] = Array.from({ length: 9 }, (_, i) => ({
     id: i + 1,
     title: t(`steps.${i + 1}.title` as any),
     description: t(`steps.${i + 1}.description` as any),
@@ -66,8 +71,7 @@ export function HowToSection({ onStart }: HowToSectionProps) {
     if (onStart) {
       onStart(stepIndex);
     } else {
-      // Fallback to hash navigation if no callback provided
-      window.location.hash = `wizard/step/${stepIndex + 1}`;
+      navigate(`${prefix}/wizard/step/${stepIndex + 1}`);
     }
   };
 
@@ -75,7 +79,7 @@ export function HowToSection({ onStart }: HowToSectionProps) {
     if (onStart) {
       onStart(0);
     } else {
-      window.location.hash = 'wizard/step/1';
+      navigate(`${prefix}/wizard/step/1`);
     }
   };
 

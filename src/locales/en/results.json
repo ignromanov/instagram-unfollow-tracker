@@ -55,5 +55,16 @@
   "list": {
     "header": "Accounts ({{count, number}})",
     "viewProfile": "View Profile"
+  },
+  "rescue": {
+    "title": "📉 Your account is losing followers!",
+    "subtitle": "Based on 2026 trends, here's how to win them back:",
+    "tools": {
+      "submagic": "AI makes viral Reels for you automatically",
+      "predis": "Generate posts with AI (text + design)",
+      "manychat": "Auto-reply to all DMs and comments"
+    },
+    "dismiss": "Dismiss",
+    "disclaimer": "Affiliate links – we may earn a commission"
   }
 }

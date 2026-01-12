@@ -13,10 +13,12 @@ import {
 import { FilterChips } from './FilterChips';
 import { AccountList } from './AccountList';
 import { StatCard } from './StatCard';
+import { RescuePlanBanner } from './RescuePlanBanner';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -98,16 +100,19 @@ export function AccountListSection({
           <AlertTitle className="text-blue-800 dark:text-blue-200">{t('sample.banner')}</AlertTitle>
           <AlertDescription className="block text-blue-700 dark:text-blue-300">
             {t('sample.hint')}{' '}
-            <a
-              href={`${prefix}/upload`}
+            <Link
+              to={`${prefix}/upload`}
               className="font-semibold underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-100"
             >
               <Upload className="h-3 w-3 inline align-text-bottom" /> {t('sample.uploadPrompt')}
-            </a>{' '}
+            </Link>{' '}
             {t('sample.toSeeReal')}
           </AlertDescription>
         </Alert>
       )}
+
+      {/* Rescue Plan Banner - show for real data with unfollowed accounts */}
+      {!isSample && unfollowedCount > 0 && <RescuePlanBanner />}
 
       {/* Top Header & Search */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">

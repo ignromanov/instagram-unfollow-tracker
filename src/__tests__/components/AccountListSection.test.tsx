@@ -3,6 +3,12 @@ import type { BadgeKey } from '@/core/types';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
 import { fireEvent, render, screen } from '@tests/utils/testUtils';
 import { beforeEach, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+
+// Helper to render with Router context
+function renderWithRouter(ui: React.ReactElement) {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+}
 
 // Mock the useAccountFiltering hook
 vi.mock('@/hooks/useAccountFiltering');
@@ -94,7 +100,7 @@ describe('AccountListSection', () => {
   });
 
   it('should render all main components', () => {
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     expect(screen.getByText('Analysis Results')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Search usernames...')).toBeInTheDocument();
@@ -103,7 +109,7 @@ describe('AccountListSection', () => {
   });
 
   it('should render stat cards with correct values', () => {
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     expect(screen.getByTestId('stat-card-followers')).toHaveTextContent('Followers: 15');
     expect(screen.getByTestId('stat-card-following')).toHaveTextContent('Following: 10');
@@ -112,27 +118,27 @@ describe('AccountListSection', () => {
   });
 
   it('should display filename and total count', () => {
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     expect(screen.getByText(/test\.zip/)).toBeInTheDocument();
     expect(screen.getByText(/21 Total/)).toBeInTheDocument();
   });
 
   it('should show sample data banner when isSample is true', () => {
-    render(<AccountListSection {...defaultProps} isSample={true} />);
+    renderWithRouter(<AccountListSection {...defaultProps} isSample={true} />);
 
     expect(screen.getByText('Viewing Sample Data')).toBeInTheDocument();
     expect(screen.getByText(/This is demo data/)).toBeInTheDocument();
   });
 
   it('should not show sample data banner when isSample is false', () => {
-    render(<AccountListSection {...defaultProps} isSample={false} />);
+    renderWithRouter(<AccountListSection {...defaultProps} isSample={false} />);
 
     expect(screen.queryByText('Viewing Sample Data')).not.toBeInTheDocument();
   });
 
   it('should handle search input changes', () => {
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     const searchInput = screen.getByPlaceholderText('Search usernames...');
     fireEvent.change(searchInput, { target: { value: 'alice' } });
@@ -148,7 +154,7 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     const searchInput = screen.getByPlaceholderText('Search usernames...') as HTMLInputElement;
     expect(searchInput.value).toBe('alice');
@@ -163,13 +169,13 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     expect(screen.getByText('Active filters: 2')).toBeInTheDocument();
   });
 
   it('should handle filter changes from FilterChips', () => {
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     const toggleButton = screen.getByText('Toggle Following');
     fireEvent.click(toggleButton);
@@ -186,7 +192,7 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     // AccountList should show correct count
     expect(screen.getByText('Accounts (3)')).toBeInTheDocument();
@@ -200,7 +206,7 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     expect(screen.getByText('Accounts (0)')).toBeInTheDocument();
     expect(screen.getByText('No accounts match your filters')).toBeInTheDocument();
@@ -215,7 +221,7 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     const sortButton = screen.getByTitle('Sort Z→A');
     expect(sortButton).toBeInTheDocument();
@@ -227,7 +233,7 @@ describe('AccountListSection', () => {
   });
 
   it('should call useAccountFiltering with correct options', () => {
-    render(<AccountListSection {...defaultProps} />);
+    renderWithRouter(<AccountListSection {...defaultProps} />);
 
     expect(mockUseAccountFiltering).toHaveBeenCalledWith({
       fileHash: 'test-hash-123',
@@ -258,7 +264,7 @@ describe('AccountListSection', () => {
       })
     );
 
-    render(<AccountListSection {...defaultProps} accountCount={0} />);
+    renderWithRouter(<AccountListSection {...defaultProps} accountCount={0} />);
 
     expect(screen.getByTestId('stat-card-followers')).toHaveTextContent('Followers: 0');
     expect(screen.getByTestId('stat-card-following')).toHaveTextContent('Following: 0');

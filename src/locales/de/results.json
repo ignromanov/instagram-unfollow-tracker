@@ -55,5 +55,16 @@
   "list": {
     "header": "Konten ({{count, number}})",
     "viewProfile": "Profil ansehen"
+  },
+  "rescue": {
+    "title": "📉 Dein Account verliert Follower!",
+    "subtitle": "Basierend auf den Trends 2026, so gewinnst du sie zurück:",
+    "tools": {
+      "submagic": "KI erstellt automatisch virale Reels",
+      "predis": "Generiere Posts mit KI (Text + Design)",
+      "manychat": "Antworte automatisch auf alle DMs und Kommentare"
+    },
+    "dismiss": "Schließen",
+    "disclaimer": "Affiliate-Links – wir erhalten möglicherweise eine Provision"
   }
 }

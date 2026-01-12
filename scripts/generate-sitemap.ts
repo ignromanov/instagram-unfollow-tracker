@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Sitemap Generator (Postbuild)
  *
@@ -43,6 +44,15 @@ const EXCLUDE_PATTERNS = [
 const ROUTE_CONFIG: Record<string, { priority: number; changefreq: string }> = {
   "/": { priority: 1.0, changefreq: "weekly" },
   "/wizard": { priority: 0.8, changefreq: "monthly" },
+  "/wizard/step/1": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/2": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/3": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/4": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/5": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/6": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/7": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/8": { priority: 0.7, changefreq: "monthly" },
+  "/wizard/step/9": { priority: 0.7, changefreq: "monthly" },
   "/upload": { priority: 0.8, changefreq: "monthly" },
   "/waiting": { priority: 0.6, changefreq: "monthly" },
   "/results": { priority: 0.6, changefreq: "monthly" },

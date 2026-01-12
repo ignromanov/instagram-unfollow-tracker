@@ -57,6 +57,11 @@
       "title": "Wait for Email & Download",
       "description": "Instagram will email you when ready (usually 5-30 minutes). Click the download link in the email to get your ZIP file.",
       "alt": "Step 8: Wait for email and download ZIP file"
+    },
+    "9": {
+      "title": "Upload Your File",
+      "description": "You're ready! Click the button below to upload your Instagram data and see who unfollowed you.",
+      "alt": "Step 9: Upload your Instagram data file"
     }
   }
 }

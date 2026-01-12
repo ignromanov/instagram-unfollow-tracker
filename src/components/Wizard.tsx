@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, X, ExternalLink, AlertTriangle, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -65,29 +65,34 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const prefix = useLanguagePrefix();
-  const [currentStep, setCurrentStep] = useState(initialStep);
 
-  // Initialize step from URL path (overrides initialStep prop)
-  useEffect(() => {
+  // Derive step from URL (single source of truth)
+  const stepFromUrl = (() => {
     const match = location.pathname.match(/\/wizard\/step\/(\d+)/);
     if (match?.[1]) {
-      const stepFromPath = parseInt(match[1], 10);
-      if (stepFromPath >= 1 && stepFromPath <= WIZARD_STEPS.length) {
-        setCurrentStep(stepFromPath);
+      const step = parseInt(match[1], 10);
+      if (step >= 1 && step <= WIZARD_STEPS.length) {
+        return step;
       }
     }
-  }, [location.pathname]);
+    return initialStep;
+  })();
 
-  // Update URL path when step changes and track analytics
+  const currentStep = stepFromUrl;
+
+  // Track analytics on step view
   useEffect(() => {
-    const newPath = `${prefix}/wizard/step/${currentStep}`;
-    if (location.pathname !== newPath) {
-      navigate(newPath, { replace: true });
-    }
-
     const stepTitle = t(`steps.${currentStep}.title` as any);
     analytics.wizardStepView(currentStep, String(stepTitle));
-  }, [currentStep, t, prefix, navigate, location.pathname]);
+  }, [currentStep, t]);
+
+  // Navigate to step via URL
+  const goToStep = useCallback(
+    (step: number) => {
+      navigate(`${prefix}/wizard/step/${step}`, { replace: true });
+    },
+    [navigate, prefix]
+  );
 
   const step = WIZARD_STEPS.find(s => s.id === currentStep);
   if (!step) {
@@ -140,7 +145,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
   }, [t]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+    <div className="fixed inset-0 z-[100] bg-background flex flex-col overflow-hidden">
       {/* Header */}
       <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b border-border bg-card">
         <div className="flex items-center gap-4">
@@ -168,71 +173,73 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-grow flex items-center justify-center p-4 overflow-y-auto">
-        <div
-          className={`max-w-xl w-full rounded-4xl overflow-hidden shadow-2xl border transition-all ${
-            step.isWarning
-              ? 'border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-900/50'
-              : 'border-border bg-card'
-          }`}
-        >
-          {/* Image */}
-          <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative aspect-[4/3]">
-            <img
-              src={step.visual || `https://picsum.photos/seed/${step.id}/800/600`}
-              alt={t(`steps.${currentStep}.alt` as any)}
-              width={800}
-              height={600}
-              className="w-full h-full block object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-            {step.isWarning && (
-              <div className="absolute top-4 left-4 p-2.5 bg-amber-400 text-black rounded-xl shadow-lg flex items-center gap-2 font-black text-xs animate-bounce">
-                <AlertTriangle size={18} />
-                {t('format.warning')}
-              </div>
-            )}
-          </div>
+      <div className="flex-1 overflow-y-auto">
+        <div className="min-h-full flex items-center justify-center p-4">
+          <div
+            className={`max-w-xl w-full rounded-4xl overflow-hidden shadow-2xl border transition-all ${
+              step.isWarning
+                ? 'border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-900/50'
+                : 'border-border bg-card'
+            }`}
+          >
+            {/* Image */}
+            <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative aspect-[4/3]">
+              <img
+                src={step.visual || `https://picsum.photos/seed/${step.id}/800/600`}
+                alt={t(`steps.${currentStep}.alt` as any)}
+                width={800}
+                height={600}
+                className="w-full h-full block object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              {step.isWarning && (
+                <div className="absolute top-4 left-4 p-2.5 bg-amber-400 text-black rounded-xl shadow-lg flex items-center gap-2 font-black text-xs animate-bounce">
+                  <AlertTriangle size={18} />
+                  {t('format.warning')}
+                </div>
+              )}
+            </div>
 
-          {/* Step Info */}
-          <div className="p-8 md:p-12">
-            <h2
-              className={`text-2xl md:text-3xl font-display font-bold mb-5 leading-tight ${
-                step.isWarning
-                  ? 'text-amber-800 dark:text-amber-500'
-                  : 'text-zinc-900 dark:text-white'
-              }`}
-            >
-              {t(`steps.${currentStep}.title` as any)}
-            </h2>
-            <p className="text-zinc-600 dark:text-zinc-400 text-base md:text-xl leading-relaxed mb-10 font-medium">
-              {t(`steps.${currentStep}.description` as any)}
-            </p>
-
-            {/* External Link Button (step 1) */}
-            {step.externalLink && (
-              <a
-                href={step.externalLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleExternalLinkClick}
-                className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto"
+            {/* Step Info */}
+            <div className="p-8 md:p-12">
+              <h2
+                className={`text-2xl md:text-3xl font-display font-bold mb-5 leading-tight ${
+                  step.isWarning
+                    ? 'text-amber-800 dark:text-amber-500'
+                    : 'text-zinc-900 dark:text-white'
+                }`}
               >
-                {t('buttons.openInstagram')} <ExternalLink size={20} />
-              </a>
-            )}
+                {t(`steps.${currentStep}.title` as any)}
+              </h2>
+              <p className="text-zinc-600 dark:text-zinc-400 text-base md:text-xl leading-relaxed mb-10 font-medium">
+                {t(`steps.${currentStep}.description` as any)}
+              </p>
 
-            {/* Calendar Reminder Button (last step) */}
-            {isLastStep && (
-              <button
-                onClick={handleCalendarReminder}
-                className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary text-primary bg-primary/5 hover:bg-primary/10 rounded-2xl font-bold transition-all text-sm md:text-base w-full sm:w-auto"
-              >
-                <Calendar size={20} />
-                {t('calendar.addReminder')}
-              </button>
-            )}
+              {/* External Link Button (step 1) */}
+              {step.externalLink && (
+                <a
+                  href={step.externalLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleExternalLinkClick}
+                  className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto"
+                >
+                  {t('buttons.openInstagram')} <ExternalLink size={20} />
+                </a>
+              )}
+
+              {/* Calendar Reminder Button (last step) */}
+              {isLastStep && (
+                <button
+                  onClick={handleCalendarReminder}
+                  className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary text-primary bg-primary/5 hover:bg-primary/10 rounded-2xl font-bold transition-all text-sm md:text-base w-full sm:w-auto"
+                >
+                  <Calendar size={20} />
+                  {t('calendar.addReminder')}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

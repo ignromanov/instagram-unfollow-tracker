@@ -57,6 +57,11 @@
       "title": "Tunggu Email & Unduh",
       "description": "Instagram akan mengirim email saat siap (biasanya 5-30 menit). Klik tautan unduhan di email untuk mendapatkan file ZIP.",
       "alt": "Langkah 8: Tunggu email dan unduh file ZIP"
+    },
+    "9": {
+      "title": "Unggah File Anda",
+      "description": "Anda siap! Klik tombol di bawah untuk mengunggah data Instagram Anda dan lihat siapa yang berhenti mengikuti Anda.",
+      "alt": "Langkah 9: Unggah file data Instagram Anda"
     }
   }
 }

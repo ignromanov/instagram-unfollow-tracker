@@ -1,6 +1,6 @@
 {
   "title": "Cara Cek <gradient>Instagram Unfollowers</gradient> Anda",
-  "subtitle": "Ikuti 8 langkah sederhana ini untuk menganalisis akun Anda dengan aman tanpa membagikan password.",
+  "subtitle": "Ikuti 9 langkah sederhana ini untuk menganalisis akun Anda dengan aman tanpa membagikan password.",
   "important": "Penting",
   "openStep": "Buka langkah di panduan",
   "openStepAria": "Langkah {{step}}: {{title}}. Klik untuk membuka",
@@ -36,6 +36,10 @@
     "8": {
       "title": "Tunggu Email & Unduh",
       "description": "Instagram mengirim email saat siap (5-30 menit). Unduh file ZIP dari tautan email."
+    },
+    "9": {
+      "title": "Unggah File Anda",
+      "description": "Anda siap! Klik tombol di bawah untuk mengunggah data Instagram Anda."
     }
   },
   "cta": {

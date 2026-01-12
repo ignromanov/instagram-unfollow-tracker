@@ -59,14 +59,14 @@ describe('Wizard', () => {
   it('should render without crashing', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(screen.getByText('Step 1 of 8')).toBeInTheDocument();
+    expect(screen.getByText('Step 1 of 9')).toBeInTheDocument();
   });
 
   it('should render step indicator with progress dots', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
     // Step counter text
-    expect(screen.getByText('Step 1 of 8')).toBeInTheDocument();
+    expect(screen.getByText('Step 1 of 9')).toBeInTheDocument();
   });
 
   it('should render first step title and description', () => {
@@ -105,18 +105,18 @@ describe('Wizard', () => {
 
     fireEvent.click(screen.getByText(wizardEN.buttons.next));
 
-    expect(screen.getByText('Step 2 of 8')).toBeInTheDocument();
+    expect(screen.getByText('Step 2 of 9')).toBeInTheDocument();
     expect(screen.getByText(wizardEN.steps['2'].title)).toBeInTheDocument();
   });
 
   it('should navigate to previous step when Back is clicked', () => {
     render(<Wizard initialStep={2} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(screen.getByText('Step 2 of 8')).toBeInTheDocument();
+    expect(screen.getByText('Step 2 of 9')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Back'));
 
-    expect(screen.getByText('Step 1 of 8')).toBeInTheDocument();
+    expect(screen.getByText('Step 1 of 9')).toBeInTheDocument();
   });
 
   it('should call onCancel when close button is clicked', () => {
@@ -139,7 +139,7 @@ describe('Wizard', () => {
   });
 
   it('should call onComplete on last step when Done is clicked', () => {
-    render(<Wizard initialStep={8} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+    render(<Wizard initialStep={9} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
     expect(screen.getByText("Done, let's go!")).toBeInTheDocument();
 
@@ -168,14 +168,14 @@ describe('Wizard', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/2', { replace: true });
   });
 
-  it('should render all 8 steps when navigating through', () => {
+  it('should render all 9 steps when navigating through', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 9; i++) {
       if (i > 1) {
         fireEvent.click(screen.getByText(wizardEN.buttons.next));
       }
-      expect(screen.getByText(`Step ${i} of 8`)).toBeInTheDocument();
+      expect(screen.getByText(`Step ${i} of 9`)).toBeInTheDocument();
       // Verify a heading exists for each step
       expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
     }

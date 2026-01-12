@@ -220,16 +220,20 @@ describe('i18n Localization System', () => {
         coverage[lang] = { total: totalKeys, translated: translatedKeys };
       }
 
-      // Log coverage summary
+      // Coverage summary (informational only)
+      // eslint-disable-next-line no-console
       console.log('\nTranslation Coverage Summary:');
+      // eslint-disable-next-line no-console
       console.log('─'.repeat(40));
 
       for (const [lang, stats] of Object.entries(coverage)) {
         const percentage =
           stats.total > 0 ? ((stats.translated / stats.total) * 100).toFixed(1) : '0.0';
+        // eslint-disable-next-line no-console
         console.log(`  ${lang}: ${stats.translated}/${stats.total} keys (${percentage}%)`);
       }
 
+      // eslint-disable-next-line no-console
       console.log('─'.repeat(40));
 
       // This test always passes - it's for informational purposes

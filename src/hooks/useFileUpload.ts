@@ -115,6 +115,7 @@ export function useFileUpload() {
   }, []);
 
   const handleZipUpload = useCallback(
+    // eslint-disable-next-line complexity -- Upload handler has high complexity due to multiple error paths, cache checks, and state management
     async (file: File) => {
       const uploadDate = new Date();
       const startTime = performance.now();

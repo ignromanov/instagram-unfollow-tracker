@@ -57,6 +57,11 @@
       "title": "E-postayı Bekle ve İndir",
       "description": "Instagram hazır olduğunda e-posta gönderir (genellikle 5-30 dakika). ZIP dosyasını almak için e-postadaki indirme bağlantısına tıkla.",
       "alt": "Adım 8: E-postayı bekle ve ZIP dosyasını indir"
+    },
+    "9": {
+      "title": "Dosyanızı Yükleyin",
+      "description": "Hazırsınız! Instagram verilerinizi yüklemek ve sizi takipten çıkanları görmek için aşağıdaki butona tıklayın.",
+      "alt": "Adım 9: Instagram veri dosyanızı yükleyin"
     }
   }
 }

@@ -55,5 +55,16 @@
   "list": {
     "header": "Akun ({{count, number}})",
     "viewProfile": "Lihat Profil"
+  },
+  "rescue": {
+    "title": "📉 Akun Anda kehilangan pengikut!",
+    "subtitle": "Berdasarkan tren 2026, begini cara mendapatkannya kembali:",
+    "tools": {
+      "submagic": "AI membuat Reels viral secara otomatis",
+      "predis": "Generate postingan dengan AI (teks + desain)",
+      "manychat": "Balas otomatis semua DM dan komentar"
+    },
+    "dismiss": "Tutup",
+    "disclaimer": "Tautan afiliasi – kami mungkin mendapat komisi"
   }
 }

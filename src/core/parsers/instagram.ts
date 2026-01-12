@@ -232,6 +232,7 @@ function createCriticalError(analysis: ZipAnalysis): ParseWarning {
 
 // === Main Parser ===
 
+// eslint-disable-next-line complexity -- Parser naturally has high complexity due to multiple file format checks and error paths
 export async function parseInstagramZipFile(file: File): Promise<ParseResult> {
   const zip = await JSZip.loadAsync(file);
   const allFiles = Object.keys(zip.files ?? {});

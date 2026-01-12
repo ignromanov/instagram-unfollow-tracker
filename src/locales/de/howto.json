@@ -1,6 +1,6 @@
 {
   "title": "So prüfst du deine <gradient>Instagram-Entfolger</gradient>",
-  "subtitle": "Folge diesen 8 einfachen Schritten, um dein Konto sicher zu analysieren, ohne dein Passwort zu teilen.",
+  "subtitle": "Folge diesen 9 einfachen Schritten, um dein Konto sicher zu analysieren, ohne dein Passwort zu teilen.",
   "important": "Kritisch",
   "openStep": "Schritt in Anleitung öffnen",
   "openStepAria": "Schritt {{step}}: {{title}}. Klicken zum Öffnen",
@@ -36,6 +36,10 @@
     "8": {
       "title": "Auf E-Mail warten & herunterladen",
       "description": "Instagram schickt dir eine E-Mail, wenn es fertig ist (5-30 Min). Lade die ZIP-Datei über den E-Mail-Link herunter."
+    },
+    "9": {
+      "title": "Lade deine Datei hoch",
+      "description": "Du bist bereit! Klicke auf den Button unten, um deine Instagram-Daten hochzuladen."
     }
   },
   "cta": {

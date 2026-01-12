@@ -57,6 +57,11 @@
       "title": "Espera el email y descarga",
       "description": "Instagram te enviará un email cuando esté listo (normalmente 5-30 minutos). Haz clic en el enlace de descarga del email para obtener tu archivo ZIP.",
       "alt": "Paso 8: Espera el email y descarga el archivo ZIP"
+    },
+    "9": {
+      "title": "Sube tu archivo",
+      "description": "¡Estás listo! Haz clic en el botón de abajo para subir tus datos de Instagram y ver quién dejó de seguirte.",
+      "alt": "Paso 9: Sube tu archivo de datos de Instagram"
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "title": "Como ver quem <gradient>deixou de seguir você no Instagram</gradient>",
-  "subtitle": "Siga estes 8 passos simples para analisar sua conta com segurança sem compartilhar sua senha.",
+  "subtitle": "Siga estes 9 passos simples para analisar sua conta com segurança sem compartilhar sua senha.",
   "important": "Crítico",
   "openStep": "Abrir passo no guia",
   "openStepAria": "Passo {{step}}: {{title}}. Clique para abrir no guia",
@@ -36,6 +36,10 @@
     "8": {
       "title": "Aguarde o email e baixe",
       "description": "O Instagram envia um email quando estiver pronto (5-30 min). Baixe o arquivo ZIP pelo link do email."
+    },
+    "9": {
+      "title": "Envie seu arquivo",
+      "description": "Você está pronto! Clique no botão abaixo para enviar seus dados do Instagram."
     }
   },
   "cta": {

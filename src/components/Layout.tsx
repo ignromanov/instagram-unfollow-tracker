@@ -156,10 +156,10 @@ export function Layout({ lang }: LayoutProps) {
 
         <Footer />
 
-        {/* BMC Widget - shows only on results pages */}
+        {/* BMC Widget - shows only on results pages, auto-open disabled */}
         <BuyMeCoffeeWidget
           show={isResultsPage}
-          expandDelay={30000}
+          expandDelay={999999999}
           autoCollapseAfter={10000}
           skipStorageCheck={location.pathname.endsWith('/sample')}
         />

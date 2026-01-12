@@ -4,26 +4,6 @@ import { Layout } from '@/components/Layout';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/locales';
 
 /**
- * Generate static paths for all supported languages
- * This creates /, /es, /ru, /de, etc. for each route
- */
-function getLanguagePaths(basePath: string): string[] {
-  const paths: string[] = [];
-
-  // Default (English) - no prefix
-  paths.push(basePath || '/');
-
-  // Other languages with prefix
-  for (const lang of SUPPORTED_LANGUAGES) {
-    if (lang === 'en') continue; // English is the default, no prefix
-    const langPath = `/${lang}${basePath}`;
-    paths.push(langPath);
-  }
-
-  return paths;
-}
-
-/**
  * Route definitions for SSG prerendering
  *
  * Structure:

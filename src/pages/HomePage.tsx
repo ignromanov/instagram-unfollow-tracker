@@ -18,7 +18,8 @@ export function Component() {
   const hasResults = uploadState.status === 'success' && fileMetadata !== null;
 
   const handleStartGuide = (stepIndex?: number) => {
-    navigate(`${prefix}/wizard`);
+    const step = stepIndex !== undefined ? stepIndex + 1 : 1;
+    navigate(`${prefix}/wizard/step/${step}`);
   };
 
   const handleLoadSample = () => {

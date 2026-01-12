@@ -55,5 +55,16 @@
   "list": {
     "header": "Cuentas ({{count, number}})",
     "viewProfile": "Ver Perfil"
+  },
+  "rescue": {
+    "title": "📉 ¡Tu cuenta está perdiendo seguidores!",
+    "subtitle": "Basado en las tendencias de 2026, así puedes recuperarlos:",
+    "tools": {
+      "submagic": "La IA crea Reels virales automáticamente",
+      "predis": "Genera publicaciones con IA (texto + diseño)",
+      "manychat": "Responde automáticamente a DMs y comentarios"
+    },
+    "dismiss": "Cerrar",
+    "disclaimer": "Enlaces de afiliados – podemos ganar una comisión"
   }
 }

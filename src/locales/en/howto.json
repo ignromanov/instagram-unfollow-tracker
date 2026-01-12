@@ -1,6 +1,6 @@
 {
   "title": "How to Check Your <gradient>Instagram Unfollowers</gradient>",
-  "subtitle": "Follow these 8 simple steps to securely analyze your account without sharing your password.",
+  "subtitle": "Follow these 9 simple steps to securely analyze your account without sharing your password.",
   "important": "Critical",
   "openStep": "Open step in guide",
   "openStepAria": "Step {{step}}: {{title}}. Click to open in guide",
@@ -36,6 +36,10 @@
     "8": {
       "title": "Wait for Email & Download",
       "description": "Instagram emails you when ready (5-30 min). Download the ZIP file from the email link."
+    },
+    "9": {
+      "title": "Upload Your File",
+      "description": "You're ready! Click the button below to upload your Instagram data and see who unfollowed you."
     }
   },
   "cta": {

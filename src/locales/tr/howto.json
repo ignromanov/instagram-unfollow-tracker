@@ -1,6 +1,6 @@
 {
   "title": "<gradient>Instagram Takibi Bırakanlarını</gradient> Nasıl Kontrol Edersin",
-  "subtitle": "Şifreni paylaşmadan hesabını güvenle analiz etmek için bu 8 basit adımı izle.",
+  "subtitle": "Şifreni paylaşmadan hesabını güvenle analiz etmek için bu 9 basit adımı izle.",
   "important": "Kritik",
   "openStep": "Adımı rehberde aç",
   "openStepAria": "Adım {{step}}: {{title}}. Açmak için tıkla",
@@ -36,6 +36,10 @@
     "8": {
       "title": "E-postayı Bekle ve İndir",
       "description": "Instagram hazır olduğunda e-posta gönderir (5-30 dk). E-posta bağlantısından ZIP dosyasını indir."
+    },
+    "9": {
+      "title": "Dosyanızı Yükleyin",
+      "description": "Hazırsınız! Instagram verilerinizi yüklemek için aşağıdaki butona tıklayın."
     }
   },
   "cta": {
