@@ -58,42 +58,64 @@
   },
   "rescue": {
     "critical": {
-      "title": "Sua conta está perdendo seguidores rapidamente!",
+      "title": "Você perdeu {{unfollowedPercent}}% — veja como recuperar",
       "subtitle": {
-        "influencer": "Com {{count}}+ contas, cada seguidor perdido impacta seu alcance. Aja agora:",
-        "power": "Você está perdendo engajamento. Veja como usuários avançados se recuperam:",
-        "regular": "Não deixe sua comunidade diminuir. Soluções rápidas:",
-        "casual": "Audiência pequena, grande oportunidade. Comece a recuperação hoje:"
+        "influencer": "Com {{count}}+ seguidores, cada perda afeta seu alcance. Recupere em 7 dias:",
+        "power": "Você está no topo — criadores inteligentes se recuperam rápido com isso:",
+        "regular": "Pare a perda e recupere sua comunidade:",
+        "casual": "Audiência pequena = recuperação rápida. Comece agora:"
       }
     },
     "warning": {
-      "title": "Alguns seguidores estão se afastando",
+      "title": "Queda de {{unfollowedPercent}}% detectada — hora de otimizar",
       "subtitle": {
-        "influencer": "Na sua escala, otimização previne perdas maiores:",
-        "power": "Criadores inteligentes otimizam antes que seja tarde:",
-        "regular": "Mantenha sua audiência engajada com estas ferramentas:",
-        "casual": "Construa conexões mais fortes com seus seguidores:"
+        "influencer": "Na sua escala, otimização cedo previne perdas maiores:",
+        "power": "Detecte cedo — isso usam os melhores criadores:",
+        "regular": "Mantenha sua audiência antes que se afastem:",
+        "casual": "Construa conexões mais fortes agora:"
       }
     },
     "growth": {
-      "title": "Você está indo muito bem! Pronto para crescer?",
+      "title": "Só {{unfollowedPercent}}% de perda — você está ótimo!",
       "subtitle": {
         "influencer": "Escale seu alcance com ferramentas profissionais:",
-        "power": "Leve sua conta para o próximo nível:",
-        "regular": "Construa consistência e cresça mais rápido:",
-        "casual": "Comece sua jornada de crescimento com estas ferramentas:"
+        "power": "Pronto para o próximo nível? Aqui está seu kit:",
+        "regular": "Construa consistência e cresça 2x mais rápido:",
+        "casual": "Comece sua jornada de crescimento do jeito certo:"
       }
     },
     "tools": {
-      "submagic": "IA cria Reels virais automaticamente",
-      "predis": "Gere posts com IA (texto + design)",
-      "manychat": "Responda automaticamente DMs e comentários",
-      "metricool": "Acompanhe analytics e otimize horários de postagem",
-      "canva": "Crie posts incríveis em minutos",
-      "later": "Agende posts e planeje seu calendário de conteúdo"
+      "submagic": "Transforme clips em Reels virais → 3-5x mais alcance",
+      "predis": "IA cria posts + designs → conteúdo 3x mais rápido",
+      "manychat": "Respostas automáticas 24/7 → economize 10+ horas/semana",
+      "metricool": "Encontre seus melhores horários → crescimento 40% mais rápido",
+      "vistacreate": "Designs pro em 60 seg → nunca perca um post",
+      "later": "Planeje seu mês em 1 hora → mantenha consistência"
     },
     "dismiss": "Talvez depois",
-    "disclaimer": "Links de afiliados – podemos ganhar uma comissão",
-    "ariaLabel": "Ferramentas recomendadas para melhorar sua presença no Instagram"
+    "disclaimer": "Ferramentas selecionadas que recomendamos. Links de afiliados financiam atualizações gratuitas — sem custo para você.",
+    "ariaLabel": "Ferramentas recomendadas para melhorar sua presença no Instagram",
+    "badges": {
+      "popular": "Popular",
+      "trial": "Teste",
+      "new": "Novo"
+    },
+    "recommended": "Recomendado",
+    "tryTool": "Testar {{name}}",
+    "price": {
+      "freeTrial7": "7 dias grátis",
+      "freeTrial14": "14 dias grátis",
+      "freePlan": "Plano grátis",
+      "freeContacts": "1K grátis",
+      "freeForever": "Grátis sempre"
+    },
+    "social": {
+      "creators50k": "50K+ criadores",
+      "posts1m": "1M+ posts",
+      "businesses1m": "1M+ negócios",
+      "users200k": "200K+ usuários",
+      "designs10m": "10M+ designs",
+      "users7m": "7M+ usuários"
+    }
   }
 }

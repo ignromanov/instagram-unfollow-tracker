@@ -58,42 +58,64 @@
   },
   "rescue": {
     "critical": {
-      "title": "¡Tu cuenta está perdiendo seguidores rápidamente!",
+      "title": "Has perdido {{unfollowedPercent}}% — así puedes recuperarte",
       "subtitle": {
-        "influencer": "Con {{count}}+ cuentas, cada seguidor perdido afecta tu alcance. Actúa ahora:",
-        "power": "Estás perdiendo engagement. Así se recuperan los usuarios avanzados:",
-        "regular": "No dejes que tu comunidad se reduzca. Soluciones rápidas:",
-        "casual": "Audiencia pequeña, gran oportunidad. Comienza a recuperarte:"
+        "influencer": "Con {{count}}+ seguidores, cada pérdida afecta tu alcance. Recupérate en 7 días:",
+        "power": "Estás en el top — los creadores inteligentes se recuperan rápido con esto:",
+        "regular": "Detén la pérdida y recupera tu comunidad:",
+        "casual": "Audiencia pequeña = recuperación rápida. Empieza ahora:"
       }
     },
     "warning": {
-      "title": "Algunos seguidores se están alejando",
+      "title": "Caída del {{unfollowedPercent}}% detectada — hora de optimizar",
       "subtitle": {
-        "influencer": "A tu escala, la optimización previene pérdidas mayores:",
-        "power": "Los creadores inteligentes optimizan antes de que sea tarde:",
-        "regular": "Mantén a tu audiencia comprometida con estas herramientas:",
-        "casual": "Construye conexiones más fuertes con tus seguidores:"
+        "influencer": "A tu escala, la optimización temprana previene pérdidas mayores:",
+        "power": "Actúa a tiempo — esto usan los mejores creadores:",
+        "regular": "Mantén a tu audiencia antes de que se vayan:",
+        "casual": "Construye conexiones más fuertes ahora:"
       }
     },
     "growth": {
-      "title": "¡Lo estás haciendo genial! ¿Listo para crecer?",
+      "title": "¡Solo {{unfollowedPercent}}% de pérdida — vas muy bien!",
       "subtitle": {
         "influencer": "Escala tu alcance con herramientas profesionales:",
-        "power": "Lleva tu cuenta al siguiente nivel:",
-        "regular": "Construye consistencia y crece más rápido:",
-        "casual": "Comienza tu camino al crecimiento con estas herramientas:"
+        "power": "¿Listo para el siguiente nivel? Aquí está tu kit:",
+        "regular": "Construye consistencia y crece 2x más rápido:",
+        "casual": "Comienza tu camino al crecimiento de la forma correcta:"
       }
     },
     "tools": {
-      "submagic": "La IA crea Reels virales automáticamente",
-      "predis": "Genera publicaciones con IA (texto + diseño)",
-      "manychat": "Responde automáticamente a DMs y comentarios",
-      "metricool": "Rastrea analíticas y optimiza horarios de publicación",
-      "canva": "Diseña publicaciones impresionantes en minutos",
-      "later": "Programa publicaciones y planifica tu calendario de contenido"
+      "submagic": "Convierte clips en Reels virales → 3-5x más alcance",
+      "predis": "IA crea posts + diseños → contenido 3x más rápido",
+      "manychat": "Respuestas automáticas 24/7 → ahorra 10+ horas/semana",
+      "metricool": "Encuentra tus mejores horarios → crece 40% más rápido",
+      "vistacreate": "Diseños pro en 60 seg → nunca pierdas un post",
+      "later": "Planifica tu mes en 1 hora → mantén la consistencia"
     },
     "dismiss": "Quizás después",
-    "disclaimer": "Enlaces de afiliados – podemos ganar una comisión",
-    "ariaLabel": "Herramientas recomendadas para mejorar tu presencia en Instagram"
+    "disclaimer": "Herramientas seleccionadas que recomendamos. Los enlaces de afiliados financian actualizaciones gratuitas — sin costo para ti.",
+    "ariaLabel": "Herramientas recomendadas para mejorar tu presencia en Instagram",
+    "badges": {
+      "popular": "Popular",
+      "trial": "Prueba",
+      "new": "Nuevo"
+    },
+    "recommended": "Recomendado",
+    "tryTool": "Probar {{name}}",
+    "price": {
+      "freeTrial7": "7 días gratis",
+      "freeTrial14": "14 días gratis",
+      "freePlan": "Plan gratis",
+      "freeContacts": "1K gratis",
+      "freeForever": "Gratis siempre"
+    },
+    "social": {
+      "creators50k": "50K+ creadores",
+      "posts1m": "1M+ posts",
+      "businesses1m": "1M+ negocios",
+      "users200k": "200K+ usuarios",
+      "designs10m": "10M+ diseños",
+      "users7m": "7M+ usuarios"
+    }
   }
 }

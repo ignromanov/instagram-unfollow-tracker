@@ -94,6 +94,28 @@
     },
     "dismiss": "Maybe later",
     "disclaimer": "Hand-picked tools we recommend. Affiliate links fund free updates — no cost to you.",
-    "ariaLabel": "Recommended tools to improve your Instagram presence"
+    "ariaLabel": "Recommended tools to improve your Instagram presence",
+    "badges": {
+      "popular": "Popular",
+      "trial": "Trial",
+      "new": "New"
+    },
+    "recommended": "Recommended",
+    "tryTool": "Try {{name}}",
+    "price": {
+      "freeTrial7": "7-day free trial",
+      "freeTrial14": "14-day free trial",
+      "freePlan": "Free plan available",
+      "freeContacts": "Free up to 1K contacts",
+      "freeForever": "Free forever plan"
+    },
+    "social": {
+      "creators50k": "50K+ creators",
+      "posts1m": "1M+ posts created",
+      "businesses1m": "1M+ businesses",
+      "users200k": "200K+ users",
+      "designs10m": "10M+ designs created",
+      "users7m": "7M+ users"
+    }
   }
 }

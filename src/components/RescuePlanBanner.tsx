@@ -284,7 +284,7 @@ export function RescuePlanBanner({
             onClick={e => handleToolClick(tool, e)}
             onMouseEnter={() => handleToolHover(tool.id, true)}
             onMouseLeave={() => handleToolHover(tool.id, false)}
-            className={`group relative p-4 bg-white dark:bg-zinc-900 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] ${
+            className={`group relative p-4 bg-white dark:bg-zinc-900 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] flex flex-col ${
               index === 0
                 ? 'border-zinc-300 dark:border-zinc-700 hover:border-primary hover:ring-2 hover:ring-primary/20 hover:shadow-xl'
                 : 'border-zinc-200 dark:border-zinc-800 hover:border-primary hover:shadow-lg'
@@ -296,54 +296,57 @@ export function RescuePlanBanner({
                 className={`absolute -top-2 -right-2 px-2 py-0.5 text-xs font-bold rounded-full ${BADGE_STYLES[tool.badge]}`}
               >
                 {tool.badge === 'popular'
-                  ? '🔥 Popular'
+                  ? `🔥 ${t('rescue.badges.popular')}`
                   : tool.badge === 'trial'
-                    ? '✨ Trial'
-                    : '🆕 New'}
+                    ? `✨ ${t('rescue.badges.trial')}`
+                    : `🆕 ${t('rescue.badges.new')}`}
               </span>
             )}
 
             {/* Recommended label for first item */}
             {index === 0 && (
               <span className="absolute -top-2 left-3 px-2 py-0.5 text-xs font-bold rounded-full bg-primary text-white">
-                ⭐ Recommended
+                ⭐ {t('rescue.recommended')}
               </span>
             )}
 
-            {/* Tool header */}
-            <div className="flex items-center gap-3 mb-2 mt-2">
-              <tool.icon
-                className={`w-5 h-5 ${tool.color} group-hover:scale-110 transition-transform`}
-              />
-              <span className="font-bold text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
-                {tool.name}
-              </span>
+            {/* Content area - grows to fill space */}
+            <div className="flex-grow">
+              {/* Tool header */}
+              <div className="flex items-center gap-3 mb-2 mt-2">
+                <tool.icon
+                  className={`w-5 h-5 ${tool.color} group-hover:scale-110 transition-transform`}
+                />
+                <span className="font-bold text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
+                  {tool.name}
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
+                {t(tool.descKey as any)}
+              </p>
             </div>
 
-            {/* Description */}
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
-              {t(tool.descKey as any)}
-            </p>
-
-            {/* Trust signals */}
-            <div className="flex items-center justify-between text-xs mb-3">
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                {tool.priceLabel}
+            {/* Trust signals - fixed height row */}
+            <div className="flex items-center justify-between text-xs mb-3 gap-2">
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold whitespace-nowrap">
+                {t(tool.priceKey as any)}
               </span>
-              <span className="text-zinc-400">{tool.socialProof}</span>
+              <span className="text-zinc-400 whitespace-nowrap">{t(tool.socialKey as any)}</span>
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button - always at bottom */}
             <div
-              className={`w-full py-2 px-3 rounded-xl text-center text-sm font-semibold transition-all ${
+              className={`w-full py-2 px-3 rounded-xl text-center text-sm font-semibold transition-all mt-auto ${
                 index === 0
                   ? 'bg-primary text-white group-hover:bg-primary/90'
                   : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 group-hover:bg-primary group-hover:text-white'
               }`}
             >
               <span className="flex items-center justify-center gap-1.5">
-                Try {tool.name}
-                <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                {t('rescue.tryTool', { name: tool.name })}
+                <ExternalLink className="w-3.5 h-3.5 opacity-70 shrink-0" />
               </span>
             </div>
           </a>

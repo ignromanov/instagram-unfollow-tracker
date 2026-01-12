@@ -58,42 +58,64 @@
   },
   "rescue": {
     "critical": {
-      "title": "Dein Account verliert schnell Follower!",
+      "title": "Du hast {{unfollowedPercent}}% verloren — so holst du sie zurück",
       "subtitle": {
-        "influencer": "Mit {{count}}+ Accounts wirkt sich jeder verlorene Follower auf deine Reichweite aus. Handle jetzt:",
-        "power": "Du verlierst Engagement. So erholen sich Power-User:",
-        "regular": "Lass deine Community nicht schrumpfen. Schnelle Lösungen:",
-        "casual": "Kleine Audience, große Chance. Starte heute mit der Erholung:"
+        "influencer": "Mit {{count}}+ Followern trifft jeder Verlust deine Reichweite. Erhole dich in 7 Tagen:",
+        "power": "Du bist im Top-Tier — smarte Creator erholen sich schnell mit diesen Tools:",
+        "regular": "Stoppe den Verlust und hol deine Community zurück:",
+        "casual": "Kleine Audience = schnelle Erholung. Starte jetzt:"
       }
     },
     "warning": {
-      "title": "Einige Follower driften ab",
+      "title": "{{unfollowedPercent}}% Rückgang erkannt — Zeit zu optimieren",
       "subtitle": {
-        "influencer": "In deiner Größenordnung verhindert Optimierung größere Verluste:",
-        "power": "Smarte Creator optimieren bevor es zu spät ist:",
-        "regular": "Halte deine Audience engagiert mit diesen Tools:",
-        "casual": "Baue stärkere Verbindungen zu deinen Followern auf:"
+        "influencer": "In deiner Größe verhindert frühe Optimierung größere Verluste:",
+        "power": "Erkenne es früh — das nutzen Top-Creator:",
+        "regular": "Halte deine Audience bevor sie abdriften:",
+        "casual": "Baue jetzt stärkere Verbindungen auf:"
       }
     },
     "growth": {
-      "title": "Du machst das großartig! Bereit zu wachsen?",
+      "title": "Nur {{unfollowedPercent}}% Verlust — super Ergebnis!",
       "subtitle": {
-        "influencer": "Skaliere deine Reichweite mit professionellen Tools:",
-        "power": "Bringe deinen Account auf das nächste Level:",
-        "regular": "Baue Konsistenz auf und wachse schneller:",
-        "casual": "Starte deine Wachstumsreise mit diesen Tools:"
+        "influencer": "Skaliere deine Reichweite mit Profi-Tools:",
+        "power": "Bereit fürs nächste Level? Hier ist dein Toolkit:",
+        "regular": "Baue Konsistenz auf und wachse 2x schneller:",
+        "casual": "Starte deine Wachstumsreise richtig:"
       }
     },
     "tools": {
-      "submagic": "KI erstellt automatisch virale Reels",
-      "predis": "Generiere Posts mit KI (Text + Design)",
-      "manychat": "Antworte automatisch auf DMs und Kommentare",
-      "metricool": "Verfolge Analytics und optimiere Posting-Zeiten",
-      "canva": "Designe beeindruckende Posts in Minuten",
-      "later": "Plane Posts und organisiere deinen Content-Kalender"
+      "submagic": "Verwandle Clips in virale Reels → 3-5x mehr Reichweite",
+      "predis": "KI erstellt Posts + Designs → Content 3x schneller",
+      "manychat": "Auto-Antworten 24/7 → spare 10+ Stunden/Woche",
+      "metricool": "Finde deine besten Zeiten → 40% schnelleres Wachstum",
+      "vistacreate": "Pro-Designs in 60 Sek → verpasse keinen Post",
+      "later": "Plane deinen Monat in 1 Stunde → bleib konsistent"
     },
     "dismiss": "Vielleicht später",
-    "disclaimer": "Affiliate-Links – wir erhalten möglicherweise eine Provision",
-    "ariaLabel": "Empfohlene Tools zur Verbesserung deiner Instagram-Präsenz"
+    "disclaimer": "Handverlesene Tools, die wir empfehlen. Affiliate-Links finanzieren kostenlose Updates — keine Kosten für dich.",
+    "ariaLabel": "Empfohlene Tools zur Verbesserung deiner Instagram-Präsenz",
+    "badges": {
+      "popular": "Beliebt",
+      "trial": "Testversion",
+      "new": "Neu"
+    },
+    "recommended": "Empfohlen",
+    "tryTool": "{{name}} testen",
+    "price": {
+      "freeTrial7": "7 Tage gratis",
+      "freeTrial14": "14 Tage gratis",
+      "freePlan": "Gratis-Plan",
+      "freeContacts": "Bis 1K gratis",
+      "freeForever": "Immer gratis"
+    },
+    "social": {
+      "creators50k": "50K+ Creator",
+      "posts1m": "1M+ Posts",
+      "businesses1m": "1M+ Firmen",
+      "users200k": "200K+ Nutzer",
+      "designs10m": "10M+ Designs",
+      "users7m": "7M+ Nutzer"
+    }
   }
 }

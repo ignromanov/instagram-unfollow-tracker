@@ -40,10 +40,10 @@ export interface RescueTool {
   category: ToolCategory;
   /** Pricing model */
   pricing: ToolPricing;
-  /** Display label for pricing (e.g., "Free trial", "From $9/mo") */
-  priceLabel: string;
-  /** Social proof text (e.g., "50K+ creators") */
-  socialProof: string;
+  /** i18n key for pricing label (e.g., "rescue.price.freeTrial7") */
+  priceKey: string;
+  /** i18n key for social proof (e.g., "rescue.social.creators50k") */
+  socialKey: string;
   /** Optional badge for visual hierarchy */
   badge?: ToolBadge;
 }
