@@ -6,51 +6,51 @@
     "back": "Kembali",
     "next": "Langkah Berikutnya",
     "done": "Selesai, ayo mulai!",
-    "openInstagram": "Buka Instagram"
+    "openInstagram": "Buka halaman ekspor"
   },
   "format": {
-    "warning": "FORMAT JSON SAJA"
+    "warning": "LANGKAH PENTING"
   },
   "steps": {
     "1": {
-      "title": "Buka Halaman Ekspor Data",
-      "description": "Ketuk tombol di bawah untuk langsung ke halaman ekspor data platform. Anda mungkin perlu login terlebih dahulu.",
-      "alt": "Langkah 1: Buka Halaman Ekspor Data"
+      "title": "Buka Halaman Ekspor Instagram",
+      "description": "Klik tombol di bawah untuk membuka Pusat Akun Meta. Lalu klik \"Buat ekspor\".",
+      "alt": "Langkah 1: Buka halaman ekspor dan klik Buat ekspor"
     },
     "2": {
-      "title": "Pilih 'Sebagian informasi Anda'",
-      "description": "Jangan unduh semuanya — kita hanya butuh data pengikut dan mengikuti untuk mempercepat proses.",
-      "alt": "Langkah 2: Pilih 'Sebagian informasi Anda'"
+      "title": "Pilih Profil Instagram Anda",
+      "description": "Pilih akun Instagram Anda dari daftar profil yang terhubung.",
+      "alt": "Langkah 2: Pilih profil Instagram Anda"
     },
     "3": {
-      "title": "Centang hanya 'Pengikut dan mengikuti'",
-      "description": "Hapus centang opsi lain seperti pesan atau media. Ini membuat file Anda jauh lebih kecil.",
-      "alt": "Langkah 3: Centang hanya 'Pengikut dan mengikuti'"
+      "title": "Pilih \"Ekspor ke perangkat\"",
+      "description": "Pilih ekspor langsung ke perangkat untuk privasi maksimal. Data Anda tetap bersama Anda.",
+      "alt": "Langkah 3: Pilih opsi Ekspor ke perangkat"
     },
     "4": {
-      "title": "⚠️ Pilih format JSON",
-      "description": "Ini sangat penting: Pilih JSON, bukan HTML. File HTML tidak akan berfungsi dengan alat analisis kami.",
-      "alt": "Langkah 4: Pilih format JSON"
+      "title": "⚠️ Pilih Hanya \"Pengikut dan mengikuti\"",
+      "description": "Klik \"Sesuaikan\" → Hapus semua → Centang HANYA \"Pengikut dan mengikuti\". Ini menjaga file tetap kecil dan cepat.",
+      "alt": "Langkah 4: Sesuaikan untuk memilih hanya Pengikut dan mengikuti"
     },
     "5": {
-      "title": "Pilih 'Sepanjang waktu' dan ketuk 'Buat file'",
-      "description": "Platform akan mulai menyiapkan data Anda. Ini bisa memakan waktu dari 5 menit hingga beberapa jam.",
-      "alt": "Langkah 5: Pilih 'Sepanjang waktu' dan ketuk 'Buat file'"
+      "title": "Atur Rentang Tanggal ke \"Sepanjang waktu\"",
+      "description": "Klik \"Rentang tanggal\" → Pilih \"Sepanjang waktu\" → Simpan. Ini memastikan riwayat pengikut lengkap.",
+      "alt": "Langkah 5: Atur rentang tanggal ke Sepanjang waktu"
     },
     "6": {
-      "title": "Tunggu notifikasi email",
-      "description": "Pantau kotak masuk Anda (dan folder spam!). Anda akan mendapat email saat file siap diunduh.",
-      "alt": "Langkah 6: Tunggu notifikasi email"
+      "title": "⚠️ Ubah Format ke JSON",
+      "description": "Ini penting! Klik \"Format\" → Pilih \"JSON\" (bukan HTML). File HTML TIDAK akan berfungsi dengan alat analisis kami.",
+      "alt": "Langkah 6: Ubah format ke JSON"
     },
     "7": {
-      "title": "Unduh file ZIP",
-      "description": "Unduh file ke perangkat Anda. Setelah mendapatkannya, Anda siap menganalisisnya di sini!",
-      "alt": "Langkah 7: Unduh file ZIP"
+      "title": "Tinjau & Mulai Ekspor",
+      "description": "Verifikasi pengaturan: Pengikut dan mengikuti, Sepanjang waktu, format JSON. Lalu klik \"Mulai ekspor\".",
+      "alt": "Langkah 7: Tinjau pengaturan dan mulai ekspor"
     },
     "8": {
-      "title": "Unggah & Lihat Hasil",
-      "description": "Kembali ke sini, unggah file ZIP Anda, dan langsung lihat siapa yang berhenti mengikuti Anda!",
-      "alt": "Langkah 8: Unggah & Lihat Hasil"
+      "title": "Tunggu Email & Unduh",
+      "description": "Instagram akan mengirim email saat siap (biasanya 5-30 menit). Klik tautan unduhan di email untuk mendapatkan file ZIP.",
+      "alt": "Langkah 8: Tunggu email dan unduh file ZIP"
     }
   }
 }

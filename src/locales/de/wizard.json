@@ -6,51 +6,51 @@
     "back": "Zurück",
     "next": "Nächster Schritt",
     "done": "Fertig, los geht's!",
-    "openInstagram": "Instagram öffnen"
+    "openInstagram": "Export-Seite öffnen"
   },
   "format": {
-    "warning": "NUR JSON-FORMAT"
+    "warning": "KRITISCHER SCHRITT"
   },
   "steps": {
     "1": {
-      "title": "Datenexport-Seite öffnen",
-      "description": "Tippe auf den Button unten, um direkt zur Datenexport-Seite der Plattform zu gelangen. Möglicherweise musst du dich zuerst anmelden.",
-      "alt": "Schritt 1: Datenexport-Seite öffnen"
+      "title": "Instagram Export-Seite öffnen",
+      "description": "Klicke auf den Button unten, um das Meta-Kontencenter zu öffnen. Klicke dann auf \"Export erstellen\".",
+      "alt": "Schritt 1: Export-Seite öffnen und auf Export erstellen klicken"
     },
     "2": {
-      "title": "'Einige deiner Informationen' auswählen",
-      "description": "Lade nicht alles herunter — wir brauchen nur deine Follower- und Following-Daten, um den Prozess zu beschleunigen.",
-      "alt": "Schritt 2: 'Einige deiner Informationen' auswählen"
+      "title": "Wähle dein Instagram-Profil",
+      "description": "Wähle dein Instagram-Konto aus der Liste der verbundenen Profile.",
+      "alt": "Schritt 2: Wähle dein Instagram-Profil"
     },
     "3": {
-      "title": "Nur 'Follower und Gefolgte' ankreuzen",
-      "description": "Deaktiviere alle anderen Optionen wie Nachrichten oder Medien. Das macht deine Datei viel kleiner.",
-      "alt": "Schritt 3: Nur 'Follower und Gefolgte' ankreuzen"
+      "title": "Wähle \"Auf Gerät exportieren\"",
+      "description": "Wähle den direkten Export auf dein Gerät für maximale Privatsphäre. Deine Daten bleiben bei dir.",
+      "alt": "Schritt 3: Wähle die Option Auf Gerät exportieren"
     },
     "4": {
-      "title": "⚠️ JSON-Format auswählen",
-      "description": "Das ist entscheidend: Wähle JSON, nicht HTML. HTML-Dateien funktionieren nicht mit unserem Analyzer.",
-      "alt": "Schritt 4: JSON-Format auswählen"
+      "title": "⚠️ Wähle nur \"Follower und Gefolgte\"",
+      "description": "Klicke auf \"Anpassen\" → Alles abwählen → NUR \"Follower und Gefolgte\" auswählen. Das hält deine Datei klein und schnell.",
+      "alt": "Schritt 4: Anpassen um nur Follower und Gefolgte auszuwählen"
     },
     "5": {
-      "title": "'Gesamter Zeitraum' wählen und auf 'Dateien erstellen' tippen",
-      "description": "Die Plattform beginnt jetzt mit der Vorbereitung deiner Daten. Das kann zwischen 5 Minuten und einigen Stunden dauern.",
-      "alt": "Schritt 5: 'Gesamter Zeitraum' wählen und auf 'Dateien erstellen' tippen"
+      "title": "Setze den Zeitraum auf \"Gesamter Zeitraum\"",
+      "description": "Klicke auf \"Zeitraum\" → Wähle \"Gesamter Zeitraum\" → Speichern. Das stellt sicher, dass du deine komplette Follower-Historie bekommst.",
+      "alt": "Schritt 5: Setze den Zeitraum auf Gesamter Zeitraum"
     },
     "6": {
-      "title": "Auf E-Mail-Benachrichtigung warten",
-      "description": "Behalte deinen Posteingang im Auge (und den Spam-Ordner!). Du erhältst eine E-Mail, wenn deine Datei zum Download bereit ist.",
-      "alt": "Schritt 6: Auf E-Mail-Benachrichtigung warten"
+      "title": "⚠️ Ändere das Format auf JSON",
+      "description": "Das ist kritisch! Klicke auf \"Format\" → Wähle \"JSON\" (nicht HTML). HTML-Dateien funktionieren NICHT mit unserem Analyzer.",
+      "alt": "Schritt 6: Ändere das Format auf JSON"
     },
     "7": {
-      "title": "ZIP-Datei herunterladen",
-      "description": "Lade die Datei auf dein Gerät herunter. Sobald du sie hast, kannst du sie hier analysieren!",
-      "alt": "Schritt 7: ZIP-Datei herunterladen"
+      "title": "Überprüfen & Export starten",
+      "description": "Überprüfe, dass die Einstellungen zeigen: Follower und Gefolgte, Gesamter Zeitraum, JSON-Format. Klicke dann auf \"Export starten\".",
+      "alt": "Schritt 7: Einstellungen überprüfen und Export starten"
     },
     "8": {
-      "title": "Hochladen & Ergebnisse anzeigen",
-      "description": "Komm hierher zurück, lade deine ZIP-Datei hoch und sieh sofort, wer dir entfolgt ist und mehr!",
-      "alt": "Schritt 8: Hochladen & Ergebnisse anzeigen"
+      "title": "Auf E-Mail warten & herunterladen",
+      "description": "Instagram schickt dir eine E-Mail, wenn es fertig ist (normalerweise 5-30 Minuten). Klicke auf den Download-Link in der E-Mail, um deine ZIP-Datei zu bekommen.",
+      "alt": "Schritt 8: Auf E-Mail warten und ZIP-Datei herunterladen"
     }
   }
 }

@@ -11,17 +11,14 @@ interface HowToStep {
 
 // Step metadata (visuals and warnings are not translated)
 const STEP_META: Array<{ isWarning?: boolean; visual?: string }> = [
-  {},
-  { visual: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80' },
-  { visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80' },
-  {
-    isWarning: true,
-    visual: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
-  },
-  { visual: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' },
-  { visual: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800&q=80' },
-  { visual: 'https://images.unsplash.com/photo-1590212151175-e58edd96d85c?w=800&q=80' },
-  { visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80' },
+  { visual: '/wizard/step-1.gif' },
+  { visual: '/wizard/step-2.gif' },
+  { visual: '/wizard/step-3.gif' },
+  { isWarning: true, visual: '/wizard/step-4.gif' },
+  { visual: '/wizard/step-5.gif' },
+  { isWarning: true, visual: '/wizard/step-6.gif' },
+  { visual: '/wizard/step-7.gif' },
+  { visual: '/wizard/step-8.gif' },
 ];
 
 interface HowToSectionProps {

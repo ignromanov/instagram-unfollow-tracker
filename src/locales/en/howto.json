@@ -1,40 +1,40 @@
 {
   "title": "How to Check Your <gradient>Instagram Unfollowers</gradient>",
   "subtitle": "Follow these 8 simple steps to securely analyze your account without sharing your password.",
-  "important": "Important",
+  "important": "Critical",
   "openStep": "Open step in guide",
   "steps": {
     "1": {
-      "title": "Open Data Export Page",
-      "description": "Tap the button below to go directly to the platform's data export page. You may need to log in first."
+      "title": "Open Instagram Export Page",
+      "description": "Click the button to open Meta Accounts Center. Then click \"Create export\" to begin the process."
     },
     "2": {
-      "title": "Select 'Some of your information'",
-      "description": "Don't export everything — we only need your followers and following list to speed this up."
+      "title": "Choose Your Instagram Profile",
+      "description": "Select your Instagram account from the list of connected profiles in the Accounts Center."
     },
     "3": {
-      "title": "Check only 'Followers and following'",
-      "description": "Uncheck all other options like messages or media. This keeps your archive compact and optimized."
+      "title": "Select \"Export to device\"",
+      "description": "Choose to export directly to your device. This keeps your data private and secure."
     },
     "4": {
-      "title": "Select JSON format",
-      "description": "This is critical: Choose JSON, not HTML format. HTML backup files will not work with our analyzer."
+      "title": "Select Only \"Followers and following\"",
+      "description": "Click \"Customize\" → Clear all → Check ONLY \"Followers and following\". This keeps your file compact."
     },
     "5": {
-      "title": "Choose 'All time' and tap 'Create files'",
-      "description": "The platform will now begin processing and preparing your data export. This can take anywhere from 5 minutes to a few hours."
+      "title": "Set Date Range to \"All time\"",
+      "description": "Click \"Date range\" → Select \"All time\" → Save. This ensures complete follower history."
     },
     "6": {
-      "title": "Wait for email notification",
-      "description": "Keep an eye on your inbox (and spam folder!). You'll receive an email notification when your archive file is ready to download."
+      "title": "Change Format to JSON",
+      "description": "Critical step! Click \"Format\" → Select \"JSON\" (not HTML). HTML files will NOT work."
     },
     "7": {
-      "title": "Download the ZIP file",
-      "description": "Download and save the ZIP archive to your device. Once you have it, you're ready to scan and analyze it here!"
+      "title": "Review & Start Export",
+      "description": "Verify settings: Followers and following, All time, JSON. Then click \"Start export\"."
     },
     "8": {
-      "title": "Upload & Reveal Results",
-      "description": "Head back here, drag and drop or select your ZIP file, and instantly see your unfollower report with complete analysis!"
+      "title": "Wait for Email & Download",
+      "description": "Instagram emails you when ready (5-30 min). Download the ZIP file from the email link."
     }
   },
   "cta": {
@@ -44,7 +44,7 @@
   },
   "schema": {
     "name": "How to Check Who Unfollowed You on Instagram Without Login",
-    "description": "Step-by-step guide to scan and find Instagram unfollowers using your official data backup archive. No login required, 100% private local processing.",
+    "description": "Step-by-step guide to find Instagram unfollowers using your official data export. No login required, 100% private local processing.",
     "supplies": {
       "account": "Instagram account",
       "email": "Email access"

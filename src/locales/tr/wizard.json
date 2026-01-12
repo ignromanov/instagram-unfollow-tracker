@@ -6,51 +6,51 @@
     "back": "Geri",
     "next": "Sonraki Adım",
     "done": "Tamam, başlayalım!",
-    "openInstagram": "Instagram'ı Aç"
+    "openInstagram": "Dışa aktarma sayfasını aç"
   },
   "format": {
-    "warning": "SADECE JSON FORMATI"
+    "warning": "KRİTİK ADIM"
   },
   "steps": {
     "1": {
-      "title": "Veri Dışa Aktarma Sayfasını Aç",
-      "description": "Platformun veri dışa aktarma sayfasına doğrudan gitmek için aşağıdaki butona dokun. Önce giriş yapman gerekebilir.",
-      "alt": "Adım 1: Veri Dışa Aktarma Sayfasını Aç"
+      "title": "Instagram Dışa Aktarma Sayfasını Aç",
+      "description": "Meta Hesap Merkezi'ni açmak için aşağıdaki butona tıkla. Ardından \"Dışa aktarma oluştur\" seçeneğine tıkla.",
+      "alt": "Adım 1: Dışa aktarma sayfasını aç ve Dışa aktarma oluştur'a tıkla"
     },
     "2": {
-      "title": "'Bilgilerinin bir kısmı' seçeneğini seç",
-      "description": "Her şeyi indirme — süreci hızlandırmak için sadece takipçi ve takip edilen verilerine ihtiyacımız var.",
-      "alt": "Adım 2: 'Bilgilerinin bir kısmı' seçeneğini seç"
+      "title": "Instagram Profilini Seç",
+      "description": "Bağlı profiller listesinden Instagram hesabını seç.",
+      "alt": "Adım 2: Instagram profilini seç"
     },
     "3": {
-      "title": "Sadece 'Takipçiler ve takip edilenler' işaretle",
-      "description": "Mesajlar veya medya gibi diğer tüm seçeneklerin işaretini kaldır. Bu dosyanı çok daha küçük yapar.",
-      "alt": "Adım 3: Sadece 'Takipçiler ve takip edilenler' işaretle"
+      "title": "\"Cihaza dışa aktar\" Seç",
+      "description": "Maksimum gizlilik için doğrudan cihazına dışa aktar. Verilerin seninle kalır.",
+      "alt": "Adım 3: Cihaza dışa aktar seçeneğini seç"
     },
     "4": {
-      "title": "⚠️ JSON formatını seç",
-      "description": "Bu çok önemli: HTML değil, JSON seç. HTML dosyaları analizörümüzle çalışmaz.",
-      "alt": "Adım 4: JSON formatını seç"
+      "title": "⚠️ Sadece \"Takipçiler ve takip edilenler\" Seç",
+      "description": "\"Özelleştir\" tıkla → Hepsini temizle → SADECE \"Takipçiler ve takip edilenler\" işaretle. Dosyanı küçük ve hızlı tutar.",
+      "alt": "Adım 4: Özelleştirip sadece Takipçiler ve takip edilenler seç"
     },
     "5": {
-      "title": "'Tüm zamanlar' seç ve 'Dosyaları oluştur' dokun",
-      "description": "Platform şimdi verilerini hazırlamaya başlayacak. Bu 5 dakika ile birkaç saat arasında sürebilir.",
-      "alt": "Adım 5: 'Tüm zamanlar' seç ve 'Dosyaları oluştur' dokun"
+      "title": "Tarih Aralığını \"Tüm zamanlar\" Olarak Ayarla",
+      "description": "\"Tarih aralığı\" tıkla → \"Tüm zamanlar\" seç → Kaydet. Tam takipçi geçmişini alırsın.",
+      "alt": "Adım 5: Tarih aralığını Tüm zamanlar olarak ayarla"
     },
     "6": {
-      "title": "E-posta bildirimini bekle",
-      "description": "Gelen kutunu (ve spam klasörünü!) kontrol et. Dosyan indirilmeye hazır olduğunda bir e-posta alacaksın.",
-      "alt": "Adım 6: E-posta bildirimini bekle"
+      "title": "⚠️ Formatı JSON Olarak Değiştir",
+      "description": "Bu kritik! \"Format\" tıkla → \"JSON\" seç (HTML değil). HTML dosyaları analizörümüzle ÇALIŞMAZ.",
+      "alt": "Adım 6: Formatı JSON olarak değiştir"
     },
     "7": {
-      "title": "ZIP dosyasını indir",
-      "description": "Dosyayı cihazına indir. Aldıktan sonra, burada analiz etmeye hazırsın!",
-      "alt": "Adım 7: ZIP dosyasını indir"
+      "title": "Kontrol Et ve Dışa Aktarmayı Başlat",
+      "description": "Ayarları kontrol et: Takipçiler ve takip edilenler, Tüm zamanlar, JSON formatı. Ardından \"Dışa aktarmayı başlat\" tıkla.",
+      "alt": "Adım 7: Ayarları kontrol et ve dışa aktarmayı başlat"
     },
     "8": {
-      "title": "Yükle ve Sonuçları Gör",
-      "description": "Buraya geri dön, ZIP dosyanı yükle ve seni kimin takibi bıraktığını anında gör!",
-      "alt": "Adım 8: Yükle ve Sonuçları Gör"
+      "title": "E-postayı Bekle ve İndir",
+      "description": "Instagram hazır olduğunda e-posta gönderir (genellikle 5-30 dakika). ZIP dosyasını almak için e-postadaki indirme bağlantısına tıkla.",
+      "alt": "Adım 8: E-postayı bekle ve ZIP dosyasını indir"
     }
   }
 }

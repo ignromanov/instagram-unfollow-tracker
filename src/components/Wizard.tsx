@@ -18,35 +18,37 @@ const WIZARD_STEPS: WizardStep[] = [
     id: 1,
     externalLink:
       'https://accountscenter.instagram.com/info_and_permissions/dyi/?entry_point=app_settings',
+    visual: '/wizard/step-1.gif',
   },
   {
     id: 2,
-    visual: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80',
+    visual: '/wizard/step-2.gif',
   },
   {
     id: 3,
-    visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80',
+    visual: '/wizard/step-3.gif',
   },
   {
     id: 4,
     isWarning: true,
-    visual: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
+    visual: '/wizard/step-4.gif',
   },
   {
     id: 5,
-    visual: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+    visual: '/wizard/step-5.gif',
   },
   {
     id: 6,
-    visual: 'https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=800&q=80',
+    isWarning: true,
+    visual: '/wizard/step-6.gif',
   },
   {
     id: 7,
-    visual: 'https://images.unsplash.com/photo-1590212151175-e58edd96d85c?w=800&q=80',
+    visual: '/wizard/step-7.gif',
   },
   {
     id: 8,
-    visual: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800&q=80',
+    visual: '/wizard/step-8.gif',
   },
 ];
 
@@ -157,6 +159,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
               src={step.visual || `https://picsum.photos/seed/${step.id}/800/450`}
               alt={t(`steps.${currentStep}.alt` as any)}
               className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700"
+              loading="lazy"
             />
             {step.isWarning && (
               <div className="absolute top-4 left-4 p-2.5 bg-amber-400 text-black rounded-xl shadow-lg flex items-center gap-2 font-black text-xs animate-bounce">

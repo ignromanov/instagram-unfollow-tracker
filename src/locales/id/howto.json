@@ -5,36 +5,36 @@
   "openStep": "Buka langkah di panduan",
   "steps": {
     "1": {
-      "title": "Buka Halaman Ekspor Data",
-      "description": "Ketuk tombol di bawah untuk langsung ke halaman ekspor data platform. Anda mungkin perlu login terlebih dahulu."
+      "title": "Buka Halaman Ekspor Instagram",
+      "description": "Klik tombol untuk membuka Pusat Akun Meta. Lalu klik \"Buat ekspor\"."
     },
     "2": {
-      "title": "Pilih 'Sebagian informasi Anda'",
-      "description": "Jangan unduh semuanya — kita hanya butuh data pengikut dan mengikuti untuk mempercepat proses."
+      "title": "Pilih Profil Instagram Anda",
+      "description": "Pilih akun Instagram Anda dari daftar profil yang terhubung di Pusat Akun."
     },
     "3": {
-      "title": "Centang hanya 'Pengikut dan mengikuti'",
-      "description": "Hapus centang opsi lain seperti pesan atau media. Ini membuat file Anda jauh lebih kecil."
+      "title": "Pilih \"Ekspor ke perangkat\"",
+      "description": "Pilih ekspor langsung ke perangkat. Ini menjaga data Anda tetap privat dan aman."
     },
     "4": {
-      "title": "Pilih format JSON",
-      "description": "Ini sangat penting: Pilih JSON, bukan HTML. File HTML tidak akan berfungsi dengan alat analisis kami."
+      "title": "Pilih Hanya \"Pengikut dan mengikuti\"",
+      "description": "Klik \"Sesuaikan\" → Hapus semua → Centang HANYA \"Pengikut dan mengikuti\". File tetap kompak."
     },
     "5": {
-      "title": "Pilih 'Sepanjang waktu' dan ketuk 'Buat file'",
-      "description": "Platform akan mulai menyiapkan data Anda. Ini bisa memakan waktu dari 5 menit hingga beberapa jam."
+      "title": "Atur Rentang Tanggal ke \"Sepanjang waktu\"",
+      "description": "Klik \"Rentang tanggal\" → Pilih \"Sepanjang waktu\" → Simpan. Memastikan riwayat lengkap."
     },
     "6": {
-      "title": "Tunggu notifikasi email",
-      "description": "Pantau kotak masuk Anda (dan folder spam!). Anda akan mendapat email saat file siap diunduh."
+      "title": "Ubah Format ke JSON",
+      "description": "Langkah penting! Klik \"Format\" → Pilih \"JSON\" (bukan HTML). File HTML TIDAK berfungsi."
     },
     "7": {
-      "title": "Unduh file ZIP",
-      "description": "Unduh file ke perangkat Anda. Setelah mendapatkannya, Anda siap menganalisisnya di sini!"
+      "title": "Tinjau & Mulai Ekspor",
+      "description": "Verifikasi pengaturan: Pengikut dan mengikuti, Sepanjang waktu, JSON. Lalu klik \"Mulai ekspor\"."
     },
     "8": {
-      "title": "Unggah & Lihat Hasil",
-      "description": "Kembali ke sini, unggah file ZIP Anda, dan langsung lihat siapa yang berhenti mengikuti Anda!"
+      "title": "Tunggu Email & Unduh",
+      "description": "Instagram mengirim email saat siap (5-30 menit). Unduh file ZIP dari tautan email."
     }
   },
   "cta": {

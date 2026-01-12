@@ -6,51 +6,51 @@
     "back": "Voltar",
     "next": "Próximo Passo",
     "done": "Pronto, vamos lá!",
-    "openInstagram": "Abrir Instagram"
+    "openInstagram": "Abrir página de exportação"
   },
   "format": {
-    "warning": "APENAS FORMATO JSON"
+    "warning": "PASSO CRÍTICO"
   },
   "steps": {
     "1": {
-      "title": "Abra a Página de Exportação de Dados",
-      "description": "Toque no botão abaixo para ir direto à página de exportação de dados da plataforma. Você pode precisar fazer login primeiro.",
-      "alt": "Passo 1: Abra a Página de Exportação de Dados"
+      "title": "Abra a página de exportação do Instagram",
+      "description": "Clique no botão abaixo para abrir a Central de Contas da Meta. Depois clique em \"Criar exportação\".",
+      "alt": "Passo 1: Abra a página de exportação e clique em Criar exportação"
     },
     "2": {
-      "title": "Selecione 'Algumas das suas informações'",
-      "description": "Não baixe tudo — precisamos apenas dos dados de seguidores e seguindo para agilizar o processo.",
-      "alt": "Passo 2: Selecione 'Algumas das suas informações'"
+      "title": "Escolha seu perfil do Instagram",
+      "description": "Selecione sua conta do Instagram na lista de perfis conectados.",
+      "alt": "Passo 2: Escolha seu perfil do Instagram"
     },
     "3": {
-      "title": "Marque apenas 'Seguidores e seguindo'",
-      "description": "Desmarque todas as outras opções como mensagens ou mídia. Isso deixa seu arquivo muito menor.",
-      "alt": "Passo 3: Marque apenas 'Seguidores e seguindo'"
+      "title": "Selecione \"Exportar para dispositivo\"",
+      "description": "Escolha exportar diretamente para seu dispositivo para máxima privacidade. Seus dados ficam com você.",
+      "alt": "Passo 3: Selecione a opção Exportar para dispositivo"
     },
     "4": {
-      "title": "⚠️ Selecione o formato JSON",
-      "description": "Isso é fundamental: Escolha JSON, não HTML. Arquivos HTML não funcionam com nosso analisador.",
-      "alt": "Passo 4: Selecione o formato JSON"
+      "title": "⚠️ Selecione apenas \"Seguidores e seguindo\"",
+      "description": "Clique em \"Personalizar\" → Desmarque tudo → Marque APENAS \"Seguidores e seguindo\". Isso mantém seu arquivo pequeno e rápido.",
+      "alt": "Passo 4: Personalize para selecionar apenas Seguidores e seguindo"
     },
     "5": {
-      "title": "Escolha 'Todo o período' e toque em 'Criar arquivos'",
-      "description": "A plataforma começará a preparar seus dados. Isso pode levar de 5 minutos a algumas horas.",
-      "alt": "Passo 5: Escolha 'Todo o período' e toque em 'Criar arquivos'"
+      "title": "Defina o período para \"Todo o período\"",
+      "description": "Clique em \"Período\" → Selecione \"Todo o período\" → Salvar. Isso garante seu histórico completo de seguidores.",
+      "alt": "Passo 5: Defina o período para Todo o período"
     },
     "6": {
-      "title": "Aguarde a notificação por e-mail",
-      "description": "Fique de olho na sua caixa de entrada (e na pasta de spam!). Você receberá um e-mail quando o arquivo estiver pronto para download.",
-      "alt": "Passo 6: Aguarde a notificação por e-mail"
+      "title": "⚠️ Mude o formato para JSON",
+      "description": "Isso é crítico! Clique em \"Formato\" → Selecione \"JSON\" (não HTML). Arquivos HTML NÃO funcionarão com nosso analisador.",
+      "alt": "Passo 6: Mude o formato para JSON"
     },
     "7": {
-      "title": "Baixe o arquivo ZIP",
-      "description": "Baixe o arquivo para o seu dispositivo. Assim que tiver, você estará pronto para analisá-lo aqui!",
-      "alt": "Passo 7: Baixe o arquivo ZIP"
+      "title": "Revise e inicie a exportação",
+      "description": "Verifique se suas configurações mostram: Seguidores e seguindo, Todo o período, formato JSON. Depois clique em \"Iniciar exportação\".",
+      "alt": "Passo 7: Revise as configurações e inicie a exportação"
     },
     "8": {
-      "title": "Envie e Veja os Resultados",
-      "description": "Volte aqui, envie seu arquivo ZIP e veja instantaneamente quem deixou de seguir você e muito mais!",
-      "alt": "Passo 8: Envie e Veja os Resultados"
+      "title": "Aguarde o email e baixe",
+      "description": "O Instagram enviará um email quando estiver pronto (geralmente 5-30 minutos). Clique no link de download no email para obter seu arquivo ZIP.",
+      "alt": "Passo 8: Aguarde o email e baixe o arquivo ZIP"
     }
   }
 }
