@@ -70,17 +70,17 @@ export function BuyMeCoffeeWidget({
       return;
     }
 
-    // Check localStorage (unless skipped for sample data)
+    // Always load BMC script when show=true (displays the icon)
+    loadBMCScript();
+
+    // Check localStorage (unless skipped for sample data) — only for auto-expand
     if (!skipStorageCheck) {
       const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
-      if (alreadyShown) return;
+      if (alreadyShown) return; // Skip auto-expand, but icon is already loaded
     }
 
     // Don't re-expand in same session
     if (hasExpandedRef.current) return;
-
-    // Load BMC script dynamically
-    loadBMCScript();
 
     // Set expand timer
     expandTimerRef.current = setTimeout(() => {
@@ -123,7 +123,7 @@ function loadBMCScript(): void {
   script.setAttribute('data-description', 'Support privacy-first tools');
   script.setAttribute('data-message', 'Thanks for using a private tool! 🛡️');
   script.setAttribute('data-color', '#6366F1');
-  script.setAttribute('data-position', 'Left');
+  script.setAttribute('data-position', 'left');
   script.setAttribute('data-x_margin', '18');
   script.setAttribute('data-y_margin', '18');
 
