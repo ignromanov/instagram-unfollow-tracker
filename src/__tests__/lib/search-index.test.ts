@@ -13,7 +13,7 @@ import {
   smartSearch,
 } from '@/lib/search-index';
 import 'fake-indexeddb/auto';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('Search Index', () => {
   const testFileHash = 'test-file-hash-123';
@@ -27,12 +27,7 @@ describe('Search Index', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    // Clear IndexedDB before each test
-    await indexedDBService.clearFile(testFileHash);
-  }, 10000); // 10s timeout for cleanup
-
-  afterEach(async () => {
-    // Cleanup after each test
+    // Clear IndexedDB before each test (no afterEach needed - beforeEach handles cleanup)
     await indexedDBService.clearFile(testFileHash);
   }, 10000); // 10s timeout for cleanup
 

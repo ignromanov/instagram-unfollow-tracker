@@ -614,6 +614,7 @@ class IndexedDBService {
 
   /**
    * Clear all data for a file
+   * Optimized: uses getAllKeys + batch delete instead of cursor-based deletion
    */
   async clearFile(fileHash: string): Promise<void> {
     const db = await this.init();
@@ -630,21 +631,20 @@ class IndexedDBService {
           request.onerror = () => reject(request.error);
         });
       } else {
-        // Use index to find all records for this file
+        // Use getAllKeys for batch deletion (much faster than cursor-based)
         const index = store.index('fileHash');
         const range = IDBKeyRange.only(fileHash);
 
         await new Promise<void>((resolve, reject) => {
-          const request = index.openCursor(range);
+          const request = index.getAllKeys(range);
 
           request.onsuccess = () => {
-            const cursor = request.result;
-            if (cursor) {
-              cursor.delete();
-              cursor.continue();
-            } else {
-              resolve();
+            const keys = request.result;
+            // Delete all keys in batch (within same transaction)
+            for (const key of keys) {
+              store.delete(key);
             }
+            resolve();
           };
 
           request.onerror = () => reject(request.error);
