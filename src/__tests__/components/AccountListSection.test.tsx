@@ -7,6 +7,11 @@ import { beforeEach, vi } from 'vitest';
 // Mock the useAccountFiltering hook
 vi.mock('@/hooks/useAccountFiltering');
 
+// Mock useLanguagePrefix
+vi.mock('@/hooks/useLanguagePrefix', () => ({
+  useLanguagePrefix: () => '',
+}));
+
 // Mock child components
 vi.mock('@/components/FilterChips', () => ({
   FilterChips: ({

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Heart, Shield, EyeOff, Eye } from 'lucide-react';
+import { Heart, Shield, EyeOff, Eye, Github } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { analytics, isTrackingOptedOut, optOutOfTracking, optIntoTracking } from '@/lib/analytics';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
@@ -26,7 +26,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="mt-12 md:mt-20 border-t border-border bg-surface py-12 md:py-20">
+    <footer className="mt-12 md:mt-20 border-t border-border bg-surface py-10 md:py-14">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20">
           {/* Logo & Description */}
@@ -79,6 +79,16 @@ export function Footer() {
                 {isOptedOut ? <Eye size={14} /> : <EyeOff size={14} />}
                 {isOptedOut ? t('footer.trackingOff') : t('footer.dontTrackMe')}
               </button>
+              <a
+                href="https://github.com/ignromanov/instagram-unfollow-tracker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors py-2 px-1 flex items-center gap-1.5 cursor-pointer"
+                onClick={() => analytics.linkClick('github')}
+              >
+                <Github size={14} />
+                {t('footer.viewSource')}
+              </a>
             </div>
 
             {/* BuyMeaCoffee Section */}
@@ -101,7 +111,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 md:mt-16 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border pt-8 text-sm text-zinc-400 font-bold">
+        <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border pt-6 text-sm text-zinc-400 font-bold">
           <div className="flex items-center gap-2">
             {t('footer.madeWithLove')}{' '}
             <Heart size={16} className="text-rose-500 fill-current animate-pulse" />{' '}

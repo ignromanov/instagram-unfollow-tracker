@@ -2,10 +2,25 @@ import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Footer } from '@/components/Footer';
 import * as analytics from '@/lib/analytics';
+import commonEN from '@/locales/en/common.json';
 
 // Mock useLanguagePrefix
 vi.mock('@/hooks/useLanguagePrefix', () => ({
   useLanguagePrefix: () => '',
+}));
+
+// Mock react-i18next with actual translations
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const keys = key.split('.');
+      let value: unknown = commonEN;
+      for (const k of keys) {
+        value = (value as Record<string, unknown>)?.[k];
+      }
+      return (value as string) || key;
+    },
+  }),
 }));
 
 // Mock analytics module
@@ -26,7 +41,7 @@ describe('Footer', () => {
   it('should render footer with copyright text', () => {
     render(<Footer />);
 
-    expect(screen.getByText('© 2026 SafeUnfollow.app')).toBeInTheDocument();
+    expect(screen.getByText(commonEN.footer.copyright)).toBeInTheDocument();
   });
 
   it('should render SafeUnfollow branding', () => {
@@ -41,7 +56,7 @@ describe('Footer', () => {
   it('should render Privacy Policy link', () => {
     render(<Footer />);
 
-    const privacyLink = screen.getByText('Privacy Policy');
+    const privacyLink = screen.getByText(commonEN.footer.privacyPolicy);
     expect(privacyLink).toBeInTheDocument();
     expect(privacyLink).toHaveAttribute('href', '/privacy');
   });
@@ -49,30 +64,30 @@ describe('Footer', () => {
   it('should render Terms of Service link', () => {
     render(<Footer />);
 
-    const termsLink = screen.getByText('Terms of Service');
+    const termsLink = screen.getByText(commonEN.footer.termsOfService);
     expect(termsLink).toBeInTheDocument();
     expect(termsLink).toHaveAttribute('href', '/terms');
   });
 
-  it('should render Contact Support link', () => {
+  it('should render Contact link', () => {
     render(<Footer />);
 
-    const contactLink = screen.getByText('Contact Support');
+    const contactLink = screen.getByText(commonEN.footer.contact);
     expect(contactLink).toBeInTheDocument();
-    expect(contactLink).toHaveAttribute('href', 'mailto:support@safeunfollow.app');
+    expect(contactLink).toHaveAttribute('href', 'mailto:hello@safeunfollow.app');
   });
 
   it('should render tracking toggle button', () => {
     render(<Footer />);
 
-    const trackingButton = screen.getByText("Don't Track Me");
+    const trackingButton = screen.getByText(commonEN.footer.dontTrackMe);
     expect(trackingButton).toBeInTheDocument();
   });
 
   it('should toggle tracking state when clicked', () => {
-    const { rerender } = render(<Footer />);
+    render(<Footer />);
 
-    const trackingButton = screen.getByText("Don't Track Me");
+    const trackingButton = screen.getByText(commonEN.footer.dontTrackMe);
     fireEvent.click(trackingButton);
 
     expect(analytics.optOutOfTracking).toHaveBeenCalled();
@@ -83,19 +98,19 @@ describe('Footer', () => {
 
     render(<Footer />);
 
-    expect(screen.getByText('Tracking Off')).toBeInTheDocument();
+    expect(screen.getByText(commonEN.footer.trackingOff)).toBeInTheDocument();
   });
 
   it('should render MIT License text', () => {
     render(<Footer />);
 
-    expect(screen.getByText('MIT Licensed')).toBeInTheDocument();
+    expect(screen.getByText(commonEN.footer.license)).toBeInTheDocument();
   });
 
   it('should render support privacy button', () => {
     render(<Footer />);
 
-    const supportButton = screen.getByText('Support privacy');
+    const supportButton = screen.getByText(commonEN.footer.supportPrivacy);
     expect(supportButton).toBeInTheDocument();
 
     const link = supportButton.closest('a');
@@ -107,14 +122,13 @@ describe('Footer', () => {
   it('should render description text', () => {
     render(<Footer />);
 
-    expect(
-      screen.getByText(/The only relationship analyzer that works 100% in your browser/)
-    ).toBeInTheDocument();
+    expect(screen.getByText(commonEN.footer.description)).toBeInTheDocument();
   });
 
   it('should render "Made with" text', () => {
     render(<Footer />);
 
+    // Text is split by Heart icon, so use regex to find partial matches
     expect(screen.getByText(/Made with/)).toBeInTheDocument();
     expect(screen.getByText(/for the Community/)).toBeInTheDocument();
   });

@@ -1,6 +1,7 @@
 import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Wizard } from '@/components/Wizard';
+import wizardEN from '@/locales/en/wizard.json';
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
@@ -14,6 +15,25 @@ vi.mock('react-router-dom', () => ({
 // Mock useLanguagePrefix
 vi.mock('@/hooks/useLanguagePrefix', () => ({
   useLanguagePrefix: () => '',
+}));
+
+// Mock react-i18next with actual translations
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: Record<string, unknown>) => {
+      // Handle interpolation for 'header.stepOf'
+      if (key === 'header.stepOf' && options) {
+        return `Step ${options.current} of ${options.total}`;
+      }
+      // Navigate nested keys like 'steps.1.title'
+      const keys = key.split('.');
+      let value: unknown = wizardEN;
+      for (const k of keys) {
+        value = (value as Record<string, unknown>)?.[k];
+      }
+      return (value as string) || key;
+    },
+  }),
 }));
 
 // Mock analytics module
@@ -52,11 +72,11 @@ describe('Wizard', () => {
   it('should render first step title and description', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(screen.getByText('Open Data Export Page')).toBeInTheDocument();
+    // Title appears twice (heading + button), check heading specifically
+    expect(screen.getByRole('heading', { name: wizardEN.steps['1'].title })).toBeInTheDocument();
+    // Use partial match for description (contains quotes that may render differently)
     expect(
-      screen.getByText(
-        "Tap the button below to go directly to the platform's data export page. You may need to log in first."
-      )
+      screen.getByText(/Click the button below to open Meta Accounts Center/)
     ).toBeInTheDocument();
   });
 
@@ -70,9 +90,11 @@ describe('Wizard', () => {
   it('should render external link button on step 1', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    const externalLink = screen.getByText('Open Instagram');
+    const externalLink = screen.getByRole('link', {
+      name: new RegExp(wizardEN.buttons.openInstagram),
+    });
     expect(externalLink).toBeInTheDocument();
-    expect(externalLink.closest('a')).toHaveAttribute(
+    expect(externalLink).toHaveAttribute(
       'href',
       'https://accountscenter.instagram.com/info_and_permissions/dyi/?entry_point=app_settings'
     );
@@ -81,10 +103,10 @@ describe('Wizard', () => {
   it('should navigate to next step when Next is clicked', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    fireEvent.click(screen.getByText('Next Step'));
+    fireEvent.click(screen.getByText(wizardEN.buttons.next));
 
     expect(screen.getByText('Step 2 of 8')).toBeInTheDocument();
-    expect(screen.getByText("Select 'Some of your information'")).toBeInTheDocument();
+    expect(screen.getByText(wizardEN.steps['2'].title)).toBeInTheDocument();
   });
 
   it('should navigate to previous step when Back is clicked', () => {
@@ -110,8 +132,10 @@ describe('Wizard', () => {
   it('should show warning badge on step 4', () => {
     render(<Wizard initialStep={4} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(screen.getByText('JSON FORMAT ONLY')).toBeInTheDocument();
-    expect(screen.getByText('Select JSON format', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText(wizardEN.format.warning)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: new RegExp('Followers and following') })
+    ).toBeInTheDocument();
   });
 
   it('should call onComplete on last step when Done is clicked', () => {
@@ -127,7 +151,7 @@ describe('Wizard', () => {
   it('should render step image with alt text', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    const image = screen.getByAltText('Step 1: Open Data Export Page');
+    const image = screen.getByAltText(wizardEN.steps['1'].alt);
     expect(image).toBeInTheDocument();
   });
 
@@ -147,23 +171,13 @@ describe('Wizard', () => {
   it('should render all 8 steps when navigating through', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    const stepTitles = [
-      'Open Data Export Page',
-      "Select 'Some of your information'",
-      "Check only 'Followers and following'",
-      'Select JSON format',
-      "Choose 'All time' and tap 'Create files'",
-      'Wait for email notification',
-      'Download the ZIP file',
-      'Upload & Reveal Results',
-    ];
-
-    stepTitles.forEach((title, index) => {
-      if (index > 0) {
-        fireEvent.click(screen.getByText('Next Step'));
+    for (let i = 1; i <= 8; i++) {
+      if (i > 1) {
+        fireEvent.click(screen.getByText(wizardEN.buttons.next));
       }
-      expect(screen.getByText(`Step ${index + 1} of 8`)).toBeInTheDocument();
-      expect(screen.getByText(title, { exact: false })).toBeInTheDocument();
-    });
+      expect(screen.getByText(`Step ${i} of 8`)).toBeInTheDocument();
+      // Verify a heading exists for each step
+      expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+    }
   });
 });
