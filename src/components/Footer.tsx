@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Heart, Shield, EyeOff, Eye, Github } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { analytics, isTrackingOptedOut, optOutOfTracking, optIntoTracking } from '@/lib/analytics';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 import { Logo } from './Logo';
@@ -49,20 +50,20 @@ export function Footer() {
           <div className="flex flex-col items-center md:items-end gap-8">
             {/* Navigation Links */}
             <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-12 gap-y-6 text-xs md:text-sm font-black uppercase tracking-widest text-zinc-400">
-              <a
-                href={`${prefix}/privacy`}
+              <Link
+                to={`${prefix}/privacy`}
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('privacy-policy')}
               >
                 {t('footer.privacyPolicy')}
-              </a>
-              <a
-                href={`${prefix}/terms`}
+              </Link>
+              <Link
+                to={`${prefix}/terms`}
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
                 onClick={() => analytics.linkClick('terms-of-service')}
               >
                 {t('footer.termsOfService')}
-              </a>
+              </Link>
               <a
                 href="mailto:hello@safeunfollow.app"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"

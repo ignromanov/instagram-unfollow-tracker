@@ -14,7 +14,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { type HowToSubStep, useAppStore } from '@/lib/store';
-import { navigateToSubStep } from '@/hooks/useJourneyHash';
+
+function scrollToSection(id: string): void {
+  setTimeout(() => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
 
 interface HowToStepItem {
   name: string;
@@ -110,7 +115,7 @@ export function HowToStep() {
 
   const handleToggleSubStep = (subStep: HowToSubStep) => {
     toggleHowToSubStep(subStep);
-    navigateToSubStep(subStep);
+    scrollToSection(subStep);
   };
 
   // Schema.org JSON-LD for HowTo

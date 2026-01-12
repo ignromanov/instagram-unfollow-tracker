@@ -1,8 +1,13 @@
 import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Footer } from '@/components/Footer';
 import * as analytics from '@/lib/analytics';
 import commonEN from '@/locales/en/common.json';
+
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+};
 
 // Mock useLanguagePrefix
 vi.mock('@/hooks/useLanguagePrefix', () => ({
@@ -39,13 +44,13 @@ describe('Footer', () => {
   });
 
   it('should render footer with copyright text', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     expect(screen.getByText(commonEN.footer.copyright)).toBeInTheDocument();
   });
 
   it('should render SafeUnfollow branding', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     // Use getAllByText since "SafeUnfollow" appears in multiple places
     const safeUnfollowTexts = screen.getAllByText(/SafeUnfollow/);
@@ -54,7 +59,7 @@ describe('Footer', () => {
   });
 
   it('should render Privacy Policy link', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const privacyLink = screen.getByText(commonEN.footer.privacyPolicy);
     expect(privacyLink).toBeInTheDocument();
@@ -62,7 +67,7 @@ describe('Footer', () => {
   });
 
   it('should render Terms of Service link', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const termsLink = screen.getByText(commonEN.footer.termsOfService);
     expect(termsLink).toBeInTheDocument();
@@ -70,7 +75,7 @@ describe('Footer', () => {
   });
 
   it('should render Contact link', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const contactLink = screen.getByText(commonEN.footer.contact);
     expect(contactLink).toBeInTheDocument();
@@ -78,14 +83,14 @@ describe('Footer', () => {
   });
 
   it('should render tracking toggle button', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const trackingButton = screen.getByText(commonEN.footer.dontTrackMe);
     expect(trackingButton).toBeInTheDocument();
   });
 
   it('should toggle tracking state when clicked', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const trackingButton = screen.getByText(commonEN.footer.dontTrackMe);
     fireEvent.click(trackingButton);
@@ -96,19 +101,19 @@ describe('Footer', () => {
   it('should show opted-out state', () => {
     vi.mocked(analytics.isTrackingOptedOut).mockReturnValue(true);
 
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     expect(screen.getByText(commonEN.footer.trackingOff)).toBeInTheDocument();
   });
 
   it('should render MIT License text', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     expect(screen.getByText(commonEN.footer.license)).toBeInTheDocument();
   });
 
   it('should render support privacy button', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const supportButton = screen.getByText(commonEN.footer.supportPrivacy);
     expect(supportButton).toBeInTheDocument();
@@ -120,13 +125,13 @@ describe('Footer', () => {
   });
 
   it('should render description text', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     expect(screen.getByText(commonEN.footer.description)).toBeInTheDocument();
   });
 
   it('should render "Made with" text', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     // Text is split by Heart icon, so use regex to find partial matches
     expect(screen.getByText(/Made with/)).toBeInTheDocument();
@@ -134,7 +139,7 @@ describe('Footer', () => {
   });
 
   it('should have proper footer structure', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const footer = screen.getByRole('contentinfo');
     expect(footer).toBeInTheDocument();
@@ -142,7 +147,7 @@ describe('Footer', () => {
   });
 
   it('should call analytics on Privacy Policy click', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const privacyLink = screen.getByText('Privacy Policy');
     fireEvent.click(privacyLink);
@@ -151,7 +156,7 @@ describe('Footer', () => {
   });
 
   it('should call analytics on Terms click', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const termsLink = screen.getByText('Terms of Service');
     fireEvent.click(termsLink);
@@ -160,7 +165,7 @@ describe('Footer', () => {
   });
 
   it('should call analytics on support button click', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     const supportButton = screen.getByText('Support privacy');
     fireEvent.click(supportButton);
@@ -169,7 +174,7 @@ describe('Footer', () => {
   });
 
   it('should render Logo component', () => {
-    render(<Footer />);
+    renderWithRouter(<Footer />);
 
     // Logo should be an SVG with role="img"
     const logo = screen.getByRole('img', { name: 'SafeUnfollow logo' });

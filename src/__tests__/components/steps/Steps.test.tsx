@@ -22,10 +22,6 @@ vi.mock('@/hooks/useSampleData', () => ({
   })),
 }));
 
-vi.mock('@/hooks/useJourneyHash', () => ({
-  navigateToSubStep: vi.fn(),
-}));
-
 vi.mock('@/hooks/useInstagramData', () => ({
   useInstagramData: vi.fn(() => ({
     uploadState: { status: 'idle', error: null },
