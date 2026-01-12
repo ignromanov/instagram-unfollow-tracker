@@ -57,14 +57,43 @@
     "viewProfile": "Profili Görüntüle"
   },
   "rescue": {
-    "title": "📉 Hesabınız takipçi kaybediyor!",
-    "subtitle": "2026 trendlerine göre onları nasıl geri kazanırsınız:",
+    "critical": {
+      "title": "Hesabınız hızla takipçi kaybediyor!",
+      "subtitle": {
+        "influencer": "{{count}}+ hesapla, kaybedilen her takipçi erişiminizi etkiler. Şimdi harekete geçin:",
+        "power": "Etkileşim kaybediyorsunuz. Güçlü kullanıcılar nasıl toparlanır:",
+        "regular": "Topluluğunuzun küçülmesine izin vermeyin. Hızlı çözümler:",
+        "casual": "Küçük kitle, büyük fırsat. Bugün toparlanmaya başlayın:"
+      }
+    },
+    "warning": {
+      "title": "Bazı takipçiler uzaklaşıyor",
+      "subtitle": {
+        "influencer": "Sizin ölçeğinizde optimizasyon daha büyük kayıpları önler:",
+        "power": "Akıllı içerik üreticileri çok geç olmadan optimize eder:",
+        "regular": "Bu araçlarla kitlenizin ilgisini canlı tutun:",
+        "casual": "Takipçilerinizle daha güçlü bağlar kurun:"
+      }
+    },
+    "growth": {
+      "title": "Harika gidiyorsunuz! Büyümeye hazır mısınız?",
+      "subtitle": {
+        "influencer": "Profesyonel araçlarla erişiminizi ölçeklendirin:",
+        "power": "Hesabınızı bir sonraki seviyeye taşıyın:",
+        "regular": "Tutarlılık oluşturun ve daha hızlı büyüyün:",
+        "casual": "Bu araçlarla büyüme yolculuğunuza başlayın:"
+      }
+    },
     "tools": {
       "submagic": "AI otomatik olarak viral Reels oluşturur",
       "predis": "AI ile gönderi oluşturun (metin + tasarım)",
-      "manychat": "Tüm DM'lere ve yorumlara otomatik yanıt"
+      "manychat": "Tüm DM'lere ve yorumlara otomatik yanıt",
+      "metricool": "Analizleri takip edin ve paylaşım zamanlarını optimize edin",
+      "canva": "Dakikalar içinde etkileyici gönderiler tasarlayın",
+      "later": "Gönderileri planlayın ve içerik takviminizi düzenleyin"
     },
-    "dismiss": "Kapat",
-    "disclaimer": "Ortaklık bağlantıları – komisyon alabiliriz"
+    "dismiss": "Belki sonra",
+    "disclaimer": "Ortaklık bağlantıları – komisyon alabiliriz",
+    "ariaLabel": "Instagram varlığınızı geliştirmek için önerilen araçlar"
   }
 }

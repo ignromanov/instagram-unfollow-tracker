@@ -111,9 +111,6 @@ export function AccountListSection({
         </Alert>
       )}
 
-      {/* Rescue Plan Banner - show for real data with unfollowed accounts */}
-      {!isSample && unfollowedCount > 0 && <RescuePlanBanner />}
-
       {/* Top Header & Search */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
@@ -189,10 +186,21 @@ export function AccountListSection({
         />
       </div>
 
-      {/* Main Content Layout */}
-      <div className="flex flex-col lg:flex-row gap-6 md:gap-12">
+      {/* Main Content Layout - grid for flexible banner positioning */}
+      <div className="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6 md:gap-12">
+        {/* Rescue Plan Banner - full width on desktop (top), between filters and list on mobile */}
+        {!isSample && (
+          <div className="order-2 lg:order-first lg:col-span-2">
+            <RescuePlanBanner
+              filterCounts={filterCounts}
+              totalCount={totalCount}
+              showDelay={30000}
+            />
+          </div>
+        )}
+
         {/* Filters Sidebar */}
-        <div className="lg:w-80 shrink-0 space-y-6">
+        <div className="order-1 lg:order-none space-y-6">
           <FilterChips
             selectedFilters={filters}
             onFiltersChange={setFilters}
@@ -202,14 +210,16 @@ export function AccountListSection({
         </div>
 
         {/* Account List */}
-        <AccountList
-          fileHash={fileHash}
-          accountCount={accountCount}
-          accountIndices={sortedIndices}
-          hasLoadedData={hasLoadedData}
-          isLoading={isFiltering}
-          onClearFilters={handleClearFilters}
-        />
+        <div className="order-3 lg:order-none min-w-0">
+          <AccountList
+            fileHash={fileHash}
+            accountCount={accountCount}
+            accountIndices={sortedIndices}
+            hasLoadedData={hasLoadedData}
+            isLoading={isFiltering}
+            onClearFilters={handleClearFilters}
+          />
+        </div>
       </div>
     </div>
   );

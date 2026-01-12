@@ -57,14 +57,43 @@
     "viewProfile": "View Profile"
   },
   "rescue": {
-    "title": "📉 Your account is losing followers!",
-    "subtitle": "Based on 2026 trends, here's how to win them back:",
-    "tools": {
-      "submagic": "AI makes viral Reels for you automatically",
-      "predis": "Generate posts with AI (text + design)",
-      "manychat": "Auto-reply to all DMs and comments"
+    "critical": {
+      "title": "Your account is losing followers fast!",
+      "subtitle": {
+        "influencer": "With {{count}}+ accounts, every lost follower impacts reach. Act now:",
+        "power": "You're losing engagement. Here's how power users recover:",
+        "regular": "Don't let your community shrink. Quick wins to get them back:",
+        "casual": "Small audience, big opportunity. Start recovering today:"
+      }
     },
-    "dismiss": "Dismiss",
-    "disclaimer": "Affiliate links – we may earn a commission"
+    "warning": {
+      "title": "Some followers are drifting away",
+      "subtitle": {
+        "influencer": "At your scale, optimization prevents bigger losses:",
+        "power": "Smart creators optimize before it's too late:",
+        "regular": "Keep your audience engaged with these tools:",
+        "casual": "Build stronger connections with your followers:"
+      }
+    },
+    "growth": {
+      "title": "You're doing great! Ready to grow?",
+      "subtitle": {
+        "influencer": "Scale your reach with professional tools:",
+        "power": "Take your account to the next level:",
+        "regular": "Build consistency and grow faster:",
+        "casual": "Start your growth journey with these tools:"
+      }
+    },
+    "tools": {
+      "submagic": "AI creates viral Reels automatically",
+      "predis": "Generate posts with AI (text + design)",
+      "manychat": "Auto-reply to all DMs and comments",
+      "metricool": "Track analytics and optimize posting times",
+      "canva": "Design stunning posts in minutes",
+      "later": "Schedule posts and plan your content calendar"
+    },
+    "dismiss": "Maybe later",
+    "disclaimer": "Affiliate links – we may earn a commission",
+    "ariaLabel": "Recommended tools to improve your Instagram presence"
   }
 }

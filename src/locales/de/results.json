@@ -57,14 +57,43 @@
     "viewProfile": "Profil ansehen"
   },
   "rescue": {
-    "title": "📉 Dein Account verliert Follower!",
-    "subtitle": "Basierend auf den Trends 2026, so gewinnst du sie zurück:",
+    "critical": {
+      "title": "Dein Account verliert schnell Follower!",
+      "subtitle": {
+        "influencer": "Mit {{count}}+ Accounts wirkt sich jeder verlorene Follower auf deine Reichweite aus. Handle jetzt:",
+        "power": "Du verlierst Engagement. So erholen sich Power-User:",
+        "regular": "Lass deine Community nicht schrumpfen. Schnelle Lösungen:",
+        "casual": "Kleine Audience, große Chance. Starte heute mit der Erholung:"
+      }
+    },
+    "warning": {
+      "title": "Einige Follower driften ab",
+      "subtitle": {
+        "influencer": "In deiner Größenordnung verhindert Optimierung größere Verluste:",
+        "power": "Smarte Creator optimieren bevor es zu spät ist:",
+        "regular": "Halte deine Audience engagiert mit diesen Tools:",
+        "casual": "Baue stärkere Verbindungen zu deinen Followern auf:"
+      }
+    },
+    "growth": {
+      "title": "Du machst das großartig! Bereit zu wachsen?",
+      "subtitle": {
+        "influencer": "Skaliere deine Reichweite mit professionellen Tools:",
+        "power": "Bringe deinen Account auf das nächste Level:",
+        "regular": "Baue Konsistenz auf und wachse schneller:",
+        "casual": "Starte deine Wachstumsreise mit diesen Tools:"
+      }
+    },
     "tools": {
       "submagic": "KI erstellt automatisch virale Reels",
       "predis": "Generiere Posts mit KI (Text + Design)",
-      "manychat": "Antworte automatisch auf alle DMs und Kommentare"
+      "manychat": "Antworte automatisch auf DMs und Kommentare",
+      "metricool": "Verfolge Analytics und optimiere Posting-Zeiten",
+      "canva": "Designe beeindruckende Posts in Minuten",
+      "later": "Plane Posts und organisiere deinen Content-Kalender"
     },
-    "dismiss": "Schließen",
-    "disclaimer": "Affiliate-Links – wir erhalten möglicherweise eine Provision"
+    "dismiss": "Vielleicht später",
+    "disclaimer": "Affiliate-Links – wir erhalten möglicherweise eine Provision",
+    "ariaLabel": "Empfohlene Tools zur Verbesserung deiner Instagram-Präsenz"
   }
 }

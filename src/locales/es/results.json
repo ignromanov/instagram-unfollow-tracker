@@ -57,14 +57,43 @@
     "viewProfile": "Ver Perfil"
   },
   "rescue": {
-    "title": "📉 ¡Tu cuenta está perdiendo seguidores!",
-    "subtitle": "Basado en las tendencias de 2026, así puedes recuperarlos:",
+    "critical": {
+      "title": "¡Tu cuenta está perdiendo seguidores rápidamente!",
+      "subtitle": {
+        "influencer": "Con {{count}}+ cuentas, cada seguidor perdido afecta tu alcance. Actúa ahora:",
+        "power": "Estás perdiendo engagement. Así se recuperan los usuarios avanzados:",
+        "regular": "No dejes que tu comunidad se reduzca. Soluciones rápidas:",
+        "casual": "Audiencia pequeña, gran oportunidad. Comienza a recuperarte:"
+      }
+    },
+    "warning": {
+      "title": "Algunos seguidores se están alejando",
+      "subtitle": {
+        "influencer": "A tu escala, la optimización previene pérdidas mayores:",
+        "power": "Los creadores inteligentes optimizan antes de que sea tarde:",
+        "regular": "Mantén a tu audiencia comprometida con estas herramientas:",
+        "casual": "Construye conexiones más fuertes con tus seguidores:"
+      }
+    },
+    "growth": {
+      "title": "¡Lo estás haciendo genial! ¿Listo para crecer?",
+      "subtitle": {
+        "influencer": "Escala tu alcance con herramientas profesionales:",
+        "power": "Lleva tu cuenta al siguiente nivel:",
+        "regular": "Construye consistencia y crece más rápido:",
+        "casual": "Comienza tu camino al crecimiento con estas herramientas:"
+      }
+    },
     "tools": {
       "submagic": "La IA crea Reels virales automáticamente",
       "predis": "Genera publicaciones con IA (texto + diseño)",
-      "manychat": "Responde automáticamente a DMs y comentarios"
+      "manychat": "Responde automáticamente a DMs y comentarios",
+      "metricool": "Rastrea analíticas y optimiza horarios de publicación",
+      "canva": "Diseña publicaciones impresionantes en minutos",
+      "later": "Programa publicaciones y planifica tu calendario de contenido"
     },
-    "dismiss": "Cerrar",
-    "disclaimer": "Enlaces de afiliados – podemos ganar una comisión"
+    "dismiss": "Quizás después",
+    "disclaimer": "Enlaces de afiliados – podemos ganar una comisión",
+    "ariaLabel": "Herramientas recomendadas para mejorar tu presencia en Instagram"
   }
 }

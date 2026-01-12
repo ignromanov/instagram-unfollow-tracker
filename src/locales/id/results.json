@@ -57,14 +57,43 @@
     "viewProfile": "Lihat Profil"
   },
   "rescue": {
-    "title": "📉 Akun Anda kehilangan pengikut!",
-    "subtitle": "Berdasarkan tren 2026, begini cara mendapatkannya kembali:",
+    "critical": {
+      "title": "Akun Anda kehilangan pengikut dengan cepat!",
+      "subtitle": {
+        "influencer": "Dengan {{count}}+ akun, setiap pengikut yang hilang mempengaruhi jangkauan. Bertindak sekarang:",
+        "power": "Anda kehilangan engagement. Begini cara power user pulih:",
+        "regular": "Jangan biarkan komunitas Anda menyusut. Solusi cepat:",
+        "casual": "Audiens kecil, peluang besar. Mulai pemulihan hari ini:"
+      }
+    },
+    "warning": {
+      "title": "Beberapa pengikut mulai menjauh",
+      "subtitle": {
+        "influencer": "Di skala Anda, optimasi mencegah kerugian lebih besar:",
+        "power": "Kreator cerdas mengoptimasi sebelum terlambat:",
+        "regular": "Jaga audiens Anda tetap engaged dengan tools ini:",
+        "casual": "Bangun koneksi lebih kuat dengan pengikut Anda:"
+      }
+    },
+    "growth": {
+      "title": "Anda sudah bagus! Siap untuk tumbuh?",
+      "subtitle": {
+        "influencer": "Skalakan jangkauan dengan tools profesional:",
+        "power": "Bawa akun Anda ke level berikutnya:",
+        "regular": "Bangun konsistensi dan tumbuh lebih cepat:",
+        "casual": "Mulai perjalanan pertumbuhan Anda dengan tools ini:"
+      }
+    },
     "tools": {
       "submagic": "AI membuat Reels viral secara otomatis",
       "predis": "Generate postingan dengan AI (teks + desain)",
-      "manychat": "Balas otomatis semua DM dan komentar"
+      "manychat": "Balas otomatis semua DM dan komentar",
+      "metricool": "Lacak analytics dan optimalkan waktu posting",
+      "canva": "Desain postingan menakjubkan dalam hitungan menit",
+      "later": "Jadwalkan postingan dan rencanakan kalender konten"
     },
-    "dismiss": "Tutup",
-    "disclaimer": "Tautan afiliasi – kami mungkin mendapat komisi"
+    "dismiss": "Mungkin nanti",
+    "disclaimer": "Tautan afiliasi – kami mungkin mendapat komisi",
+    "ariaLabel": "Tools yang direkomendasikan untuk meningkatkan kehadiran Instagram Anda"
   }
 }

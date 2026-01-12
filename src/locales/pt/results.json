@@ -57,14 +57,43 @@
     "viewProfile": "Ver Perfil"
   },
   "rescue": {
-    "title": "📉 Sua conta está perdendo seguidores!",
-    "subtitle": "Com base nas tendências de 2026, veja como recuperá-los:",
+    "critical": {
+      "title": "Sua conta está perdendo seguidores rapidamente!",
+      "subtitle": {
+        "influencer": "Com {{count}}+ contas, cada seguidor perdido impacta seu alcance. Aja agora:",
+        "power": "Você está perdendo engajamento. Veja como usuários avançados se recuperam:",
+        "regular": "Não deixe sua comunidade diminuir. Soluções rápidas:",
+        "casual": "Audiência pequena, grande oportunidade. Comece a recuperação hoje:"
+      }
+    },
+    "warning": {
+      "title": "Alguns seguidores estão se afastando",
+      "subtitle": {
+        "influencer": "Na sua escala, otimização previne perdas maiores:",
+        "power": "Criadores inteligentes otimizam antes que seja tarde:",
+        "regular": "Mantenha sua audiência engajada com estas ferramentas:",
+        "casual": "Construa conexões mais fortes com seus seguidores:"
+      }
+    },
+    "growth": {
+      "title": "Você está indo muito bem! Pronto para crescer?",
+      "subtitle": {
+        "influencer": "Escale seu alcance com ferramentas profissionais:",
+        "power": "Leve sua conta para o próximo nível:",
+        "regular": "Construa consistência e cresça mais rápido:",
+        "casual": "Comece sua jornada de crescimento com estas ferramentas:"
+      }
+    },
     "tools": {
       "submagic": "IA cria Reels virais automaticamente",
       "predis": "Gere posts com IA (texto + design)",
-      "manychat": "Responda automaticamente DMs e comentários"
+      "manychat": "Responda automaticamente DMs e comentários",
+      "metricool": "Acompanhe analytics e otimize horários de postagem",
+      "canva": "Crie posts incríveis em minutos",
+      "later": "Agende posts e planeje seu calendário de conteúdo"
     },
-    "dismiss": "Fechar",
-    "disclaimer": "Links de afiliados – podemos ganhar uma comissão"
+    "dismiss": "Talvez depois",
+    "disclaimer": "Links de afiliados – podemos ganhar uma comissão",
+    "ariaLabel": "Ferramentas recomendadas para melhorar sua presença no Instagram"
   }
 }

@@ -115,6 +115,11 @@ export const AnalyticsEvents = {
 
   // V3: Results Engagement
   RESULTS_SCROLL_DEPTH: 'results_scroll_depth',
+
+  // V4: Rescue Plan Monetization
+  RESCUE_PLAN_IMPRESSION: 'rescue_plan_impression',
+  RESCUE_PLAN_TOOL_CLICK: 'rescue_plan_tool_click',
+  RESCUE_PLAN_DISMISS: 'rescue_plan_dismiss',
 } as const;
 
 export type AnalyticsEventName = (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents];
@@ -390,6 +395,31 @@ export const analytics = {
     trackEvent(AnalyticsEvents.SAMPLE_DATA_LOAD, {
       account_count: accountCount,
       load_time_ms: Math.round(loadTimeMs),
+    });
+  },
+
+  // V4: Rescue Plan Monetization
+  rescuePlanImpression: (severity: string, size: string, unfollowedPercent: number) => {
+    trackEvent(AnalyticsEvents.RESCUE_PLAN_IMPRESSION, {
+      severity,
+      size,
+      unfollowed_percent: Math.round(unfollowedPercent),
+    });
+  },
+
+  rescuePlanToolClick: (toolId: string, severity: string, size: string) => {
+    trackEvent(AnalyticsEvents.RESCUE_PLAN_TOOL_CLICK, {
+      tool_id: toolId,
+      severity,
+      size,
+    });
+  },
+
+  rescuePlanDismiss: (severity: string, size: string, unfollowedPercent: number) => {
+    trackEvent(AnalyticsEvents.RESCUE_PLAN_DISMISS, {
+      severity,
+      size,
+      unfollowed_percent: Math.round(unfollowedPercent),
     });
   },
 };
