@@ -12,7 +12,8 @@
     "next": "Nächster Schritt",
     "done": "Fertig, los geht's!",
     "openInstagram": "Export-Seite öffnen",
-    "close": "Anleitung schließen"
+    "close": "Anleitung schließen",
+    "uploadFile": "Meine Datei hochladen"
   },
   "format": {
     "warning": "KRITISCHER SCHRITT"

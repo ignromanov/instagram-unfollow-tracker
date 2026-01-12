@@ -12,7 +12,8 @@
     "next": "Next Step",
     "done": "Done, let's go!",
     "openInstagram": "Open Instagram Export Page",
-    "close": "Close guide"
+    "close": "Close guide",
+    "uploadFile": "Upload My File"
   },
   "format": {
     "warning": "CRITICAL STEP"

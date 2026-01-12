@@ -107,7 +107,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
       onComplete();
     } else {
       analytics.wizardNextClick(currentStep);
-      setCurrentStep(prev => Math.min(prev + 1, WIZARD_STEPS.length));
+      goToStep(Math.min(currentStep + 1, WIZARD_STEPS.length));
     }
   };
 
@@ -116,7 +116,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
       onCancel();
     } else {
       analytics.wizardBackClick(currentStep);
-      setCurrentStep(prev => Math.max(prev - 1, 1));
+      goToStep(Math.max(currentStep - 1, 1));
     }
   };
 
@@ -229,11 +229,11 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
                 </a>
               )}
 
-              {/* Calendar Reminder Button (last step) */}
+              {/* Last step: Calendar reminder button */}
               {isLastStep && (
                 <button
                   onClick={handleCalendarReminder}
-                  className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary text-primary bg-primary/5 hover:bg-primary/10 rounded-2xl font-bold transition-all text-sm md:text-base w-full sm:w-auto"
+                  className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto"
                 >
                   <Calendar size={20} />
                   {t('calendar.addReminder')}

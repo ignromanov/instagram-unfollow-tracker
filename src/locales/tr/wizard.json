@@ -12,7 +12,8 @@
     "next": "Sonraki Adım",
     "done": "Tamam, başlayalım!",
     "openInstagram": "Dışa aktarma sayfasını aç",
-    "close": "Rehberi kapat"
+    "close": "Rehberi kapat",
+    "uploadFile": "Dosyamı Yükle"
   },
   "format": {
     "warning": "KRİTİK ADIM"

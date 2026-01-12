@@ -1,5 +1,5 @@
 import { useTranslation, Trans } from 'react-i18next';
-import { ChevronRight, Play } from 'lucide-react';
+import { ChevronRight, Play, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 
@@ -12,6 +12,7 @@ interface HowToStep {
 }
 
 // Step metadata (visuals and warnings are not translated)
+// Step 9 has no visual - it's the final CTA to upload
 const STEP_META: Array<{ isWarning?: boolean; visual?: string }> = [
   { visual: '/wizard/step-1.gif' },
   { visual: '/wizard/step-2.gif' },
@@ -21,7 +22,7 @@ const STEP_META: Array<{ isWarning?: boolean; visual?: string }> = [
   { isWarning: true, visual: '/wizard/step-6.gif' },
   { visual: '/wizard/step-7.gif' },
   { visual: '/wizard/step-8.gif' },
-  { visual: '/wizard/step-9.png' },
+  {}, // Step 9: no visual, navigates to upload page
 ];
 
 interface HowToSectionProps {
@@ -68,6 +69,11 @@ export function HowToSection({ onStart }: HowToSectionProps) {
   };
 
   const handleStepClick = (stepIndex: number) => {
+    // Step 9 (index 8) goes directly to upload page
+    if (stepIndex === 8) {
+      navigate(`${prefix}/upload`);
+      return;
+    }
     if (onStart) {
       onStart(stepIndex);
     } else {
@@ -151,9 +157,24 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                       />
                     </div>
                   )}
-                  <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                    {t('openStep')} <ChevronRight size={14} />
-                  </div>
+                  {/* Step 9: Upload button instead of visual */}
+                  {idx === 8 && (
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        navigate(`${prefix}/upload`);
+                      }}
+                      className="cursor-pointer mt-6 inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all text-sm md:text-base"
+                    >
+                      <Upload size={20} />
+                      {t('uploadButton')}
+                    </button>
+                  )}
+                  {idx !== 8 && (
+                    <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                      {t('openStep')} <ChevronRight size={14} />
+                    </div>
+                  )}
                 </div>
               </li>
             ))}

@@ -3,9 +3,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Wizard } from '@/components/Wizard';
 import wizardEN from '@/locales/en/wizard.json';
 
-// Mock react-router-dom
-const mockNavigate = vi.fn();
+// Mock react-router-dom with pathname tracking
 let mockPathname = '/wizard';
+const mockNavigate = vi.fn((path: string) => {
+  // Update mockPathname when navigate is called
+  if (typeof path === 'string') {
+    mockPathname = path;
+  }
+});
 
 vi.mock('react-router-dom', () => ({
   useLocation: () => ({ pathname: mockPathname }),
@@ -59,14 +64,14 @@ describe('Wizard', () => {
   it('should render without crashing', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(screen.getByText('Step 1 of 9')).toBeInTheDocument();
+    expect(screen.getByText('Step 1 of 8')).toBeInTheDocument();
   });
 
   it('should render step indicator with progress dots', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
     // Step counter text
-    expect(screen.getByText('Step 1 of 9')).toBeInTheDocument();
+    expect(screen.getByText('Step 1 of 8')).toBeInTheDocument();
   });
 
   it('should render first step title and description', () => {
@@ -100,23 +105,24 @@ describe('Wizard', () => {
     );
   });
 
-  it('should navigate to next step when Next is clicked', () => {
+  it('should call navigate to next step when Next is clicked', () => {
+    mockPathname = '/wizard/step/1';
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
     fireEvent.click(screen.getByText(wizardEN.buttons.next));
 
-    expect(screen.getByText('Step 2 of 9')).toBeInTheDocument();
-    expect(screen.getByText(wizardEN.steps['2'].title)).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/2', { replace: true });
   });
 
-  it('should navigate to previous step when Back is clicked', () => {
-    render(<Wizard initialStep={2} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+  it('should call navigate to previous step when Back is clicked', () => {
+    mockPathname = '/wizard/step/2';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    expect(screen.getByText('Step 2 of 9')).toBeInTheDocument();
+    expect(screen.getByText('Step 2 of 8')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Back'));
 
-    expect(screen.getByText('Step 1 of 9')).toBeInTheDocument();
+    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/1', { replace: true });
   });
 
   it('should call onCancel when close button is clicked', () => {
@@ -130,7 +136,8 @@ describe('Wizard', () => {
   });
 
   it('should show warning badge on step 4', () => {
-    render(<Wizard initialStep={4} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+    mockPathname = '/wizard/step/4';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
     expect(screen.getByText(wizardEN.format.warning)).toBeInTheDocument();
     expect(
@@ -139,7 +146,8 @@ describe('Wizard', () => {
   });
 
   it('should call onComplete on last step when Done is clicked', () => {
-    render(<Wizard initialStep={9} onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+    mockPathname = '/wizard/step/8';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
     expect(screen.getByText("Done, let's go!")).toBeInTheDocument();
 
@@ -155,29 +163,40 @@ describe('Wizard', () => {
     expect(image).toBeInTheDocument();
   });
 
-  it('should update URL path when step changes', () => {
+  it('should navigate via goToStep when clicking Next', () => {
+    mockPathname = '/wizard/step/1';
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    // Initial navigation to step 1
-    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/1', { replace: true });
-
-    mockNavigate.mockClear();
     fireEvent.click(screen.getByText('Next Step'));
 
     // Navigation to step 2
     expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/2', { replace: true });
   });
 
-  it('should render all 9 steps when navigating through', () => {
+  it('should render correct step based on URL pathname', () => {
+    // Test step 5
+    mockPathname = '/wizard/step/5';
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    for (let i = 1; i <= 9; i++) {
-      if (i > 1) {
-        fireEvent.click(screen.getByText(wizardEN.buttons.next));
-      }
-      expect(screen.getByText(`Step ${i} of 9`)).toBeInTheDocument();
-      // Verify a heading exists for each step
-      expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
-    }
+    expect(screen.getByText('Step 5 of 8')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
+  });
+
+  it('should navigate to correct path when Next is clicked', () => {
+    mockPathname = '/wizard/step/3';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+
+    fireEvent.click(screen.getByText(wizardEN.buttons.next));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/4', { replace: true });
+  });
+
+  it('should navigate to correct path when Back is clicked', () => {
+    mockPathname = '/wizard/step/5';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+
+    fireEvent.click(screen.getByText('Back'));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/4', { replace: true });
   });
 });

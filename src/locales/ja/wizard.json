@@ -12,7 +12,8 @@
     "next": "次のステップ",
     "done": "完了、始めましょう！",
     "openInstagram": "エクスポートページを開く",
-    "close": "ガイドを閉じる"
+    "close": "ガイドを閉じる",
+    "uploadFile": "ファイルをアップロード"
   },
   "format": {
     "warning": "重要なステップ"
