@@ -2,6 +2,11 @@
   "header": {
     "stepOf": "Langkah {{current}} dari {{total}}"
   },
+  "calendar": {
+    "addReminder": "Tambah pengingat ke kalender",
+    "title": "Cek email ekspor Instagram",
+    "details": "Cek email untuk ekspor data Instagram dan upload ke Unfollow Tracker di safeunfollow.app"
+  },
   "buttons": {
     "back": "Kembali",
     "next": "Langkah Berikutnya",

@@ -2,6 +2,11 @@
   "header": {
     "stepOf": "Adım {{current}} / {{total}}"
   },
+  "calendar": {
+    "addReminder": "Takvime hatırlatıcı ekle",
+    "title": "Instagram dışa aktarma e-postasını kontrol et",
+    "details": "Instagram veri dışa aktarımı için e-postanı kontrol et ve safeunfollow.app'teki Unfollow Tracker'a yükle"
+  },
   "buttons": {
     "back": "Geri",
     "next": "Sonraki Adım",

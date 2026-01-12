@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, X, ExternalLink, AlertTriangle } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight, X, ExternalLink, AlertTriangle, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { analytics } from '@/lib/analytics';
@@ -117,6 +117,21 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
     analytics.wizardExternalLinkClick(step.id);
   };
 
+  const handleCalendarReminder = useCallback(() => {
+    const startDate = new Date();
+    startDate.setHours(startDate.getHours() + 1);
+    const endDate = new Date(startDate);
+    endDate.setMinutes(endDate.getMinutes() + 30);
+
+    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      t('calendar.title')
+    )}&dates=${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${
+      endDate.toISOString().replace(/[-:]/g, '').split('.')[0]
+    }Z&details=${encodeURIComponent(t('calendar.details'))}`;
+
+    window.open(calendarUrl, '_blank', 'noopener,noreferrer');
+  }, [t]);
+
   return (
     <div className="fixed inset-0 z-[100] bg-background flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-300">
       {/* Header */}
@@ -154,11 +169,11 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
           }`}
         >
           {/* Image */}
-          <div className="aspect-video bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative group">
+          <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative">
             <img
               src={step.visual || `https://picsum.photos/seed/${step.id}/800/450`}
               alt={t(`steps.${currentStep}.alt` as any)}
-              className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-700"
+              className="w-full h-auto block"
               loading="lazy"
             />
             {step.isWarning && (
@@ -184,7 +199,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
               {t(`steps.${currentStep}.description` as any)}
             </p>
 
-            {/* External Link Button */}
+            {/* External Link Button (step 1) */}
             {step.externalLink && (
               <a
                 href={step.externalLink}
@@ -195,6 +210,17 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
               >
                 {t('buttons.openInstagram')} <ExternalLink size={20} />
               </a>
+            )}
+
+            {/* Calendar Reminder Button (last step) */}
+            {isLastStep && (
+              <button
+                onClick={handleCalendarReminder}
+                className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary text-primary bg-primary/5 hover:bg-primary/10 rounded-2xl font-bold transition-all text-sm md:text-base w-full sm:w-auto"
+              >
+                <Calendar size={20} />
+                {t('calendar.addReminder')}
+              </button>
             )}
           </div>
         </div>

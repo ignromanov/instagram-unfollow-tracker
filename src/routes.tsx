@@ -28,9 +28,8 @@ function getLanguagePaths(basePath: string): string[] {
  *
  * Structure:
  * - / (hero)
- * - /wizard
- * - /waiting
- * - /upload
+ * - /wizard (step-by-step export guide)
+ * - /upload (file upload)
  * - /results (client-only, not prerendered - requires user data)
  * - /sample
  * - /privacy
@@ -55,11 +54,6 @@ export const routes: RouteRecord[] = [
       {
         path: 'wizard',
         lazy: () => import('./pages/WizardPage'),
-      },
-      // Waiting (for Instagram email)
-      {
-        path: 'waiting',
-        lazy: () => import('./pages/WaitingPage'),
       },
       // Upload
       {
@@ -102,10 +96,6 @@ export const routes: RouteRecord[] = [
         {
           path: 'wizard',
           lazy: () => import('./pages/WizardPage'),
-        },
-        {
-          path: 'waiting',
-          lazy: () => import('./pages/WaitingPage'),
         },
         {
           path: 'upload',

@@ -2,6 +2,11 @@
   "header": {
     "stepOf": "Шаг {{current}} из {{total}}"
   },
+  "calendar": {
+    "addReminder": "Добавить напоминание в календарь",
+    "title": "Проверить письмо от Instagram",
+    "details": "Проверь почту на наличие экспорта данных Instagram и загрузи его в Unfollow Tracker на safeunfollow.app"
+  },
   "buttons": {
     "back": "Назад",
     "next": "Следующий шаг",

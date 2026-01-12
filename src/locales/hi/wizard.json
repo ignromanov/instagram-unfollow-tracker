@@ -2,6 +2,11 @@
   "header": {
     "stepOf": "स्टेप {{current}} / {{total}}"
   },
+  "calendar": {
+    "addReminder": "कैलेंडर में रिमाइंडर जोड़ें",
+    "title": "Instagram एक्सपोर्ट ईमेल चेक करें",
+    "details": "Instagram डेटा एक्सपोर्ट के लिए अपना ईमेल चेक करें और safeunfollow.app पर Unfollow Tracker में अपलोड करें"
+  },
   "buttons": {
     "back": "वापस",
     "next": "अगला स्टेप",

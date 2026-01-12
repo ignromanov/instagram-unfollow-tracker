@@ -2,6 +2,11 @@
   "header": {
     "stepOf": "ステップ {{current}} / {{total}}"
   },
+  "calendar": {
+    "addReminder": "カレンダーにリマインダーを追加",
+    "title": "Instagramエクスポートメールを確認",
+    "details": "Instagramデータエクスポートのメールを確認し、safeunfollow.appのUnfollow Trackerにアップロード"
+  },
   "buttons": {
     "back": "戻る",
     "next": "次のステップ",

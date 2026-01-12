@@ -11,7 +11,7 @@ export function Component() {
   const prefix = useLanguagePrefix();
 
   const handleComplete = () => {
-    navigate(`${prefix}/waiting`);
+    navigate(`${prefix}/upload`);
   };
 
   const handleCancel = () => {

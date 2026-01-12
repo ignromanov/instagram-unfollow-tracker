@@ -2,6 +2,11 @@
   "header": {
     "stepOf": "Passo {{current}} de {{total}}"
   },
+  "calendar": {
+    "addReminder": "Adicionar lembrete ao calendário",
+    "title": "Verificar email de exportação do Instagram",
+    "details": "Verifique seu email para a exportação de dados do Instagram e faça upload no Unfollow Tracker em safeunfollow.app"
+  },
   "buttons": {
     "back": "Voltar",
     "next": "Próximo Passo",

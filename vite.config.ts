@@ -3,13 +3,48 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { defineConfig } from "vitest/config";
 import { VitePWA } from "vite-plugin-pwa";
+import Sitemap from "vite-plugin-sitemap";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Supported languages (sync with src/locales/index.ts)
+const SUPPORTED_LANGUAGES = ["en", "es", "pt", "hi", "id", "tr", "ja", "ru", "de"];
+
 export default defineConfig({
   plugins: [
     react(),
+    Sitemap({
+      hostname: "https://safeunfollow.app",
+      readable: true,
+      generateRobotsTxt: true,
+      i18n: {
+        defaultLanguage: "en",
+        languages: SUPPORTED_LANGUAGES,
+        strategy: "prefix",
+      },
+      // Per-route SEO settings
+      changefreq: {
+        "/": "weekly",
+        "/wizard": "monthly",
+        "/upload": "monthly",
+        "/results": "monthly",
+        "/sample": "monthly",
+        "/privacy": "yearly",
+        "/terms": "yearly",
+        "*": "monthly",
+      },
+      priority: {
+        "/": 1.0,
+        "/wizard": 0.8,
+        "/upload": 0.8,
+        "/results": 0.6,
+        "/sample": 0.6,
+        "/privacy": 0.5,
+        "/terms": 0.5,
+        "*": 0.7,
+      },
+    }),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
