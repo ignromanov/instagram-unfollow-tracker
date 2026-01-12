@@ -128,9 +128,9 @@ describe('TermsOfService', () => {
     it('should render contact email link', () => {
       render(<TermsOfService {...defaultProps} />);
 
-      const emailLink = screen.getByRole('link', { name: 'support@safeunfollow.app' });
+      const emailLink = screen.getByRole('link', { name: 'hello@safeunfollow.app' });
       expect(emailLink).toBeInTheDocument();
-      expect(emailLink).toHaveAttribute('href', 'mailto:support@safeunfollow.app');
+      expect(emailLink).toHaveAttribute('href', 'mailto:hello@safeunfollow.app');
     });
 
     it('should render GitHub link', () => {

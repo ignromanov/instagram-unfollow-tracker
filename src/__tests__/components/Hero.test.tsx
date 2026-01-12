@@ -40,7 +40,7 @@ describe('Hero Component', () => {
     it('should render version badge', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(screen.getByText(/V1.1 Optimized for 1,000,000\+ Accounts/)).toBeInTheDocument();
+      expect(screen.getByText(/V1.5 Optimized for 1,000,000\+ Accounts/)).toBeInTheDocument();
     });
   });
 

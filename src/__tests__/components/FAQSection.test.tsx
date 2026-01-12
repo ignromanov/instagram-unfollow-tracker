@@ -1,17 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { renderWithRouter } from '../test-utils';
 import { FAQSection } from '@/components/FAQSection';
 
 describe('FAQSection Component', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
       expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
     });
 
     it('should render section title from translations', () => {
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
       // The title comes from faq namespace, but due to mock flattening
       // it gets overwritten by howto.title - we just verify a heading exists
@@ -21,17 +22,26 @@ describe('FAQSection Component', () => {
     });
 
     it('should render all FAQ questions', () => {
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
-      expect(screen.getByText('Is this really private?')).toBeInTheDocument();
-      expect(screen.getByText('Why do I need to download a ZIP file?')).toBeInTheDocument();
-      expect(screen.getByText('Will my account be safe?')).toBeInTheDocument();
-      expect(screen.getByText('How many accounts can this handle?')).toBeInTheDocument();
-      expect(screen.getByText('Is this really free?')).toBeInTheDocument();
+      // Check that FAQ questions from faq.json are rendered
+      expect(
+        screen.getByText('How to check who unfollowed you on Instagram without app?')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('Can I check Instagram unfollowers without data download or apps?')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('How does Instagram unfollower tracker work without login?')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('Is it safe to use Instagram unfollower tracker apps?')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Are there free Instagram unfollower trackers?')).toBeInTheDocument();
     });
 
     it('should have proper accessibility attributes', () => {
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
       // Section is labeled by the heading via aria-labelledby
       const section = document.getElementById('faq');
@@ -42,7 +52,7 @@ describe('FAQSection Component', () => {
 
   describe('accordion behavior', () => {
     it('should have all items collapsed by default', () => {
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
       const buttons = screen.getAllByRole('button');
       buttons.forEach(button => {
@@ -52,9 +62,11 @@ describe('FAQSection Component', () => {
 
     it('should expand item when clicked', async () => {
       const user = userEvent.setup();
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
-      const firstQuestion = screen.getByText('Is this really private?');
+      const firstQuestion = screen.getByText(
+        'How to check who unfollowed you on Instagram without app?'
+      );
       const button = firstQuestion.closest('button');
       expect(button).toHaveAttribute('aria-expanded', 'false');
 
@@ -65,9 +77,11 @@ describe('FAQSection Component', () => {
 
     it('should collapse item when clicked again', async () => {
       const user = userEvent.setup();
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
-      const firstQuestion = screen.getByText('Is this really private?');
+      const firstQuestion = screen.getByText(
+        'How to check who unfollowed you on Instagram without app?'
+      );
       const button = firstQuestion.closest('button');
 
       // Open
@@ -81,10 +95,14 @@ describe('FAQSection Component', () => {
 
     it('should only have one item expanded at a time', async () => {
       const user = userEvent.setup();
-      render(<FAQSection />);
+      renderWithRouter(<FAQSection />);
 
-      const firstQuestion = screen.getByText('Is this really private?');
-      const secondQuestion = screen.getByText('Why do I need to download a ZIP file?');
+      const firstQuestion = screen.getByText(
+        'How to check who unfollowed you on Instagram without app?'
+      );
+      const secondQuestion = screen.getByText(
+        'Can I check Instagram unfollowers without data download or apps?'
+      );
       const firstButton = firstQuestion.closest('button');
       const secondButton = secondQuestion.closest('button');
 
@@ -102,7 +120,7 @@ describe('FAQSection Component', () => {
 
   describe('Schema.org structured data', () => {
     it('should contain JSON-LD script with FAQPage schema', () => {
-      const { container } = render(<FAQSection />);
+      const { container } = renderWithRouter(<FAQSection />);
 
       const script = container.querySelector('script[type="application/ld+json"]');
       expect(script).toBeInTheDocument();
@@ -113,12 +131,12 @@ describe('FAQSection Component', () => {
     });
 
     it('should include all FAQ items in schema mainEntity', () => {
-      const { container } = render(<FAQSection />);
+      const { container } = renderWithRouter(<FAQSection />);
 
       const script = container.querySelector('script[type="application/ld+json"]');
       const schema = JSON.parse(script!.textContent!);
 
-      expect(schema.mainEntity).toHaveLength(7);
+      expect(schema.mainEntity).toHaveLength(12);
       schema.mainEntity.forEach(
         (item: { '@type': string; acceptedAnswer: { '@type': string } }) => {
           expect(item['@type']).toBe('Question');
@@ -128,7 +146,7 @@ describe('FAQSection Component', () => {
     });
 
     it('should have matching questions in schema and rendered content', () => {
-      const { container } = render(<FAQSection />);
+      const { container } = renderWithRouter(<FAQSection />);
 
       const script = container.querySelector('script[type="application/ld+json"]');
       const schema = JSON.parse(script!.textContent!);

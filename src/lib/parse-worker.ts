@@ -30,11 +30,6 @@ self.onmessage = async (
     port?: MessagePort;
   }>
 ) => {
-  // Ignore WorkerConsole initialization messages (handled by WorkerConsole.js)
-  if (e.data?.type === '__console_init__') {
-    return;
-  }
-
   if (e.data?.type !== 'parse') {
     return;
   }

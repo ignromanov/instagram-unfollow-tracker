@@ -122,8 +122,8 @@ describe('Wizard', () => {
   it('should call onCancel when close button is clicked', () => {
     render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
 
-    // Find the close button (X icon button in header)
-    const closeButton = screen.getByRole('button', { name: '' });
+    // Find the close button by its aria-label from translations
+    const closeButton = screen.getByRole('button', { name: wizardEN.buttons.close });
     fireEvent.click(closeButton);
 
     expect(mockOnCancel).toHaveBeenCalled();

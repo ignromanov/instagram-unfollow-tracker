@@ -69,9 +69,9 @@ describe('PrivacyPolicy Component', () => {
     it('should render the contact email', () => {
       render(<PrivacyPolicy onBack={mockOnBack} />);
 
-      const emailLink = screen.getByRole('link', { name: /support@safeunfollow\.app/i });
+      const emailLink = screen.getByRole('link', { name: /privacy@safeunfollow\.app/i });
       expect(emailLink).toBeInTheDocument();
-      expect(emailLink).toHaveAttribute('href', 'mailto:support@safeunfollow.app');
+      expect(emailLink).toHaveAttribute('href', 'mailto:privacy@safeunfollow.app');
     });
 
     it('should render the GitHub link', () => {

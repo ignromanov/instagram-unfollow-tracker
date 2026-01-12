@@ -39,31 +39,28 @@ describe('HowToSection', () => {
     it('should render step titles', () => {
       render(<HowToSection />);
 
-      expect(screen.getByText('Open Data Export Page')).toBeInTheDocument();
-      expect(screen.getByText("Select 'Some of your information'")).toBeInTheDocument();
-      expect(screen.getByText("Check only 'Followers and following'")).toBeInTheDocument();
-      expect(screen.getByText('Select JSON format')).toBeInTheDocument();
-      expect(screen.getByText("Choose 'All time' and tap 'Create files'")).toBeInTheDocument();
-      expect(screen.getByText('Wait for email notification')).toBeInTheDocument();
-      expect(screen.getByText('Download the ZIP file')).toBeInTheDocument();
-      expect(screen.getByText('Upload & Reveal Results')).toBeInTheDocument();
+      expect(screen.getByText('Open Instagram Export Page')).toBeInTheDocument();
+      expect(screen.getByText('Choose Your Instagram Profile')).toBeInTheDocument();
+      expect(screen.getByText('Select "Export to device"')).toBeInTheDocument();
+      expect(screen.getByText('Select Only "Followers and following"')).toBeInTheDocument();
+      expect(screen.getByText('Set Date Range to "All time"')).toBeInTheDocument();
+      expect(screen.getByText('Change Format to JSON')).toBeInTheDocument();
+      expect(screen.getByText('Review & Start Export')).toBeInTheDocument();
+      expect(screen.getByText('Wait for Email & Download')).toBeInTheDocument();
     });
 
     it('should render step descriptions', () => {
       render(<HowToSection />);
 
-      expect(
-        screen.getByText(/Tap the button below to go directly to the platform's data export page/)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/This is critical: Choose JSON, not HTML format/)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Click the button to open Meta Accounts Center/)).toBeInTheDocument();
+      expect(screen.getByText(/Critical step! Click "Format"/)).toBeInTheDocument();
     });
 
-    it('should show Important badge for warning step', () => {
+    it('should show Critical badge for warning steps', () => {
       render(<HowToSection />);
 
-      expect(screen.getByText('Important')).toBeInTheDocument();
+      const criticalBadges = screen.getAllByText('Critical');
+      expect(criticalBadges.length).toBeGreaterThanOrEqual(1);
     });
 
     it('should render step images with lazy loading', () => {
@@ -109,7 +106,7 @@ describe('HowToSection', () => {
       expect(schema.step).toHaveLength(8);
       expect(schema.step[0]['@type']).toBe('HowToStep');
       expect(schema.step[0].position).toBe(1);
-      expect(schema.step[0].name).toBe('Open Data Export Page');
+      expect(schema.step[0].name).toBe('Open Instagram Export Page');
     });
 
     it('should include supplies and tools in schema', () => {
@@ -172,7 +169,7 @@ describe('HowToSection', () => {
       render(<HowToSection onStart={onStart} />);
 
       // Click on step 3 (index 2)
-      const step3Title = screen.getByText("Check only 'Followers and following'");
+      const step3Title = screen.getByText('Select "Export to device"');
       const stepElement = step3Title.closest('li');
       expect(stepElement).not.toBeNull();
 

@@ -59,31 +59,6 @@ export function useFileUpload() {
     if (typeof window !== 'undefined' && window.Worker && !workerRef.current) {
       const initializeWorker = async () => {
         try {
-          const basePath = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL || '/';
-
-          // Load enhanced WorkerConsole.js for worker console logging
-          const loadWorkerConsole = () => {
-            return new Promise<void>(resolve => {
-              if (document.querySelector('script[src*="WorkerConsole.js"]')) {
-                resolve();
-                return;
-              }
-
-              const script = document.createElement('script');
-              script.src = `${basePath}WorkerConsole.js`;
-              script.onload = () => {
-                resolve();
-              };
-              script.onerror = () => {
-                resolve(); // Continue even if WorkerConsole fails to load
-              };
-              document.head.appendChild(script);
-            });
-          };
-
-          // Load WorkerConsole first, then create worker
-          await loadWorkerConsole();
-
           // Create TypeScript module worker directly
           try {
             const worker = new Worker(new URL('../lib/parse-worker.ts', import.meta.url), {
