@@ -1,7 +1,7 @@
 {
   "name": "instagram-unfollow-tracker",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.5.0",
   "type": "module",
   "description": "Find out who unfollowed you on Instagram — 100% local, free, open source unfollow tracker",
   "keywords": [

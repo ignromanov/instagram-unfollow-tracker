@@ -43,7 +43,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     downloadUrl: BASE_URL,
     screenshot: `${BASE_URL}/og-image.png`,
-    softwareVersion: '1.4.0',
+    softwareVersion: '1.5.0',
     datePublished: '2025-11-22',
     license: 'https://opensource.org/licenses/MIT',
     isAccessibleForFree: true,
