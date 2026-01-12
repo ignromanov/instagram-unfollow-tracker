@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
+import { analytics } from '@/lib/analytics';
 import type { UserSegment } from '@/lib/rescue-plan';
 
 /**
@@ -7,6 +8,7 @@ import type { UserSegment } from '@/lib/rescue-plan';
  *
  * Features:
  * - 7-day TTL for dismiss state
+ * - Segment change re-engagement (shows again if severity worsens)
  * - Stores segment info for analytics
  * - SSR-safe (checks window)
  */
@@ -15,19 +17,32 @@ const STORAGE_KEY = 'rescue_plan_dismissed';
 const TTL_DAYS = 7;
 const TTL_MS = TTL_DAYS * 24 * 60 * 60 * 1000;
 
+/** Severity order for comparison (higher = worse) */
+const SEVERITY_ORDER = {
+  growth: 0,
+  warning: 1,
+  critical: 2,
+} as const;
+
 interface DismissState {
   dismissedAt: number;
   segment: string;
+  severity: string;
 }
 
 /**
- * Check if dismiss state is still valid (within TTL)
+ * Check if dismiss state is still valid (within TTL and same/better severity)
  */
-function isDismissValid(): boolean {
-  if (typeof window === 'undefined') return false;
+function getDismissState(currentSegment: UserSegment | null): {
+  isDismissed: boolean;
+  storedState: DismissState | null;
+} {
+  if (typeof window === 'undefined' || !currentSegment) {
+    return { isDismissed: false, storedState: null };
+  }
 
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) return false;
+  if (!stored) return { isDismissed: false, storedState: null };
 
   try {
     const state: DismissState = JSON.parse(stored);
@@ -36,24 +51,46 @@ function isDismissValid(): boolean {
     // Check TTL expiry
     if (now - state.dismissedAt > TTL_MS) {
       localStorage.removeItem(STORAGE_KEY);
-      return false;
+      return { isDismissed: false, storedState: null };
     }
 
-    return true;
+    // Check if severity worsened (re-engage user)
+    const storedSeverity = state.severity as keyof typeof SEVERITY_ORDER;
+    const currentSeverity = currentSegment.severity;
+
+    if (SEVERITY_ORDER[currentSeverity] > SEVERITY_ORDER[storedSeverity]) {
+      // Severity worsened - show banner again and track re-engagement
+      localStorage.removeItem(STORAGE_KEY);
+      analytics.rescuePlanReEngagement?.(storedSeverity, currentSeverity);
+      return { isDismissed: false, storedState: state };
+    }
+
+    return { isDismissed: true, storedState: state };
   } catch {
     localStorage.removeItem(STORAGE_KEY);
-    return false;
+    return { isDismissed: false, storedState: null };
   }
 }
 
 /**
  * Hook to manage rescue plan dismiss state
  *
- * @param segment - Current user segment for analytics
+ * @param segment - Current user segment for analytics and re-engagement detection
  * @returns isDismissed state and dismiss function
  */
 export function useRescuePlanDismiss(segment: UserSegment | null) {
-  const [isDismissed, setIsDismissed] = useState<boolean>(() => isDismissValid());
+  const [isDismissed, setIsDismissed] = useState<boolean>(() => {
+    const { isDismissed } = getDismissState(segment);
+    return isDismissed;
+  });
+
+  // Re-check dismiss state when segment changes (for re-engagement)
+  useEffect(() => {
+    if (!segment) return;
+
+    const { isDismissed: newIsDismissed } = getDismissState(segment);
+    setIsDismissed(newIsDismissed);
+  }, [segment?.severity, segment?.size]);
 
   const dismiss = useCallback(() => {
     if (typeof window === 'undefined' || !segment) return;
@@ -61,6 +98,7 @@ export function useRescuePlanDismiss(segment: UserSegment | null) {
     const state: DismissState = {
       dismissedAt: Date.now(),
       segment: `${segment.severity}_${segment.size}`,
+      severity: segment.severity,
     };
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));

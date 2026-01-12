@@ -23,6 +23,7 @@ export {
   computeSegment,
   getSegmentKey,
   SEVERITY_STYLES,
+  SHOW_DELAY_BY_SEVERITY,
 } from './segmentation';
 
 // Tools

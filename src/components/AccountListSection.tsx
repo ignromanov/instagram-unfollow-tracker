@@ -190,13 +190,11 @@ export function AccountListSection({
       <div className="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6 md:gap-12">
         {/* Rescue Plan Banner - full width on desktop (top), between filters and list on mobile */}
         {!isSample && (
-          <div className="order-2 lg:order-first lg:col-span-2">
-            <RescuePlanBanner
-              filterCounts={filterCounts}
-              totalCount={totalCount}
-              showDelay={30000}
-            />
-          </div>
+          <RescuePlanBanner
+            filterCounts={filterCounts}
+            totalCount={totalCount}
+            className="order-2 lg:order-first lg:col-span-2"
+          />
         )}
 
         {/* Filters Sidebar */}

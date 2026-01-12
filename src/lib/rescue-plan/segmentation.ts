@@ -71,6 +71,18 @@ export function getSegmentKey(segment: UserSegment): SegmentKey {
 }
 
 /**
+ * Show delay (ms) based on severity level
+ * - Critical: Show faster (urgent pain)
+ * - Warning: Moderate delay
+ * - Growth: Let them explore first
+ */
+export const SHOW_DELAY_BY_SEVERITY: Record<LossSeverity, number> = {
+  critical: 15000, // 15s - urgent
+  warning: 25000, // 25s - analyzing
+  growth: 40000, // 40s - exploring
+};
+
+/**
  * Styling configuration for each severity level
  */
 export const SEVERITY_STYLES: Record<LossSeverity, SeverityStyle> = {

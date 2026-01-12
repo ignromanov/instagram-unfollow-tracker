@@ -58,42 +58,42 @@
   },
   "rescue": {
     "critical": {
-      "title": "Your account is losing followers fast!",
+      "title": "You've lost {{unfollowedPercent}}% — here's how to recover",
       "subtitle": {
-        "influencer": "With {{count}}+ accounts, every lost follower impacts reach. Act now:",
-        "power": "You're losing engagement. Here's how power users recover:",
-        "regular": "Don't let your community shrink. Quick wins to get them back:",
-        "casual": "Small audience, big opportunity. Start recovering today:"
+        "influencer": "At {{count}}+ followers, every lost connection hurts reach. Recover in 7 days:",
+        "power": "You're in the top tier — smart creators recover fast with these:",
+        "regular": "Stop the bleeding and get your community back:",
+        "casual": "Small audience = fast recovery. Start now:"
       }
     },
     "warning": {
-      "title": "Some followers are drifting away",
+      "title": "{{unfollowedPercent}}% drop detected — time to optimize",
       "subtitle": {
-        "influencer": "At your scale, optimization prevents bigger losses:",
-        "power": "Smart creators optimize before it's too late:",
-        "regular": "Keep your audience engaged with these tools:",
-        "casual": "Build stronger connections with your followers:"
+        "influencer": "At your scale, early optimization prevents bigger losses:",
+        "power": "Catch it early — here's what top creators use:",
+        "regular": "Keep your audience engaged before they drift:",
+        "casual": "Build stronger connections now:"
       }
     },
     "growth": {
-      "title": "You're doing great! Ready to grow?",
+      "title": "Only {{unfollowedPercent}}% loss — you're doing great!",
       "subtitle": {
-        "influencer": "Scale your reach with professional tools:",
-        "power": "Take your account to the next level:",
-        "regular": "Build consistency and grow faster:",
-        "casual": "Start your growth journey with these tools:"
+        "influencer": "Scale your reach with professional-grade tools:",
+        "power": "Ready for the next level? Here's your toolkit:",
+        "regular": "Build consistency and grow 2x faster:",
+        "casual": "Start your growth journey the right way:"
       }
     },
     "tools": {
-      "submagic": "AI creates viral Reels automatically",
-      "predis": "Generate posts with AI (text + design)",
-      "manychat": "Auto-reply to all DMs and comments",
-      "metricool": "Track analytics and optimize posting times",
-      "canva": "Design stunning posts in minutes",
-      "later": "Schedule posts and plan your content calendar"
+      "submagic": "Turn clips into viral Reels → 3-5x reach boost",
+      "predis": "AI creates posts + designs → ship content 3x faster",
+      "manychat": "Auto-reply 24/7 → 10+ hours/week saved",
+      "metricool": "Find your peak times → 40% faster growth",
+      "vistacreate": "Pro designs in 60 sec → never miss a post",
+      "later": "Plan your month in 1 hour → stay consistent"
     },
     "dismiss": "Maybe later",
-    "disclaimer": "Affiliate links – we may earn a commission",
+    "disclaimer": "Hand-picked tools we recommend. Affiliate links fund free updates — no cost to you.",
     "ariaLabel": "Recommended tools to improve your Instagram presence"
   }
 }

@@ -1,5 +1,6 @@
 import { Video, Sparkles, MessageSquare, BarChart3, Palette, Calendar } from 'lucide-react';
 
+import { AFFILIATE_LINKS } from '@/config/affiliate-links';
 import type { RescueTool, UserSegment, SegmentKey } from './types';
 import { getSegmentKey } from './segmentation';
 
@@ -16,54 +17,75 @@ export const RESCUE_TOOLS: Record<string, RescueTool> = {
     name: 'Submagic',
     descKey: 'rescue.tools.submagic',
     icon: Video,
-    url: 'https://submagic.co/?via=safeunfollow',
+    url: AFFILIATE_LINKS.submagic,
     color: 'text-purple-500',
     category: 'content',
+    pricing: 'trial',
+    priceLabel: '7-day free trial',
+    socialProof: '50K+ creators',
+    badge: 'popular',
   },
   predis: {
     id: 'predis',
     name: 'Predis.ai',
     descKey: 'rescue.tools.predis',
     icon: Sparkles,
-    url: 'https://predis.ai/?ref=safeunfollow',
+    url: AFFILIATE_LINKS.predis,
     color: 'text-blue-500',
     category: 'content',
+    pricing: 'freemium',
+    priceLabel: 'Free plan available',
+    socialProof: '1M+ posts created',
   },
   manychat: {
     id: 'manychat',
     name: 'ManyChat',
     descKey: 'rescue.tools.manychat',
     icon: MessageSquare,
-    url: 'https://manychat.com/?ref=safeunfollow',
+    url: AFFILIATE_LINKS.manychat,
     color: 'text-green-500',
     category: 'engagement',
+    pricing: 'freemium',
+    priceLabel: 'Free up to 1K contacts',
+    socialProof: '1M+ businesses',
+    badge: 'popular',
   },
   metricool: {
     id: 'metricool',
     name: 'Metricool',
     descKey: 'rescue.tools.metricool',
     icon: BarChart3,
-    url: 'https://metricool.com/?ref=safeunfollow',
+    url: AFFILIATE_LINKS.metricool,
     color: 'text-orange-500',
     category: 'analytics',
+    pricing: 'freemium',
+    priceLabel: 'Free plan available',
+    socialProof: '200K+ users',
   },
-  canva: {
-    id: 'canva',
-    name: 'Canva Pro',
-    descKey: 'rescue.tools.canva',
+  vistacreate: {
+    id: 'vistacreate',
+    name: 'VistaCreate',
+    descKey: 'rescue.tools.vistacreate',
     icon: Palette,
-    url: 'https://partner.canva.com/safeunfollow',
+    url: AFFILIATE_LINKS.vistacreate,
     color: 'text-cyan-500',
     category: 'design',
+    pricing: 'freemium',
+    priceLabel: 'Free forever plan',
+    socialProof: '10M+ designs created',
   },
   later: {
     id: 'later',
     name: 'Later',
     descKey: 'rescue.tools.later',
     icon: Calendar,
-    url: 'https://later.com/?ref=safeunfollow',
+    url: AFFILIATE_LINKS.later,
     color: 'text-pink-500',
     category: 'scheduling',
+    pricing: 'trial',
+    priceLabel: '14-day free trial',
+    socialProof: '7M+ users',
+    badge: 'trial',
   },
 };
 
@@ -79,24 +101,24 @@ const TOOL_MATRIX: Record<SegmentKey, string[]> = {
   // Critical - content recovery focus
   critical_influencer: ['submagic', 'predis', 'manychat'],
   critical_power: ['submagic', 'predis', 'later'],
-  critical_regular: ['predis', 'manychat', 'canva'],
-  critical_casual: ['canva', 'predis', 'manychat'],
+  critical_regular: ['predis', 'manychat', 'vistacreate'],
+  critical_casual: ['vistacreate', 'predis', 'manychat'],
 
   // Warning - optimization focus
   warning_influencer: ['metricool', 'later', 'submagic'],
   warning_power: ['metricool', 'predis', 'later'],
-  warning_regular: ['manychat', 'canva', 'predis'],
-  warning_casual: ['canva', 'manychat', 'predis'],
+  warning_regular: ['manychat', 'vistacreate', 'predis'],
+  warning_casual: ['vistacreate', 'manychat', 'predis'],
 
   // Growth - scaling focus
   growth_influencer: ['later', 'metricool', 'submagic'],
   growth_power: ['later', 'predis', 'metricool'],
-  growth_regular: ['later', 'canva', 'predis'],
-  growth_casual: ['canva', 'later', 'predis'],
+  growth_regular: ['later', 'vistacreate', 'predis'],
+  growth_casual: ['vistacreate', 'later', 'predis'],
 };
 
 /** Default tools if segment not found */
-const DEFAULT_TOOLS = ['predis', 'canva', 'later'];
+const DEFAULT_TOOLS = ['predis', 'vistacreate', 'later'];
 
 /**
  * Get recommended tools for a user segment

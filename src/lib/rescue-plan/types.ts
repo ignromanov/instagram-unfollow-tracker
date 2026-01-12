@@ -23,6 +23,12 @@ export interface UserSegment {
   totalAccounts: number;
 }
 
+/** Pricing model for trust display */
+export type ToolPricing = 'free' | 'freemium' | 'trial' | 'paid';
+
+/** Badge type for visual hierarchy */
+export type ToolBadge = 'popular' | 'trial' | 'new';
+
 /** Tool definition for affiliate links */
 export interface RescueTool {
   id: string;
@@ -32,6 +38,14 @@ export interface RescueTool {
   url: string;
   color: string;
   category: ToolCategory;
+  /** Pricing model */
+  pricing: ToolPricing;
+  /** Display label for pricing (e.g., "Free trial", "From $9/mo") */
+  priceLabel: string;
+  /** Social proof text (e.g., "50K+ creators") */
+  socialProof: string;
+  /** Optional badge for visual hierarchy */
+  badge?: ToolBadge;
 }
 
 /** Segment key for tool matrix lookup */
