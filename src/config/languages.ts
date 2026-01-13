@@ -99,3 +99,45 @@ export const LANGUAGE_REGEX_PATTERN = NON_ENGLISH_LANGUAGES.join('|');
 export function createLanguagePrefixRegex(flags?: string): RegExp {
   return new RegExp(`^\\/(${LANGUAGE_REGEX_PATTERN})(\\/|$)`, flags);
 }
+
+/**
+ * Detect language from URL pathname
+ *
+ * Extracts language code from the first path segment.
+ * Returns DEFAULT_LANGUAGE if no valid language prefix found.
+ *
+ * @param pathname - URL pathname (e.g., '/es/wizard', '/ru/', '/')
+ * @returns Detected language code
+ *
+ * @example
+ * detectLanguageFromPathname('/es/wizard'); // 'es'
+ * detectLanguageFromPathname('/ru/');       // 'ru'
+ * detectLanguageFromPathname('/wizard');    // 'en' (default)
+ * detectLanguageFromPathname('/');          // 'en' (default)
+ */
+export function detectLanguageFromPathname(pathname: string): SupportedLanguage {
+  const segments = pathname.split('/').filter(Boolean);
+  const firstSegment = segments[0];
+
+  if (firstSegment && SUPPORTED_LANGUAGES.includes(firstSegment as SupportedLanguage)) {
+    return firstSegment as SupportedLanguage;
+  }
+
+  return DEFAULT_LANGUAGE;
+}
+
+/**
+ * Detect language from current browser URL
+ *
+ * Safe to call on server (returns DEFAULT_LANGUAGE).
+ * Uses window.location.pathname to detect language.
+ *
+ * @returns Detected language code from current URL
+ */
+export function detectLanguageFromUrl(): SupportedLanguage {
+  if (typeof window === 'undefined') {
+    return DEFAULT_LANGUAGE;
+  }
+
+  return detectLanguageFromPathname(window.location.pathname);
+}

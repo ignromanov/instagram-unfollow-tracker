@@ -96,9 +96,9 @@ export const useAppStore = create<AppState>()(
         }),
       setLanguage: (lang: SupportedLanguage) => {
         set({ language: lang });
-        // Sync with i18next (dynamic import to avoid circular deps)
-        import('@/locales').then(({ loadLanguage, default: i18n }) => {
-          loadLanguage(lang).then(() => i18n.changeLanguage(lang));
+        // Sync with i18next (language is already loaded by initI18n from URL)
+        import('@/locales').then(({ loadLanguage }) => {
+          loadLanguage(lang);
         });
       },
     }),
@@ -142,23 +142,13 @@ export const useAppStore = create<AppState>()(
           uploadStatus: state.uploadStatus,
           uploadError: state.uploadError,
           fileMetadata: state.fileMetadata,
-          language: state.language,
+          // Note: language is NOT persisted - URL is the source of truth
         }) as unknown as Partial<AppState>,
       onRehydrateStorage: () => state => {
         if (state) {
           state._hasHydrated = true;
-          // Sync i18next with persisted language after hydration
-          if (state.language && state.language !== 'en') {
-            import('@/locales').then(({ loadLanguage, default: i18n }) => {
-              loadLanguage(state.language).then(() => i18n.changeLanguage(state.language));
-            });
-          } else if (state.language === 'en') {
-            // Ensure i18next is set to English if that's the persisted language
-            // Must call initI18n() first to avoid SSG crash (i18n.store undefined)
-            import('@/locales').then(({ default: i18n, initI18n }) => {
-              initI18n().then(() => i18n.changeLanguage('en'));
-            });
-          }
+          // Note: Language is NOT restored from localStorage
+          // URL is the source of truth, handled by initI18n()
         }
       },
       storage: {

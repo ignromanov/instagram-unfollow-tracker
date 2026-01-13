@@ -1,12 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
-import i18n, {
-  SUPPORTED_LANGUAGES,
-  loadLanguage,
-  initI18n,
-  type SupportedLanguage,
-} from '@/locales';
+import i18n, { SUPPORTED_LANGUAGES, loadLanguage, type SupportedLanguage } from '@/locales';
 import { NON_ENGLISH_LANGUAGES, getLocaleCode } from '@/config/languages';
 
 const BASE_URL = 'https://safeunfollow.app';
@@ -93,28 +88,29 @@ function updateCanonical(currentPath: string): void {
 /**
  * Hook to sync language from URL path prefix
  *
+ * URL is the single source of truth for language.
+ * This hook:
+ * 1. Syncs Zustand store with URL language
+ * 2. Updates HTML attributes (lang, dir)
+ * 3. Updates SEO meta tags (hreflang, og:locale, canonical)
+ *
  * URL structure:
  * - / (English, default)
  * - /es (Spanish)
  * - /ru (Russian)
  * - /es/wizard (Spanish wizard page)
- * - etc.
  */
 export function useLanguageFromPath(langFromRoute?: SupportedLanguage): void {
   const location = useLocation();
-  const { language, setLanguage, _hasHydrated } = useAppStore();
+  const { language, setLanguage } = useAppStore();
 
-  // Extract language from path or use route prop
+  // Sync store with URL language
   useEffect(() => {
-    if (!_hasHydrated) return;
-
     let detectedLang: SupportedLanguage = 'en';
 
     if (langFromRoute) {
-      // Language passed from route definition
       detectedLang = langFromRoute;
     } else {
-      // Extract from path: /es/wizard -> 'es'
       const pathSegments = location.pathname.split('/').filter(Boolean);
       const firstSegment = pathSegments[0];
 
@@ -127,12 +123,10 @@ export function useLanguageFromPath(langFromRoute?: SupportedLanguage): void {
     if (detectedLang !== language) {
       setLanguage(detectedLang);
     }
-  }, [location.pathname, langFromRoute, language, setLanguage, _hasHydrated]);
+  }, [location.pathname, langFromRoute, language, setLanguage]);
 
-  // Sync HTML attributes and meta tags when language or path changes
+  // Sync HTML attributes and meta tags
   useEffect(() => {
-    if (!_hasHydrated) return;
-
     // Update HTML lang attribute
     updateHtmlLang(language);
 
@@ -145,11 +139,9 @@ export function useLanguageFromPath(langFromRoute?: SupportedLanguage): void {
     // Update canonical URL
     updateCanonical(location.pathname);
 
-    // Ensure i18next is synced (initI18n ensures i18n is ready)
+    // Ensure i18next is synced
     if (i18n.language !== language) {
-      initI18n().then(() => {
-        loadLanguage(language);
-      });
+      loadLanguage(language);
     }
-  }, [language, location.pathname, _hasHydrated]);
+  }, [language, location.pathname]);
 }

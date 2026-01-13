@@ -33,15 +33,15 @@ function getPathWithoutLang(pathname: string): string {
 
 export function LanguageSwitcher() {
   const { t } = useTranslation('common');
-  const { language, setLanguage } = useAppStore();
+  const { language } = useAppStore();
   const location = useLocation();
 
   const handleLanguageChange = (lang: SupportedLanguage) => {
-    // Update store
-    setLanguage(lang);
     analytics.languageChange(lang);
 
     // Full page reload to get correct SSG meta tags for new language
+    // Note: We don't call setLanguage(lang) here to avoid race condition
+    // useLanguageFromPath will sync the language from URL after reload
     const basePath = getPathWithoutLang(location.pathname);
     const newPath = lang === 'en' ? basePath : `/${lang}${basePath === '/' ? '' : basePath}`;
 
