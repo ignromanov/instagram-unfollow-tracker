@@ -24,9 +24,9 @@ vi.mock('@/lib/store', () => ({
   useAppStore: vi.fn(),
 }));
 
-// Mock locales exports
+// Mock locales exports - must match src/config/languages.ts
 vi.mock('@/locales', () => ({
-  SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de'] as const,
+  SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de', 'ar'] as const,
   LANGUAGE_NAMES: {
     en: 'English',
     es: 'Español',
@@ -37,6 +37,7 @@ vi.mock('@/locales', () => ({
     ja: '日本語',
     ru: 'Русский',
     de: 'Deutsch',
+    ar: 'العربية',
   },
 }));
 

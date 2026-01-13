@@ -28,7 +28,7 @@ export async function initI18n(): Promise<void> {
 
   initPromise = (async () => {
     // Dynamic imports for English (creates separate chunk)
-    const [common, hero, wizard, upload, results, faq, howto] = await Promise.all([
+    const [common, hero, wizard, upload, results, faq, howto, meta] = await Promise.all([
       import('./en/common.json'),
       import('./en/hero.json'),
       import('./en/wizard.json'),
@@ -36,6 +36,7 @@ export async function initI18n(): Promise<void> {
       import('./en/results.json'),
       import('./en/faq.json'),
       import('./en/howto.json'),
+      import('./en/meta.json'),
     ]);
 
     await i18n
@@ -51,11 +52,12 @@ export async function initI18n(): Promise<void> {
             results: results.default,
             faq: faq.default,
             howto: howto.default,
+            meta: meta.default,
           },
         },
         fallbackLng: 'en',
         defaultNS: 'common',
-        ns: ['common', 'hero', 'wizard', 'upload', 'results', 'faq', 'howto'],
+        ns: ['common', 'hero', 'wizard', 'upload', 'results', 'faq', 'howto', 'meta'],
         interpolation: {
           escapeValue: false,
         },
@@ -94,7 +96,7 @@ export async function loadLanguage(lang: SupportedLanguage): Promise<void> {
 
   try {
     // Dynamic imports for lazy loading
-    const [common, hero, wizard, upload, results, faq, howto] = await Promise.all([
+    const [common, hero, wizard, upload, results, faq, howto, meta] = await Promise.all([
       import(`./${lang}/common.json`),
       import(`./${lang}/hero.json`),
       import(`./${lang}/wizard.json`),
@@ -102,6 +104,7 @@ export async function loadLanguage(lang: SupportedLanguage): Promise<void> {
       import(`./${lang}/results.json`),
       import(`./${lang}/faq.json`),
       import(`./${lang}/howto.json`),
+      import(`./${lang}/meta.json`),
     ]);
 
     // Add resources to i18next
@@ -112,6 +115,7 @@ export async function loadLanguage(lang: SupportedLanguage): Promise<void> {
     i18n.addResourceBundle(lang, 'results', results.default);
     i18n.addResourceBundle(lang, 'faq', faq.default);
     i18n.addResourceBundle(lang, 'howto', howto.default);
+    i18n.addResourceBundle(lang, 'meta', meta.default);
 
     // Change language
     await i18n.changeLanguage(lang);

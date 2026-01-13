@@ -41,3 +41,30 @@ export const RTL_LANGUAGES: SupportedLanguage[] = ['ar'];
 
 /** Default/fallback language */
 export const DEFAULT_LANGUAGE: SupportedLanguage = 'en';
+
+/**
+ * OpenGraph locale codes for each language
+ * Format: language_COUNTRY (ISO 639-1 + ISO 3166-1 alpha-2)
+ * Used for og:locale meta tags in SSG
+ */
+export const LOCALE_CODES: Record<SupportedLanguage, string> = {
+  en: 'en_US',
+  es: 'es_ES',
+  pt: 'pt_BR',
+  ru: 'ru_RU',
+  de: 'de_DE',
+  hi: 'hi_IN',
+  ja: 'ja_JP',
+  tr: 'tr_TR',
+  id: 'id_ID',
+  ar: 'ar_SA',
+};
+
+/**
+ * Get locale code for a language
+ * @param lang - Language code (e.g., 'es', 'ru')
+ * @returns Locale code (e.g., 'es_ES', 'ru_RU')
+ */
+export function getLocaleCode(lang: string): string {
+  return LOCALE_CODES[lang as SupportedLanguage] || 'en_US';
+}

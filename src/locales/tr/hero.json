@@ -1,11 +1,11 @@
 {
   "version": "V1.5 1.000.000+ Hesap İçin Optimize Edildi",
   "headline": {
-    "prefix": "Kim",
-    "highlight": "Takibi Bıraktı",
-    "suffix": "Giriş Yapmadan Öğren"
+    "prefix": "Gör",
+    "highlight": "Instagram Takipten Çıkanları",
+    "suffix": "— Giriş Yok"
   },
-  "subheadline": "Instagram ZIP dosyanızı giriş yapmadan yerel olarak analiz eden tek ücretsiz araç. %100 Gizli. Hesap riski yok. Sunucu depolaması yok.",
+  "subheadline": "Instagram'da seni kimin takipten çıkardığını öğren — ücretsiz, giriş yok. ZIP yükle, yerel analiz. %100 gizli. Çevrimdışı çalışır.",
   "buttons": {
     "getGuide": "Takibi Bırakanları Ücretsiz Gör",
     "trySample": "Örnek Veriyle Dene",

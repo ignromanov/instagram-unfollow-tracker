@@ -1,11 +1,11 @@
 {
   "version": "V1.5 Dioptimalkan untuk 1.000.000+ Akun",
   "headline": {
-    "prefix": "Siapa yang",
-    "highlight": "Berhenti Follow",
+    "prefix": "Lihat Siapa yang",
+    "highlight": "Unfollow di Instagram",
     "suffix": "Tanpa Login"
   },
-  "subheadline": "Satu-satunya alat gratis yang menganalisis file ZIP Instagram Anda secara lokal tanpa login. 100% Privat. Tanpa risiko akun. Tanpa penyimpanan server.",
+  "subheadline": "Cek siapa yang unfollow kamu di Instagram — gratis, tanpa login. Upload ZIP, analisis lokal. 100% privat. Berfungsi offline.",
   "buttons": {
     "getGuide": "Cek Unfollowers Gratis",
     "trySample": "Coba dengan Sampel",

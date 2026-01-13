@@ -8,9 +8,9 @@ vi.mock('react-router-dom', () => ({
   useLocation: vi.fn(),
 }));
 
-// Mock locales
+// Mock locales - must match src/config/languages.ts
 vi.mock('@/locales', () => ({
-  SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'ru'],
+  SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de', 'ar'] as const,
 }));
 
 describe('useLanguagePrefix', () => {

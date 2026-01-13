@@ -1,9 +1,9 @@
 {
   "zone": {
     "back": "Atrás",
-    "title": "Sube tus datos",
-    "description": "Tus datos permanecen 100% privados. Analizamos todo localmente en tu navegador.",
-    "dropHere": "Arrastra tu ZIP de Instagram",
+    "title": "Sube tu ZIP de Instagram",
+    "description": "Tus datos permanecen 100% privados. Analizamos tu archivo ZIP de Instagram localmente en tu navegador.",
+    "dropHere": "Arrastra tu archivo ZIP de Instagram aquí",
     "orBrowse": "O toca para buscar en tu almacenamiento local.",
     "jsonOnly": "Solo formato JSON",
     "processing": "Analizando localmente...",

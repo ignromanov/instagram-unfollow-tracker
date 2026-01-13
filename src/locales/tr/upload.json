@@ -1,8 +1,8 @@
 {
   "zone": {
     "back": "Geri",
-    "title": "Verilerini Yükle",
-    "description": "Verilerin %100 gizli kalır. Her şeyi tarayıcında yerel olarak analiz ediyoruz.",
+    "title": "Instagram ZIP Yükle",
+    "description": "Verilerin %100 gizli kalır. Instagram ZIP dosyanı tarayıcında yerel olarak analiz ediyoruz.",
     "dropHere": "Instagram ZIP dosyanı buraya bırak",
     "orBrowse": "Veya yerel depolamana göz atmak için dokun.",
     "jsonOnly": "Sadece JSON Formatı",

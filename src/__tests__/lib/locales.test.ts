@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/config/languages';
 
 const LOCALES_DIR = path.resolve(__dirname, '../../locales');
 
-const SUPPORTED_LANGUAGES = ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de'] as const;
 const REQUIRED_NAMESPACES = [
   'common',
   'hero',
@@ -12,9 +12,9 @@ const REQUIRED_NAMESPACES = [
   'results',
   'faq',
   'howto',
+  'meta',
 ] as const;
 
-type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 type Namespace = (typeof REQUIRED_NAMESPACES)[number];
 
 /**

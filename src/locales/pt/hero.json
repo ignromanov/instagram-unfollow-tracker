@@ -1,11 +1,11 @@
 {
   "version": "V1.5 Otimizado para mais de 1.000.000 de Contas",
   "headline": {
-    "prefix": "Descubra quem",
+    "prefix": "Descubra Quem",
     "highlight": "Parou de Te Seguir no Instagram",
-    "suffix": "Sem Precisar de Login."
+    "suffix": "Sem Login"
   },
-  "subheadline": "O único rastreador grátis que analisa seu arquivo ZIP do Instagram localmente sem login. 100% Privado. Sem risco para sua conta. Sem servidores.",
+  "subheadline": "Descubra quem parou de te seguir no Instagram gratis, sem login. Envie seu ZIP, analise localmente. 100% privado. Funciona offline.",
   "buttons": {
     "getGuide": "Ver Quem Deixou de Seguir Grátis",
     "trySample": "Testar com Exemplo",

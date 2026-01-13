@@ -1,9 +1,9 @@
 {
   "zone": {
     "back": "Zurück",
-    "title": "Deine Daten hochladen",
-    "description": "Deine Daten bleiben 100% privat. Wir analysieren alles lokal in deinem Browser.",
-    "dropHere": "Instagram-ZIP hier ablegen",
+    "title": "Instagram ZIP hochladen",
+    "description": "Deine Daten bleiben 100% privat. Wir analysieren deine Instagram ZIP-Datei lokal in deinem Browser.",
+    "dropHere": "Instagram ZIP-Datei hier ablegen",
     "orBrowse": "Oder tippen, um deine Dateien zu durchsuchen.",
     "jsonOnly": "Nur JSON-Format",
     "processing": "Lokal analysieren...",

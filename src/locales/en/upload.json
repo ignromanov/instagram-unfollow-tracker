@@ -1,9 +1,9 @@
 {
   "zone": {
     "back": "Back",
-    "title": "Upload Your Data",
-    "description": "Your data remains 100% private. We analyze everything locally in your browser.",
-    "dropHere": "Drop your Instagram ZIP",
+    "title": "Upload Your Instagram ZIP",
+    "description": "Your data remains 100% private. We analyze your Instagram ZIP file locally in your browser.",
+    "dropHere": "Drop your Instagram ZIP file here",
     "orBrowse": "Or tap to browse your local storage.",
     "jsonOnly": "JSON Format Only",
     "processing": "Analyzing locally...",

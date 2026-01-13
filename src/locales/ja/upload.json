@@ -1,9 +1,9 @@
 {
   "zone": {
     "back": "戻る",
-    "title": "データをアップロード",
-    "description": "データは100%プライベートです。すべてブラウザ内でローカル分析します。",
-    "dropHere": "InstagramのZIPをドロップ",
+    "title": "Instagram ZIPをアップロード",
+    "description": "データは100%プライベートです。Instagram ZIPファイルをブラウザ内でローカル分析します。",
+    "dropHere": "Instagram ZIPファイルをここにドロップ",
     "orBrowse": "またはタップしてローカルストレージを参照",
     "jsonOnly": "JSON形式のみ",
     "processing": "ローカルで分析中...",

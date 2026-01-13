@@ -1,4 +1,5 @@
 import react from "@vitejs/plugin-react";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { VitePWA } from "vite-plugin-pwa";
@@ -104,7 +105,7 @@ export default defineConfig({
       preload: "swap",
     },
 
-    // Hook to inject correct canonical, hreflang, and og:image tags for each page
+    // Hook to inject localized meta tags, canonical, hreflang for each page
     async onPageRendered(route, renderedHTML) {
       const BASE_URL = "https://safeunfollow.app";
       const SUPPORTED_LANGUAGES = [
@@ -119,6 +120,47 @@ export default defineConfig({
         "de",
       ];
 
+      // Locale codes for og:locale meta tags
+      const LOCALE_CODES: Record<string, string> = {
+        en: "en_US",
+        es: "es_ES",
+        pt: "pt_BR",
+        ru: "ru_RU",
+        de: "de_DE",
+        hi: "hi_IN",
+        ja: "ja_JP",
+        tr: "tr_TR",
+        id: "id_ID",
+      };
+
+      // Helper to get locale code
+      function getLocaleCode(lang: string): string {
+        return LOCALE_CODES[lang] || "en_US";
+      }
+
+      // Helper to escape HTML entities in meta content
+      function escapeHtml(text: string): string {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      // Helper to load meta.json for a language
+      function loadMetaJson(lang: string): Record<string, string> {
+        try {
+          const metaPath = path.join(__dirname, "src", "locales", lang, "meta.json");
+          const content = fs.readFileSync(metaPath, "utf-8");
+          return JSON.parse(content);
+        } catch {
+          // Fallback to English
+          const enPath = path.join(__dirname, "src", "locales", "en", "meta.json");
+          const content = fs.readFileSync(enPath, "utf-8");
+          return JSON.parse(content);
+        }
+      }
+
       // Normalize route for canonical URL
       const canonicalPath = route === "/" ? "" : route.replace(/\/$/, "");
       const canonicalUrl = `${BASE_URL}${canonicalPath || "/"}`;
@@ -128,9 +170,20 @@ export default defineConfig({
       const basePath = route.replace(langPrefixPattern, "/") || "/";
       const normalizedBasePath = basePath === "/" ? "" : basePath;
 
-      // Extract language from route for og:image
+      // Extract language from route
       const langMatch = route.match(/^\/(es|pt|hi|id|tr|ja|ru|de)(\/|$)/);
       const currentLang = langMatch ? langMatch[1] : "en";
+
+      // Load localized meta tags
+      const metaTags = loadMetaJson(currentLang);
+      const escapedTitle = escapeHtml(metaTags.title || "Instagram Unfollowers");
+      const escapedDescription = escapeHtml(metaTags.description || "");
+      const escapedKeywords = escapeHtml(metaTags.keywords || "");
+      const escapedOgTitle = escapeHtml(metaTags.ogTitle || metaTags.title || "");
+      const escapedTwitterDesc = escapeHtml(
+        metaTags.twitterDescription || metaTags.description || ""
+      );
+      const localeCode = getLocaleCode(currentLang);
 
       // Generate hreflang links
       const hreflangLinks = SUPPORTED_LANGUAGES.map((lang) => {
@@ -148,21 +201,93 @@ export default defineConfig({
       // Canonical link
       const canonicalLink = `<link rel="canonical" href="${canonicalUrl}"/>`;
 
-      // Inject into head (before </head>)
+      // Build og:locale:alternate list (excluding current language)
+      const alternateLocales = Object.values(LOCALE_CODES)
+        .filter((locale) => locale !== localeCode)
+        .map((locale) => `<meta property="og:locale:alternate" content="${locale}"/>`)
+        .join("\n    ");
+
+      // SEO tags to inject before </head>
       const seoTags = `
-    <!-- SSG SEO: canonical and hreflang -->
+    <!-- SSG SEO: canonical, hreflang, og:locale -->
     ${canonicalLink}
     ${hreflangLinks}
     ${xDefaultLink}
+    <meta property="og:locale" content="${localeCode}"/>
+    ${alternateLocales}
   `;
 
-      // Replace og:image URL with language parameter
+      // OG image URL with language parameter
       const ogImageUrl = `${BASE_URL}/api/og?lang=${currentLang}`;
-      let html = renderedHTML.replace(
-        /<meta property="og:image" content="[^"]*"/,
+
+      // Replace all meta tags in HTML
+      let html = renderedHTML;
+
+      // 1. Replace <title>
+      html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapedTitle}</title>`);
+
+      // 2. Replace <meta name="description">
+      html = html.replace(
+        /<meta\s+name="description"\s+content="[^"]*"/,
+        `<meta name="description" content="${escapedDescription}"`
+      );
+
+      // 3. Replace <meta name="keywords">
+      html = html.replace(
+        /<meta\s+name="keywords"\s+content="[^"]*"/,
+        `<meta name="keywords" content="${escapedKeywords}"`
+      );
+
+      // 4. Replace <meta property="og:title">
+      html = html.replace(
+        /<meta\s+property="og:title"\s+content="[^"]*"/,
+        `<meta property="og:title" content="${escapedOgTitle}"`
+      );
+
+      // 5. Replace <meta property="og:description">
+      html = html.replace(
+        /<meta\s+property="og:description"\s+content="[^"]*"/,
+        `<meta property="og:description" content="${escapedDescription}"`
+      );
+
+      // 6. Replace <meta property="og:image">
+      html = html.replace(
+        /<meta\s+property="og:image"\s+content="[^"]*"/,
         `<meta property="og:image" content="${ogImageUrl}"`
       );
 
+      // 7. Replace <meta property="og:url">
+      html = html.replace(
+        /<meta\s+property="og:url"\s+content="[^"]*"/,
+        `<meta property="og:url" content="${canonicalUrl}"`
+      );
+
+      // 8. Replace <meta name="twitter:title">
+      html = html.replace(
+        /<meta\s+name="twitter:title"\s+content="[^"]*"/,
+        `<meta name="twitter:title" content="${escapedOgTitle}"`
+      );
+
+      // 9. Replace <meta name="twitter:description">
+      html = html.replace(
+        /<meta\s+name="twitter:description"\s+content="[^"]*"/,
+        `<meta name="twitter:description" content="${escapedTwitterDesc}"`
+      );
+
+      // 10. Replace <meta name="twitter:image">
+      html = html.replace(
+        /<meta\s+name="twitter:image"\s+content="[^"]*"/,
+        `<meta name="twitter:image" content="${ogImageUrl}"`
+      );
+
+      // Remove old og:locale and og:locale:alternate (will be added in seoTags)
+      html = html.replace(/<meta\s+property="og:locale"\s+content="[^"]*"\s*\/?>\s*/g, "");
+      html = html.replace(
+        /<meta\s+property="og:locale:alternate"\s+content="[^"]*"\s*\/?>\s*/g,
+        ""
+      );
+
+      // Inject SEO tags before </head>
       return html.replace("</head>", `${seoTags}</head>`);
     },
   },

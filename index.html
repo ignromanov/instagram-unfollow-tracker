@@ -3,14 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Check who unfollowed you on Instagram without login. Upload your ZIP file, see unfollowers instantly. 100% free, privacy-first, handles 1M+ accounts. Works offline."
-    />
-    <meta
-      name="keywords"
-      content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers, instagram data export, privacy, open source, free"
-    />
+    <!-- Meta tags below are replaced by vite.config.ts onPageRendered for each language -->
+    <meta name="description" content="Check who unfollowed you on Instagram without login. Upload your ZIP file, see unfollowers instantly. 100% free, privacy-first, handles 1M+ accounts." />
+    <meta name="keywords" content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers" />
     <meta name="theme-color" content="#4E7EF5" />
 
     <!-- Favicon -->
@@ -22,42 +17,28 @@
     <meta name="apple-mobile-web-app-title" content="Instagram Unfollow" />
     <!-- PWA manifest is injected by vite-plugin-pwa -->
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook (replaced by SSG for each language) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://safeunfollow.app/" />
     <meta property="og:title" content="Instagram Unfollowers — Free ZIP Upload, No Login" />
-    <meta
-      property="og:description"
-      content="Find who unfollowed you on Instagram. 100% free, 100% private, handles 1M+ accounts. No login required, works offline."
-    />
+    <meta property="og:description" content="Find who unfollowed you on Instagram. 100% free, 100% private, handles 1M+ accounts." />
     <meta property="og:site_name" content="Safe Unfollow" />
     <meta property="og:image" content="https://safeunfollow.app/api/og" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:locale:alternate" content="es_ES" />
-    <meta property="og:locale:alternate" content="pt_BR" />
-    <meta property="og:locale:alternate" content="hi_IN" />
-    <meta property="og:locale:alternate" content="id_ID" />
-    <meta property="og:locale:alternate" content="tr_TR" />
-    <meta property="og:locale:alternate" content="ja_JP" />
-    <meta property="og:locale:alternate" content="ru_RU" />
-    <meta property="og:locale:alternate" content="de_DE" />
+    <!-- og:locale and og:locale:alternate injected by SSG -->
 
-    <!-- Twitter -->
+    <!-- Twitter (replaced by SSG for each language) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://safeunfollow.app/" />
     <meta name="twitter:title" content="Instagram Unfollowers — Free ZIP Upload, No Login" />
-    <meta
-      name="twitter:description"
-      content="Find Instagram unfollowers in your browser. Free forever, no login, handles millions. Privacy-first and open source."
-    />
+    <meta name="twitter:description" content="Find Instagram unfollowers in your browser. Free forever, no login, handles millions." />
     <meta name="twitter:image" content="https://safeunfollow.app/api/og" />
 
     <!-- Additional SEO -->
     <meta name="author" content="Ignat Romanov" />
     <meta name="robots" content="index, follow" />
-    <!-- canonical is set dynamically per page via vite-react-ssg Head component -->
+    <!-- canonical, hreflang injected by vite.config.ts onPageRendered -->
     <title>Instagram Unfollowers — Free ZIP Upload, No Login Required</title>
 
     <!-- Schema.org structured data: SoftwareApplication -->
@@ -75,7 +56,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "softwareVersion": "1.3.0",
+        "softwareVersion": "1.5.0",
         "author": {
           "@type": "Person",
           "name": "Ignat Romanov",
