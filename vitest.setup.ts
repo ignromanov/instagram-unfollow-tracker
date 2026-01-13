@@ -181,17 +181,17 @@ global.Worker = class MockWorker {
     this.onerror = () => {};
   }
 
-  postMessage(msg: any) {
-    // console.log('Worker.postMessage', msg);
+  postMessage(_msg: unknown) {
+    // Mock: no-op
   }
 
   terminate() {
-    // console.log('Worker.terminate');
+    // Mock: no-op
   }
 
-  addEventListener(type: string, listener: EventListener) {}
-  removeEventListener(type: string, listener: EventListener) {}
-  dispatchEvent(event: Event): boolean {
+  addEventListener(_type: string, _listener: EventListener) {}
+  removeEventListener(_type: string, _listener: EventListener) {}
+  dispatchEvent(_event: Event): boolean {
     return true;
   }
 } as any;

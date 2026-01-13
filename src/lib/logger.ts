@@ -3,6 +3,8 @@
  * Only logs in development mode to keep production builds clean
  */
 
+/* eslint-disable no-console */
+
 const isDev = import.meta.env.DEV;
 
 export const logger = {
