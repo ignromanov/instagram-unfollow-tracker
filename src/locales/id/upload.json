@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "Kembali",
+    "title": "Unggah ZIP Instagram Anda",
+    "description": "Data Anda tetap 100% privat. Kami menganalisis file ZIP Instagram Anda secara lokal di browser Anda.",
+    "dropHere": "Letakkan file ZIP Instagram Anda di sini",
+    "orBrowse": "Atau ketuk untuk menjelajahi penyimpanan lokal Anda.",
+    "jsonOnly": "Format JSON Saja",
+    "processing": "Menganalisis secara lokal...",
+    "processingHint": "Memproses dataset besar (hingga 1 juta+) bisa memakan waktu sebentar.",
+    "ariaLabel": "Unggah file ZIP data Instagram"
+  },
+  "checklist": {
+    "title": "Checklist Sebelum Unggah",
+    "format": "Format: JSON (bukan HTML)",
+    "includes": "Berisi: 'Pengikut dan mengikuti'",
+    "timeframe": "Rentang waktu: 'Sepanjang Waktu'",
+    "fileType": "Tipe file: .zip"
+  },
+  "errors": {
+    "commonTitle": "Kesalahan Paling Umum",
+    "commonHint": "Jika ekspor Anda memiliki 0 pengikut, kemungkinan Anda mengekspor dalam format <strong>HTML</strong> atau tidak memilih kategori informasi \"Pengikut dan mengikuti\".",
+    "learnFix": "Pelajari cara memperbaiki"
+  },
+  "diagnostic": {
+    "back": "Kembali",
+    "howToFix": "Cara memperbaiki ini",
+    "tryAgain": "Coba Lagi",
+    "showMistakes": "Tunjukkan Kesalahan Saya",
+    "commonMistakes": "Kesalahan Umum",
+    "mistakes": {
+      "html": {
+        "title": "HTML bukan JSON",
+        "description": "Pastikan memilih format \"JSON\" saat meminta data Anda"
+      },
+      "missingData": {
+        "title": "Kategori data tidak ada",
+        "description": "Anda perlu memilih \"Pengikut dan mengikuti\" di tipe data"
+      },
+      "wrongFile": {
+        "title": "File salah",
+        "description": "Unggah file .zip, bukan folder atau file yang sudah diekstrak"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Menunggu Instagram...",
+    "description": "Instagram sedang menyiapkan ekspor data Anda. Anda akan menerima email dalam 48 jam (biasanya lebih cepat!).",
+    "addReminder": "Tambah Pengingat ke Kalender",
+    "reminderHint": "Ingatkan saya untuk cek dalam 2 hari",
+    "calendarTitle": "Cek Email Ekspor Instagram",
+    "calendarDetails": "Cek email untuk ekspor data Instagram dan unggah ke Unfollow Tracker",
+    "haveFile": "Sudah punya file Anda?",
+    "haveFileHint": "Jika Anda sudah mengunduh ekspor ZIP dari email, langsung ke analisis.",
+    "uploadNow": "Unggah Sekarang",
+    "proTip": "Tips Pro: Cek Folder Spam",
+    "proTipHint": "Email Instagram sering masuk ke sana. Cari email dari <b>Meta</b> atau <b>Instagram</b>. Link unduhan kadaluarsa dalam 4 hari.",
+    "skip": "Lewati untuk saat ini"
+  }
+}

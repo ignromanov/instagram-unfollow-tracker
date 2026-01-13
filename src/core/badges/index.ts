@@ -38,8 +38,8 @@ function buildAccountBadges(
   username: string,
   parsed: ParsedAll,
   derived: ReturnType<typeof computeDerivedRelationships>
-): Partial<Record<BadgeKey, number | true>> {
-  const badges: Partial<Record<BadgeKey, number | true>> = {};
+): AccountBadges['badges'] {
+  const badges: Record<string, number | true> = {};
 
   // Core relationship badges (with timestamps when available)
   if (parsed.following.has(username))
@@ -62,7 +62,7 @@ function buildAccountBadges(
   if (derived.notFollowedBack.has(username)) badges.notFollowedBack = true;
   if (derived.mutuals.has(username)) badges.mutuals = true;
 
-  return badges;
+  return badges as AccountBadges['badges'];
 }
 
 export function buildAccountBadgeIndex(parsed: ParsedAll): AccountBadges[] {
@@ -115,32 +115,43 @@ export const BADGE_ORDER: readonly BadgeKey[] = [
   'dismissed',
 ] as const;
 
-// Human-readable labels for each badge type
+// Human-readable labels for each badge type (V2 naming)
 export const BADGE_LABELS: Record<BadgeKey, string> = {
   following: 'Following',
-  followers: 'Followers',
-  mutuals: 'Mutuals',
-  notFollowingBack: 'Not following back',
-  notFollowedBack: 'Not followed back',
-  pending: 'Pending request',
-  permanent: 'Pending (permanent)',
+  followers: 'Follower',
+  mutuals: 'Mutual',
+  notFollowingBack: 'Not Following Back',
+  notFollowedBack: 'Fan',
+  pending: 'Pending',
+  permanent: 'Removed',
   restricted: 'Restricted',
-  close: 'Close friend',
-  unfollowed: 'Recently unfollowed',
-  dismissed: 'Dismissed suggestion',
+  close: 'Close Friend',
+  unfollowed: 'Unfollowed You',
+  dismissed: 'Dismissed',
 } as const;
 
-// Color scheme for each badge type in UI
+// V3 Color scheme using OKLCH for perceptual uniformity
 export const BADGE_COLORS: Record<BadgeKey, string> = {
-  following: 'blue', // Neutral - normal following
-  followers: 'green', // Positive - people follow you
-  mutuals: 'grape', // Special - mutual relationships
-  notFollowingBack: 'red', // Warning - one-sided following
-  notFollowedBack: 'orange', // Caution - potential unfollow
-  pending: 'yellow', // Waiting - pending state
-  permanent: 'yellow', // Waiting - permanent pending
-  restricted: 'pink', // Special - restricted accounts
-  close: 'teal', // Special - close friends
-  unfollowed: 'orange', // Historical - recently unfollowed
-  dismissed: 'gray', // Neutral - dismissed suggestions
+  following:
+    'bg-[oklch(0.6_0.15_250_/_0.12)] text-[oklch(0.6_0.15_250)] border-[oklch(0.6_0.15_250_/_0.2)]',
+  followers:
+    'bg-[oklch(0.7_0.15_150_/_0.12)] text-[oklch(0.6_0.18_150)] border-[oklch(0.7_0.15_150_/_0.2)]',
+  mutuals:
+    'bg-[oklch(0.6_0.18_264_/_0.12)] text-[oklch(0.6_0.18_264)] border-[oklch(0.6_0.18_264_/_0.2)]',
+  notFollowingBack:
+    'bg-[oklch(0.6_0.2_25_/_0.12)] text-[oklch(0.6_0.2_25)] border-[oklch(0.6_0.2_25_/_0.2)]',
+  notFollowedBack:
+    'bg-[oklch(0.75_0.15_80_/_0.12)] text-[oklch(0.7_0.18_80)] border-[oklch(0.75_0.15_80_/_0.2)]',
+  pending:
+    'bg-[oklch(0.7_0.15_50_/_0.12)] text-[oklch(0.65_0.18_50)] border-[oklch(0.7_0.15_50_/_0.2)]',
+  permanent:
+    'bg-[oklch(0.55_0.2_25_/_0.12)] text-[oklch(0.55_0.2_25)] border-[oklch(0.55_0.2_25_/_0.2)]',
+  restricted:
+    'bg-[oklch(0.5_0_0_/_0.12)] text-[oklch(0.4_0_0)] dark:text-[oklch(0.8_0_0)] border-[oklch(0.5_0_0_/_0.2)]',
+  close:
+    'bg-[oklch(0.65_0.2_340_/_0.12)] text-[oklch(0.65_0.2_340)] border-[oklch(0.65_0.2_340_/_0.2)]',
+  unfollowed:
+    'bg-[oklch(0.6_0.22_25_/_0.15)] text-[oklch(0.55_0.25_25)] border-[oklch(0.6_0.22_25_/_0.3)] font-bold',
+  dismissed:
+    'bg-[oklch(0.5_0.05_250_/_0.12)] text-[oklch(0.5_0.05_250)] border-[oklch(0.5_0.05_250_/_0.2)]',
 } as const;

@@ -77,14 +77,26 @@ describe('useFileUpload', () => {
     const { buildAccountBadgeIndex } = await import('@/core/badges');
 
     vi.mocked(parseInstagramZipFile).mockResolvedValue({
-      following: new Set(['user1']),
-      followers: new Set(['user2']),
-      pendingSent: new Map(),
-      permanentRequests: new Map(),
-      restricted: new Map(),
-      closeFriends: new Map(),
-      unfollowed: new Map(),
-      dismissed: new Map(),
+      data: {
+        following: new Set(['user1']),
+        followers: new Set(['user2']),
+        pendingSent: new Map(),
+        permanentRequests: new Map(),
+        restricted: new Map(),
+        closeFriends: new Map(),
+        unfollowed: new Map(),
+        dismissedSuggestions: new Map(),
+        followingTimestamps: new Map(),
+        followersTimestamps: new Map(),
+      },
+      warnings: [],
+      discovery: {
+        format: 'json',
+        isInstagramExport: true,
+        basePath: '',
+        files: [],
+      },
+      hasMinimalData: true,
     });
 
     vi.mocked(buildAccountBadgeIndex).mockReturnValue([
@@ -406,7 +418,7 @@ describe('useFileUpload', () => {
 
       const { unmount } = renderHook(() => useFileUpload());
 
-      // Wait for WorkerConsole script load and worker initialization
+      // Wait for worker initialization
       await new Promise(resolve => setTimeout(resolve, 150));
 
       expect(WorkerConstructor).toHaveBeenCalled();
@@ -434,7 +446,7 @@ describe('useFileUpload', () => {
 
       renderHook(() => useFileUpload());
 
-      // Wait for WorkerConsole script load and ready message
+      // Wait for worker initialization and ready message
       await new Promise(resolve => setTimeout(resolve, 150));
 
       expect(mockWorker.addEventListener).toHaveBeenCalledWith('message', expect.any(Function));
@@ -453,7 +465,7 @@ describe('useFileUpload', () => {
 
       renderHook(() => useFileUpload());
 
-      // Wait for WorkerConsole script load and worker initialization
+      // Wait for worker initialization
       await new Promise(resolve => setTimeout(resolve, 150));
 
       // Worker should still be initialized even without ready message
@@ -472,7 +484,7 @@ describe('useFileUpload', () => {
       expect(result.current).toBeDefined();
     });
 
-    it('should load WorkerConsole script', async () => {
+    it('should initialize worker', async () => {
       const mockWorker = {
         postMessage: vi.fn(),
         addEventListener: vi.fn(),
@@ -485,13 +497,11 @@ describe('useFileUpload', () => {
 
       renderHook(() => useFileUpload());
 
-      // Wait for WorkerConsole script load and worker initialization
+      // Wait for worker initialization
       await new Promise(resolve => setTimeout(resolve, 150));
 
       // Worker should be created successfully
       expect((global as any).Worker).toHaveBeenCalled();
-      // Verify that document.createElement was called to create script element
-      expect(document.createElement).toHaveBeenCalledWith('script');
     });
   });
 
@@ -560,7 +570,7 @@ describe('useFileUpload', () => {
 
       const { result } = renderHook(() => useFileUpload());
 
-      // Wait for WorkerConsole script load and worker initialization
+      // Wait for worker initialization
       await new Promise(resolve => setTimeout(resolve, 150));
 
       // Simulate ready message
@@ -613,7 +623,7 @@ describe('useFileUpload', () => {
 
       const { result } = renderHook(() => useFileUpload());
 
-      // Wait for WorkerConsole script load and worker initialization
+      // Wait for worker initialization
       await new Promise(resolve => setTimeout(resolve, 150));
 
       // Simulate ready message

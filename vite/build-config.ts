@@ -1,0 +1,95 @@
+import type { BuildOptions } from 'vite';
+
+/**
+ * Helper: Check if module is a Radix core primitive
+ */
+function isRadixCorePrimitive(id: string): boolean {
+  const corePatterns = [
+    '@radix-ui/primitive',
+    '@radix-ui/react-primitive',
+    '@radix-ui/react-slot',
+    '@radix-ui/react-compose-refs',
+    '@radix-ui/react-context',
+    '@radix-ui/react-id',
+    '@radix-ui/react-use-',
+    '@radix-ui/react-presence',
+    '@radix-ui/react-portal',
+    '@radix-ui/react-focus-',
+    '@radix-ui/react-dismissable-layer',
+    '@radix-ui/react-popper',
+  ];
+  return corePatterns.some(pattern => id.includes(pattern));
+}
+
+/**
+ * Helper: Determine Radix UI chunk name
+ */
+function getRadixChunk(id: string): string | undefined {
+  if (isRadixCorePrimitive(id)) return 'radix-core';
+
+  if (id.includes('@radix-ui/react-dialog') || id.includes('@radix-ui/react-alert-dialog')) {
+    return 'radix-dialog';
+  }
+
+  if (id.includes('@radix-ui/react-dropdown-menu') || id.includes('@radix-ui/react-menu')) {
+    return 'radix-menu';
+  }
+
+  if (id.includes('@radix-ui/react-accordion')) return 'radix-accordion';
+  if (id.includes('@radix-ui/react-tabs')) return 'radix-tabs';
+  if (id.includes('@radix-ui/react-collapsible')) return 'radix-accordion';
+
+  if (id.includes('@radix-ui')) return 'radix-core';
+
+  return undefined;
+}
+
+/**
+ * Helper: Determine vendor chunk name
+ */
+function getVendorChunk(id: string): string | undefined {
+  if (id.includes('lucide-react')) return 'icons';
+
+  if (id.includes('zustand') || id.includes('clsx') || id.includes('tailwind-merge')) {
+    return 'utils';
+  }
+
+  return undefined;
+}
+
+/**
+ * Production build configuration with optimizations
+ * - Source maps for debugging
+ * - Terser minification with console.log removal
+ * - Manual chunk splitting for optimal caching
+ */
+export const buildConfig: BuildOptions = {
+  // Enable source maps for detailed bundle analysis
+  sourcemap: true,
+  // Optimize bundle size while keeping source maps
+  minify: 'terser',
+  terserOptions: {
+    compress: {
+      drop_console: true, // Remove console.log in production
+      drop_debugger: true, // Remove debugger statements
+    },
+  },
+  // Prevent JS file generation during build
+  emptyOutDir: true,
+  // Rollup options for better tree shaking
+  rollupOptions: {
+    // Exclude test files from build
+    external: id => {
+      return id.includes('.test.') || id.includes('.spec.') || id.includes('__tests__');
+    },
+    output: {
+      // Manual chunk splitting for better caching
+      // Note: react/react-dom excluded - they're externalized during SSR build
+      manualChunks: id => {
+        if (!id.includes('node_modules')) return undefined;
+
+        return getRadixChunk(id) ?? getVendorChunk(id);
+      },
+    },
+  },
+};

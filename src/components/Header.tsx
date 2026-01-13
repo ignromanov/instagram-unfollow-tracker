@@ -1,18 +1,5 @@
 'use client';
 
-import type React from 'react';
-import {
-  Shield,
-  Users,
-  TrendingDown,
-  Trash2,
-  Github,
-  UserCheck,
-  ShieldCheck,
-  FileArchive,
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,166 +11,173 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { DocumentationLink } from './DocumentationLink';
-import { HelpButton } from './HelpButton';
-import { Logo } from './Logo';
-import { useHeaderData } from '@/hooks/useHeaderData';
-import type { StatCardProps } from '@/types/components';
+import { AppState } from '@/core/types';
+import { analytics } from '@/lib/analytics';
+import { LayoutDashboard, Moon, ShieldCheck, Sun, SunMoon, Trash2, Upload } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface HeaderProps {
-  onHelpClick: () => void;
+  hasData?: boolean;
+  onViewResults?: () => void;
+  onClear?: () => void;
+  onUpload?: () => void;
+  onLogoClick?: () => void;
+  activeScreen?: AppState;
 }
 
-export function Header({ onHelpClick }: HeaderProps) {
-  const {
-    hasData,
-    shouldShowClearButton,
-    fileName,
-    fileSize,
-    uploadDate,
-    uploadStatus,
-    stats,
-    onClearData,
-  } = useHeaderData();
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+export function Header({
+  hasData = false,
+  onViewResults,
+  onClear,
+  onUpload,
+  onLogoClick,
+  activeScreen = AppState.HERO,
+}: HeaderProps) {
+  const { t } = useTranslation('common');
+  const { theme, setTheme } = useTheme();
+
+  // Prevent hydration mismatch - theme is unknown on server
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const handleThemeToggle = () => {
+    // Cycle: system → light → dark → system
+    const nextTheme = theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system';
+    setTheme(nextTheme);
+    analytics.themeToggle(nextTheme);
   };
 
-  const formatRelativeTime = (date: Date | string) => {
-    const now = new Date();
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    const diffMs = now.getTime() - dateObj.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return 'just now';
-    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  const handleClear = () => {
+    analytics.clearData();
+    onClear?.();
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <Logo size={40} />
-            <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground">
-              Instagram Unfollow Tracker
-            </h1>
+    <header className="sticky top-0 z-[80] w-full border-b border-border bg-card/80 backdrop-blur-md">
+      <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
+        {/* Logo */}
+        <div
+          className="flex items-center gap-3 cursor-pointer group"
+          onClick={onLogoClick}
+          role="button"
+          tabIndex={0}
+          aria-label={t('header.logoAria')}
+          onKeyDown={e => e.key === 'Enter' && onLogoClick?.()}
+        >
+          <div className="w-9 h-9 md:w-10 md:h-10 rounded-2xl bg-gradient-brand flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all">
+            <ShieldCheck size={22} strokeWidth={2.5} />
           </div>
-          <p className="text-pretty text-muted-foreground">
-            Analyze your Instagram connections privately in your browser
-          </p>
-          {hasData && fileName && fileSize && uploadDate && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <FileArchive className="h-4 w-4" />
-              <span className="font-medium">{fileName}</span>
-              <span>•</span>
-              <span>{formatFileSize(fileSize)}</span>
-              <span>•</span>
-              <span>Uploaded {formatRelativeTime(uploadDate)}</span>
-            </div>
-          )}
+          <span className="font-display font-extrabold text-xl md:text-2xl tracking-tight hidden sm:block">
+            SafeUnfollow<span className="text-primary">.app</span>
+          </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <HelpButton onClick={onHelpClick} />
-          <DocumentationLink />
-          {shouldShowClearButton && onClearData && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" className="gap-1.5">
-                  <Trash2 className="h-4 w-4" />
-                  {uploadStatus === 'loading' ? 'Cancel Upload' : 'Clear Data'}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>
-                    {uploadStatus === 'loading'
-                      ? 'Cancel upload and clear data?'
-                      : 'Clear all data?'}
-                  </AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {uploadStatus === 'loading'
-                      ? 'This will cancel the current upload and clear any existing data. This action cannot be undone.'
-                      : 'This will remove all loaded Instagram data and return you to the file upload screen. This action cannot be undone.'}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={onClearData}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+        {/* Actions */}
+        <div className="flex items-center gap-2 md:gap-4">
+          {hasData ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onViewResults}
+                className={`cursor-pointer flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+                  activeScreen === AppState.RESULTS
+                    ? 'bg-primary text-white shadow-md'
+                    : 'text-zinc-500 hover:bg-[oklch(0.5_0_0_/_0.05)]'
+                }`}
+              >
+                <LayoutDashboard size={18} />
+                <span className="hidden md:inline">{t('buttons.viewResults')}</span>
+              </button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    className="cursor-pointer flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all"
+                    title={t('header.deleteData')}
                   >
-                    {uploadStatus === 'loading' ? 'Cancel & Clear' : 'Clear Data'}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                    <Trash2 size={18} />
+                    <span className="hidden md:inline">{t('buttons.delete')}</span>
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <div className="mx-auto w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center mb-2">
+                      <Trash2 size={28} className="text-rose-500" />
+                    </div>
+                    <AlertDialogTitle>{t('header.clearDataTitle')}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t('header.clearDataDescription')}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t('buttons.cancel')}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleClear}
+                      className="bg-rose-500 text-white hover:bg-rose-600"
+                    >
+                      {t('buttons.clearData')}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          ) : (
+            <button
+              onClick={onUpload}
+              className={`cursor-pointer flex items-center gap-2 px-4 py-2.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${
+                activeScreen === AppState.UPLOAD
+                  ? 'bg-primary text-white shadow-md'
+                  : 'text-zinc-500 hover:bg-[oklch(0.5_0_0_/_0.05)]'
+              }`}
+            >
+              <Upload size={18} />
+              <span className="hidden md:inline">{t('buttons.uploadFile')}</span>
+            </button>
           )}
+
+          {/* Divider */}
+          <div className="w-[1px] h-6 md:h-8 bg-border" />
+
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
+          {/* Theme Toggle */}
+          <button
+            onClick={handleThemeToggle}
+            className="cursor-pointer p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
+            title={
+              mounted
+                ? theme === 'system'
+                  ? t('theme.system')
+                  : theme === 'light'
+                    ? t('theme.dark')
+                    : t('theme.light')
+                : ''
+            }
+            aria-label={
+              mounted
+                ? theme === 'system'
+                  ? t('theme.system')
+                  : theme === 'light'
+                    ? t('theme.dark')
+                    : t('theme.light')
+                : ''
+            }
+          >
+            {/* Render placeholder before mount to avoid hydration mismatch */}
+            {!mounted ? (
+              <div className="w-5 h-5" />
+            ) : theme === 'system' ? (
+              <SunMoon size={20} />
+            ) : theme === 'light' ? (
+              <Moon size={20} />
+            ) : (
+              <Sun size={20} />
+            )}
+          </button>
         </div>
       </div>
-
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-        <Badge variant="secondary" className="gap-1.5 justify-center">
-          <Shield className="h-3.5 w-3.5" />
-          100% Private
-        </Badge>
-        <Badge variant="secondary" className="gap-1.5 justify-center">
-          <Github className="h-3.5 w-3.5" />
-          Open Source
-        </Badge>
-        <Badge variant="secondary" className="gap-1.5 justify-center">
-          <UserCheck className="h-3.5 w-3.5" />
-          No Login Required
-        </Badge>
-        <Badge variant="secondary" className="gap-1.5 justify-center">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          Local Processing
-        </Badge>
-      </div>
-
-      {hasData && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Following" value={stats.following} icon={Users} color="blue" />
-          <StatCard label="Followers" value={stats.followers} icon={Users} color="green" />
-          <StatCard label="Mutuals" value={stats.mutuals} icon={Users} color="purple" />
-          <StatCard
-            label="Not Following Back"
-            value={stats.notFollowingBack}
-            icon={TrendingDown}
-            color="red"
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function StatCard({ label, value, icon: Icon, color }: StatCardProps) {
-  const colorClasses = {
-    blue: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
-    green: 'bg-green-500/10 text-green-600 dark:text-green-400',
-    purple: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
-    red: 'bg-red-500/10 text-red-600 dark:text-red-400',
-  };
-
-  return (
-    <div className="rounded-lg border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">{label}</p>
-          <p className="text-3xl font-bold text-card-foreground">{value.toLocaleString()}</p>
-        </div>
-        <div className={`rounded-full p-3 ${colorClasses[color]}`}>
-          <Icon className="h-6 w-6" />
-        </div>
-      </div>
-    </div>
+    </header>
   );
 }

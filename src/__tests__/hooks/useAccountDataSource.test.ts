@@ -177,8 +177,10 @@ describe('useAccountDataSource', () => {
       const account = result.current.getAccount(0);
       expect(account).toBeUndefined();
 
+      // logger.error adds '[App]' prefix, so args are: '[App]', message, error
       await waitFor(() => {
         expect(consoleError).toHaveBeenCalledWith(
+          '[App]',
           '[Account Data Source] Error loading range:',
           expect.any(Error)
         );
@@ -208,16 +210,17 @@ describe('useAccountDataSource', () => {
       expect(account).toBeUndefined();
 
       // Wait for error to be logged
-      // Both error paths may be called: one from getRange's .then().catch()
-      // and one from getAccount's .catch()
+      // logger.error adds '[App]' prefix, so call[0] is '[App]' and call[1] is the actual message
       await waitFor(() => {
         expect(consoleError).toHaveBeenCalled();
-        // Either error message is acceptable
+        // Either error message is acceptable (check both call[0] and call[1] for compatibility)
         const calls = consoleError.mock.calls;
         const hasError = calls.some(
           call =>
             call[0] === '[Account Data Source] Failed to load slice:' ||
-            call[0] === '[Account Data Source] Error loading range:'
+            call[0] === '[Account Data Source] Error loading range:' ||
+            call[1] === '[Account Data Source] Failed to load slice:' ||
+            call[1] === '[Account Data Source] Error loading range:'
         );
         expect(hasError).toBe(true);
       });

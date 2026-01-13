@@ -1,16 +1,38 @@
-import { ThemeProvider } from '@/components/theme-provider';
-import { App } from '@/ui/App';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { ViteReactSSG } from 'vite-react-ssg';
+import { routes } from './routes';
+import { initI18n } from './locales';
+import { loadUmami } from './lib/umami-loader';
 import './styles.css';
 
-const container = document.getElementById('root');
-if (!container) throw new Error('Root container not found');
+/**
+ * SSG Entry Point
+ *
+ * ViteReactSSG handles:
+ * - Static site generation at build time
+ * - Client-side hydration
+ * - React Router integration
+ *
+ * Routes are prerendered based on routes.tsx configuration
+ * ThemeProvider is applied in Layout component
+ */
+export const createRoot = ViteReactSSG(
+  {
+    routes,
+    basename: import.meta.env.BASE_URL,
+    // React Router v7 future flags
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    },
+  },
+  async ({ isClient }) => {
+    // Initialize i18n (loads English resources dynamically)
+    await initI18n();
 
-createRoot(container).render(
-  <React.StrictMode>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>
+    // Client-side only initialization
+    if (isClient) {
+      // Load analytics (respects user opt-out)
+      loadUmami();
+    }
+  }
 );

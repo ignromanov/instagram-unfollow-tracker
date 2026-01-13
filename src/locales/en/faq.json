@@ -1,0 +1,93 @@
+{
+  "title": "Frequently Asked Questions",
+  "items": {
+    "howToFind": {
+      "question": "How to check who unfollowed you on Instagram without app?",
+      "answer": "Open Meta Accounts Center → Create export → Select your profile → Choose \"Export to device\" → Select only \"Followers and following\" → Set format to JSON. Download the ZIP when ready (usually 5-30 minutes), then upload it here. The tool analyzes followers locally—see unfollowers instantly. No login needed.",
+      "relatedLink": {
+        "text": "Start the export guide",
+        "href": "/wizard"
+      }
+    },
+    "withoutDownload": {
+      "question": "Can I check Instagram unfollowers without data download or apps?",
+      "answer": "No. Instagram doesn't provide a native unfollower list. The only safe methods are: (1) Manually checking followed accounts vs followers, or (2) Using your official data download with this tool. This tracker makes method 2 instant and free—no password, no login, no account risk.",
+      "relatedLink": {
+        "text": "Learn how to get your data",
+        "href": "/wizard"
+      }
+    },
+    "privacy": {
+      "question": "How does Instagram unfollower tracker work without login?",
+      "answer": "This tracker uses your official Instagram data export (ZIP file) to analyze followers locally in your browser. No login required. All processing happens on your device—your data never reaches our servers. This method is safe because it uses Instagram's official export tool, not password scraping.",
+      "relatedLink": {
+        "text": "Read our privacy policy",
+        "href": "/privacy"
+      }
+    },
+    "safety": {
+      "question": "Is it safe to use Instagram unfollower tracker apps?",
+      "answer": "Yes, if they use your official Instagram data export. Apps requiring your Instagram password violate Terms of Service and pose security risks. Safe trackers use only the ZIP file from Instagram's Data Download tool—no login, no password required. This tool uses that method exclusively.",
+      "relatedLink": {
+        "text": "Read our privacy policy",
+        "href": "/privacy"
+      }
+    },
+    "dataIncluded": {
+      "question": "What data does Instagram include in my data download file?",
+      "answer": "The ZIP file contains your profile info, followers list, following list, comments, posts, messages, saved items, and more. For unfollower tracking, the key files are followers_1.json (your followers) and following.json (who you follow). The tracker uses these two files to identify unfollowers and non-mutuals."
+    },
+    "zipFile": {
+      "question": "What is Instagram data download and why use it?",
+      "answer": "Instagram Data Download (via Meta Accounts Center) is the official tool for exporting your account information including followers and following lists. It's the only safe, authorized way to access this data without risking your account. Apps that ask for your password violate Instagram's Terms of Service.",
+      "relatedLink": {
+        "text": "Follow our step-by-step guide",
+        "href": "/wizard"
+      }
+    },
+    "accountSafety": {
+      "question": "Will my Instagram account be safe using this tracker?",
+      "answer": "Yes, 100% safe. Unlike apps that ask for your password and 'scrape' data (which violates Terms of Service), this tool uses your official data export. No login required—you download the ZIP directly from Instagram, then upload it locally to your browser. We never access your account.",
+      "relatedLink": {
+        "text": "View our terms",
+        "href": "/terms"
+      }
+    },
+    "downloadTime": {
+      "question": "How long does it take to receive my Instagram data download?",
+      "answer": "Meta typically sends your data within 5-30 minutes via email. Larger accounts or high server load may take up to a few hours. After you download the ZIP, uploading it to this tracker for analysis is instant—processing takes seconds even for million-account exports thanks to local browser processing.",
+      "relatedLink": {
+        "text": "Set a calendar reminder",
+        "href": "/wizard/step/8"
+      }
+    },
+    "scale": {
+      "question": "What size Instagram account export can you analyze?",
+      "answer": "This tracker handles exports up to 1,000,000+ accounts. We use columnar storage and bitset indexing for lightning-fast filtering—processing massive datasets in under 5ms. Whether you have 100 followers or 1M+, the tool remains fast and responsive. Tested and verified with real exports.",
+      "relatedLink": {
+        "text": "Try with sample data",
+        "href": "/sample"
+      }
+    },
+    "free": {
+      "question": "Are there free Instagram unfollower trackers?",
+      "answer": "Yes. This tool is 100% free, open-source (MIT license), and includes no subscriptions, paywalls, or hidden limits. Most alternatives charge $5-10/month. This tracker uses your official Instagram data export processed locally, eliminating server costs entirely. View our code on GitHub."
+    },
+    "analyzeData": {
+      "question": "How do I analyze my Instagram data download to find unfollowers?",
+      "answer": "Upload your Instagram ZIP file to this tracker. The tool unpacks your follower/following lists locally in your browser, compares them, and highlights who unfollowed you. Results show unfollowers, non-mutuals, mutual followers, and more—all processed offline with zero server involvement. Takes under 30 seconds for typical exports.",
+      "relatedLink": {
+        "text": "Upload your file now",
+        "href": "/upload"
+      }
+    },
+    "shareDataSafely": {
+      "question": "Is it safe to upload Instagram data download to third-party tools?",
+      "answer": "Yes, if the app processes data locally in your browser without uploading to servers. This tracker processes your ZIP file entirely on your device—no servers store or access your data. Never upload your ZIP to cloud-based unfollower trackers. Always verify the app processes data locally and doesn't require login.",
+      "relatedLink": {
+        "text": "Read our privacy commitment",
+        "href": "/privacy"
+      }
+    }
+  }
+}

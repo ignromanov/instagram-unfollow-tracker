@@ -1,0 +1,60 @@
+{
+  "title": "<gradient>Instagram Takibi Bırakanlarını</gradient> Nasıl Kontrol Edersin",
+  "subtitle": "Şifreni paylaşmadan hesabını güvenle analiz etmek için bu 9 basit adımı izle.",
+  "important": "Kritik",
+  "openStep": "Adımı rehberde aç",
+  "uploadButton": "Dosyamı Yükle",
+  "openStepAria": "Adım {{step}}: {{title}}. Açmak için tıkla",
+  "steps": {
+    "1": {
+      "title": "Instagram Dışa Aktarma Sayfasını Aç",
+      "description": "Meta Hesap Merkezi'ni açmak için butona tıkla. Ardından \"Dışa aktarma oluştur\" seçeneğine tıkla."
+    },
+    "2": {
+      "title": "Instagram Profilini Seç",
+      "description": "Hesap Merkezi'ndeki bağlı profiller listesinden Instagram hesabını seç."
+    },
+    "3": {
+      "title": "\"Cihaza dışa aktar\" Seç",
+      "description": "Doğrudan cihazına dışa aktar. Verilerin gizli ve güvende kalır."
+    },
+    "4": {
+      "title": "Sadece \"Takipçiler ve takip edilenler\" Seç",
+      "description": "\"Özelleştir\" tıkla → Hepsini temizle → SADECE \"Takipçiler ve takip edilenler\" işaretle. Dosyanı kompakt tutar."
+    },
+    "5": {
+      "title": "Tarih Aralığını \"Tüm zamanlar\" Olarak Ayarla",
+      "description": "\"Tarih aralığı\" tıkla → \"Tüm zamanlar\" seç → Kaydet. Tam geçmişi sağlar."
+    },
+    "6": {
+      "title": "Formatı JSON Olarak Değiştir",
+      "description": "Kritik adım! \"Format\" tıkla → \"JSON\" seç (HTML değil). HTML dosyaları ÇALIŞMAZ."
+    },
+    "7": {
+      "title": "Kontrol Et ve Dışa Aktarmayı Başlat",
+      "description": "Ayarları kontrol et: Takipçiler ve takip edilenler, Tüm zamanlar, JSON. Ardından \"Dışa aktarmayı başlat\" tıkla."
+    },
+    "8": {
+      "title": "E-postayı Bekle ve İndir",
+      "description": "Instagram hazır olduğunda e-posta gönderir (5-30 dk). E-posta bağlantısından ZIP dosyasını indir."
+    },
+    "9": {
+      "title": "Dosyanızı Yükleyin",
+      "description": "Hazırsınız! Instagram verilerinizi yüklemek için aşağıdaki butona tıklayın."
+    }
+  },
+  "cta": {
+    "title": "Başlamaya hazır mısın?",
+    "subtitle": "Veri dışa aktarımını saniyeler içinde gizlice analiz et.",
+    "button": "Analiz Rehberini Aç"
+  },
+  "schema": {
+    "name": "Instagram'da Seni Kimin Takibi Bıraktığını Giriş Yapmadan Nasıl Kontrol Edersin",
+    "description": "Resmi veri dışa aktarımını kullanarak Instagram takibi bırakanları bulma adım adım rehberi. Giriş gerekmez, %100 gizli.",
+    "supplies": {
+      "account": "Instagram hesabı",
+      "email": "E-posta erişimi"
+    },
+    "tool": "Instagram Unfollow Tracker (bu web sitesi)"
+  }
+}

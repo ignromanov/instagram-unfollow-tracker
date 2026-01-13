@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "वापस",
+    "title": "Instagram ZIP अपलोड करें",
+    "description": "आपका डेटा 100% प्राइवेट रहता है। हम आपकी Instagram ZIP फाइल को आपके ब्राउज़र में लोकली एनालाइज़ करते हैं।",
+    "dropHere": "अपनी Instagram ZIP फाइल यहां ड्रॉप करें",
+    "orBrowse": "या लोकल स्टोरेज से ब्राउज़ करने के लिए टैप करें।",
+    "jsonOnly": "सिर्फ JSON फॉर्मेट",
+    "processing": "लोकली एनालाइज़ हो रहा है...",
+    "processingHint": "बड़े डेटासेट (10 लाख+ तक) को प्रोसेस करने में कुछ समय लग सकता है।",
+    "ariaLabel": "Instagram डेटा ZIP फाइल अपलोड करें"
+  },
+  "checklist": {
+    "title": "अपलोड से पहले चेकलिस्ट",
+    "format": "फॉर्मेट: JSON (HTML नहीं)",
+    "includes": "शामिल है: 'Followers and following'",
+    "timeframe": "समय सीमा: 'All Time'",
+    "fileType": "फाइल टाइप: .zip"
+  },
+  "errors": {
+    "commonTitle": "सबसे आम गलती",
+    "commonHint": "अगर आपके एक्सपोर्ट में 0 फॉलोअर्स हैं, तो शायद आपने <strong>HTML</strong> फॉर्मेट में एक्सपोर्ट किया है या \"Followers and following\" कैटेगरी नहीं चुनी।",
+    "learnFix": "ठीक करना सीखें"
+  },
+  "diagnostic": {
+    "back": "वापस",
+    "howToFix": "इसे कैसे ठीक करें",
+    "tryAgain": "फिर से कोशिश करें",
+    "showMistakes": "मेरी गलती दिखाएं",
+    "commonMistakes": "आम गलतियां",
+    "mistakes": {
+      "html": {
+        "title": "JSON की जगह HTML",
+        "description": "डेटा रिक्वेस्ट करते समय \"JSON\" फॉर्मेट ज़रूर चुनें"
+      },
+      "missingData": {
+        "title": "डेटा कैटेगरी मिसिंग",
+        "description": "डेटा टाइप्स में \"Followers and following\" चुनना ज़रूरी है"
+      },
+      "wrongFile": {
+        "title": "गलत फाइल",
+        "description": ".zip फाइल अपलोड करें, फोल्डर या एक्सट्रैक्ट की गई फाइल्स नहीं"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Instagram का इंतज़ार...",
+    "description": "Instagram आपका डेटा एक्सपोर्ट तैयार कर रहा है। आपको 48 घंटे के अंदर ईमेल मिलेगा (आमतौर पर जल्दी!)।",
+    "addReminder": "कैलेंडर में रिमाइंडर जोड़ें",
+    "reminderHint": "मुझे 2 दिन में याद दिलाओ",
+    "calendarTitle": "Instagram एक्सपोर्ट ईमेल चेक करें",
+    "calendarDetails": "Instagram डेटा एक्सपोर्ट के लिए ईमेल चेक करें और Unfollow Tracker पर अपलोड करें",
+    "haveFile": "आपके पास फाइल है?",
+    "haveFileHint": "अगर आपने पहले से ईमेल से ZIP एक्सपोर्ट डाउनलोड कर लिया है, तो सीधे एनालिसिस पर जाएं।",
+    "uploadNow": "अभी अपलोड करें",
+    "proTip": "प्रो टिप: स्पैम फोल्डर चेक करें",
+    "proTipHint": "Instagram के ईमेल अक्सर वहां चले जाते हैं। <b>Meta</b> या <b>Instagram</b> से ईमेल देखें। डाउनलोड लिंक 4 दिन में एक्सपायर हो जाता है।",
+    "skip": "अभी छोड़ें"
+  }
+}

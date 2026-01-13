@@ -1,0 +1,60 @@
+{
+  "title": "So prüfst du deine <gradient>Instagram-Entfolger</gradient>",
+  "subtitle": "Folge diesen 9 einfachen Schritten, um dein Konto sicher zu analysieren, ohne dein Passwort zu teilen.",
+  "important": "Kritisch",
+  "openStep": "Schritt in Anleitung öffnen",
+  "uploadButton": "Meine Datei hochladen",
+  "openStepAria": "Schritt {{step}}: {{title}}. Klicken zum Öffnen",
+  "steps": {
+    "1": {
+      "title": "Instagram Export-Seite öffnen",
+      "description": "Klicke auf den Button, um das Meta-Kontencenter zu öffnen. Klicke dann auf \"Export erstellen\"."
+    },
+    "2": {
+      "title": "Wähle dein Instagram-Profil",
+      "description": "Wähle dein Instagram-Konto aus der Liste der verbundenen Profile im Kontencenter."
+    },
+    "3": {
+      "title": "Wähle \"Auf Gerät exportieren\"",
+      "description": "Wähle den direkten Export auf dein Gerät. Das hält deine Daten privat und sicher."
+    },
+    "4": {
+      "title": "Wähle nur \"Follower und Gefolgte\"",
+      "description": "Klicke auf \"Anpassen\" → Alles abwählen → NUR \"Follower und Gefolgte\" auswählen. Das hält deine Datei kompakt."
+    },
+    "5": {
+      "title": "Setze den Zeitraum auf \"Gesamter Zeitraum\"",
+      "description": "Klicke auf \"Zeitraum\" → Wähle \"Gesamter Zeitraum\" → Speichern. Das stellt die komplette Historie sicher."
+    },
+    "6": {
+      "title": "Ändere das Format auf JSON",
+      "description": "Kritischer Schritt! Klicke auf \"Format\" → Wähle \"JSON\" (nicht HTML). HTML-Dateien funktionieren NICHT."
+    },
+    "7": {
+      "title": "Überprüfen & Export starten",
+      "description": "Überprüfe die Einstellungen: Follower und Gefolgte, Gesamter Zeitraum, JSON. Klicke dann auf \"Export starten\"."
+    },
+    "8": {
+      "title": "Auf E-Mail warten & herunterladen",
+      "description": "Instagram schickt dir eine E-Mail, wenn es fertig ist (5-30 Min). Lade die ZIP-Datei über den E-Mail-Link herunter."
+    },
+    "9": {
+      "title": "Lade deine Datei hoch",
+      "description": "Du bist bereit! Klicke auf den Button unten, um deine Instagram-Daten hochzuladen."
+    }
+  },
+  "cta": {
+    "title": "Bereit loszulegen?",
+    "subtitle": "Analysiere deinen Datenexport privat in Sekunden.",
+    "button": "Analyse-Anleitung öffnen"
+  },
+  "schema": {
+    "name": "So prüfst du, wer dir auf Instagram entfolgt ist — ohne Login",
+    "description": "Schritt-für-Schritt-Anleitung zum Finden von Instagram-Entfolgern mit deinem offiziellen Datenexport. Kein Login erforderlich, 100% privat.",
+    "supplies": {
+      "account": "Instagram-Konto",
+      "email": "E-Mail-Zugang"
+    },
+    "tool": "Instagram Unfollow Tracker (diese Website)"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "Voltar",
+    "title": "Envie seu ZIP do Instagram",
+    "description": "Seus dados permanecem 100% privados. Analisamos seu arquivo ZIP do Instagram localmente no seu navegador.",
+    "dropHere": "Arraste seu arquivo ZIP do Instagram aqui",
+    "orBrowse": "Ou toque para procurar no seu armazenamento local.",
+    "jsonOnly": "Apenas Formato JSON",
+    "processing": "Analisando localmente...",
+    "processingHint": "O processamento de grandes conjuntos de dados (até 1M+) pode levar um momento.",
+    "ariaLabel": "Enviar arquivo ZIP de dados do Instagram"
+  },
+  "checklist": {
+    "title": "Checklist Pré-envio",
+    "format": "Formato: JSON (não HTML)",
+    "includes": "Inclui: 'Seguidores e seguindo'",
+    "timeframe": "Período: 'Todo o período'",
+    "fileType": "Tipo de arquivo: .zip"
+  },
+  "errors": {
+    "commonTitle": "Erro Mais Comum",
+    "commonHint": "Se sua exportação mostra 0 seguidores, você provavelmente exportou no formato <strong>HTML</strong> ou não selecionou a categoria de informações \"Seguidores e seguindo\".",
+    "learnFix": "Saiba como corrigir"
+  },
+  "diagnostic": {
+    "back": "Voltar",
+    "howToFix": "Como corrigir isso",
+    "tryAgain": "Tentar Novamente",
+    "showMistakes": "Mostrar Onde Eu Errei",
+    "commonMistakes": "Erros Comuns",
+    "mistakes": {
+      "html": {
+        "title": "HTML em vez de JSON",
+        "description": "Certifique-se de selecionar o formato \"JSON\" ao solicitar seus dados"
+      },
+      "missingData": {
+        "title": "Categoria de dados faltando",
+        "description": "Você precisa selecionar \"Seguidores e seguindo\" nos tipos de dados"
+      },
+      "wrongFile": {
+        "title": "Arquivo errado",
+        "description": "Envie o arquivo .zip, não uma pasta ou arquivos extraídos"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Aguardando o Instagram...",
+    "description": "O Instagram está preparando sua exportação de dados. Você receberá um e-mail em até 48 horas (geralmente é muito mais rápido!).",
+    "addReminder": "Adicionar Lembrete ao Calendário",
+    "reminderHint": "Me lembrar de verificar em 2 dias",
+    "calendarTitle": "Verificar E-mail de Exportação do Instagram",
+    "calendarDetails": "Verificar e-mail da exportação de dados do Instagram e enviar para o Unfollow Tracker",
+    "haveFile": "Já tem seu arquivo?",
+    "haveFileHint": "Se você já baixou a exportação ZIP do seu e-mail, vá direto para a análise.",
+    "uploadNow": "Enviar Agora",
+    "proTip": "Dica: Verifique a Pasta de Spam",
+    "proTipHint": "E-mails do Instagram frequentemente vão parar lá. Procure por e-mails de <b>Meta</b> ou <b>Instagram</b>. O link de download expira em 4 dias.",
+    "skip": "Pular por enquanto"
+  }
+}

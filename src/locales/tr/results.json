@@ -1,0 +1,121 @@
+{
+  "header": {
+    "title": "Analiz Sonuçları",
+    "fileInfo": "{{filename}} • {{count, number}} Toplam",
+    "showing": "{{filtered}} / {{total}} hesap gösteriliyor"
+  },
+  "sample": {
+    "banner": "Örnek Veri Görüntüleniyor",
+    "hint": "Bu, uygulamayı keşfetmene yardımcı olan demo verisidir.",
+    "uploadPrompt": "Verilerini yükle",
+    "toSeeReal": "gerçek takipçilerini görmek için."
+  },
+  "search": {
+    "placeholder": "Kullanıcı adı ara...",
+    "ariaLabel": "Hesapları kullanıcı adına göre ara",
+    "clearAriaLabel": "Aramayı temizle",
+    "resultsCount": "{{result}} / {{total}} gösteriliyor",
+    "accounts": "hesap",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "A→Z Sırala",
+    "desc": "Z→A Sırala"
+  },
+  "stats": {
+    "followers": "Takipçiler",
+    "following": "Takip Edilenler",
+    "unfollowed": "Takibi Bırakanlar",
+    "notFollowing": "Takip Etmeyenler"
+  },
+  "filters": {
+    "title": "Sonuçları Filtrele",
+    "reset": "Sıfırla",
+    "emptyCategories": "Boş Kategoriler ({{count, number}})",
+    "addFilter": "{{label}} filtresi ekle ({{count, number}} hesap)",
+    "removeFilter": "{{label}} filtresini kaldır ({{count, number}} hesap)"
+  },
+  "badges": {
+    "followers": "Takipçiler",
+    "following": "Takip edilenler",
+    "unfollowed": "Son takibi bırakanlar",
+    "notFollowingBack": "Geri takip etmeyenler",
+    "mutuals": "Karşılıklı takip",
+    "notFollowedBack": "Seni takip etmeyenler",
+    "pending": "Bekleyen istek",
+    "permanent": "Bekleyen (kalıcı)",
+    "restricted": "Kısıtlanmış",
+    "close": "Yakın arkadaş",
+    "dismissed": "Reddedilen öneri"
+  },
+  "empty": {
+    "noUsers": "Kullanıcı bulunamadı",
+    "resetFilters": "Filtreleri Sıfırla"
+  },
+  "list": {
+    "header": "Hesaplar ({{count, number}})",
+    "viewProfile": "Profili Görüntüle"
+  },
+  "rescue": {
+    "critical": {
+      "title": "%{{unfollowedPercent}} kaybettiniz — işte nasıl kurtarırsınız",
+      "subtitle": {
+        "influencer": "{{count}}+ takipçiyle her kayıp erişiminizi etkiler. 7 günde kurtarın:",
+        "power": "Üst seviyedesiniz — akıllı içerik üreticileri bunlarla hızla toparlanır:",
+        "regular": "Kaybı durdurun ve topluluğunuzu geri kazanın:",
+        "casual": "Küçük kitle = hızlı toparlanma. Şimdi başlayın:"
+      }
+    },
+    "warning": {
+      "title": "%{{unfollowedPercent}} düşüş tespit edildi — optimize etme zamanı",
+      "subtitle": {
+        "influencer": "Sizin ölçeğinizde erken optimizasyon daha büyük kayıpları önler:",
+        "power": "Erken yakalayın — en iyi içerik üreticilerinin kullandıkları:",
+        "regular": "Uzaklaşmadan kitlenizi koruyun:",
+        "casual": "Şimdi daha güçlü bağlantılar kurun:"
+      }
+    },
+    "growth": {
+      "title": "Sadece %{{unfollowedPercent}} kayıp — harika gidiyorsunuz!",
+      "subtitle": {
+        "influencer": "Profesyonel araçlarla erişiminizi ölçeklendirin:",
+        "power": "Sonraki seviyeye hazır mısınız? İşte araç setiniz:",
+        "regular": "Tutarlılık oluşturun ve 2 kat daha hızlı büyüyün:",
+        "casual": "Büyüme yolculuğunuza doğru şekilde başlayın:"
+      }
+    },
+    "tools": {
+      "submagic": "Klipleri viral Reels'e dönüştürün → 3-5x daha fazla erişim",
+      "predis": "AI gönderi + tasarım oluşturur → 3x daha hızlı içerik",
+      "manychat": "7/24 otomatik yanıt → haftada 10+ saat tasarruf",
+      "metricool": "En iyi zamanlarınızı bulun → %40 daha hızlı büyüme",
+      "vistacreate": "60 saniyede profesyonel tasarım → hiç gönderi kaçırmayın",
+      "later": "1 saatte ayınızı planlayın → tutarlı kalın"
+    },
+    "dismiss": "Belki sonra",
+    "disclaimer": "Önerdiğimiz el yapımı seçilmiş araçlar. Ortaklık bağlantıları ücretsiz güncellemeleri finanse eder — size ekstra maliyet yok.",
+    "ariaLabel": "Instagram varlığınızı geliştirmek için önerilen araçlar",
+    "badges": {
+      "popular": "Popüler",
+      "trial": "Deneme",
+      "new": "Yeni"
+    },
+    "recommended": "Önerilen",
+    "tryTool": "{{name}} Dene",
+    "price": {
+      "freeTrial7": "7 gün ücretsiz",
+      "freeTrial14": "14 gün ücretsiz",
+      "freePlan": "Ücretsiz plan",
+      "freeContacts": "1K'ya kadar ücretsiz",
+      "freeForever": "Hep ücretsiz"
+    },
+    "social": {
+      "creators50k": "50K+ üretici",
+      "posts1m": "1M+ gönderi",
+      "businesses1m": "1M+ işletme",
+      "users200k": "200K+ kullanıcı",
+      "designs10m": "10M+ tasarım",
+      "users7m": "7M+ kullanıcı"
+    }
+  }
+}

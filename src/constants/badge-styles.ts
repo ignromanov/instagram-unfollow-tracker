@@ -1,18 +1,29 @@
 import type { BadgeKey } from '@/core/types';
 
-// Single source of truth for badge styles
+// Single source of truth for badge styles - V3 OKLCH color palette
 const BADGE_STYLE_MAP: Record<BadgeKey, string> = {
-  following: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
-  followers: 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20',
-  mutuals: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
-  notFollowingBack: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20',
-  notFollowedBack: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20',
-  pending: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20',
-  permanent: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20',
-  restricted: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20',
-  close: 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20',
-  unfollowed: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20',
-  dismissed: 'bg-gray-500/10 text-gray-600 dark:text-gray-400 border-gray-500/20',
+  following:
+    'bg-[oklch(0.6_0.15_250_/_0.12)] text-[oklch(0.6_0.15_250)] border-[oklch(0.6_0.15_250_/_0.2)]',
+  followers:
+    'bg-[oklch(0.7_0.15_150_/_0.12)] text-[oklch(0.6_0.18_150)] border-[oklch(0.7_0.15_150_/_0.2)]',
+  mutuals:
+    'bg-[oklch(0.6_0.18_264_/_0.12)] text-[oklch(0.6_0.18_264)] border-[oklch(0.6_0.18_264_/_0.2)]',
+  notFollowingBack:
+    'bg-[oklch(0.6_0.2_25_/_0.12)] text-[oklch(0.6_0.2_25)] border-[oklch(0.6_0.2_25_/_0.2)]',
+  notFollowedBack:
+    'bg-[oklch(0.75_0.15_80_/_0.12)] text-[oklch(0.7_0.18_80)] border-[oklch(0.75_0.15_80_/_0.2)]',
+  unfollowed:
+    'bg-[oklch(0.6_0.22_25_/_0.15)] text-[oklch(0.55_0.25_25)] border-[oklch(0.6_0.22_25_/_0.3)] font-bold',
+  pending:
+    'bg-[oklch(0.7_0.15_50_/_0.12)] text-[oklch(0.65_0.18_50)] border-[oklch(0.7_0.15_50_/_0.2)]',
+  permanent:
+    'bg-[oklch(0.55_0.2_25_/_0.12)] text-[oklch(0.55_0.2_25)] border-[oklch(0.55_0.2_25_/_0.2)]',
+  restricted:
+    'bg-[oklch(0.5_0_0_/_0.12)] text-[oklch(0.4_0_0)] dark:text-[oklch(0.8_0_0)] border-[oklch(0.5_0_0_/_0.2)]',
+  close:
+    'bg-[oklch(0.65_0.2_340_/_0.12)] text-[oklch(0.65_0.2_340)] border-[oklch(0.65_0.2_340_/_0.2)]',
+  dismissed:
+    'bg-[oklch(0.5_0.05_250_/_0.12)] text-[oklch(0.5_0.05_250)] border-[oklch(0.5_0.05_250_/_0.2)]',
 };
 
 // Generated exports for different component needs

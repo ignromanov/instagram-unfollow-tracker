@@ -1,0 +1,121 @@
+{
+  "header": {
+    "title": "Analyseergebnisse",
+    "fileInfo": "{{filename}} • {{count, number}} Gesamt",
+    "showing": "Zeige {{filtered}} von {{total}} Accounts"
+  },
+  "sample": {
+    "banner": "Demo-Daten anzeigen",
+    "hint": "Dies sind Beispieldaten, um die App zu erkunden.",
+    "uploadPrompt": "Lade deine Daten hoch",
+    "toSeeReal": "um deine echten Follower zu sehen."
+  },
+  "search": {
+    "placeholder": "Benutzernamen suchen...",
+    "ariaLabel": "Accounts nach Benutzername suchen",
+    "clearAriaLabel": "Suche löschen",
+    "resultsCount": "Zeige {{result}} von {{total}}",
+    "accounts": "Accounts",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Sortieren A→Z",
+    "desc": "Sortieren Z→A"
+  },
+  "stats": {
+    "followers": "Follower",
+    "following": "Folge ich",
+    "unfollowed": "Entfolgt",
+    "notFollowing": "Folgt nicht"
+  },
+  "filters": {
+    "title": "Ergebnisse filtern",
+    "reset": "Zurücksetzen",
+    "emptyCategories": "Leere Kategorien ({{count, number}})",
+    "addFilter": "Filter {{label}} hinzufügen ({{count, number}} Accounts)",
+    "removeFilter": "Filter {{label}} entfernen ({{count, number}} Accounts)"
+  },
+  "badges": {
+    "followers": "Follower",
+    "following": "Folge ich",
+    "unfollowed": "Kürzlich entfolgt",
+    "notFollowingBack": "Folgt dir nicht zurück",
+    "mutuals": "Gegenseitig",
+    "notFollowedBack": "Du folgst nicht zurück",
+    "pending": "Ausstehende Anfrage",
+    "permanent": "Ausstehend (permanent)",
+    "restricted": "Eingeschränkt",
+    "close": "Enge Freunde",
+    "dismissed": "Abgelehnter Vorschlag"
+  },
+  "empty": {
+    "noUsers": "Keine Benutzer gefunden",
+    "resetFilters": "Filter zurücksetzen"
+  },
+  "list": {
+    "header": "Konten ({{count, number}})",
+    "viewProfile": "Profil ansehen"
+  },
+  "rescue": {
+    "critical": {
+      "title": "Du hast {{unfollowedPercent}}% verloren — so holst du sie zurück",
+      "subtitle": {
+        "influencer": "Mit {{count}}+ Followern trifft jeder Verlust deine Reichweite. Erhole dich in 7 Tagen:",
+        "power": "Du bist im Top-Tier — smarte Creator erholen sich schnell mit diesen Tools:",
+        "regular": "Stoppe den Verlust und hol deine Community zurück:",
+        "casual": "Kleine Audience = schnelle Erholung. Starte jetzt:"
+      }
+    },
+    "warning": {
+      "title": "{{unfollowedPercent}}% Rückgang erkannt — Zeit zu optimieren",
+      "subtitle": {
+        "influencer": "In deiner Größe verhindert frühe Optimierung größere Verluste:",
+        "power": "Erkenne es früh — das nutzen Top-Creator:",
+        "regular": "Halte deine Audience bevor sie abdriften:",
+        "casual": "Baue jetzt stärkere Verbindungen auf:"
+      }
+    },
+    "growth": {
+      "title": "Nur {{unfollowedPercent}}% Verlust — super Ergebnis!",
+      "subtitle": {
+        "influencer": "Skaliere deine Reichweite mit Profi-Tools:",
+        "power": "Bereit fürs nächste Level? Hier ist dein Toolkit:",
+        "regular": "Baue Konsistenz auf und wachse 2x schneller:",
+        "casual": "Starte deine Wachstumsreise richtig:"
+      }
+    },
+    "tools": {
+      "submagic": "Verwandle Clips in virale Reels → 3-5x mehr Reichweite",
+      "predis": "KI erstellt Posts + Designs → Content 3x schneller",
+      "manychat": "Auto-Antworten 24/7 → spare 10+ Stunden/Woche",
+      "metricool": "Finde deine besten Zeiten → 40% schnelleres Wachstum",
+      "vistacreate": "Pro-Designs in 60 Sek → verpasse keinen Post",
+      "later": "Plane deinen Monat in 1 Stunde → bleib konsistent"
+    },
+    "dismiss": "Vielleicht später",
+    "disclaimer": "Handverlesene Tools, die wir empfehlen. Affiliate-Links finanzieren kostenlose Updates — keine Kosten für dich.",
+    "ariaLabel": "Empfohlene Tools zur Verbesserung deiner Instagram-Präsenz",
+    "badges": {
+      "popular": "Beliebt",
+      "trial": "Testversion",
+      "new": "Neu"
+    },
+    "recommended": "Empfohlen",
+    "tryTool": "{{name}} testen",
+    "price": {
+      "freeTrial7": "7 Tage gratis",
+      "freeTrial14": "14 Tage gratis",
+      "freePlan": "Gratis-Plan",
+      "freeContacts": "Bis 1K gratis",
+      "freeForever": "Immer gratis"
+    },
+    "social": {
+      "creators50k": "50K+ Creator",
+      "posts1m": "1M+ Posts",
+      "businesses1m": "1M+ Firmen",
+      "users200k": "200K+ Nutzer",
+      "designs10m": "10M+ Designs",
+      "users7m": "7M+ Nutzer"
+    }
+  }
+}

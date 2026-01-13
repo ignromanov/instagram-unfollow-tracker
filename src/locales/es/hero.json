@@ -1,0 +1,39 @@
+{
+  "version": "V1.5 Optimizado para más de 1,000,000 de cuentas",
+  "headline": {
+    "prefix": "Descubre Quién",
+    "highlight": "Dejó de Seguirte en Instagram",
+    "suffix": "Sin Login"
+  },
+  "subheadline": "Descubre quién dejó de seguirte en Instagram gratis, sin login. Sube tu ZIP, análisis local. 100% privado. Funciona offline.",
+  "buttons": {
+    "getGuide": "Ver Quién Dejó de Seguirme",
+    "trySample": "Probar con datos de ejemplo",
+    "haveFile": "Ya tengo mi archivo ZIP",
+    "viewResults": "Ver resultados del análisis"
+  },
+  "trust": {
+    "free": "100% Gratis • Para Siempre",
+    "noPassword": "Sin Contraseña • Sin Riesgo",
+    "privacy": "100% Privado • Análisis Local"
+  },
+  "features": {
+    "heading": "Funciones Principales",
+    "local": {
+      "title": "100% Local",
+      "description": "Tus datos nunca salen de tu dispositivo"
+    },
+    "noLogin": {
+      "title": "Sin iniciar sesión",
+      "description": "Sin riesgo de suspensión o hackeo"
+    },
+    "scale": {
+      "title": "Alta escala",
+      "description": "Maneja más de 1M de cuentas a toda velocidad"
+    },
+    "openSource": {
+      "title": "Código abierto",
+      "description": "Revisa nuestro código, valoramos tu confianza"
+    }
+  }
+}

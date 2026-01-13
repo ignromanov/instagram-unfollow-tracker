@@ -1,0 +1,121 @@
+{
+  "header": {
+    "title": "分析結果",
+    "fileInfo": "{{filename}} • {{count, number}}件",
+    "showing": "{{total}}件中{{filtered}}件を表示"
+  },
+  "sample": {
+    "banner": "サンプルデータを表示中",
+    "hint": "アプリを体験するためのデモデータです。",
+    "uploadPrompt": "データをアップロード",
+    "toSeeReal": "して実際のフォロワーを確認"
+  },
+  "search": {
+    "placeholder": "ユーザー名を検索...",
+    "ariaLabel": "ユーザー名でアカウントを検索",
+    "clearAriaLabel": "検索をクリア",
+    "resultsCount": "{{total}}件中{{result}}件を表示",
+    "accounts": "アカウント",
+    "time": "{{time}}ミリ秒"
+  },
+  "sort": {
+    "asc": "A→Z順",
+    "desc": "Z→A順"
+  },
+  "stats": {
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "unfollowed": "フォロー解除",
+    "notFollowing": "フォローなし"
+  },
+  "filters": {
+    "title": "結果をフィルタ",
+    "reset": "リセット",
+    "emptyCategories": "空のカテゴリ（{{count, number}}件）",
+    "addFilter": "{{label}}フィルタを追加（{{count, number}}件）",
+    "removeFilter": "{{label}}フィルタを削除（{{count, number}}件）"
+  },
+  "badges": {
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "unfollowed": "最近フォロー解除",
+    "notFollowingBack": "フォローバックなし",
+    "mutuals": "相互フォロー",
+    "notFollowedBack": "フォローされていない",
+    "pending": "リクエスト中",
+    "permanent": "リクエスト中（長期）",
+    "restricted": "制限中",
+    "close": "親しい友達",
+    "dismissed": "非表示にした候補"
+  },
+  "empty": {
+    "noUsers": "ユーザーが見つかりません",
+    "resetFilters": "フィルタをリセット"
+  },
+  "list": {
+    "header": "アカウント ({{count, number}})",
+    "viewProfile": "プロフィールを見る"
+  },
+  "rescue": {
+    "critical": {
+      "title": "{{unfollowedPercent}}%を失いました — 回復方法はこちら",
+      "subtitle": {
+        "influencer": "{{count}}+フォロワーでは、各損失がリーチに影響。7日で回復：",
+        "power": "トップティアにいます — スマートなクリエイターはこれで素早く回復：",
+        "regular": "流出を止めてコミュニティを取り戻す：",
+        "casual": "小さなオーディエンス = 素早い回復。今すぐ始める："
+      }
+    },
+    "warning": {
+      "title": "{{unfollowedPercent}}%の減少を検出 — 最適化の時間",
+      "subtitle": {
+        "influencer": "あなたの規模では、早期最適化がより大きな損失を防ぎます：",
+        "power": "早めにキャッチ — トップクリエイターが使うもの：",
+        "regular": "離れる前にオーディエンスを維持：",
+        "casual": "今すぐより強いつながりを築く："
+      }
+    },
+    "growth": {
+      "title": "{{unfollowedPercent}}%だけの損失 — 素晴らしい結果！",
+      "subtitle": {
+        "influencer": "プロツールでリーチを拡大：",
+        "power": "次のレベルの準備は？ツールキットはこちら：",
+        "regular": "一貫性を築き2倍速く成長：",
+        "casual": "正しい方法で成長の旅を始める："
+      }
+    },
+    "tools": {
+      "submagic": "クリップをバイラルリールに → 3-5倍のリーチ",
+      "predis": "AIが投稿+デザインを作成 → コンテンツ3倍速",
+      "manychat": "24時間自動返信 → 週10時間以上節約",
+      "metricool": "ベストな投稿時間を発見 → 40%速い成長",
+      "vistacreate": "60秒でプロデザイン → 投稿を逃さない",
+      "later": "1時間で月間計画 → 一貫性を維持"
+    },
+    "dismiss": "後で",
+    "disclaimer": "厳選したおすすめツール。アフィリエイトリンクは無料アップデートを支援 — あなたへの追加費用なし。",
+    "ariaLabel": "Instagramプレゼンスを向上させるおすすめツール",
+    "badges": {
+      "popular": "人気",
+      "trial": "お試し",
+      "new": "新着"
+    },
+    "recommended": "おすすめ",
+    "tryTool": "{{name}}を試す",
+    "price": {
+      "freeTrial7": "7日間無料",
+      "freeTrial14": "14日間無料",
+      "freePlan": "無料プラン",
+      "freeContacts": "1Kまで無料",
+      "freeForever": "永久無料"
+    },
+    "social": {
+      "creators50k": "5万+作成者",
+      "posts1m": "100万+投稿",
+      "businesses1m": "100万+企業",
+      "users200k": "20万+ユーザー",
+      "designs10m": "1000万+デザイン",
+      "users7m": "700万+ユーザー"
+    }
+  }
+}

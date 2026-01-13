@@ -1,0 +1,121 @@
+{
+  "header": {
+    "title": "Hasil Analisis",
+    "fileInfo": "{{filename}} • {{count, number}} Total",
+    "showing": "Menampilkan {{filtered}} dari {{total}} akun"
+  },
+  "sample": {
+    "banner": "Melihat Data Sampel",
+    "hint": "Ini adalah data demo untuk membantu Anda menjelajahi aplikasi.",
+    "uploadPrompt": "Unggah data Anda",
+    "toSeeReal": "untuk melihat pengikut asli Anda."
+  },
+  "search": {
+    "placeholder": "Cari username...",
+    "ariaLabel": "Cari akun berdasarkan username",
+    "clearAriaLabel": "Hapus pencarian",
+    "resultsCount": "Menampilkan {{result}} dari {{total}}",
+    "accounts": "akun",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Urut A→Z",
+    "desc": "Urut Z→A"
+  },
+  "stats": {
+    "followers": "Pengikut",
+    "following": "Mengikuti",
+    "unfollowed": "Berhenti Mengikuti",
+    "notFollowing": "Tidak Mengikuti"
+  },
+  "filters": {
+    "title": "Filter Hasil",
+    "reset": "Reset",
+    "emptyCategories": "Kategori Kosong ({{count, number}})",
+    "addFilter": "Tambah filter {{label}} ({{count, number}} akun)",
+    "removeFilter": "Hapus filter {{label}} ({{count, number}} akun)"
+  },
+  "badges": {
+    "followers": "Pengikut",
+    "following": "Mengikuti",
+    "unfollowed": "Baru berhenti mengikuti",
+    "notFollowingBack": "Tidak mengikuti balik",
+    "mutuals": "Saling mengikuti",
+    "notFollowedBack": "Tidak diikuti balik",
+    "pending": "Permintaan tertunda",
+    "permanent": "Tertunda (permanen)",
+    "restricted": "Dibatasi",
+    "close": "Teman dekat",
+    "dismissed": "Saran ditolak"
+  },
+  "empty": {
+    "noUsers": "Tidak ada pengguna ditemukan",
+    "resetFilters": "Reset Filter"
+  },
+  "list": {
+    "header": "Akun ({{count, number}})",
+    "viewProfile": "Lihat Profil"
+  },
+  "rescue": {
+    "critical": {
+      "title": "Anda kehilangan {{unfollowedPercent}}% — begini cara pulih",
+      "subtitle": {
+        "influencer": "Dengan {{count}}+ pengikut, setiap kehilangan mempengaruhi jangkauan. Pulih dalam 7 hari:",
+        "power": "Anda di tier teratas — kreator cerdas pulih cepat dengan ini:",
+        "regular": "Hentikan kehilangan dan dapatkan kembali komunitas Anda:",
+        "casual": "Audiens kecil = pemulihan cepat. Mulai sekarang:"
+      }
+    },
+    "warning": {
+      "title": "Penurunan {{unfollowedPercent}}% terdeteksi — waktunya optimasi",
+      "subtitle": {
+        "influencer": "Di skala Anda, optimasi dini mencegah kerugian lebih besar:",
+        "power": "Tangkap lebih awal — ini yang digunakan kreator top:",
+        "regular": "Pertahankan audiens sebelum mereka pergi:",
+        "casual": "Bangun koneksi lebih kuat sekarang:"
+      }
+    },
+    "growth": {
+      "title": "Hanya {{unfollowedPercent}}% kehilangan — Anda hebat!",
+      "subtitle": {
+        "influencer": "Skalakan jangkauan dengan tools profesional:",
+        "power": "Siap untuk level berikutnya? Ini toolkit Anda:",
+        "regular": "Bangun konsistensi dan tumbuh 2x lebih cepat:",
+        "casual": "Mulai perjalanan pertumbuhan dengan cara yang benar:"
+      }
+    },
+    "tools": {
+      "submagic": "Ubah klip jadi Reels viral → 3-5x lebih banyak jangkauan",
+      "predis": "AI buat postingan + desain → konten 3x lebih cepat",
+      "manychat": "Balasan otomatis 24/7 → hemat 10+ jam/minggu",
+      "metricool": "Temukan waktu terbaik Anda → pertumbuhan 40% lebih cepat",
+      "vistacreate": "Desain pro dalam 60 detik → jangan pernah lewatkan postingan",
+      "later": "Rencanakan bulan Anda dalam 1 jam → tetap konsisten"
+    },
+    "dismiss": "Mungkin nanti",
+    "disclaimer": "Tools pilihan yang kami rekomendasikan. Tautan afiliasi mendanai pembaruan gratis — tanpa biaya tambahan untuk Anda.",
+    "ariaLabel": "Tools yang direkomendasikan untuk meningkatkan kehadiran Instagram Anda",
+    "badges": {
+      "popular": "Populer",
+      "trial": "Uji Coba",
+      "new": "Baru"
+    },
+    "recommended": "Direkomendasikan",
+    "tryTool": "Coba {{name}}",
+    "price": {
+      "freeTrial7": "7 hari gratis",
+      "freeTrial14": "14 hari gratis",
+      "freePlan": "Paket gratis",
+      "freeContacts": "1K gratis",
+      "freeForever": "Gratis selamanya"
+    },
+    "social": {
+      "creators50k": "50K+ kreator",
+      "posts1m": "1M+ postingan",
+      "businesses1m": "1M+ bisnis",
+      "users200k": "200K+ pengguna",
+      "designs10m": "10M+ desain",
+      "users7m": "7M+ pengguna"
+    }
+  }
+}

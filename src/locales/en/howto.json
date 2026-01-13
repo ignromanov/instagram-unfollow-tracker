@@ -1,0 +1,60 @@
+{
+  "title": "How to Check Your <gradient>Instagram Unfollowers</gradient>",
+  "subtitle": "Follow these 9 simple steps to securely analyze your account without sharing your password.",
+  "important": "Critical",
+  "openStep": "Open step in guide",
+  "uploadButton": "Upload My File",
+  "openStepAria": "Step {{step}}: {{title}}. Click to open in guide",
+  "steps": {
+    "1": {
+      "title": "Open Instagram Export Page",
+      "description": "Click the button to open Meta Accounts Center. Then click \"Create export\" to begin the process."
+    },
+    "2": {
+      "title": "Choose Your Instagram Profile",
+      "description": "Select your Instagram account from the list of connected profiles in the Accounts Center."
+    },
+    "3": {
+      "title": "Select \"Export to device\"",
+      "description": "Choose to export directly to your device. This keeps your data private and secure."
+    },
+    "4": {
+      "title": "Select Only \"Followers and following\"",
+      "description": "Click \"Customize\" → Clear all → Check ONLY \"Followers and following\". This keeps your file compact."
+    },
+    "5": {
+      "title": "Set Date Range to \"All time\"",
+      "description": "Click \"Date range\" → Select \"All time\" → Save. This ensures complete follower history."
+    },
+    "6": {
+      "title": "Change Format to JSON",
+      "description": "Critical step! Click \"Format\" → Select \"JSON\" (not HTML). HTML files will NOT work."
+    },
+    "7": {
+      "title": "Review & Start Export",
+      "description": "Verify settings: Followers and following, All time, JSON. Then click \"Start export\"."
+    },
+    "8": {
+      "title": "Wait for Email & Download",
+      "description": "Instagram emails you when ready (5-30 min). Download the ZIP file from the email link."
+    },
+    "9": {
+      "title": "Upload Your File",
+      "description": "You're ready! Click the button below to upload your Instagram data and see who unfollowed you."
+    }
+  },
+  "cta": {
+    "title": "Ready to start?",
+    "subtitle": "Scan and process your Instagram data export privately in seconds.",
+    "button": "Open Analysis Guide"
+  },
+  "schema": {
+    "name": "How to Check Who Unfollowed You on Instagram Without Login",
+    "description": "Step-by-step guide to find Instagram unfollowers using your official data export. No login required, 100% private local processing.",
+    "supplies": {
+      "account": "Instagram account",
+      "email": "Email access"
+    },
+    "tool": "Instagram Unfollow Tracker (this website)"
+  }
+}

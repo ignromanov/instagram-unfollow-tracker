@@ -1,0 +1,60 @@
+{
+  "title": "Cómo ver quién <gradient>dejó de seguirte en Instagram</gradient>",
+  "subtitle": "Sigue estos 9 simples pasos para analizar tu cuenta de forma segura sin compartir tu contraseña.",
+  "important": "Crítico",
+  "openStep": "Abrir paso en la guía",
+  "uploadButton": "Subir mi archivo",
+  "openStepAria": "Paso {{step}}: {{title}}. Clic para abrir en la guía",
+  "steps": {
+    "1": {
+      "title": "Abre la página de exportación de Instagram",
+      "description": "Haz clic en el botón para abrir el Centro de Cuentas de Meta. Luego haz clic en \"Crear exportación\"."
+    },
+    "2": {
+      "title": "Elige tu perfil de Instagram",
+      "description": "Selecciona tu cuenta de Instagram de la lista de perfiles conectados en el Centro de Cuentas."
+    },
+    "3": {
+      "title": "Selecciona \"Exportar al dispositivo\"",
+      "description": "Elige exportar directamente a tu dispositivo. Esto mantiene tus datos privados y seguros."
+    },
+    "4": {
+      "title": "Selecciona solo \"Seguidores y seguidos\"",
+      "description": "Haz clic en \"Personalizar\" → Desmarca todo → Marca SOLO \"Seguidores y seguidos\". Esto mantiene tu archivo compacto."
+    },
+    "5": {
+      "title": "Configura el rango de fechas a \"Todo el tiempo\"",
+      "description": "Haz clic en \"Rango de fechas\" → Selecciona \"Todo el tiempo\" → Guardar. Esto asegura el historial completo."
+    },
+    "6": {
+      "title": "Cambia el formato a JSON",
+      "description": "¡Paso crítico! Haz clic en \"Formato\" → Selecciona \"JSON\" (no HTML). Los archivos HTML NO funcionarán."
+    },
+    "7": {
+      "title": "Revisa e inicia la exportación",
+      "description": "Verifica la configuración: Seguidores y seguidos, Todo el tiempo, JSON. Luego haz clic en \"Iniciar exportación\"."
+    },
+    "8": {
+      "title": "Espera el email y descarga",
+      "description": "Instagram te envía un email cuando esté listo (5-30 min). Descarga el archivo ZIP del enlace del email."
+    },
+    "9": {
+      "title": "Sube tu archivo",
+      "description": "¡Estás listo! Haz clic en el botón de abajo para subir tus datos de Instagram."
+    }
+  },
+  "cta": {
+    "title": "¿Listo para empezar?",
+    "subtitle": "Analiza tu exportación de datos de forma privada en segundos.",
+    "button": "Abrir guía de análisis"
+  },
+  "schema": {
+    "name": "Cómo ver quién dejó de seguirte en Instagram sin iniciar sesión",
+    "description": "Guía paso a paso para encontrar quién dejó de seguirte en Instagram usando tu exportación oficial de datos. Sin necesidad de iniciar sesión, 100% privado.",
+    "supplies": {
+      "account": "Cuenta de Instagram",
+      "email": "Acceso al correo electrónico"
+    },
+    "tool": "Rastreador de Unfollows de Instagram (este sitio web)"
+  }
+}

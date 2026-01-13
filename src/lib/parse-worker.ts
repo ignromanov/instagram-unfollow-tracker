@@ -6,12 +6,16 @@ import { parseInstagramZipFile } from '@/core/parsers/instagram';
 import { generateFileHash } from './indexeddb/indexeddb-cache';
 import { indexedDBService } from './indexeddb/indexeddb-service';
 import { buildAllSearchIndexes } from './search-index';
+import { logger } from './logger';
 
 // Configuration - optimized for balance between speed and memory
 // Smaller chunks = more frequent progress updates but more overhead
 // Larger chunks = faster processing but less frequent updates
 // Process 30k accounts per chunk (optimized for 1M+ datasets) - not currently used
 // const CHUNK_SIZE = 30000;
+
+// Search index build delay (ms) - allows UI to be responsive before background task
+const SEARCH_INDEX_BUILD_DELAY_MS = 100;
 
 // Send ready signal to main thread
 try {
@@ -30,11 +34,6 @@ self.onmessage = async (
     port?: MessagePort;
   }>
 ) => {
-  // Ignore WorkerConsole initialization messages (handled by WorkerConsole.js)
-  if (e.data?.type === '__console_init__') {
-    return;
-  }
-
   if (e.data?.type !== 'parse') {
     return;
   }
@@ -51,10 +50,23 @@ self.onmessage = async (
     const fileHash = providedHash || (await generateFileHash(file));
 
     // Parse the ZIP file
-    const parsed = await parseInstagramZipFile(file);
+    const parseResult = await parseInstagramZipFile(file);
 
-    // Build account badge index
-    const unified = buildAccountBadgeIndex(parsed);
+    // Check if we have enough data to continue
+    if (!parseResult.hasMinimalData) {
+      const error = parseResult.warnings.find(w => w.severity === 'error');
+      // Send error with warnings and discovery for DiagnosticErrorScreen
+      self.postMessage({
+        type: 'error',
+        error: error?.message ?? 'Could not parse Instagram data',
+        warnings: parseResult.warnings,
+        discovery: parseResult.discovery,
+      });
+      return;
+    }
+
+    // Build account badge index from parsed data
+    const unified = buildAccountBadgeIndex(parseResult.data);
 
     // Save file metadata
     await indexedDBService.saveFileMetadata({
@@ -80,17 +92,20 @@ self.onmessage = async (
         }));
 
         await buildAllSearchIndexes(fileHash, accountsWithIndices);
-      } catch {
+      } catch (error) {
         // Non-critical error - app will work without indexes (slower search)
+        logger.warn('Failed to build search indexes:', error);
       }
-    }, 100);
+    }, SEARCH_INDEX_BUILD_DELAY_MS);
 
-    // Send success result
+    // Send success result with warnings and discovery info
     self.postMessage({
       type: 'result',
       fileHash,
       // Don't send unified - data is already in IndexedDB for lazy loading
       accountCount: unified.length,
+      warnings: parseResult.warnings,
+      discovery: parseResult.discovery,
     });
   } catch (error) {
     // Send error result
@@ -102,11 +117,12 @@ self.onmessage = async (
 };
 
 // Handle worker errors
-self.onerror = () => {
-  // Silent error handling
+self.onerror = (event: string | Event) => {
+  logger.error('Parse worker global error:', event);
 };
 
 // Handle unhandled promise rejections
-self.onunhandledrejection = event => {
+self.onunhandledrejection = (event: PromiseRejectionEvent) => {
+  logger.error('Parse worker unhandled rejection:', event.reason);
   event.preventDefault();
 };

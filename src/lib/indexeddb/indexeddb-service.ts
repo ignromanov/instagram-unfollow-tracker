@@ -21,6 +21,14 @@ import {
   type SearchIndexRecord,
   type SearchIndexType,
 } from './indexeddb-schema';
+import {
+  executeDelete,
+  executeRead,
+  executeWrite,
+  getAllKeysFromIndex,
+  getAllRecords,
+  waitForTransaction,
+} from './transaction-helpers';
 
 class IndexedDBService {
   private db: IDBDatabase | null = null;
@@ -77,14 +85,7 @@ class IndexedDBService {
     const db = await this.init();
     const tx = db.transaction([STORES.FILES], 'readwrite');
     const store = tx.objectStore(STORES.FILES);
-
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(metadata);
-      request.onsuccess = () => {
-        resolve();
-      };
-      request.onerror = () => reject(request.error);
-    });
+    await executeWrite(store, metadata);
   }
 
   /**
@@ -95,17 +96,11 @@ class IndexedDBService {
     const tx = db.transaction([STORES.FILES], 'readonly');
     const store = tx.objectStore(STORES.FILES);
 
-    return new Promise((resolve, reject) => {
-      const request = store.get(fileHash);
-      request.onsuccess = () => {
-        const data = request.result;
-        if (data && data.uploadDate) {
-          data.uploadDate = new Date(data.uploadDate);
-        }
-        resolve(data || null);
-      };
-      request.onerror = () => reject(request.error);
-    });
+    const data = await executeRead<FileMetadataRecord>(store, fileHash);
+    if (data && data.uploadDate) {
+      data.uploadDate = new Date(data.uploadDate);
+    }
+    return data || null;
   }
 
   /**
@@ -174,54 +169,37 @@ class IndexedDBService {
     const columnsStore = tx.objectStore(STORES.COLUMNS);
 
     await Promise.all([
-      new Promise<void>((resolve, reject) => {
-        const request = columnsStore.put({
-          fileHash,
-          column: 'usernames',
-          data: usernameColumn.data,
-          offsets: usernameColumn.offsets,
-          length: usernameColumn.length,
-        });
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
+      executeWrite(columnsStore, {
+        fileHash,
+        column: 'usernames',
+        data: usernameColumn.data,
+        offsets: usernameColumn.offsets,
+        length: usernameColumn.length,
       }),
-      new Promise<void>((resolve, reject) => {
-        const request = columnsStore.put({
-          fileHash,
-          column: 'displayNames',
-          data: displayNameColumn.data,
-          offsets: displayNameColumn.offsets,
-          length: displayNameColumn.length,
-        });
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
+      executeWrite(columnsStore, {
+        fileHash,
+        column: 'displayNames',
+        data: displayNameColumn.data,
+        offsets: displayNameColumn.offsets,
+        length: displayNameColumn.length,
       }),
     ]);
 
     // Write all bitsets
     const bitsetsStore = tx.objectStore(STORES.BITSETS);
-    const bitsetPromises = Array.from(bitsets.entries()).map(([badge, { bitset, count }]) => {
-      return new Promise<void>((resolve, reject) => {
-        const request = bitsetsStore.put({
-          fileHash,
-          badge,
-          data: bitset.toUint8Array(),
-          accountCount: count,
-        });
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-    });
+    const bitsetPromises = Array.from(bitsets.entries()).map(([badge, { bitset, count }]) =>
+      executeWrite(bitsetsStore, {
+        fileHash,
+        badge,
+        data: bitset.toUint8Array(),
+        accountCount: count,
+      })
+    );
 
     await Promise.all(bitsetPromises);
 
     // Wait for transaction to complete
-    await new Promise<void>((resolve, reject) => {
-      tx.oncomplete = () => {
-        resolve();
-      };
-      tx.onerror = () => reject(tx.error);
-    });
+    await waitForTransaction(tx);
   }
 
   /**
@@ -278,12 +256,7 @@ class IndexedDBService {
     await Promise.all([columnsPromise, bitsetsPromise]);
 
     // Wait for transaction to complete
-    await new Promise<void>((resolve, reject) => {
-      tx.oncomplete = () => {
-        resolve();
-      };
-      tx.onerror = () => reject(tx.error);
-    });
+    await waitForTransaction(tx);
   }
 
   private async appendColumn(
@@ -296,11 +269,7 @@ class IndexedDBService {
     const store = tx.objectStore(STORES.COLUMNS);
 
     // Get existing column or create new
-    const existing = await new Promise<ColumnRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, column]);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const existing = await executeRead<ColumnRecord>(store, [fileHash, column]);
 
     let finalData: Uint8Array;
     let finalOffsets: Uint32Array;
@@ -342,11 +311,7 @@ class IndexedDBService {
       length: finalLength,
     };
 
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(record);
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
+    await executeWrite(store, record);
   }
 
   private async updateBadgeBitset(
@@ -359,11 +324,7 @@ class IndexedDBService {
     const store = tx.objectStore(STORES.BITSETS);
 
     // Get existing bitset or create new
-    const existing = await new Promise<BitsetRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, badge]);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const existing = await executeRead<BitsetRecord>(store, [fileHash, badge]);
 
     let bitset: BitSet;
     let count = existing?.accountCount || 0;
@@ -395,19 +356,12 @@ class IndexedDBService {
       accountCount: count,
     };
 
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(record);
-      request.onsuccess = () => {
-        resolve();
-      };
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
+    await executeWrite(store, record);
   }
 
   /**
    * Get accounts by index range (for virtualization)
+   * Loads both usernames and badges for the specified range
    */
   async getAccountsByRange(fileHash: string, start: number, end: number): Promise<AccountBadges[]> {
     // Get username column
@@ -419,26 +373,67 @@ class IndexedDBService {
       const tx = db.transaction([STORES.COLUMNS], 'readonly');
       const store = tx.objectStore(STORES.COLUMNS);
 
-      const column = await new Promise<ColumnRecord>((resolve, reject) => {
-        const request = store.get([fileHash, 'usernames']);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
+      const column = await executeRead<ColumnRecord>(store, [fileHash, 'usernames']);
 
       if (!column) return [];
 
-      reader = new StringColumnReader(column.data, column.offsets!);
+      // Validate offsets before creating reader
+      if (!column.offsets) {
+        throw new Error(`Column ${cacheKey} missing required offsets array`);
+      }
+      reader = new StringColumnReader(column.data, column.offsets);
       this.columnCache.set(cacheKey, reader);
     }
 
     // Get usernames for range
-    const usernames = reader.getRange(start, Math.min(end, reader.length));
+    const actualEnd = Math.min(end, reader.length);
+    const usernames = reader.getRange(start, actualEnd);
 
-    // Build minimal account objects (badges loaded on demand)
-    const accounts: AccountBadges[] = usernames.map(username => ({
-      username,
-      badges: {},
-    }));
+    // Load all badge bitsets (they are cached after first load)
+    const allBadgeKeys: BadgeKey[] = [
+      'following',
+      'followers',
+      'pending',
+      'permanent',
+      'restricted',
+      'close',
+      'unfollowed',
+      'dismissed',
+      'notFollowingBack',
+      'notFollowedBack',
+      'mutuals',
+    ];
+
+    // Load bitsets in parallel (uses cache if already loaded)
+    const bitsetEntries = await Promise.all(
+      allBadgeKeys.map(async badge => {
+        const bitset = await this.getBadgeBitset(fileHash, badge);
+        return [badge, bitset] as const;
+      })
+    );
+
+    // Filter out null bitsets and create map
+    const bitsets = new Map<BadgeKey, BitSet>();
+    for (const [badge, bitset] of bitsetEntries) {
+      if (bitset) {
+        bitsets.set(badge, bitset);
+      }
+    }
+
+    // Build account objects with badges
+    const accounts: AccountBadges[] = usernames.map((username, localIndex) => {
+      const globalIndex = start + localIndex;
+      const badges: Record<string, number | true> = {};
+
+      // Check each bitset for this account
+      for (const [badge, bitset] of bitsets) {
+        if (bitset.has(globalIndex)) {
+          badges[badge] = true;
+        }
+      }
+
+      return { username, badges: badges as AccountBadges['badges'] };
+    });
 
     return accounts;
   }
@@ -458,15 +453,7 @@ class IndexedDBService {
     const tx = db.transaction([STORES.BITSETS], 'readonly');
     const store = tx.objectStore(STORES.BITSETS);
 
-    const record = await new Promise<BitsetRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, badge]);
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
+    const record = await executeRead<BitsetRecord>(store, [fileHash, badge]);
 
     if (!record) {
       return null;
@@ -532,11 +519,7 @@ class IndexedDBService {
       expiresAt: now + ttl,
     };
 
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(record);
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
+    await executeWrite(store, record);
   }
 
   /**
@@ -551,11 +534,7 @@ class IndexedDBService {
     const tx = db.transaction([STORES.INDEXES], 'readonly');
     const store = tx.objectStore(STORES.INDEXES);
 
-    const record = await new Promise<SearchIndexRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, type, key]);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const record = await executeRead<SearchIndexRecord>(store, [fileHash, type, key]);
 
     if (!record) return null;
 
@@ -572,6 +551,7 @@ class IndexedDBService {
 
   /**
    * Clear all data for a file
+   * Optimized: uses getAllKeys + batch delete instead of cursor-based deletion
    */
   async clearFile(fileHash: string): Promise<void> {
     const db = await this.init();
@@ -582,31 +562,17 @@ class IndexedDBService {
       const store = tx.objectStore(storeName);
 
       if (storeName === STORES.FILES) {
-        await new Promise<void>((resolve, reject) => {
-          const request = store.delete(fileHash);
-          request.onsuccess = () => resolve();
-          request.onerror = () => reject(request.error);
-        });
+        await executeDelete(store, fileHash);
       } else {
-        // Use index to find all records for this file
+        // Use getAllKeys for batch deletion (much faster than cursor-based)
         const index = store.index('fileHash');
         const range = IDBKeyRange.only(fileHash);
 
-        await new Promise<void>((resolve, reject) => {
-          const request = index.openCursor(range);
-
-          request.onsuccess = () => {
-            const cursor = request.result;
-            if (cursor) {
-              cursor.delete();
-              cursor.continue();
-            } else {
-              resolve();
-            }
-          };
-
-          request.onerror = () => reject(request.error);
-        });
+        const keys = await getAllKeysFromIndex(index, range);
+        // Delete all keys in batch (within same transaction)
+        for (const key of keys) {
+          store.delete(key);
+        }
       }
     }
 
@@ -646,18 +612,12 @@ class IndexedDBService {
     const tx = db.transaction([STORES.FILES], 'readonly');
     const store = tx.objectStore(STORES.FILES);
 
-    return new Promise((resolve, reject) => {
-      const request = store.getAll();
-      request.onsuccess = () => {
-        const files = request.result.map(file => {
-          if (file.uploadDate) {
-            file.uploadDate = new Date(file.uploadDate);
-          }
-          return file;
-        });
-        resolve(files);
-      };
-      request.onerror = () => reject(request.error);
+    const files = await getAllRecords<FileMetadataRecord>(store);
+    return files.map(file => {
+      if (file.uploadDate) {
+        file.uploadDate = new Date(file.uploadDate);
+      }
+      return file;
     });
   }
 }

@@ -7,6 +7,7 @@
 
 import type { AccountBadges } from '@/core/types';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
+import { logger } from '@/lib/logger';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface AccountSlice {
@@ -43,6 +44,8 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
   const cacheRef = useRef<Map<string, AccountSlice>>(new Map());
   // Track which slices are currently loading (by cache key)
   const loadingSlicesRef = useRef<Set<string>>(new Set());
+  // Track which slices failed to load (for retry capability)
+  const failedSlicesRef = useRef<Set<string>>(new Set());
 
   // Force update counter - increment to trigger re-render
   const [, setUpdateCounter] = useState(0);
@@ -50,12 +53,25 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
     setUpdateCounter(c => c + 1);
   }, []);
 
+  // Track if component is mounted to prevent state updates after unmount
+  const isMountedRef = useRef(true);
+
   /**
-   * Clear cache when file changes
+   * Clear cache when file changes and track mount state
    */
   useEffect(() => {
+    // Mark as mounted
+    isMountedRef.current = true;
+
+    // Clear cache on file change
     cacheRef.current.clear();
     loadingSlicesRef.current.clear();
+    failedSlicesRef.current.clear();
+
+    // Cleanup on unmount
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [fileHash]);
 
   /**
@@ -107,6 +123,11 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
         return [];
       }
 
+      // If slice previously failed, clear the failure and retry
+      if (failedSlicesRef.current.has(cacheKey)) {
+        failedSlicesRef.current.delete(cacheKey);
+      }
+
       // Mark as loading
       loadingSlicesRef.current.add(cacheKey);
 
@@ -114,6 +135,11 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
       indexedDBService
         .getAccountsByRange(fileHash, start, end)
         .then(accounts => {
+          // Only update state if component is still mounted
+          if (!isMountedRef.current) {
+            return;
+          }
+
           // Cache the result
           cacheRef.current.set(cacheKey, {
             start,
@@ -131,10 +157,17 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
           forceUpdate();
         })
         .catch(error => {
-          console.error('[Account Data Source] Error loading range:', error);
+          // Only process error if still mounted
+          if (isMountedRef.current) {
+            // Track failed slice for retry on next access
+            failedSlicesRef.current.add(cacheKey);
+            logger.error('[Account Data Source] Error loading range:', error);
+            // Trigger re-render so components can detect the failure
+            forceUpdate();
+          }
         })
         .finally(() => {
-          // Remove from loading set
+          // Remove from loading set (safe even if unmounted)
           loadingSlicesRef.current.delete(cacheKey);
         });
 
@@ -273,7 +306,7 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
 
       // Not in cache and not loading - trigger async load (fire and forget)
       getRange(sliceStart, sliceEnd).catch(err => {
-        console.error('[Account Data Source] Failed to load slice:', err);
+        logger.error('[Account Data Source] Failed to load slice:', err);
       });
 
       // Return undefined while loading
@@ -288,6 +321,24 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
   const clearCache = useCallback(() => {
     cacheRef.current.clear();
     loadingSlicesRef.current.clear();
+    failedSlicesRef.current.clear();
+  }, []);
+
+  /**
+   * Retry all failed slices
+   */
+  const retryFailed = useCallback(() => {
+    if (failedSlicesRef.current.size > 0) {
+      failedSlicesRef.current.clear();
+      forceUpdate();
+    }
+  }, [forceUpdate]);
+
+  /**
+   * Check if there are failed slices
+   */
+  const hasFailedSlices = useCallback(() => {
+    return failedSlicesRef.current.size > 0;
   }, []);
 
   /**
@@ -307,5 +358,7 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
     preloadAdjacent,
     clearCache,
     getCacheStats,
+    retryFailed,
+    hasFailedSlices,
   };
 }

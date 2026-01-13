@@ -3,69 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Find Instagram unfollowers instantly without login. Free, 100% private tool analyzes your data export locally. No Instagram API, no tracking. Works offline with 1M+ accounts."
-    />
-    <meta
-      name="keywords"
-      content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers, instagram data export, privacy, open source, free"
-    />
-    <meta name="theme-color" content="#1e66f5" />
-
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-
+    <!-- Meta tags below are replaced by vite.config.ts onPageRendered for each language -->
+    <meta name="description" content="Check who unfollowed you on Instagram without login. Upload your ZIP file, see unfollowers instantly. 100% free, privacy-first, handles 1M+ accounts." />
+    <meta name="keywords" content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers" />
+    <meta name="theme-color" content="#4E7EF5" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Instagram Unfollow" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <!-- PWA manifest is injected by vite-plugin-pwa -->
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook (replaced by SSG for each language) -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://instagram-unfollow-tracker.vercel.app/" />
-    <meta property="og:title" content="Instagram Unfollow Tracker — Free, Private, Fast" />
-    <meta
-      property="og:description"
-      content="Find who unfollowed you on Instagram. 100% free, 100% private, handles 1M+ accounts. No login required, works offline."
-    />
-    <meta property="og:site_name" content="Instagram Unfollow Tracker" />
-    <!-- TODO: Add og:image URL once social card is created -->
-    <!-- <meta property="og:image" content="https://instagram-unfollow-tracker.vercel.app/og-image.png" /> -->
+    <meta property="og:url" content="https://safeunfollow.app/" />
+    <meta property="og:title" content="Instagram Unfollowers — Free ZIP Upload, No Login" />
+    <meta property="og:description" content="Find who unfollowed you on Instagram. 100% free, 100% private, handles 1M+ accounts." />
+    <meta property="og:site_name" content="Safe Unfollow" />
+    <meta property="og:image" content="https://safeunfollow.app/api/og" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!-- og:locale and og:locale:alternate injected by SSG -->
 
-    <!-- Twitter -->
+    <!-- Twitter (replaced by SSG for each language) -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://instagram-unfollow-tracker.vercel.app/" />
-    <meta name="twitter:title" content="Instagram Unfollow Tracker — Free, Private, Fast" />
-    <meta
-      name="twitter:description"
-      content="Find Instagram unfollowers in your browser. Free forever, no login, handles millions. Privacy-first and open source."
-    />
-    <!-- TODO: Add twitter:image URL once social card is created -->
-    <!-- <meta name="twitter:image" content="https://instagram-unfollow-tracker.vercel.app/twitter-card.png" /> -->
+    <meta name="twitter:url" content="https://safeunfollow.app/" />
+    <meta name="twitter:title" content="Instagram Unfollowers — Free ZIP Upload, No Login" />
+    <meta name="twitter:description" content="Find Instagram unfollowers in your browser. Free forever, no login, handles millions." />
+    <meta name="twitter:image" content="https://safeunfollow.app/api/og" />
 
     <!-- Additional SEO -->
     <meta name="author" content="Ignat Romanov" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://instagram-unfollow-tracker.vercel.app/" />
-    <title>Instagram Unfollowers Tracker — Free, Private, No Login | Find Who Unfollowed You</title>
+    <!-- canonical, hreflang injected by vite.config.ts onPageRendered -->
+    <title>Instagram Unfollowers — Free ZIP Upload, No Login Required</title>
 
-    <!-- Schema.org structured data -->
+    <!-- Schema.org structured data: SoftwareApplication -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "Instagram Unfollow Tracker",
-        "alternateName": "Unfollow Radar",
+        "alternateName": "Safe Unfollow",
         "description": "Privacy-first Instagram data analyzer that helps you find who unfollowed you. 100% local processing, no login required, handles 1M+ accounts.",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Web Browser",
@@ -74,7 +56,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "softwareVersion": "1.0.0",
+        "softwareVersion": "1.5.0",
         "author": {
           "@type": "Person",
           "name": "Ignat Romanov",
@@ -82,21 +64,14 @@
         },
         "provider": {
           "@type": "Organization",
-          "name": "Unfollow Radar",
-          "url": "https://github.com/ignromanov/instagram-unfollow-tracker"
+          "name": "Safe Unfollow",
+          "url": "https://safeunfollow.app"
         },
-        "url": "https://instagram-unfollow-tracker.vercel.app/",
+        "url": "https://safeunfollow.app/",
         "license": "https://opensource.org/licenses/MIT",
         "softwareHelp": {
           "@type": "CreativeWork",
-          "url": "https://instagram-unfollow-tracker.vercel.app/docs/"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "5",
-          "reviewCount": "1",
-          "bestRating": "5",
-          "worstRating": "1"
+          "url": "https://safeunfollow.app/wizard"
         },
         "featureList": [
           "Find Instagram unfollowers",
@@ -111,11 +86,19 @@
       }
     </script>
 
-    <!-- WorkerConsole.js - Enhanced version with ES Module support -->
-    <script src="/WorkerConsole.js"></script>
-
-    <!-- Umami Analytics -->
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="48136699-8e66-4397-bf85-89f46b28fc6d"></script>
+    <!-- Schema.org structured data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Safe Unfollow",
+        "url": "https://safeunfollow.app",
+        "logo": "https://safeunfollow.app/logo.png",
+        "sameAs": [
+          "https://github.com/ignromanov/instagram-unfollow-tracker"
+        ]
+      }
+    </script>
   </head>
 
   <body class="font-sans antialiased">

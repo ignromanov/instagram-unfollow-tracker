@@ -1,0 +1,69 @@
+{
+  "buttons": {
+    "back": "رجوع",
+    "next": "التالي",
+    "cancel": "إلغاء",
+    "tryAgain": "حاول مجدداً",
+    "clearData": "مسح البيانات",
+    "viewResults": "النتائج",
+    "uploadFile": "رفع الملف",
+    "delete": "حذف"
+  },
+  "badges": {
+    "followers": "المتابعون",
+    "following": "المتابَعون",
+    "unfollowed": "ألغوا المتابعة مؤخراً",
+    "notFollowingBack": "لا يتابعونك",
+    "mutuals": "متبادلون",
+    "notFollowedBack": "لا تتابعهم",
+    "pending": "طلب معلق",
+    "permanent": "معلق (دائم)",
+    "restricted": "مقيّد",
+    "close": "صديق مقرب",
+    "dismissed": "اقتراح مرفوض"
+  },
+  "theme": {
+    "light": "الوضع الفاتح",
+    "dark": "الوضع الداكن",
+    "system": "الوضع التلقائي",
+    "switchToLight": "التبديل للوضع الفاتح",
+    "switchToDark": "التبديل للوضع الداكن"
+  },
+  "header": {
+    "logoAria": "SafeUnfollow.app — الذهاب إلى الصفحة الرئيسية",
+    "clearDataTitle": "مسح جميع البيانات؟",
+    "clearDataDescription": "سيؤدي هذا إلى إزالة جميع بيانات انستغرام المحملة وإعادتك إلى الشاشة الرئيسية. لا يمكن التراجع عن هذا الإجراء.",
+    "deleteData": "حذف البيانات"
+  },
+  "footer": {
+    "description": "محلل العلاقات الوحيد الذي يعمل 100% في متصفحك. بدون خادم، بدون سجلات، فقط بياناتك وجهازك.",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "contact": "تواصل معنا",
+    "trackingOff": "التتبع معطل",
+    "dontTrackMe": "لا تتبعني",
+    "trackingDisabled": "التحليلات معطلة",
+    "trackingEnabled": "تعطيل التحليلات المجهولة",
+    "keepItFree": "اجعله مجانياً وخاصاً",
+    "supportPrivacy": "ادعم الخصوصية",
+    "madeWithLove": "صنع بـ",
+    "forTheCommunity": "للمجتمع",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "رخصة MIT",
+    "viewSource": "الكود المصدري"
+  },
+  "nav": {
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة"
+  },
+  "language": {
+    "changeLanguage": "تغيير اللغة"
+  },
+  "cta": {
+    "title": "ابدأ تحليلك الخاص اليوم",
+    "subtitle": "انضم لآلاف المستخدمين الحريصين على الخصوصية الذين يتتبعون متابعيهم دون المخاطرة بحساباتهم.",
+    "getStarted": "ابدأ الآن",
+    "trySample": "جرّب عينة",
+    "tagline": "مجاني 100% • بدون تسجيل دخول • الخصوصية أولاً"
+  }
+}

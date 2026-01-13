@@ -1,0 +1,39 @@
+{
+  "version": "V1.5 Optimized for 1,000,000+ Accounts",
+  "headline": {
+    "prefix": "Check",
+    "highlight": "Instagram Unfollowers",
+    "suffix": "Without Logging In"
+  },
+  "subheadline": "Find out who unfollowed you on Instagram — free, no login required. Upload your ZIP file, analyze locally. 100% Private. Works offline.",
+  "buttons": {
+    "getGuide": "Check Unfollowers Free",
+    "trySample": "Try with Sample",
+    "haveFile": "I already have my ZIP file",
+    "viewResults": "View Analysis Results"
+  },
+  "trust": {
+    "free": "Completely Free • Forever",
+    "noPassword": "No Password • No Account Risk",
+    "privacy": "100% Private • Local Analysis"
+  },
+  "features": {
+    "heading": "Key Features",
+    "local": {
+      "title": "100% Local",
+      "description": "No data ever leaves your device"
+    },
+    "noLogin": {
+      "title": "No Login",
+      "description": "No risk of account bans or hacking"
+    },
+    "scale": {
+      "title": "High Scale",
+      "description": "Handles 1M+ accounts at light speed"
+    },
+    "openSource": {
+      "title": "Open Source",
+      "description": "Audit our code, we value your trust"
+    }
+  }
+}

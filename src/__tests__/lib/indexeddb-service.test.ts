@@ -22,36 +22,27 @@ describe('IndexedDBService (Integration Tests)', () => {
   // Helper to create badge value (timestamp)
   const badge = (): BadgeValue => Date.now();
 
+  // Track all file hashes used in tests for cleanup
+  const usedFileHashes = new Set<string>([
+    mockFileHash,
+    'empty-hash',
+    'hash1',
+    'hash2',
+    'hash3',
+    'other-hash',
+  ]);
+
   beforeEach(async () => {
     // Clear service caches first
     indexedDBService.clearCaches();
 
-    // Close any open connections
-    const dbInstance = (indexedDBService as any).db;
-    if (dbInstance) {
-      dbInstance.close();
-      (indexedDBService as any).db = null;
-      (indexedDBService as any).initPromise = null;
-    }
-
-    // Delete all databases
-    const dbs = await indexedDB.databases();
+    // Clear only known test file hashes instead of deleting all databases
+    // This is much faster than deleteDatabase() for each test
     await Promise.all(
-      dbs.map(
-        db =>
-          new Promise<void>((resolve, reject) => {
-            if (!db.name) {
-              resolve();
-              return;
-            }
-            const request = indexedDB.deleteDatabase(db.name);
-            request.onsuccess = () => resolve();
-            request.onerror = () => reject(request.error);
-            request.onblocked = () => {
-              console.warn(`Database ${db.name} deletion blocked`);
-              resolve(); // Continue anyway
-            };
-          })
+      Array.from(usedFileHashes).map(hash =>
+        indexedDBService.clearFile(hash).catch(() => {
+          // Ignore errors for non-existent files
+        })
       )
     );
   });

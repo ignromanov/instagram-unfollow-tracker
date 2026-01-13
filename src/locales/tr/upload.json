@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "Geri",
+    "title": "Instagram ZIP Yükle",
+    "description": "Verilerin %100 gizli kalır. Instagram ZIP dosyanı tarayıcında yerel olarak analiz ediyoruz.",
+    "dropHere": "Instagram ZIP dosyanı buraya bırak",
+    "orBrowse": "Veya yerel depolamana göz atmak için dokun.",
+    "jsonOnly": "Sadece JSON Formatı",
+    "processing": "Yerel olarak analiz ediliyor...",
+    "processingHint": "Büyük veri setlerini (1M+'a kadar) işlemek biraz zaman alabilir.",
+    "ariaLabel": "Instagram veri ZIP dosyasını yükle"
+  },
+  "checklist": {
+    "title": "Yükleme Öncesi Kontrol Listesi",
+    "format": "Format: JSON (HTML değil)",
+    "includes": "İçerik: 'Takipçiler ve takip edilenler'",
+    "timeframe": "Zaman aralığı: 'Tüm Zamanlar'",
+    "fileType": "Dosya türü: .zip"
+  },
+  "errors": {
+    "commonTitle": "En Yaygın Hata",
+    "commonHint": "Dışa aktarımında 0 takipçi varsa, muhtemelen <strong>HTML</strong> formatında dışa aktardın veya \"Takipçiler ve takip edilenler\" bilgi kategorisini seçmedin.",
+    "learnFix": "Nasıl düzeltilir öğren"
+  },
+  "diagnostic": {
+    "back": "Geri",
+    "howToFix": "Bunu nasıl düzeltirsin",
+    "tryAgain": "Tekrar Dene",
+    "showMistakes": "Nerede Yanlış Yaptığımı Göster",
+    "commonMistakes": "Yaygın Hatalar",
+    "mistakes": {
+      "html": {
+        "title": "JSON yerine HTML",
+        "description": "Verilerini talep ederken \"JSON\" formatını seçtiğinden emin ol"
+      },
+      "missingData": {
+        "title": "Eksik veri kategorisi",
+        "description": "Veri türlerinde \"Takipçiler ve takip edilenler\" seçmelisin"
+      },
+      "wrongFile": {
+        "title": "Yanlış dosya",
+        "description": ".zip dosyasını yükle, klasör veya çıkarılmış dosyaları değil"
+      }
+    }
+  },
+  "waiting": {
+    "title": "Instagram bekleniyor...",
+    "description": "Instagram veri dışa aktarımını hazırlıyor. 48 saat içinde bir e-posta alacaksın (genellikle çok daha hızlı!).",
+    "addReminder": "Takvime Hatırlatıcı Ekle",
+    "reminderHint": "2 gün sonra kontrol etmem için hatırlat",
+    "calendarTitle": "Instagram Dışa Aktarım E-postasını Kontrol Et",
+    "calendarDetails": "Instagram veri dışa aktarımı için e-postanı kontrol et ve Unfollow Tracker'a yükle",
+    "haveFile": "Dosyan zaten var mı?",
+    "haveFileHint": "E-postandan ZIP dışa aktarımını zaten indirdiysen, doğrudan analize geç.",
+    "uploadNow": "Şimdi Yükle",
+    "proTip": "İpucu: Spam Klasörünü Kontrol Et",
+    "proTipHint": "Instagram e-postaları genellikle oraya düşer. <b>Meta</b> veya <b>Instagram</b>'dan gelen e-postaları ara. İndirme linki 4 gün içinde geçersiz olur.",
+    "skip": "Şimdilik atla"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "header": {
+    "stepOf": "Step {{current}} of {{total}}"
+  },
+  "calendar": {
+    "addReminder": "Add Reminder to Calendar",
+    "title": "Check Instagram Export Email",
+    "details": "Check your email for Instagram data export and upload to Unfollow Tracker at safeunfollow.app"
+  },
+  "buttons": {
+    "back": "Back",
+    "next": "Next Step",
+    "done": "Done, let's go!",
+    "openInstagram": "Open Instagram Export Page",
+    "close": "Close guide",
+    "uploadFile": "Upload My File"
+  },
+  "format": {
+    "warning": "CRITICAL STEP"
+  },
+  "steps": {
+    "1": {
+      "title": "Open Instagram Export Page",
+      "description": "Click the button below to open Meta Accounts Center. Then click \"Create export\" to begin.",
+      "alt": "Step 1: Open Instagram Export Page and click Create export"
+    },
+    "2": {
+      "title": "Choose Your Instagram Profile",
+      "description": "Select your Instagram account from the list of connected profiles.",
+      "alt": "Step 2: Choose your Instagram profile"
+    },
+    "3": {
+      "title": "Select \"Export to device\"",
+      "description": "Choose to export directly to your device for maximum privacy. Your data stays with you.",
+      "alt": "Step 3: Select Export to device option"
+    },
+    "4": {
+      "title": "⚠️ Select Only \"Followers and following\"",
+      "description": "Click \"Customize\" → Clear all checkboxes → Check ONLY \"Followers and following\". This keeps your file small and fast.",
+      "alt": "Step 4: Customize to select only Followers and following"
+    },
+    "5": {
+      "title": "Set Date Range to \"All time\"",
+      "description": "Click \"Date range\" → Select \"All time\" → Save. This ensures you get your complete follower history.",
+      "alt": "Step 5: Set date range to All time"
+    },
+    "6": {
+      "title": "⚠️ Change Format to JSON",
+      "description": "This is critical! Click \"Format\" → Select \"JSON\" (not HTML). HTML files will NOT work with our analyzer.",
+      "alt": "Step 6: Change format to JSON"
+    },
+    "7": {
+      "title": "Review & Start Export",
+      "description": "Verify your settings show: Followers and following, All time, JSON format. Then click \"Start export\".",
+      "alt": "Step 7: Review settings and start export"
+    },
+    "8": {
+      "title": "Wait for Email & Download",
+      "description": "Instagram will email you when ready (usually 5-30 minutes). Click the download link in the email to get your ZIP file.",
+      "alt": "Step 8: Wait for email and download ZIP file"
+    },
+    "9": {
+      "title": "Upload Your File",
+      "description": "You're ready! Click the button below to upload your Instagram data and see who unfollowed you.",
+      "alt": "Step 9: Upload your Instagram data file"
+    }
+  }
+}

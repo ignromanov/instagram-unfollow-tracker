@@ -5,7 +5,7 @@
 title: "Instagram Unfollow Tracker"
 description: "Free Instagram unfollow tracker - analyze your followers and following"
 baseurl: "/docs"
-url: "https://instagram-unfollow-tracker.vercel.app"
+url: "https://safeunfollow.app"
 
 # Build settings
 markdown: kramdown

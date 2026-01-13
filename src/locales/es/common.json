@@ -1,0 +1,69 @@
+{
+  "buttons": {
+    "back": "Atrás",
+    "next": "Siguiente",
+    "cancel": "Cancelar",
+    "tryAgain": "Intentar de nuevo",
+    "clearData": "Borrar datos",
+    "viewResults": "Resultados",
+    "uploadFile": "Subir archivo",
+    "delete": "Eliminar"
+  },
+  "badges": {
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "unfollowed": "Dejaron de seguirte",
+    "notFollowingBack": "No te siguen de vuelta",
+    "mutuals": "Mutuos",
+    "notFollowedBack": "No sigues de vuelta",
+    "pending": "Solicitud pendiente",
+    "permanent": "Pendiente (permanente)",
+    "restricted": "Restringido",
+    "close": "Amigo cercano",
+    "dismissed": "Sugerencia descartada"
+  },
+  "theme": {
+    "light": "Modo claro",
+    "dark": "Modo oscuro",
+    "system": "Automático",
+    "switchToLight": "Cambiar a modo claro",
+    "switchToDark": "Cambiar a modo oscuro"
+  },
+  "header": {
+    "logoAria": "SafeUnfollow.app — Ir a la página principal",
+    "clearDataTitle": "¿Borrar todos los datos?",
+    "clearDataDescription": "Esto eliminará todos los datos de Instagram cargados y te llevará a la pantalla de inicio. Esta acción no se puede deshacer.",
+    "deleteData": "Eliminar datos"
+  },
+  "footer": {
+    "description": "El único analizador de relaciones que funciona 100% en tu navegador. Sin servidor, sin registros, solo tus datos y tu dispositivo.",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfService": "Términos de servicio",
+    "contact": "Contacto",
+    "trackingOff": "Rastreo desactivado",
+    "dontTrackMe": "No me rastrees",
+    "trackingDisabled": "Analíticas desactivadas",
+    "trackingEnabled": "Desactivar analíticas anónimas",
+    "keepItFree": "Mantenlo gratis y privado",
+    "supportPrivacy": "Apoya la privacidad",
+    "madeWithLove": "Hecho con",
+    "forTheCommunity": "para la comunidad",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "Licencia MIT",
+    "viewSource": "Código fuente"
+  },
+  "nav": {
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio"
+  },
+  "language": {
+    "changeLanguage": "Cambiar idioma"
+  },
+  "cta": {
+    "title": "Comienza Tu Análisis Privado Hoy",
+    "subtitle": "Únete a miles de usuarios que rastrean sus seguidores sin arriesgar sus cuentas.",
+    "getStarted": "Comenzar",
+    "trySample": "Probar Demo",
+    "tagline": "100% Gratis • Sin Login • Privacidad Garantizada"
+  }
+}

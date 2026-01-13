@@ -252,8 +252,8 @@ export class IndexedDBFilterEngine {
     }
     ranges.push(currentRange);
 
-    // Load all ranges
-    const results: AccountBadges[] = [];
+    // Load all ranges, tracking original index for correct ordering
+    const results: Array<{ account: AccountBadges; originalIndex: number }> = [];
 
     for (const range of ranges) {
       const accounts = await indexedDBService.getAccountsByRange(
@@ -262,24 +262,26 @@ export class IndexedDBFilterEngine {
         range.end
       );
 
-      // Extract only the accounts we need
+      // Extract only the accounts we need, preserving original index
       for (const idx of range.indices) {
         const localIdx = idx - range.start;
         if (accounts[localIdx]) {
-          results.push(accounts[localIdx]!);
+          results.push({ account: accounts[localIdx]!, originalIndex: idx });
         }
       }
     }
 
-    // Maintain original order
-    const indexMap = new Map(indices.map((idx, order) => [idx, order]));
+    // Create order map: originalIndex -> position in input indices array
+    const orderMap = new Map(indices.map((idx, order) => [idx, order]));
+
+    // Sort by original order (O(n log n))
     results.sort((a, b) => {
-      const orderA = indexMap.get(indices.find(i => results.indexOf(a) === i) || 0) || 0;
-      const orderB = indexMap.get(indices.find(i => results.indexOf(b) === i) || 0) || 0;
+      const orderA = orderMap.get(a.originalIndex) ?? Infinity;
+      const orderB = orderMap.get(b.originalIndex) ?? Infinity;
       return orderA - orderB;
     });
 
-    return results;
+    return results.map(r => r.account);
   }
 
   /**

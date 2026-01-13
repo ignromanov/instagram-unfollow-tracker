@@ -1,0 +1,121 @@
+{
+  "header": {
+    "title": "Analysis Results",
+    "fileInfo": "{{filename}} • {{count, number}} Total",
+    "showing": "Showing {{filtered}} of {{total}} accounts"
+  },
+  "sample": {
+    "banner": "Viewing Sample Data",
+    "hint": "This is demo data to help you explore the app.",
+    "uploadPrompt": "Upload your data",
+    "toSeeReal": "to see your real followers."
+  },
+  "search": {
+    "placeholder": "Search usernames...",
+    "ariaLabel": "Search accounts by username",
+    "clearAriaLabel": "Clear search",
+    "resultsCount": "Showing {{result}} of {{total}}",
+    "accounts": "accounts",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Sort A→Z",
+    "desc": "Sort Z→A"
+  },
+  "stats": {
+    "followers": "Followers",
+    "following": "Following",
+    "unfollowed": "Unfollowed",
+    "notFollowing": "Not Following"
+  },
+  "filters": {
+    "title": "Filter Results",
+    "reset": "Reset",
+    "emptyCategories": "Empty Categories ({{count, number}})",
+    "addFilter": "Add {{label}} filter ({{count, number}} accounts)",
+    "removeFilter": "Remove {{label}} filter ({{count, number}} accounts)"
+  },
+  "badges": {
+    "followers": "Followers",
+    "following": "Following",
+    "unfollowed": "Recently unfollowed",
+    "notFollowingBack": "Not following back",
+    "mutuals": "Mutuals",
+    "notFollowedBack": "Not followed back",
+    "pending": "Pending request",
+    "permanent": "Pending (permanent)",
+    "restricted": "Restricted",
+    "close": "Close friend",
+    "dismissed": "Dismissed suggestion"
+  },
+  "empty": {
+    "noUsers": "No users found",
+    "resetFilters": "Reset Filters"
+  },
+  "list": {
+    "header": "Accounts ({{count, number}})",
+    "viewProfile": "View Profile"
+  },
+  "rescue": {
+    "critical": {
+      "title": "You've lost {{unfollowedPercent}}% — here's how to recover",
+      "subtitle": {
+        "influencer": "At {{count}}+ followers, every lost connection hurts reach. Recover in 7 days:",
+        "power": "You're in the top tier — smart creators recover fast with these:",
+        "regular": "Stop the bleeding and get your community back:",
+        "casual": "Small audience = fast recovery. Start now:"
+      }
+    },
+    "warning": {
+      "title": "{{unfollowedPercent}}% drop detected — time to optimize",
+      "subtitle": {
+        "influencer": "At your scale, early optimization prevents bigger losses:",
+        "power": "Catch it early — here's what top creators use:",
+        "regular": "Keep your audience engaged before they drift:",
+        "casual": "Build stronger connections now:"
+      }
+    },
+    "growth": {
+      "title": "Only {{unfollowedPercent}}% loss — you're doing great!",
+      "subtitle": {
+        "influencer": "Scale your reach with professional-grade tools:",
+        "power": "Ready for the next level? Here's your toolkit:",
+        "regular": "Build consistency and grow 2x faster:",
+        "casual": "Start your growth journey the right way:"
+      }
+    },
+    "tools": {
+      "submagic": "Turn clips into viral Reels → 3-5x reach boost",
+      "predis": "AI creates posts + designs → ship content 3x faster",
+      "manychat": "Auto-reply 24/7 → 10+ hours/week saved",
+      "metricool": "Find your peak times → 40% faster growth",
+      "vistacreate": "Pro designs in 60 sec → never miss a post",
+      "later": "Plan your month in 1 hour → stay consistent"
+    },
+    "dismiss": "Maybe later",
+    "disclaimer": "Hand-picked tools we recommend. Affiliate links fund free updates — no cost to you.",
+    "ariaLabel": "Recommended tools to improve your Instagram presence",
+    "badges": {
+      "popular": "Popular",
+      "trial": "Trial",
+      "new": "New"
+    },
+    "recommended": "Recommended",
+    "tryTool": "Try {{name}}",
+    "price": {
+      "freeTrial7": "7-day free trial",
+      "freeTrial14": "14-day free trial",
+      "freePlan": "Free plan available",
+      "freeContacts": "Free up to 1K contacts",
+      "freeForever": "Free forever plan"
+    },
+    "social": {
+      "creators50k": "50K+ creators",
+      "posts1m": "1M+ posts created",
+      "businesses1m": "1M+ businesses",
+      "users200k": "200K+ users",
+      "designs10m": "10M+ designs created",
+      "users7m": "7M+ users"
+    }
+  }
+}

@@ -276,12 +276,14 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
 
-      expect(result.following.has('user1')).toBe(true);
-      expect(result.followers.has('follower1')).toBe(true);
-      expect(result.pendingSent.has('pending1')).toBe(true);
-      expect(result.restricted.has('restricted1')).toBe(true);
-      expect(result.followingTimestamps.get('user1')).toBe(1640995200);
-      expect(result.followersTimestamps.get('follower1')).toBe(1640995201);
+      // New ParseResult format: data is in result.data
+      expect(result.hasMinimalData).toBe(true);
+      expect(result.data.following.has('user1')).toBe(true);
+      expect(result.data.followers.has('follower1')).toBe(true);
+      expect(result.data.pendingSent.has('pending1')).toBe(true);
+      expect(result.data.restricted.has('restricted1')).toBe(true);
+      expect(result.data.followingTimestamps.get('user1')).toBe(1640995200);
+      expect(result.data.followersTimestamps.get('follower1')).toBe(1640995201);
     });
 
     it('should handle ZIP file with minimal data', async () => {
@@ -308,9 +310,11 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
 
-      expect(result.following.has('user1')).toBe(true);
-      expect(result.followers.size).toBe(0);
-      expect(result.pendingSent.size).toBe(0);
+      // Minimal data = only following.json
+      expect(result.hasMinimalData).toBe(true);
+      expect(result.data.following.has('user1')).toBe(true);
+      expect(result.data.followers.size).toBe(0);
+      expect(result.data.pendingSent.size).toBe(0);
     });
 
     it('should handle multiple followers files', async () => {
@@ -361,17 +365,21 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
 
-      expect(result.followers.has('follower1')).toBe(true);
-      expect(result.followers.has('follower2')).toBe(true);
-      expect(result.followers.size).toBe(2);
+      expect(result.data.followers.has('follower1')).toBe(true);
+      expect(result.data.followers.has('follower2')).toBe(true);
+      expect(result.data.followers.size).toBe(2);
     });
 
-    it('should throw error for empty ZIP file', async () => {
+    it('should return hasMinimalData=false for empty ZIP file', async () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
-      await expect(parseInstagramZipFile(mockFile)).rejects.toThrow(
-        'Could not find required files in ZIP'
-      );
+      // New: parseInstagramZipFile returns result instead of throwing
+      const result = await parseInstagramZipFile(mockFile);
+      expect(result.hasMinimalData).toBe(false);
+      expect(result.discovery.isInstagramExport).toBe(false);
+      // Should have error-level warning
+      const errorWarning = result.warnings.find(w => w.severity === 'error');
+      expect(errorWarning).toBeDefined();
     });
 
     it('should handle malformed JSON gracefully', async () => {
@@ -383,9 +391,9 @@ describe('Instagram Parser', () => {
 
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
 
-      await expect(parseInstagramZipFile(mockFile)).rejects.toThrow(
-        'Could not find required files in ZIP'
-      );
+      // New: returns result with hasMinimalData=false instead of throwing
+      const result = await parseInstagramZipFile(mockFile);
+      expect(result.hasMinimalData).toBe(false);
     });
 
     it('should preserve timestamps correctly', async () => {
@@ -418,7 +426,7 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
 
-      expect(result.followingTimestamps.get('user1')).toBe(testTimestamp);
+      expect(result.data.followingTimestamps.get('user1')).toBe(testTimestamp);
     });
 
     it('should handle missing timestamp gracefully', async () => {
@@ -449,7 +457,7 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
 
-      expect(result.followingTimestamps.get('user1')).toBe(0);
+      expect(result.data.followingTimestamps.get('user1')).toBe(0);
     });
 
     it('should handle followers files with different naming patterns', async () => {
@@ -481,7 +489,69 @@ describe('Instagram Parser', () => {
       const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
       const result = await parseInstagramZipFile(mockFile);
 
-      expect(result.followersTimestamps.get('user1')).toBe(1234567890);
+      expect(result.data.followersTimestamps.get('user1')).toBe(1234567890);
+    });
+
+    it('should parse new Instagram format with username in title only (no value field)', async () => {
+      // New Instagram format (2026+): username is in entry.title, not in string_list_data[0].value
+      mockZipInstance._addFile(
+        'connections/followers_and_following/following.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify({
+            relationships_following: [
+              {
+                title: 'newformat_user1',
+                string_list_data: [
+                  {
+                    href: 'https://www.instagram.com/_u/newformat_user1',
+                    timestamp: 1765477864,
+                    // Note: no 'value' field - this is the new format
+                  },
+                ],
+                media_list_data: [],
+              },
+              {
+                title: 'newformat_user2',
+                string_list_data: [
+                  {
+                    href: 'https://www.instagram.com/_u/newformat_user2',
+                    timestamp: 1765063724,
+                  },
+                ],
+                media_list_data: [],
+              },
+            ],
+          })
+        )
+      );
+
+      mockZipInstance._addFile(
+        'connections/followers_and_following/followers_1.json',
+        vi.fn().mockResolvedValue(
+          JSON.stringify([
+            {
+              title: 'newformat_follower1',
+              string_list_data: [
+                {
+                  href: 'https://www.instagram.com/_u/newformat_follower1',
+                  timestamp: 1765000000,
+                },
+              ],
+              media_list_data: [],
+            },
+          ])
+        )
+      );
+
+      const mockFile = new File(['test'], 'test.zip', { type: 'application/zip' });
+      const result = await parseInstagramZipFile(mockFile);
+
+      expect(result.hasMinimalData).toBe(true);
+      expect(result.data.following.has('newformat_user1')).toBe(true);
+      expect(result.data.following.has('newformat_user2')).toBe(true);
+      expect(result.data.followers.has('newformat_follower1')).toBe(true);
+      expect(result.data.followingTimestamps.get('newformat_user1')).toBe(1765477864);
+      expect(result.data.followersTimestamps.get('newformat_follower1')).toBe(1765000000);
     });
   });
 });

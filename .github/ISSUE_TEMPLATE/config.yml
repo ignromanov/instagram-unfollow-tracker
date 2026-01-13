@@ -1,13 +1,13 @@
 blank_issues_enabled: false
 contact_links:
   - name: FAQ
-    url: https://instagram-unfollow-tracker.vercel.app/docs/faq
+    url: https://safeunfollow.app/docs/faq
     about: Check if your question is already answered
   - name: Data Download Guide
-    url: https://instagram-unfollow-tracker.vercel.app/docs/instagram-export
+    url: https://safeunfollow.app/docs/instagram-export
     about: Learn how to download your Instagram data
   - name: Privacy Policy
-    url: https://instagram-unfollow-tracker.vercel.app/docs/privacy
+    url: https://safeunfollow.app/docs/privacy
     about: Understand how we handle your data
   - name: Contributing Guide
     url: https://github.com/ignromanov/instagram-unfollow-tracker/blob/master/CONTRIBUTING.md

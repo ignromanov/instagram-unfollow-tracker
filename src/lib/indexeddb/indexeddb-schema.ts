@@ -9,7 +9,7 @@
  * - indexes: Search index cache (prefix/trigram bitsets)
  */
 
-import type { BadgeKey } from '@/core/types';
+import type { BadgeKey, FileMetadata } from '@/core/types';
 
 export const DB_CONFIG = {
   name: 'instagram-tracker-v2',
@@ -65,6 +65,13 @@ export const STORE_CONFIGS: Record<string, StoreConfig> = {
 
 // ===== Type Definitions =====
 
+/**
+ * File metadata for IndexedDB storage layer.
+ * Uses explicit field names (fileName, fileSize) for clarity in storage.
+ * All fields required except processingTime (validated before save).
+ *
+ * Related: FileMetadata in @/core/types.ts (UI layer, optional fields)
+ */
 export interface FileMetadataRecord {
   fileHash: string;
   fileName: string;
@@ -76,11 +83,51 @@ export interface FileMetadataRecord {
   processingTime?: number;
 }
 
+// ===== Conversion Utilities =====
+
+/**
+ * Convert UI FileMetadata to storage FileMetadataRecord.
+ * Throws if required fields are missing.
+ */
+export function toFileMetadataRecord(
+  meta: FileMetadata & { fileHash: string }
+): FileMetadataRecord {
+  if (!meta.fileHash) throw new Error('fileHash is required');
+  if (meta.accountCount === undefined) throw new Error('accountCount is required');
+
+  return {
+    fileHash: meta.fileHash,
+    fileName: meta.name,
+    fileSize: meta.size,
+    uploadDate: meta.uploadDate,
+    accountCount: meta.accountCount,
+    lastAccessed: meta.lastAccessed ?? Date.now(),
+    version: meta.version ?? 1,
+    processingTime: meta.processingTime,
+  };
+}
+
+/**
+ * Convert storage FileMetadataRecord to UI FileMetadata.
+ */
+export function fromFileMetadataRecord(record: FileMetadataRecord): FileMetadata {
+  return {
+    name: record.fileName,
+    size: record.fileSize,
+    uploadDate: record.uploadDate,
+    fileHash: record.fileHash,
+    accountCount: record.accountCount,
+    lastAccessed: record.lastAccessed,
+    version: record.version,
+    processingTime: record.processingTime,
+  };
+}
+
 export interface ColumnRecord {
   fileHash: string;
   column: 'usernames' | 'displayNames' | 'hrefs';
   data: Uint8Array; // Packed data buffer
-  offsets?: Uint32Array; // Offset table for variable-length data
+  offsets: Uint32Array; // Offset table for variable-length data (required)
   length: number; // Number of entries
 }
 

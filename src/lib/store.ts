@@ -1,6 +1,10 @@
-import type { BadgeKey, FileMetadata } from '@/core/types';
+import type { BadgeKey, FileDiscovery, FileMetadata, ParseWarning } from '@/core/types';
+import type { SupportedLanguage } from '@/locales';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+// Re-export for backwards compatibility
+export type { SupportedLanguage };
 
 interface AppState {
   filters: Set<BadgeKey>;
@@ -8,6 +12,11 @@ interface AppState {
   uploadStatus: 'idle' | 'loading' | 'success' | 'error';
   uploadError: string | null;
   fileMetadata: FileMetadata | null;
+  // i18n language state
+  language: SupportedLanguage;
+  // Session-only state (not persisted)
+  parseWarnings: ParseWarning[];
+  fileDiscovery: FileDiscovery | null;
   _hasHydrated: boolean;
   setFilters: (filters: Set<BadgeKey>) => void;
   setUploadInfo: (info: {
@@ -18,12 +27,16 @@ interface AppState {
     uploadDate?: Date;
     fileHash?: string;
     accountCount?: number;
+    parseWarnings?: ParseWarning[];
+    fileDiscovery?: FileDiscovery;
   }) => void;
   clearData: () => void;
+  // Language action
+  setLanguage: (lang: SupportedLanguage) => void;
 }
 
 // Helper to serialize Set for persist
-function serializeSet<T>(set: Set<T>): T[] {
+function serializeSet<T extends string | number>(set: Set<T>): T[] {
   return Array.from(set.values());
 }
 function deserializeSet<T>(arr: T[] | undefined): Set<T> {
@@ -38,6 +51,9 @@ export const useAppStore = create<AppState>()(
       uploadStatus: 'idle',
       uploadError: null,
       fileMetadata: null,
+      language: 'en' as SupportedLanguage,
+      parseWarnings: [],
+      fileDiscovery: null,
       _hasHydrated: false,
       setFilters: filters => set({ filters: new Set(filters) }),
       setUploadInfo: info =>
@@ -46,6 +62,8 @@ export const useAppStore = create<AppState>()(
             currentFileName: info.currentFileName ?? state.currentFileName,
             uploadStatus: info.uploadStatus ?? state.uploadStatus,
             uploadError: info.uploadError ?? state.uploadError,
+            parseWarnings: info.parseWarnings ?? state.parseWarnings,
+            fileDiscovery: info.fileDiscovery ?? state.fileDiscovery,
           };
 
           // Update fileMetadata when we have file info and success status
@@ -72,21 +90,44 @@ export const useAppStore = create<AppState>()(
           uploadStatus: 'idle',
           uploadError: null,
           fileMetadata: null,
+          parseWarnings: [],
+          fileDiscovery: null,
           filters: new Set<BadgeKey>(),
         }),
+      setLanguage: (lang: SupportedLanguage) => {
+        set({ language: lang });
+        // Sync with i18next (language is already loaded by initI18n from URL)
+        import('@/locales').then(({ loadLanguage }) => {
+          loadLanguage(lang);
+        });
+      },
     }),
     {
       name: 'unfollow-radar-store',
-      version: 2, // Increment version to clear old data
-      migrate: (persistedState: any, version: number) => {
-        // If version is 1 or older, clear all data and start fresh
-        if (version <= 1) {
+      version: 5, // Version 5: Remove journey state
+      migrate: (persistedState: unknown, version: number) => {
+        // If version is 4 or older, migrate to v5 (remove journey)
+        if (version <= 4) {
+          if (typeof persistedState === 'object' && persistedState !== null) {
+            const state = persistedState as Record<string, unknown>;
+            // Remove journey field if it exists
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { journey, ...cleanState } = state;
+            // Ensure language exists (added in v4)
+            return {
+              ...cleanState,
+              language: cleanState.language || 'en',
+              _hasHydrated: false,
+            };
+          }
+          // Fallback: return fresh state
           return {
             filters: new Set<BadgeKey>(),
             currentFileName: null,
             uploadStatus: 'idle' as const,
             uploadError: null,
             fileMetadata: null,
+            language: 'en',
             _hasHydrated: false,
           };
         }
@@ -101,31 +142,48 @@ export const useAppStore = create<AppState>()(
           uploadStatus: state.uploadStatus,
           uploadError: state.uploadError,
           fileMetadata: state.fileMetadata,
+          // Note: language is NOT persisted - URL is the source of truth
         }) as unknown as Partial<AppState>,
       onRehydrateStorage: () => state => {
         if (state) {
           state._hasHydrated = true;
+          // Note: Language is NOT restored from localStorage
+          // URL is the source of truth, handled by initI18n()
         }
       },
       storage: {
         getItem: name => {
-          const str = localStorage.getItem(name);
-          if (!str) return null;
-          const json = JSON.parse(str);
-          if (Array.isArray(json.state?.filters)) {
-            json.state.filters = deserializeSet(json.state.filters);
+          try {
+            const str = localStorage.getItem(name);
+            if (!str) return null;
+            const json = JSON.parse(str);
+            if (Array.isArray(json.state?.filters)) {
+              json.state.filters = deserializeSet(json.state.filters);
+            }
+            return json;
+          } catch {
+            // localStorage unavailable (private mode, quota exceeded)
+            return null;
           }
-          return json;
         },
         setItem: (name, value) => {
-          const val = { ...value } as any;
-          if (val.state?.filters instanceof Set) {
-            val.state.filters = serializeSet(val.state.filters);
+          try {
+            const val = { ...value } as Record<string, unknown>;
+            const state = val.state as Record<string, unknown> | undefined;
+            if (state?.filters instanceof Set) {
+              state.filters = serializeSet(state.filters);
+            }
+            localStorage.setItem(name, JSON.stringify(val));
+          } catch {
+            // localStorage unavailable (private mode, quota exceeded)
           }
-          localStorage.setItem(name, JSON.stringify(val));
         },
         removeItem: name => {
-          localStorage.removeItem(name);
+          try {
+            localStorage.removeItem(name);
+          } catch {
+            // localStorage unavailable (private mode, quota exceeded)
+          }
         },
       },
     }

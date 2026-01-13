@@ -1,13 +1,18 @@
+import type { ParseWarning } from '@/core/types';
 import { analytics } from '@/lib/analytics';
+import { isValidZipFile } from '@/lib/file-validation';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
-import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
+import { parseOnMainThread, parseWithWorker } from '@/lib/parse-orchestration';
 import { useAppStore } from '@/lib/store';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useParseWorker } from './useParseWorker';
+
+// Upload rate limiting (ms)
+const UPLOAD_DEBOUNCE_MS = 1000;
 
 export function useFileUpload() {
   const abortControllerRef = useRef<AbortController | null>(null);
-  const workerRef = useRef<Worker | null>(null);
-  const workerReadyRef = useRef(false);
+  const lastUploadRef = useRef<number>(0);
 
   // Progress tracking
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -19,93 +24,19 @@ export function useFileUpload() {
   const setFilters = useAppStore(s => s.setFilters);
   const filters = useAppStore(s => s.filters);
 
-  // Initialize Web Worker for file parsing
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.Worker && !workerRef.current) {
-      const initializeWorker = async () => {
-        try {
-          const basePath = (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL || '/';
-
-          // Load enhanced WorkerConsole.js for worker console logging
-          const loadWorkerConsole = () => {
-            return new Promise<void>(resolve => {
-              if (document.querySelector('script[src*="WorkerConsole.js"]')) {
-                resolve();
-                return;
-              }
-
-              const script = document.createElement('script');
-              script.src = `${basePath}WorkerConsole.js`;
-              script.onload = () => {
-                resolve();
-              };
-              script.onerror = () => {
-                resolve(); // Continue even if WorkerConsole fails to load
-              };
-              document.head.appendChild(script);
-            });
-          };
-
-          // Load WorkerConsole first, then create worker
-          await loadWorkerConsole();
-
-          // Create TypeScript module worker directly
-          try {
-            const worker = new Worker(new URL('../lib/parse-worker.ts', import.meta.url), {
-              type: 'module',
-            });
-            workerRef.current = worker;
-          } catch (error) {
-            throw new Error(
-              `Failed to create worker: ${error instanceof Error ? error.message : 'Unknown error'}`
-            );
-          }
-
-          // Wait for worker to be ready
-          const readyHandler = (e: MessageEvent) => {
-            if (e.data?.type === 'ready') {
-              workerReadyRef.current = true;
-              workerRef.current?.removeEventListener('message', readyHandler);
-            }
-          };
-
-          workerRef.current.addEventListener('message', readyHandler);
-
-          // Add global error handler
-          workerRef.current.onerror = event => {
-            const errorEvent = event as ErrorEvent;
-            if (typeof errorEvent?.preventDefault === 'function') {
-              errorEvent.preventDefault();
-            }
-          };
-
-          // Timeout to detect if worker doesn't respond
-          setTimeout(() => {
-            if (!workerReadyRef.current) {
-              workerReadyRef.current = true;
-            }
-          }, 5000);
-        } catch {
-          // Silent error handling
-        }
-      };
-
-      // Call the async function
-      initializeWorker();
-    }
-
-    // Cleanup worker on unmount
-    return () => {
-      if (workerRef.current) {
-        workerRef.current.terminate();
-        workerRef.current = null;
-        workerReadyRef.current = false;
-      }
-    };
-  }, []);
+  // Web Worker for file parsing
+  const { workerRef, isWorkerReady } = useParseWorker();
 
   const handleZipUpload = useCallback(
+    // eslint-disable-next-line complexity -- Upload handler has high complexity due to multiple error paths, cache checks, and state management
     async (file: File) => {
+      // Debounce rapid uploads
+      const now = Date.now();
+      if (now - lastUploadRef.current < UPLOAD_DEBOUNCE_MS) {
+        return;
+      }
+      lastUploadRef.current = now;
+
       const uploadDate = new Date();
       const startTime = performance.now();
       const fileSizeMb = file.size / (1024 * 1024);
@@ -133,6 +64,27 @@ export function useFileUpload() {
       let fileHash: string = '';
 
       try {
+        // Validate ZIP file before processing
+        const isZip = await isValidZipFile(file);
+        if (!isZip) {
+          const notZipWarning: ParseWarning = {
+            code: 'NOT_ZIP',
+            message: 'Please upload a ZIP archive file, not a folder or other file type.',
+            severity: 'error',
+            fix: 'Look for a file ending in .zip in your Downloads folder.',
+          };
+
+          setUploadInfo({
+            currentFileName: file.name,
+            uploadStatus: 'error',
+            uploadError: notZipWarning.message,
+            parseWarnings: [notZipWarning],
+          });
+
+          analytics.fileUploadError('', 'NOT_ZIP');
+          throw new Error(notZipWarning.message);
+        }
+
         // Generate file hash for cache lookup and analytics correlation
         fileHash = await generateFileHash(file);
 
@@ -176,89 +128,60 @@ export function useFileUpload() {
         let accountCount: number = 0;
         let resultFileHash: string = fileHash;
 
-        if (workerRef.current && workerReadyRef.current) {
+        const handleProgress = (progress: number, processed: number, total: number) => {
+          setUploadProgress(progress);
+          setProcessedCount(processed);
+          setTotalCount(total);
+        };
+
+        if (workerRef.current && isWorkerReady()) {
           // Parse file using Web Worker with progress updates
+          try {
+            const result = await parseWithWorker(
+              workerRef.current,
+              file,
+              fileHash,
+              handleProgress,
+              abortControllerRef.current?.signal
+            );
 
-          const result = await new Promise<{
-            fileHash: string;
-            accountCount: number;
-          }>((resolve, reject) => {
-            // Add timeout to detect infinite loading
-            const timeoutId = setTimeout(() => {
-              workerRef.current?.removeEventListener('message', handleMessage);
-              reject(new Error('Worker timeout: Processing took too long'));
-            }, 60000); // 60 second timeout
+            accountCount = result.accountCount;
+            resultFileHash = result.fileHash;
 
-            const handleMessage = (e: MessageEvent) => {
-              if (e.data?.type === 'progress') {
-                // Progress update from chunked processing
-                const { progress, processedCount, totalCount } = e.data;
-                setUploadProgress(progress);
-                setProcessedCount(processedCount);
-                setTotalCount(totalCount);
-              } else if (e.data?.type === 'result') {
-                clearTimeout(timeoutId);
-                const { fileHash: resultHash, accountCount: resultAccountCount } = e.data;
-                workerRef.current?.removeEventListener('message', handleMessage);
-                resolve({
-                  fileHash: resultHash || fileHash,
-                  accountCount: resultAccountCount,
-                });
-              } else if (e.data?.type === 'error') {
-                clearTimeout(timeoutId);
-                workerRef.current?.removeEventListener('message', handleMessage);
-                reject(new Error(e.data.error));
-              }
-            };
-
-            workerRef.current?.addEventListener('message', handleMessage);
-
-            workerRef.current?.postMessage({ type: 'parse', file, fileHash });
-          });
-
-          if (abortControllerRef.current?.signal.aborted) {
-            throw new Error('Upload cancelled');
+            // Store warnings and discovery from worker
+            if (result.warnings || result.discovery) {
+              setUploadInfo({
+                parseWarnings: result.warnings ?? [],
+                fileDiscovery: result.discovery,
+              });
+            }
+          } catch (error) {
+            // Extract warnings/discovery from error if available
+            if (error instanceof Error && 'warnings' in error) {
+              setUploadInfo({
+                parseWarnings: (error as { warnings?: ParseWarning[] }).warnings ?? [],
+                fileDiscovery: (error as { discovery?: import('@/core/types').FileDiscovery })
+                  .discovery,
+              });
+            }
+            throw error;
           }
+        } else {
+          // Fallback: parse on main thread
+          const result = await parseOnMainThread(
+            file,
+            fileHash,
+            abortControllerRef.current?.signal
+          );
 
           accountCount = result.accountCount;
           resultFileHash = result.fileHash;
-        } else {
-          console.warn('[Upload] Worker not available, falling back to main thread parsing');
-          console.warn('[Upload] This will be slower for large files!');
-          console.warn('[Upload] Worker status:', {
-            workerExists: !!workerRef.current,
-            workerReady: workerReadyRef.current,
+
+          // Store warnings and discovery from main thread parsing
+          setUploadInfo({
+            parseWarnings: result.warnings ?? [],
+            fileDiscovery: result.discovery,
           });
-
-          // Fallback: parse on main thread (imports needed for fallback)
-          const { parseInstagramZipFile } = await import('@/core/parsers/instagram');
-          const { buildAccountBadgeIndex } = await import('@/core/badges');
-
-          const parsed = await parseInstagramZipFile(file);
-
-          if (abortControllerRef.current?.signal.aborted) {
-            throw new Error('Upload cancelled');
-          }
-
-          const unified = buildAccountBadgeIndex(parsed);
-
-          if (abortControllerRef.current?.signal.aborted) {
-            throw new Error('Upload cancelled');
-          }
-
-          // Save to IndexedDB
-          await indexedDBService.saveFileMetadata({
-            fileHash: resultFileHash,
-            fileName: file.name,
-            fileSize: file.size,
-            uploadDate: new Date(),
-            accountCount: unified.length,
-            lastAccessed: Date.now(),
-            version: 2,
-          });
-
-          await indexedDBService.storeAllAccounts(resultFileHash, unified);
-          accountCount = unified.length;
         }
 
         // Data already cached in IndexedDB by worker during chunked processing

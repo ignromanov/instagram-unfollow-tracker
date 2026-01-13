@@ -1,37 +1,52 @@
 import { BADGE_STYLES } from '@/constants/badge-styles';
-import { BADGE_LABELS } from '@/core/badges';
-import type { AccountBadges } from '@/core/types';
+import type { AccountBadges, BadgeKey } from '@/core/types';
 import { useAccountDataSource } from '@/hooks/useAccountDataSource';
 import { analytics } from '@/lib/analytics';
-import { useAppStore } from '@/lib/store';
-import type { AccountListProps } from '@/types/components';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ExternalLink } from 'lucide-react';
-import { memo, useCallback, useRef } from 'react';
+import { ExternalLink, User, Ghost } from 'lucide-react';
+import { memo, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
+/**
+ * Props for AccountList component
+ * Parameterized to support multiple data sources (user data vs sample data)
+ */
+export interface AccountListProps {
+  /** IndexedDB file hash for data lookup */
+  fileHash: string;
+  /** Total number of accounts in this dataset */
+  accountCount: number;
+  /** Array of account indices to display (after filtering) */
+  accountIndices: number[];
+  /** Whether data has been loaded */
+  hasLoadedData: boolean;
+  /** Whether filtering is in progress */
+  isLoading?: boolean;
+  /** Callback to clear all filters */
+  onClearFilters?: () => void;
+}
 
 export const AccountList = memo(function AccountList({
+  fileHash,
+  accountCount,
   accountIndices,
   hasLoadedData,
+  onClearFilters,
 }: AccountListProps) {
+  const { t } = useTranslation('results');
   const parentRef = useRef<HTMLDivElement>(null);
+  const trackedDepthsRef = useRef<Set<25 | 50 | 75 | 100>>(new Set());
 
-  // Get file metadata for lazy loading
-  const fileMetadata = useAppStore(s => s.fileMetadata);
-  const fileHash = fileMetadata?.fileHash || null;
-  const totalAccountCount = fileMetadata?.accountCount || 0;
-
-  // Initialize data source for lazy loading
+  // Initialize data source for lazy loading (uses passed fileHash, not store)
   const { getAccount } = useAccountDataSource({
     fileHash,
-    accountCount: totalAccountCount,
-    chunkSize: 500, // Load 500 accounts per chunk
-    overscan: 20, // Keep 20 chunks in cache (to handle concurrent loads)
+    accountCount,
+    chunkSize: 500,
+    overscan: 20,
   });
 
   const displayCount = accountIndices?.length || 0;
 
-  // Get account by virtual index (maps to actual account index in IndexedDB)
-  // Use useCallback to avoid recreating on every render
   const getAccountByIndex = useCallback(
     (virtualIndex: number) => {
       const actualIndex = accountIndices?.[virtualIndex];
@@ -44,126 +59,152 @@ export const AccountList = memo(function AccountList({
   const virtualizer = useVirtualizer({
     count: displayCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 100, // Estimated height of each account item
-    overscan: 5, // Render 5 extra items outside visible area
+    estimateSize: () => 92,
+    overscan: 10,
   });
 
   const virtualItems = virtualizer.getVirtualItems();
+
+  // Track scroll depth milestones
+  useEffect(() => {
+    const scrollElement = parentRef.current;
+    if (!scrollElement || displayCount === 0) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollElement;
+      const scrollPercent = Math.round((scrollTop / (scrollHeight - clientHeight)) * 100);
+
+      const depths = [25, 50, 75, 100] as const;
+      for (const depth of depths) {
+        if (scrollPercent >= depth && !trackedDepthsRef.current.has(depth)) {
+          trackedDepthsRef.current.add(depth);
+          analytics.resultsScrollDepth(depth, displayCount);
+        }
+      }
+    };
+
+    scrollElement.addEventListener('scroll', handleScroll, { passive: true });
+    return () => scrollElement.removeEventListener('scroll', handleScroll);
+  }, [displayCount]);
+
+  // Reset tracked depths when data changes
+  useEffect(() => {
+    trackedDepthsRef.current.clear();
+  }, [fileHash, accountIndices]);
 
   if (!hasLoadedData) {
     return null;
   }
 
-  // Don't return early for loading - let virtualization handle skeleton rendering
-
   if (displayCount === 0) {
     return (
-      <div className="rounded-lg border border-border bg-card p-12 text-center">
-        <p className="text-muted-foreground">No accounts match your filters</p>
+      <div className="flex-grow bg-card rounded-4xl border border-border shadow-sm overflow-hidden flex flex-col h-[85vh] md:h-[90vh]">
+        <div className="flex flex-col items-center justify-center h-full py-24 text-center px-12">
+          <Ghost size={64} className="mb-8 opacity-10" />
+          <p className="text-xl md:text-2xl font-display font-bold text-zinc-300">
+            {t('empty.noUsers')}
+          </p>
+          {onClearFilters && (
+            <button
+              onClick={onClearFilters}
+              className="mt-4 text-primary font-black uppercase text-xs tracking-widest hover:underline"
+            >
+              {t('empty.resetFilters')}
+            </button>
+          )}
+        </div>
       </div>
     );
   }
 
-  const getAvatarGradient = (username: string) => {
-    // Simple hash function for consistent colors
-    let hash = 0;
-    for (let i = 0; i < username.length; i++) {
-      hash = username.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const hue = Math.abs(hash % 360);
-    const saturation = 65 + (Math.abs(hash >> 8) % 20);
-    const lightness = 50 + (Math.abs(hash >> 16) % 15);
-
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  const trackAccountClick = (account: AccountBadges) => {
+    const badgeCount = Object.values(account.badges).filter(Boolean).length;
+    analytics.accountClick(badgeCount);
+    analytics.externalProfileClick(account.username);
   };
 
   const SkeletonItem = () => (
-    <div className="rounded-lg border border-border/50 bg-card p-4 animate-pulse">
-      <div className="flex items-center gap-3">
-        <div className="h-12 w-12 rounded-full bg-muted" />
-        <div className="flex-1 space-y-2">
-          <div className="h-4 bg-muted rounded w-32" />
-          <div className="h-3 bg-muted rounded w-48" />
+    <div className="flex items-center justify-between px-6 py-6 border-b border-border animate-pulse">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-muted" />
+        <div className="space-y-2">
+          <div className="h-4 md:h-5 bg-muted rounded w-32" />
+          <div className="h-3 bg-muted rounded w-20" />
         </div>
       </div>
     </div>
   );
 
-  const trackAccountClick = (account: AccountBadges) => {
-    const badgeCount = Object.values(account.badges).filter(Boolean).length;
-    analytics.accountClick(badgeCount);
-  };
-
   const AccountItem = ({ account }: { account: AccountBadges }) => {
-    const handleRowClick = () => {
+    const handleLinkClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
       trackAccountClick(account);
-      window.open(`https://instagram.com/${account.username}`, '_blank', 'noopener,noreferrer');
     };
 
     return (
       <div
-        className="group flex items-center justify-between rounded-lg border border-border/50 bg-card p-4 shadow-sm transition-all duration-200 hover:border-primary hover:shadow-md hover:scale-[1.01] cursor-pointer"
-        onClick={handleRowClick}
+        className="flex items-center justify-between px-5 md:px-8 py-4 md:py-6 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/50 transition-colors border-b border-border last:border-0"
         role="button"
         tabIndex={0}
-        onKeyDown={e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleRowClick();
-          }
-        }}
       >
-        <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div
-            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold text-white shadow-sm ring-1 ring-black/5"
-            style={{
-              background: `linear-gradient(135deg, ${getAvatarGradient(account.username)}, ${getAvatarGradient(account.username + 'salt')})`,
-            }}
-          >
-            {account.username?.[0]?.toUpperCase() || '?'}
+        {/* Avatar + Info */}
+        <div className="flex items-center gap-4 md:gap-6 min-w-0 flex-grow">
+          <div className="w-11 h-11 md:w-16 md:h-16 shrink-0 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 border border-border">
+            <User size={24} />
           </div>
-
-          <div className="min-w-0 flex-1 space-y-2">
-            <p className="truncate font-semibold text-card-foreground">@{account.username}</p>
-            <div className="flex flex-wrap gap-1.5">
+          <div className="min-w-0 flex-grow">
+            <a
+              href={`https://instagram.com/${account.username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleLinkClick}
+              className="font-display font-bold text-base md:text-2xl truncate text-zinc-900 dark:text-white mb-1.5 md:mb-2 leading-tight block hover:text-primary transition-colors"
+            >
+              @{account.username}
+            </a>
+            {/* Horizontal Badge Scroll on Mobile */}
+            <div className="flex gap-1.5 md:gap-2 overflow-x-auto pb-1 no-scrollbar -mx-1 px-1">
               {Object.entries(account.badges)
                 .filter(([, hasBadge]) => hasBadge)
                 .map(([badgeKey]) => (
                   <span
                     key={badgeKey}
-                    className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium shadow-sm ${
+                    className={`shrink-0 text-xs uppercase tracking-wider font-black px-2.5 py-1 rounded-lg border leading-none ${
                       BADGE_STYLES[badgeKey] || 'bg-muted text-muted-foreground'
                     }`}
                   >
-                    {BADGE_LABELS[badgeKey as keyof typeof BADGE_LABELS] || badgeKey}
+                    {t(`badges.${badgeKey as BadgeKey}`)}
                   </span>
                 ))}
             </div>
           </div>
         </div>
 
-        <div className="flex-shrink-0 opacity-0 transition-all duration-200 group-hover:opacity-100">
-          <ExternalLink className="h-4 w-4 text-muted-foreground" />
-        </div>
+        {/* External Link Button */}
+        <a
+          href={`https://instagram.com/${account.username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleLinkClick}
+          className="ml-4 p-3 md:p-4 rounded-2xl text-zinc-400 hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/20 shrink-0"
+          title={t('list.viewProfile')}
+        >
+          <ExternalLink size={18} />
+        </a>
       </div>
     );
   };
 
   return (
-    <div className="space-y-3 pb-4">
-      <h3 className="text-sm font-semibold text-foreground">
-        Accounts ({displayCount.toLocaleString()})
-      </h3>
-
-      <div
-        ref={parentRef}
-        className="overflow-auto"
-        style={{
-          height: 'calc(100vh - 220px)', // Full viewport minus header/footer
-          width: '100%',
-          position: 'relative',
-        }}
-      >
+    <div className="flex-grow bg-card rounded-4xl border border-border shadow-sm overflow-hidden flex flex-col h-[85vh] md:h-[90vh]">
+      {/* List Header */}
+      <div className="px-5 md:px-8 py-4 md:py-5 border-b border-border bg-zinc-50/50 dark:bg-zinc-900/30">
+        <h3 className="text-xs font-black text-zinc-500 uppercase tracking-widest">
+          {t('list.header', { count: displayCount })}
+        </h3>
+      </div>
+      {/* Virtual List */}
+      <div ref={parentRef} className="flex-grow overflow-auto custom-scrollbar">
         <div
           style={{
             height: `${virtualizer.getTotalSize()}px`,
@@ -172,7 +213,6 @@ export const AccountList = memo(function AccountList({
           }}
         >
           {virtualItems.map(virtualItem => {
-            // Get account using the memoized getter (either from IndexedDB or memory)
             const account = getAccountByIndex(virtualItem.index);
 
             return (
@@ -186,7 +226,6 @@ export const AccountList = memo(function AccountList({
                   height: `${virtualItem.size}px`,
                   transform: `translateY(${virtualItem.start}px)`,
                 }}
-                className="px-4 py-1"
               >
                 {account ? <AccountItem account={account} /> : <SkeletonItem />}
               </div>
