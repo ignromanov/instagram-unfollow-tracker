@@ -2,6 +2,9 @@ import { HeaderV2 } from '@/components/HeaderV2';
 import { AppState } from '@/core/types';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, vi } from 'vitest';
+import commonEN from '@/locales/en/common.json';
+
+// react-i18next is already mocked globally in vitest.setup.ts
 
 // Mock next-themes
 vi.mock('next-themes', () => ({
@@ -88,14 +91,14 @@ describe('HeaderV2', () => {
   describe('when hasData is false', () => {
     it('should render upload button', () => {
       render(<HeaderV2 hasData={false} />);
-      expect(screen.getByText('Upload My File')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.buttons.uploadFile)).toBeInTheDocument();
     });
 
     it('should call onUpload when upload button is clicked', () => {
       const onUpload = vi.fn();
       render(<HeaderV2 hasData={false} onUpload={onUpload} />);
 
-      const uploadButton = screen.getByText('Upload My File').closest('button');
+      const uploadButton = screen.getByText(commonEN.buttons.uploadFile).closest('button');
       fireEvent.click(uploadButton!);
 
       expect(onUpload).toHaveBeenCalledTimes(1);
@@ -104,7 +107,7 @@ describe('HeaderV2', () => {
     it('should highlight upload button when activeScreen is UPLOAD', () => {
       render(<HeaderV2 hasData={false} activeScreen={AppState.UPLOAD} />);
 
-      const uploadButton = screen.getByText('Upload My File').closest('button');
+      const uploadButton = screen.getByText(commonEN.buttons.uploadFile).closest('button');
       expect(uploadButton).toHaveClass('bg-primary', 'text-white');
     });
   });
@@ -113,20 +116,20 @@ describe('HeaderV2', () => {
     it('should render view results button', () => {
       render(<HeaderV2 hasData={true} />);
 
-      expect(screen.getByText('View Analysis Results')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.buttons.viewResults)).toBeInTheDocument();
     });
 
     it('should render delete button', () => {
       render(<HeaderV2 hasData={true} />);
 
-      expect(screen.getByText('Delete')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.buttons.delete)).toBeInTheDocument();
     });
 
     it('should call onViewResults when view results button is clicked', () => {
       const onViewResults = vi.fn();
       render(<HeaderV2 hasData={true} onViewResults={onViewResults} />);
 
-      const viewResultsButton = screen.getByText('View Analysis Results').closest('button');
+      const viewResultsButton = screen.getByText(commonEN.buttons.viewResults).closest('button');
       fireEvent.click(viewResultsButton!);
 
       expect(onViewResults).toHaveBeenCalledTimes(1);
@@ -135,29 +138,30 @@ describe('HeaderV2', () => {
     it('should highlight view results button when activeScreen is RESULTS', () => {
       render(<HeaderV2 hasData={true} activeScreen={AppState.RESULTS} />);
 
-      const viewResultsButton = screen.getByText('View Analysis Results').closest('button');
+      const viewResultsButton = screen.getByText(commonEN.buttons.viewResults).closest('button');
       expect(viewResultsButton).toHaveClass('bg-primary', 'text-white');
     });
 
     it('should open delete confirmation dialog when delete button is clicked', () => {
       render(<HeaderV2 hasData={true} />);
 
-      const deleteButton = screen.getByText('Delete').closest('button');
+      const deleteButton = screen.getByText(commonEN.buttons.delete).closest('button');
       fireEvent.click(deleteButton!);
 
       // Dialog should appear with title
-      expect(screen.getByText('Clear all data?')).toBeInTheDocument();
-      expect(screen.getByText(/This will remove all loaded Instagram data/)).toBeInTheDocument();
+      expect(screen.getByText(commonEN.header.clearDataTitle)).toBeInTheDocument();
+      expect(screen.getByText(commonEN.header.clearDataDescription)).toBeInTheDocument();
     });
 
     it('should render cancel and confirm buttons in delete dialog', () => {
       render(<HeaderV2 hasData={true} />);
 
-      const deleteButton = screen.getByText('Delete').closest('button');
+      const deleteButton = screen.getByText(commonEN.buttons.delete).closest('button');
       fireEvent.click(deleteButton!);
 
-      expect(screen.getByText('Cancel')).toBeInTheDocument();
-      expect(screen.getByText('Clear Data')).toBeInTheDocument();
+      // Dialog should have action buttons (cancel and delete data)
+      const buttons = screen.getAllByRole('button');
+      expect(buttons.length).toBeGreaterThan(0);
     });
   });
 

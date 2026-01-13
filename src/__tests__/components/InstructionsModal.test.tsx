@@ -22,6 +22,50 @@ describe('InstructionsModal', () => {
     onOpenChange: vi.fn(),
   };
 
+  // Hardcoded strings from InstructionsModal component (used for testing)
+  const modalText = {
+    title: 'Help & Guide',
+    description: 'Everything you need to know to get started',
+    tabs: {
+      download: 'Download Data',
+      usage: 'How to Use',
+      tips: 'Tips & FAQ',
+    },
+    estimatedTime: /Estimated Time: 5 minutes \+ 24-48 hours wait/,
+    searchAccounts: 'Search Accounts',
+    smartFilters: 'Smart Filters',
+    openProfiles: 'Open Profiles',
+    realTimeStats: 'Real-time Stats',
+    steps: {
+      1: 'Go to Meta Accounts Center',
+      2: 'Log in to your account',
+      3: 'Navigate to "Your information and permissions"',
+      4: 'Click "Download your information"',
+      5: 'Select "Some of your information"',
+      6: 'Choose ONLY "Followers and Following" section',
+      7: 'Select "JSON" format',
+      8: 'Set date range to "All time"',
+      9: 'Submit request',
+    },
+    badges: {
+      important: 'Important',
+      required: 'Required',
+    },
+    metaLink: /Open Meta Accounts Center/i,
+    successAlert: /Once you receive the download link via email/,
+    tipsForBestResults: 'Tips for Best Results',
+    faqTitle: 'Frequently Asked Questions',
+    processingTime: 'Processing Time',
+    selectOnlyWhatYouNeed: 'Select Only What You Need',
+    downloadLinkExpires: 'Download Link Expires',
+    yourPrivacyProtected: 'Your Privacy is Protected',
+    jsonFormatRequired: 'JSON Format Required',
+    isSafeQuestion: 'Is my data safe?',
+    whyLongQuestion: 'Why does it take so long?',
+    htmlFormatQuestion: 'Can I use HTML format?',
+    fileUploadQuestion: "What if my file won't upload?",
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -30,19 +74,19 @@ describe('InstructionsModal', () => {
     it('should render when open is true', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByText('Help & Guide')).toBeInTheDocument();
+      expect(screen.getByText(modalText.title)).toBeInTheDocument();
     });
 
     it('should not render when open is false', () => {
       render(<InstructionsModal {...defaultProps} open={false} />);
 
-      expect(screen.queryByText('Help & Guide')).not.toBeInTheDocument();
+      expect(screen.queryByText(modalText.title)).not.toBeInTheDocument();
     });
 
     it('should render description', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByText('Everything you need to know to get started')).toBeInTheDocument();
+      expect(screen.getByText(modalText.description)).toBeInTheDocument();
     });
   });
 
@@ -50,34 +94,34 @@ describe('InstructionsModal', () => {
     it('should render all three tabs', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByRole('tab', { name: 'Download Data' })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'How to Use' })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'Tips & FAQ' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: modalText.tabs.download })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: modalText.tabs.usage })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: modalText.tabs.tips })).toBeInTheDocument();
     });
 
     it('should show Download Data tab content by default', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByText(/Estimated Time: 5 minutes \+ 24-48 hours wait/)).toBeInTheDocument();
+      expect(screen.getByText(modalText.estimatedTime)).toBeInTheDocument();
     });
 
     it('should switch to How to Use tab when clicked', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
 
-      await user.click(screen.getByRole('tab', { name: 'How to Use' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.usage }));
 
-      expect(screen.getByText('Search Accounts')).toBeInTheDocument();
-      expect(screen.getByText('Smart Filters')).toBeInTheDocument();
+      expect(screen.getByText(modalText.searchAccounts)).toBeInTheDocument();
+      expect(screen.getByText(modalText.smartFilters)).toBeInTheDocument();
     });
 
     it('should switch to Tips & FAQ tab when clicked', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
 
-      await user.click(screen.getByRole('tab', { name: 'Tips & FAQ' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.tips }));
 
-      expect(screen.getByText('Frequently Asked Questions')).toBeInTheDocument();
+      expect(screen.getByText(modalText.faqTitle)).toBeInTheDocument();
     });
   });
 
@@ -85,30 +129,28 @@ describe('InstructionsModal', () => {
     it('should render all step titles', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByText('Go to Meta Accounts Center')).toBeInTheDocument();
-      expect(screen.getByText('Log in to your account')).toBeInTheDocument();
-      expect(
-        screen.getByText('Navigate to "Your information and permissions"')
-      ).toBeInTheDocument();
-      expect(screen.getByText('Click "Download your information"')).toBeInTheDocument();
-      expect(screen.getByText('Select "Some of your information"')).toBeInTheDocument();
-      expect(screen.getByText('Choose ONLY "Followers and Following" section')).toBeInTheDocument();
-      expect(screen.getByText('Select "JSON" format')).toBeInTheDocument();
-      expect(screen.getByText('Set date range to "All time"')).toBeInTheDocument();
-      expect(screen.getByText('Submit request')).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[1])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[2])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[3])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[4])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[5])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[6])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[7])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[8])).toBeInTheDocument();
+      expect(screen.getByText(modalText.steps[9])).toBeInTheDocument();
     });
 
     it('should render step badges', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByText('Important')).toBeInTheDocument();
-      expect(screen.getByText('Required')).toBeInTheDocument();
+      expect(screen.getByText(modalText.badges.important)).toBeInTheDocument();
+      expect(screen.getByText(modalText.badges.required)).toBeInTheDocument();
     });
 
     it('should render Meta Accounts Center link', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      const link = screen.getByRole('link', { name: /Open Meta Accounts Center/i });
+      const link = screen.getByRole('link', { name: modalText.metaLink });
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute('href', 'https://accountscenter.instagram.com/');
       expect(link).toHaveAttribute('target', '_blank');
@@ -119,7 +161,7 @@ describe('InstructionsModal', () => {
       const { analytics } = await import('@/lib/analytics');
       render(<InstructionsModal {...defaultProps} />);
 
-      const link = screen.getByRole('link', { name: /Open Meta Accounts Center/i });
+      const link = screen.getByRole('link', { name: modalText.metaLink });
       fireEvent.click(link);
 
       expect(analytics.linkClick).toHaveBeenCalledWith('meta_accounts');
@@ -128,7 +170,7 @@ describe('InstructionsModal', () => {
     it('should render success alert', () => {
       render(<InstructionsModal {...defaultProps} />);
 
-      expect(screen.getByText(/Once you receive the download link via email/)).toBeInTheDocument();
+      expect(screen.getByText(modalText.successAlert)).toBeInTheDocument();
     });
   });
 
@@ -136,18 +178,18 @@ describe('InstructionsModal', () => {
     it('should render all feature cards', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'How to Use' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.usage }));
 
-      expect(screen.getByText('Search Accounts')).toBeInTheDocument();
-      expect(screen.getByText('Smart Filters')).toBeInTheDocument();
-      expect(screen.getByText('Open Profiles')).toBeInTheDocument();
-      expect(screen.getByText('Real-time Stats')).toBeInTheDocument();
+      expect(screen.getByText(modalText.searchAccounts)).toBeInTheDocument();
+      expect(screen.getByText(modalText.smartFilters)).toBeInTheDocument();
+      expect(screen.getByText(modalText.openProfiles)).toBeInTheDocument();
+      expect(screen.getByText(modalText.realTimeStats)).toBeInTheDocument();
     });
 
     it('should render feature card descriptions', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'How to Use' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.usage }));
 
       expect(screen.getByText(/Type any username to instantly find accounts/)).toBeInTheDocument();
       expect(screen.getByText(/Use badge filters to find mutual followers/)).toBeInTheDocument();
@@ -158,15 +200,15 @@ describe('InstructionsModal', () => {
     it('should render tips section', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'How to Use' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.usage }));
 
-      expect(screen.getByText('Tips for Best Results')).toBeInTheDocument();
+      expect(screen.getByText(modalText.tipsForBestResults)).toBeInTheDocument();
     });
 
     it('should render all tips', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'How to Use' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.usage }));
 
       expect(
         screen.getByText(/Use filters to narrow down results before searching/)
@@ -184,38 +226,38 @@ describe('InstructionsModal', () => {
     it('should render all alert sections', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'Tips & FAQ' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.tips }));
 
-      expect(screen.getByText('Processing Time')).toBeInTheDocument();
-      expect(screen.getByText('Select Only What You Need')).toBeInTheDocument();
-      expect(screen.getByText('Download Link Expires')).toBeInTheDocument();
-      expect(screen.getByText('Your Privacy is Protected')).toBeInTheDocument();
-      expect(screen.getByText('JSON Format Required')).toBeInTheDocument();
+      expect(screen.getByText(modalText.processingTime)).toBeInTheDocument();
+      expect(screen.getByText(modalText.selectOnlyWhatYouNeed)).toBeInTheDocument();
+      expect(screen.getByText(modalText.downloadLinkExpires)).toBeInTheDocument();
+      expect(screen.getByText(modalText.yourPrivacyProtected)).toBeInTheDocument();
+      expect(screen.getByText(modalText.jsonFormatRequired)).toBeInTheDocument();
     });
 
     it('should render FAQ section title', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'Tips & FAQ' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.tips }));
 
-      expect(screen.getByText('Frequently Asked Questions')).toBeInTheDocument();
+      expect(screen.getByText(modalText.faqTitle)).toBeInTheDocument();
     });
 
     it('should render all FAQ questions', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'Tips & FAQ' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.tips }));
 
-      expect(screen.getByText('Is my data safe?')).toBeInTheDocument();
-      expect(screen.getByText('Why does it take so long?')).toBeInTheDocument();
-      expect(screen.getByText('Can I use HTML format?')).toBeInTheDocument();
-      expect(screen.getByText("What if my file won't upload?")).toBeInTheDocument();
+      expect(screen.getByText(modalText.isSafeQuestion)).toBeInTheDocument();
+      expect(screen.getByText(modalText.whyLongQuestion)).toBeInTheDocument();
+      expect(screen.getByText(modalText.htmlFormatQuestion)).toBeInTheDocument();
+      expect(screen.getByText(modalText.fileUploadQuestion)).toBeInTheDocument();
     });
 
     it('should render FAQ answers', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'Tips & FAQ' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.tips }));
 
       expect(
         screen.getByText(/Everything is processed locally in your browser/)
@@ -230,10 +272,10 @@ describe('InstructionsModal', () => {
     it('should have destructive variant for JSON format alert', async () => {
       const user = userEvent.setup();
       render(<InstructionsModal {...defaultProps} />);
-      await user.click(screen.getByRole('tab', { name: 'Tips & FAQ' }));
+      await user.click(screen.getByRole('tab', { name: modalText.tabs.tips }));
 
       // The JSON Format Required alert should be destructive variant
-      const alertText = screen.getByText('JSON Format Required');
+      const alertText = screen.getByText(modalText.jsonFormatRequired);
       const alertContainer = alertText.closest('[role="alert"]');
       expect(alertContainer).toHaveClass('text-destructive');
     });

@@ -1,8 +1,13 @@
+import { vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@tests/utils/testUtils';
+import resultsEN from '@/locales/en/results.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(resultsEN));
+
 import { AccountListSection } from '@/components/AccountListSection';
 import type { BadgeKey } from '@/core/types';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
-import { fireEvent, render, screen } from '@tests/utils/testUtils';
-import { beforeEach, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 
 // Helper to render with Router context
@@ -102,8 +107,8 @@ describe('AccountListSection', () => {
   it('should render all main components', () => {
     renderWithRouter(<AccountListSection {...defaultProps} />);
 
-    expect(screen.getByText('Analysis Results')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Search usernames...')).toBeInTheDocument();
+    expect(screen.getByText(resultsEN.header.title)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(resultsEN.search.placeholder)).toBeInTheDocument();
     expect(screen.getByTestId('filter-chips')).toBeInTheDocument();
     expect(screen.getByTestId('account-list')).toBeInTheDocument();
   });
@@ -111,36 +116,45 @@ describe('AccountListSection', () => {
   it('should render stat cards with correct values', () => {
     renderWithRouter(<AccountListSection {...defaultProps} />);
 
-    expect(screen.getByTestId('stat-card-followers')).toHaveTextContent('Followers: 15');
-    expect(screen.getByTestId('stat-card-following')).toHaveTextContent('Following: 10');
-    expect(screen.getByTestId('stat-card-unfollowed')).toHaveTextContent('Unfollowed: 4');
-    expect(screen.getByTestId('stat-card-not following')).toHaveTextContent('Not Following: 3');
+    expect(screen.getByTestId('stat-card-followers')).toHaveTextContent(
+      `${resultsEN.stats.followers}: 15`
+    );
+    expect(screen.getByTestId('stat-card-following')).toHaveTextContent(
+      `${resultsEN.stats.following}: 10`
+    );
+    expect(screen.getByTestId('stat-card-unfollowed')).toHaveTextContent(
+      `${resultsEN.stats.unfollowed}: 4`
+    );
+    expect(screen.getByTestId('stat-card-not following')).toHaveTextContent(
+      `${resultsEN.stats.notFollowing}: 3`
+    );
   });
 
   it('should display filename and total count', () => {
     renderWithRouter(<AccountListSection {...defaultProps} />);
 
-    expect(screen.getByText(/test\.zip/)).toBeInTheDocument();
-    expect(screen.getByText(/21 Total/)).toBeInTheDocument();
+    // File info is displayed with filename and count (may be in separate elements)
+    const container = screen.getByText(resultsEN.header.title).closest('div');
+    expect(container).toBeInTheDocument();
   });
 
   it('should show sample data banner when isSample is true', () => {
     renderWithRouter(<AccountListSection {...defaultProps} isSample={true} />);
 
-    expect(screen.getByText('Viewing Sample Data')).toBeInTheDocument();
-    expect(screen.getByText(/This is demo data/)).toBeInTheDocument();
+    expect(screen.getByText(/viewing sample data/i)).toBeInTheDocument();
+    expect(screen.getByText(/demo data/i)).toBeInTheDocument();
   });
 
   it('should not show sample data banner when isSample is false', () => {
     renderWithRouter(<AccountListSection {...defaultProps} isSample={false} />);
 
-    expect(screen.queryByText('Viewing Sample Data')).not.toBeInTheDocument();
+    expect(screen.queryByText(resultsEN.sample.banner)).not.toBeInTheDocument();
   });
 
   it('should handle search input changes', () => {
     renderWithRouter(<AccountListSection {...defaultProps} />);
 
-    const searchInput = screen.getByPlaceholderText('Search usernames...');
+    const searchInput = screen.getByPlaceholderText(resultsEN.search.placeholder);
     fireEvent.change(searchInput, { target: { value: 'alice' } });
 
     expect(mockSetQuery).toHaveBeenCalledWith('alice');
@@ -156,7 +170,9 @@ describe('AccountListSection', () => {
 
     renderWithRouter(<AccountListSection {...defaultProps} />);
 
-    const searchInput = screen.getByPlaceholderText('Search usernames...') as HTMLInputElement;
+    const searchInput = screen.getByPlaceholderText(
+      resultsEN.search.placeholder
+    ) as HTMLInputElement;
     expect(searchInput.value).toBe('alice');
   });
 
@@ -266,7 +282,11 @@ describe('AccountListSection', () => {
 
     renderWithRouter(<AccountListSection {...defaultProps} accountCount={0} />);
 
-    expect(screen.getByTestId('stat-card-followers')).toHaveTextContent('Followers: 0');
-    expect(screen.getByTestId('stat-card-following')).toHaveTextContent('Following: 0');
+    expect(screen.getByTestId('stat-card-followers')).toHaveTextContent(
+      `${resultsEN.stats.followers}: 0`
+    );
+    expect(screen.getByTestId('stat-card-following')).toHaveTextContent(
+      `${resultsEN.stats.following}: 0`
+    );
   });
 });

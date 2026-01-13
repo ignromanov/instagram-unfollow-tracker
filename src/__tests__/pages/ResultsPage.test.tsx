@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component as ResultsPage } from '@/pages/ResultsPage';
+import heroEN from '@/locales/en/hero.json';
 
 // Mock child components
 vi.mock('@/components/AccountListSection', () => ({
@@ -38,9 +39,9 @@ vi.mock('@/components/Hero', () => ({
     hasData: boolean;
   }) => (
     <div data-testid="hero-fallback">
-      <button onClick={onStartGuide}>Start Guide</button>
-      <button onClick={onLoadSample}>Load Sample</button>
-      <button onClick={onUploadDirect}>Upload Direct</button>
+      <button onClick={onStartGuide}>{heroEN.buttons.getGuide}</button>
+      <button onClick={onLoadSample}>{heroEN.buttons.trySample}</button>
+      <button onClick={onUploadDirect}>{heroEN.buttons.haveFile}</button>
       <span data-testid="has-data">{String(hasData)}</span>
     </div>
   ),
@@ -186,7 +187,7 @@ describe('ResultsPage', () => {
       const user = userEvent.setup();
       render(<ResultsPage />);
 
-      await user.click(screen.getByText('Start Guide'));
+      await user.click(screen.getByText(heroEN.buttons.getGuide));
 
       expect(mockNavigate).toHaveBeenCalledWith('/wizard');
     });
@@ -195,7 +196,7 @@ describe('ResultsPage', () => {
       const user = userEvent.setup();
       render(<ResultsPage />);
 
-      await user.click(screen.getByText('Load Sample'));
+      await user.click(screen.getByText(heroEN.buttons.trySample));
 
       expect(mockNavigate).toHaveBeenCalledWith('/sample');
     });
@@ -204,7 +205,7 @@ describe('ResultsPage', () => {
       const user = userEvent.setup();
       render(<ResultsPage />);
 
-      await user.click(screen.getByText('Upload Direct'));
+      await user.click(screen.getByText(heroEN.buttons.haveFile));
 
       expect(mockNavigate).toHaveBeenCalledWith('/upload');
     });
@@ -221,7 +222,7 @@ describe('ResultsPage', () => {
       const user = userEvent.setup();
       render(<ResultsPage />);
 
-      await user.click(screen.getByText('Start Guide'));
+      await user.click(screen.getByText(heroEN.buttons.getGuide));
 
       expect(mockNavigate).toHaveBeenCalledWith('/es/wizard');
     });

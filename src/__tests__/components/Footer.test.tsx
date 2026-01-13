@@ -1,32 +1,22 @@
 import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Footer } from '@/components/Footer';
-import * as analytics from '@/lib/analytics';
 import commonEN from '@/locales/en/common.json';
-
-const renderWithRouter = (ui: React.ReactElement) => {
-  return render(<MemoryRouter>{ui}</MemoryRouter>);
-};
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
 // Mock useLanguagePrefix
 vi.mock('@/hooks/useLanguagePrefix', () => ({
   useLanguagePrefix: () => '',
 }));
 
-// Mock react-i18next with actual translations
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => {
-      const keys = key.split('.');
-      let value: unknown = commonEN;
-      for (const k of keys) {
-        value = (value as Record<string, unknown>)?.[k];
-      }
-      return (value as string) || key;
-    },
-  }),
-}));
+vi.mock('react-i18next', () => createI18nMock(commonEN));
+
+import { Footer } from '@/components/Footer';
+import * as analytics from '@/lib/analytics';
+
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+};
 
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({

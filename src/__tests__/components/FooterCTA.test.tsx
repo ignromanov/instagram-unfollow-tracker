@@ -1,5 +1,11 @@
+import { vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import commonEN from '@/locales/en/common.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(commonEN));
+
 import { FooterCTA } from '@/components/FooterCTA';
 
 describe('FooterCTA Component', () => {
@@ -22,21 +28,19 @@ describe('FooterCTA Component', () => {
     it('should render CTA title', () => {
       render(<FooterCTA {...defaultProps} />);
 
-      expect(screen.getByText('Ready to start?')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.cta.title)).toBeInTheDocument();
     });
 
     it('should render CTA subtitle', () => {
       render(<FooterCTA {...defaultProps} />);
 
-      expect(
-        screen.getByText('Scan and process your Instagram data export privately in seconds.')
-      ).toBeInTheDocument();
+      expect(screen.getByText(commonEN.cta.subtitle)).toBeInTheDocument();
     });
 
     it('should render tagline', () => {
       render(<FooterCTA {...defaultProps} />);
 
-      expect(screen.getByText('100% Free • No Login • Privacy First')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.cta.tagline)).toBeInTheDocument();
     });
 
     it('should render Logo component', () => {

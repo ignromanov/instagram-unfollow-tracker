@@ -2,6 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component as UploadPage } from '@/pages/UploadPage';
+import uploadEN from '@/locales/en/upload.json';
+import commonEN from '@/locales/en/common.json';
 
 // Mock child components
 vi.mock('@/components/UploadZone', () => ({
@@ -21,8 +23,10 @@ vi.mock('@/components/UploadZone', () => ({
     parseWarnings: string[];
   }) => (
     <div data-testid="upload-zone">
-      <button onClick={() => onUploadStart(new File([], 'test.zip'))}>Upload File</button>
-      <button onClick={onBack}>Back</button>
+      <button onClick={() => onUploadStart(new File([], 'test.zip'))}>
+        {commonEN.buttons.uploadFile}
+      </button>
+      <button onClick={onBack}>{uploadEN.zone.back}</button>
       <button onClick={onOpenWizard}>Open Wizard</button>
       <div data-testid="is-processing">{String(isProcessing)}</div>
       <div data-testid="error">{error || 'no-error'}</div>
@@ -46,8 +50,8 @@ vi.mock('@/components/FAQSection', () => ({
 vi.mock('@/components/FooterCTA', () => ({
   FooterCTA: ({ onStart, onSample }: { onStart: () => void; onSample: () => void }) => (
     <div data-testid="footer-cta">
-      <button onClick={onStart}>CTA Start</button>
-      <button onClick={onSample}>CTA Sample</button>
+      <button onClick={onStart}>{commonEN.cta.getStarted}</button>
+      <button onClick={onSample}>{commonEN.cta.trySample}</button>
     </div>
   ),
 }));
@@ -231,7 +235,7 @@ describe('UploadPage', () => {
       const user = userEvent.setup();
       render(<UploadPage />);
 
-      await user.click(screen.getByText('Upload File'));
+      await user.click(screen.getByText(commonEN.buttons.uploadFile));
 
       expect(mockHandleZipUpload).toHaveBeenCalledTimes(1);
       expect(mockHandleZipUpload).toHaveBeenCalledWith(expect.any(File));
@@ -243,7 +247,7 @@ describe('UploadPage', () => {
       const user = userEvent.setup();
       render(<UploadPage />);
 
-      await user.click(screen.getByText('Back'));
+      await user.click(screen.getByText(uploadEN.zone.back));
 
       expect(mockNavigate).toHaveBeenCalledWith('/waiting');
     });
@@ -272,7 +276,7 @@ describe('UploadPage', () => {
       const user = userEvent.setup();
       render(<UploadPage />);
 
-      await user.click(screen.getByText('CTA Start'));
+      await user.click(screen.getByText(commonEN.cta.getStarted));
 
       expect(mockNavigate).toHaveBeenCalledWith('/wizard');
     });
@@ -281,7 +285,7 @@ describe('UploadPage', () => {
       const user = userEvent.setup();
       render(<UploadPage />);
 
-      await user.click(screen.getByText('CTA Sample'));
+      await user.click(screen.getByText(commonEN.cta.trySample));
 
       expect(mockNavigate).toHaveBeenCalledWith('/sample');
     });

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Moon, Sun, ShieldCheck, Trash2, LayoutDashboard, Upload } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
@@ -36,8 +37,13 @@ export function HeaderV2({
   activeScreen = AppState.HERO,
 }: HeaderV2Props) {
   const { t } = useTranslation('common');
-  const { theme, setTheme } = useTheme();
-  const isDark = theme === 'dark';
+  const { resolvedTheme, setTheme } = useTheme();
+
+  // Prevent hydration mismatch - theme is unknown on server
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const isDark = resolvedTheme === 'dark';
 
   const handleThemeToggle = () => {
     const newTheme = isDark ? 'light' : 'dark';
@@ -141,10 +147,17 @@ export function HeaderV2({
           <button
             onClick={handleThemeToggle}
             className="cursor-pointer p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
-            title={isDark ? t('theme.light') : t('theme.dark')}
-            aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
+            title={mounted ? (isDark ? t('theme.light') : t('theme.dark')) : ''}
+            aria-label={mounted ? (isDark ? t('theme.light') : t('theme.dark')) : ''}
           >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            {/* Render placeholder before mount to avoid hydration mismatch */}
+            {!mounted ? (
+              <div className="w-5 h-5" />
+            ) : isDark ? (
+              <Sun size={20} />
+            ) : (
+              <Moon size={20} />
+            )}
           </button>
         </div>
       </div>

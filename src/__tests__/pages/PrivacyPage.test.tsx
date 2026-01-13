@@ -2,13 +2,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component as PrivacyPage } from '@/pages/PrivacyPage';
+import commonEN from '@/locales/en/common.json';
 
 // Mock PrivacyPolicy component
 vi.mock('@/components/PrivacyPolicy', () => ({
   PrivacyPolicy: ({ onBack }: { onBack: () => void }) => (
     <div data-testid="privacy-policy">
-      <h1>Privacy Policy</h1>
-      <button onClick={onBack}>Back to Home</button>
+      <h1>{commonEN.nav.privacy}</h1>
+      <button onClick={onBack}>{commonEN.buttons.back} to Home</button>
     </div>
   ),
 }));
@@ -41,13 +42,13 @@ describe('PrivacyPage', () => {
     it('should render PrivacyPolicy component', () => {
       render(<PrivacyPage />);
 
-      expect(screen.getByText('Privacy Policy')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.nav.privacy)).toBeInTheDocument();
     });
 
     it('should render back button', () => {
       render(<PrivacyPage />);
 
-      expect(screen.getByText('Back to Home')).toBeInTheDocument();
+      expect(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`))).toBeInTheDocument();
     });
   });
 
@@ -56,7 +57,7 @@ describe('PrivacyPage', () => {
       const user = userEvent.setup();
       render(<PrivacyPage />);
 
-      await user.click(screen.getByText('Back to Home'));
+      await user.click(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`)));
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -67,7 +68,7 @@ describe('PrivacyPage', () => {
       const user = userEvent.setup();
       render(<PrivacyPage />);
 
-      await user.click(screen.getByText('Back to Home'));
+      await user.click(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`)));
 
       expect(mockNavigate).toHaveBeenCalledWith('/es/');
     });
@@ -78,7 +79,7 @@ describe('PrivacyPage', () => {
       const user = userEvent.setup();
       render(<PrivacyPage />);
 
-      await user.click(screen.getByText('Back to Home'));
+      await user.click(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`)));
 
       expect(mockNavigate).toHaveBeenCalledWith('/ru/');
     });

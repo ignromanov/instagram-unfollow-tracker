@@ -1,6 +1,10 @@
+import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FilterChips } from '@/components/FilterChips';
 import type { BadgeKey } from '@/core/types';
+import resultsEN from '@/locales/en/results.json';
+
+// react-i18next is already mocked globally in vitest.setup.ts
 
 describe('FilterChips Component', () => {
   const defaultFilterCounts: Record<BadgeKey, number> = {
@@ -32,18 +36,16 @@ describe('FilterChips Component', () => {
     it('should render without crashing', () => {
       render(<FilterChips {...defaultProps} />);
 
-      // Title is "Filter Results" from i18n
-      expect(screen.getByText('Filter Results')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.filters.title)).toBeInTheDocument();
     });
 
     it('should render filter chips for badges with non-zero counts', () => {
       render(<FilterChips {...defaultProps} />);
 
-      // Check that badges with counts > 0 are rendered (using i18n translations)
-      expect(screen.getByText('Followers')).toBeInTheDocument();
-      expect(screen.getByText('Following')).toBeInTheDocument();
-      expect(screen.getByText('Mutuals')).toBeInTheDocument();
-      expect(screen.getByText('Not following back')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.followers)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.following)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.mutuals)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.notFollowingBack)).toBeInTheDocument();
     });
 
     it('should display badge counts', () => {
@@ -130,7 +132,7 @@ describe('FilterChips Component', () => {
     it('should not show reset button when no filters are selected', () => {
       render(<FilterChips {...defaultProps} />);
 
-      expect(screen.queryByText('Reset')).not.toBeInTheDocument();
+      expect(screen.queryByText(resultsEN.filters.reset)).not.toBeInTheDocument();
     });
 
     it('should show reset button when filters are selected', () => {
@@ -138,7 +140,7 @@ describe('FilterChips Component', () => {
 
       render(<FilterChips {...defaultProps} selectedFilters={selectedFilters} />);
 
-      expect(screen.getByText('Reset')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.filters.reset)).toBeInTheDocument();
     });
 
     it('should call onFiltersChange with empty set when reset is clicked', () => {
@@ -153,7 +155,7 @@ describe('FilterChips Component', () => {
         />
       );
 
-      const resetButton = screen.getByText('Reset');
+      const resetButton = screen.getByText(resultsEN.filters.reset);
       fireEvent.click(resetButton);
 
       expect(mockOnFiltersChange).toHaveBeenCalledWith(new Set());
@@ -164,8 +166,6 @@ describe('FilterChips Component', () => {
     it('should show empty categories toggle when some badges have zero count', () => {
       render(<FilterChips {...defaultProps} />);
 
-      // dismissed has 0 count, so there should be an empty categories section
-      // The text is "Empty Categories (1)" from i18n with count interpolation
       expect(screen.getByText(/Empty Categories/i)).toBeInTheDocument();
     });
 
@@ -194,16 +194,12 @@ describe('FilterChips Component', () => {
 
       const toggleButton = screen.getByText(/Empty Categories/i);
 
-      // Initially hidden - Dismissed should not be visible as a chip
-      // The i18n translation for dismissed is "Dismissed suggestion"
-      const dismissedChips = screen.queryAllByText('Dismissed suggestion');
+      const dismissedChips = screen.queryAllByText(resultsEN.badges.dismissed);
       expect(dismissedChips).toHaveLength(0);
 
-      // Click to expand
       fireEvent.click(toggleButton);
 
-      // Now Dismissed should be visible
-      expect(screen.getByText('Dismissed suggestion')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.dismissed)).toBeInTheDocument();
     });
   });
 
@@ -238,18 +234,16 @@ describe('FilterChips Component', () => {
     it('should use translated badge labels', () => {
       render(<FilterChips {...defaultProps} />);
 
-      // These should match the translation keys from results namespace (badges.*)
-      expect(screen.getByText('Followers')).toBeInTheDocument();
-      expect(screen.getByText('Following')).toBeInTheDocument();
-      expect(screen.getByText('Mutuals')).toBeInTheDocument();
-      expect(screen.getByText('Not following back')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.followers)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.following)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.mutuals)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.notFollowingBack)).toBeInTheDocument();
     });
 
     it('should use translated filter title', () => {
       render(<FilterChips {...defaultProps} />);
 
-      // The title is "Filter Results" from filters.title
-      expect(screen.getByText('Filter Results')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.filters.title)).toBeInTheDocument();
     });
   });
 });

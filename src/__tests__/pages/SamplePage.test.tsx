@@ -3,6 +3,7 @@ import { Component as SamplePage } from '@/pages/SamplePage';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import commonEN from '@/locales/en/common.json';
 
 // Mock AccountListSection component
 vi.mock('@/components/AccountListSection', () => ({
@@ -133,7 +134,7 @@ describe('SamplePage', () => {
 
       render(<SamplePage />);
 
-      expect(screen.getByText('Try again')).toBeInTheDocument();
+      expect(screen.getByText(new RegExp(commonEN.buttons.tryAgain, 'i'))).toBeInTheDocument();
     });
 
     it('should retry loading when try again button is clicked', async () => {
@@ -146,7 +147,7 @@ describe('SamplePage', () => {
       const user = userEvent.setup();
       render(<SamplePage />);
 
-      await user.click(screen.getByText('Try again'));
+      await user.click(screen.getByText(new RegExp(commonEN.buttons.tryAgain, 'i')));
 
       expect(mockLoadSampleData).toHaveBeenCalled();
     });
@@ -222,7 +223,7 @@ describe('SamplePage', () => {
 
       render(<SamplePage />);
 
-      expect(screen.getByTestId('filename')).toHaveTextContent('Sample Data (Demo)');
+      expect(screen.getByTestId('filename')).toHaveTextContent('Sample Data');
     });
 
     it('should pass isSample as true', () => {

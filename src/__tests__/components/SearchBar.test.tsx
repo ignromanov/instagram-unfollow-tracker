@@ -1,4 +1,10 @@
+import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import resultsEN from '@/locales/en/results.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(resultsEN));
+
 import { SearchBar } from '@/components/SearchBar';
 
 describe('SearchBar Component', () => {
@@ -16,7 +22,7 @@ describe('SearchBar Component', () => {
   it('should render search input with placeholder', () => {
     render(<SearchBar {...defaultProps} />);
 
-    const input = screen.getByPlaceholderText('Search usernames...');
+    const input = screen.getByPlaceholderText(resultsEN.search.placeholder);
     expect(input).toBeInTheDocument();
     expect(input).toHaveValue('');
   });
@@ -45,7 +51,7 @@ describe('SearchBar Component', () => {
     const mockOnChange = vi.fn();
     render(<SearchBar {...defaultProps} onChange={mockOnChange} />);
 
-    const input = screen.getByPlaceholderText('Search usernames...');
+    const input = screen.getByPlaceholderText(resultsEN.search.placeholder);
     fireEvent.change(input, { target: { value: 'test' } });
 
     expect(mockOnChange).toHaveBeenCalledWith('test');
@@ -121,7 +127,7 @@ describe('SearchBar Component', () => {
     const mockOnChange = vi.fn();
     render(<SearchBar {...defaultProps} value="test" onChange={mockOnChange} />);
 
-    const input = screen.getByPlaceholderText('Search usernames...');
+    const input = screen.getByPlaceholderText(resultsEN.search.placeholder);
     const clearButton = screen.getByRole('button');
 
     // Focus input first

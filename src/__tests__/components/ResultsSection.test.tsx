@@ -7,22 +7,9 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ResultsSection } from '@/components/ResultsSection';
+import resultsEN from '@/locales/en/results.json';
 
-// Mock react-i18next
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, params?: Record<string, unknown>) => {
-      const translations: Record<string, string> = {
-        'stats.following': 'Following',
-        'stats.followers': 'Followers',
-        'badges.mutuals': 'Mutuals',
-        'stats.notFollowing': 'Not Following Back',
-        'header.showing': `Showing ${params?.filtered ?? 0} of ${params?.total ?? 0}`,
-      };
-      return translations[key] || key;
-    },
-  }),
-}));
+// react-i18next is already mocked globally in vitest.setup.ts
 
 describe('ResultsSection', () => {
   const defaultProps = {
@@ -44,16 +31,16 @@ describe('ResultsSection', () => {
   describe('rendering', () => {
     it('should render without crashing', () => {
       render(<ResultsSection {...defaultProps} />);
-      expect(screen.getByText('Following')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.stats.following)).toBeInTheDocument();
     });
 
     it('should render all four stat cards', () => {
       render(<ResultsSection {...defaultProps} />);
 
-      expect(screen.getByText('Following')).toBeInTheDocument();
-      expect(screen.getByText('Followers')).toBeInTheDocument();
-      expect(screen.getByText('Mutuals')).toBeInTheDocument();
-      expect(screen.getByText('Not Following Back')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.stats.following)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.stats.followers)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.badges.mutuals)).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.stats.notFollowing)).toBeInTheDocument();
     });
 
     it('should render children in sidebar', () => {
@@ -66,7 +53,7 @@ describe('ResultsSection', () => {
     it('should display showing count text', () => {
       render(<ResultsSection {...defaultProps} />);
 
-      expect(screen.getByText('Showing 500 of 1,000')).toBeInTheDocument();
+      expect(screen.getByText(/Showing 500 of 1,?000/)).toBeInTheDocument();
     });
   });
 
@@ -127,7 +114,7 @@ describe('ResultsSection', () => {
 
       render(<ResultsSection {...propsWithZeros} />);
 
-      // All zero values should be displayed
+      // All zero values should be displayed (at least 4 stat cards)
       const zeros = screen.getAllByText('0');
       expect(zeros.length).toBeGreaterThanOrEqual(4);
     });
@@ -193,7 +180,7 @@ describe('ResultsSection', () => {
     it('should render null children without error', () => {
       render(<ResultsSection {...defaultProps}>{null}</ResultsSection>);
 
-      expect(screen.getByText('Following')).toBeInTheDocument();
+      expect(screen.getByText(resultsEN.stats.following)).toBeInTheDocument();
     });
 
     it('should render multiple children', () => {

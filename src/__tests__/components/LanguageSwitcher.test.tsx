@@ -1,9 +1,8 @@
 import { vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import * as store from '@/lib/store';
-import * as analytics from '@/lib/analytics';
+import commonEN from '@/locales/en/common.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
@@ -11,6 +10,8 @@ vi.mock('react-router-dom', () => ({
   useLocation: () => ({ pathname: '/' }),
   useNavigate: () => mockNavigate,
 }));
+
+vi.mock('react-i18next', () => createI18nMock(commonEN));
 
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({
@@ -40,6 +41,10 @@ vi.mock('@/locales', () => ({
     ar: 'العربية',
   },
 }));
+
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import * as analytics from '@/lib/analytics';
+import * as store from '@/lib/store';
 
 describe('LanguageSwitcher', () => {
   const mockSetLanguage = vi.fn();
@@ -87,7 +92,7 @@ describe('LanguageSwitcher', () => {
     render(<LanguageSwitcher />);
 
     const button = screen.getByRole('button');
-    expect(button).toHaveAttribute('aria-label');
+    expect(button).toHaveAttribute('aria-label', commonEN.language.changeLanguage);
   });
 
   it('should render Globe icon', () => {

@@ -1,5 +1,11 @@
+import { vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import faqEN from '@/locales/en/faq.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(faqEN));
+
 import { renderWithRouter } from '../test-utils';
 import { FAQSection } from '@/components/FAQSection';
 
@@ -25,19 +31,11 @@ describe('FAQSection Component', () => {
       renderWithRouter(<FAQSection />);
 
       // Check that FAQ questions from faq.json are rendered
-      expect(
-        screen.getByText('How to check who unfollowed you on Instagram without app?')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('Can I check Instagram unfollowers without data download or apps?')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('How does Instagram unfollower tracker work without login?')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('Is it safe to use Instagram unfollower tracker apps?')
-      ).toBeInTheDocument();
-      expect(screen.getByText('Are there free Instagram unfollower trackers?')).toBeInTheDocument();
+      expect(screen.getByText(faqEN.items.howToFind.question)).toBeInTheDocument();
+      expect(screen.getByText(faqEN.items.withoutDownload.question)).toBeInTheDocument();
+      expect(screen.getByText(faqEN.items.privacy.question)).toBeInTheDocument();
+      expect(screen.getByText(faqEN.items.safety.question)).toBeInTheDocument();
+      expect(screen.getByText(faqEN.items.free.question)).toBeInTheDocument();
     });
 
     it('should have proper accessibility attributes', () => {
@@ -64,9 +62,7 @@ describe('FAQSection Component', () => {
       const user = userEvent.setup();
       renderWithRouter(<FAQSection />);
 
-      const firstQuestion = screen.getByText(
-        'How to check who unfollowed you on Instagram without app?'
-      );
+      const firstQuestion = screen.getByText(faqEN.items.howToFind.question);
       const button = firstQuestion.closest('button');
       expect(button).toHaveAttribute('aria-expanded', 'false');
 
@@ -79,9 +75,7 @@ describe('FAQSection Component', () => {
       const user = userEvent.setup();
       renderWithRouter(<FAQSection />);
 
-      const firstQuestion = screen.getByText(
-        'How to check who unfollowed you on Instagram without app?'
-      );
+      const firstQuestion = screen.getByText(faqEN.items.howToFind.question);
       const button = firstQuestion.closest('button');
 
       // Open
@@ -97,12 +91,8 @@ describe('FAQSection Component', () => {
       const user = userEvent.setup();
       renderWithRouter(<FAQSection />);
 
-      const firstQuestion = screen.getByText(
-        'How to check who unfollowed you on Instagram without app?'
-      );
-      const secondQuestion = screen.getByText(
-        'Can I check Instagram unfollowers without data download or apps?'
-      );
+      const firstQuestion = screen.getByText(faqEN.items.howToFind.question);
+      const secondQuestion = screen.getByText(faqEN.items.withoutDownload.question);
       const firstButton = firstQuestion.closest('button');
       const secondButton = secondQuestion.closest('button');
 

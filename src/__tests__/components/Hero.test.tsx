@@ -1,5 +1,13 @@
+import { vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+// Import translation before mocking
+import heroEN from '@/locales/en/hero.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(heroEN));
+
 import { Hero } from '@/components/Hero';
 
 describe('Hero Component', () => {
@@ -24,23 +32,21 @@ describe('Hero Component', () => {
       render(<Hero {...defaultProps} />);
 
       const heading = screen.getByRole('heading', { level: 1 });
-      expect(heading).toHaveTextContent('Check');
-      expect(heading).toHaveTextContent('Unfollowers');
-      expect(heading).toHaveTextContent('Without Logging In.');
+      expect(heading).toHaveTextContent(heroEN.headline.prefix);
+      expect(heading).toHaveTextContent(heroEN.headline.highlight);
+      expect(heading).toHaveTextContent(heroEN.headline.suffix);
     });
 
     it('should render subheadline', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(
-        screen.getByText(/The only free online tool that analyzes your Instagram ZIP file locally/)
-      ).toBeInTheDocument();
+      expect(screen.getByText(heroEN.subheadline)).toBeInTheDocument();
     });
 
     it('should render version badge', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(screen.getByText(/V1.5 Optimized for 1,000,000\+ Accounts/)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.version)).toBeInTheDocument();
     });
   });
 
@@ -48,26 +54,32 @@ describe('Hero Component', () => {
     it('should render primary CTA button when no data', () => {
       render(<Hero {...defaultProps} hasData={false} />);
 
-      expect(screen.getByRole('button', { name: /Check Unfollowers Free/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.getGuide, 'i') })
+      ).toBeInTheDocument();
     });
 
     it('should render "View Results" button when hasData is true', () => {
       render(<Hero {...defaultProps} hasData={true} onContinue={vi.fn()} />);
 
-      expect(screen.getByRole('button', { name: /View Analysis Results/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.viewResults, 'i') })
+      ).toBeInTheDocument();
     });
 
     it('should render sample data button', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(screen.getByRole('button', { name: /Try with Sample/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.trySample, 'i') })
+      ).toBeInTheDocument();
     });
 
     it('should render "I already have my ZIP file" link when no data', () => {
       render(<Hero {...defaultProps} hasData={false} />);
 
       expect(
-        screen.getByRole('button', { name: /I already have my ZIP file/i })
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.haveFile, 'i') })
       ).toBeInTheDocument();
     });
 
@@ -75,7 +87,7 @@ describe('Hero Component', () => {
       render(<Hero {...defaultProps} hasData={true} />);
 
       expect(
-        screen.queryByRole('button', { name: /I already have my ZIP file/i })
+        screen.queryByRole('button', { name: new RegExp(heroEN.buttons.haveFile, 'i') })
       ).not.toBeInTheDocument();
     });
   });
@@ -84,9 +96,9 @@ describe('Hero Component', () => {
     it('should render trust badges', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(screen.getByText(/Completely Free • Forever/)).toBeInTheDocument();
-      expect(screen.getByText(/No Password • No Account Risk/)).toBeInTheDocument();
-      expect(screen.getByText(/100% Private • Local Analysis/)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.trust.free)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.trust.noPassword)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.trust.privacy)).toBeInTheDocument();
     });
   });
 
@@ -94,19 +106,19 @@ describe('Hero Component', () => {
     it('should render all four feature cards', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(screen.getByText('100% Local')).toBeInTheDocument();
-      expect(screen.getByText('No Login')).toBeInTheDocument();
-      expect(screen.getByText('High Scale')).toBeInTheDocument();
-      expect(screen.getByText('Open Source')).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.local.title)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.noLogin.title)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.scale.title)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.openSource.title)).toBeInTheDocument();
     });
 
     it('should render feature descriptions', () => {
       render(<Hero {...defaultProps} />);
 
-      expect(screen.getByText('No data ever leaves your device')).toBeInTheDocument();
-      expect(screen.getByText('No risk of account bans or hacking')).toBeInTheDocument();
-      expect(screen.getByText('Handles 1M+ accounts at light speed')).toBeInTheDocument();
-      expect(screen.getByText('Audit our code, we value your trust')).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.local.description)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.noLogin.description)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.scale.description)).toBeInTheDocument();
+      expect(screen.getByText(heroEN.features.openSource.description)).toBeInTheDocument();
     });
   });
 
@@ -115,7 +127,9 @@ describe('Hero Component', () => {
       const user = userEvent.setup();
       render(<Hero {...defaultProps} />);
 
-      await user.click(screen.getByRole('button', { name: /Check Unfollowers Free/i }));
+      await user.click(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.getGuide, 'i') })
+      );
 
       expect(defaultProps.onStartGuide).toHaveBeenCalledTimes(1);
     });
@@ -124,7 +138,9 @@ describe('Hero Component', () => {
       const user = userEvent.setup();
       render(<Hero {...defaultProps} />);
 
-      await user.click(screen.getByRole('button', { name: /Try with Sample/i }));
+      await user.click(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.trySample, 'i') })
+      );
 
       expect(defaultProps.onLoadSample).toHaveBeenCalledTimes(1);
     });
@@ -133,7 +149,9 @@ describe('Hero Component', () => {
       const user = userEvent.setup();
       render(<Hero {...defaultProps} />);
 
-      await user.click(screen.getByRole('button', { name: /I already have my ZIP file/i }));
+      await user.click(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.haveFile, 'i') })
+      );
 
       expect(defaultProps.onUploadDirect).toHaveBeenCalledTimes(1);
     });
@@ -143,7 +161,9 @@ describe('Hero Component', () => {
       const onContinue = vi.fn();
       render(<Hero {...defaultProps} hasData={true} onContinue={onContinue} />);
 
-      await user.click(screen.getByRole('button', { name: /View Analysis Results/i }));
+      await user.click(
+        screen.getByRole('button', { name: new RegExp(heroEN.buttons.viewResults, 'i') })
+      );
 
       expect(onContinue).toHaveBeenCalledTimes(1);
     });

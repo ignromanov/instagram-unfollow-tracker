@@ -1,6 +1,9 @@
-import { UploadZone } from '@/components/UploadZone';
 import { fireEvent, render, screen } from '@tests/utils/testUtils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import uploadEN from '@/locales/en/upload.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(uploadEN));
 
 // Mock analytics
 vi.mock('@/lib/analytics', () => ({
@@ -14,6 +17,7 @@ vi.mock('@/lib/analytics', () => ({
 }));
 
 import { analytics } from '@/lib/analytics';
+import { UploadZone } from '@/components/UploadZone';
 
 describe('UploadZone', () => {
   const mockOnUploadStart = vi.fn();
@@ -34,13 +38,9 @@ describe('UploadZone', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
     // Title from translations: zone.title
-    expect(screen.getByText('Upload Your Data')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.title)).toBeInTheDocument();
     // Description from translations: zone.description
-    expect(
-      screen.getByText(
-        'Your data remains 100% private. We analyze everything locally in your browser.'
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.description)).toBeInTheDocument();
   });
 
   it('should have drag and drop area with file input', () => {
@@ -56,40 +56,40 @@ describe('UploadZone', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
     // zone.dropHere translation
-    expect(screen.getByText('Drop your Instagram ZIP')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.dropHere)).toBeInTheDocument();
     // zone.orBrowse translation
-    expect(screen.getByText('Or tap to browse your local storage.')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.orBrowse)).toBeInTheDocument();
   });
 
   it('should display JSON format warning badge', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
     // zone.jsonOnly translation
-    expect(screen.getByText('JSON Format Only')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.jsonOnly)).toBeInTheDocument();
   });
 
   it('should display pre-upload checklist', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
     // checklist.title translation
-    expect(screen.getByText('Pre-upload Checklist')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.checklist.title)).toBeInTheDocument();
     // Checklist items from translations
-    expect(screen.getByText('Format: JSON (not HTML)')).toBeInTheDocument();
-    expect(screen.getByText("Includes: 'Followers and following'")).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.checklist.format)).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.checklist.includes)).toBeInTheDocument();
   });
 
   it('should display common error hint section', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} onOpenWizard={mockOnOpenWizard} />);
 
     // errors.commonTitle translation
-    expect(screen.getByText('Most Common Error')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.errors.commonTitle)).toBeInTheDocument();
   });
 
   it('should render back button when onBack is provided', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} onBack={mockOnBack} />);
 
     // zone.back translation
-    const backButton = screen.getByText('Back');
+    const backButton = screen.getByText(uploadEN.zone.back);
     expect(backButton).toBeInTheDocument();
 
     fireEvent.click(backButton);
@@ -99,18 +99,16 @@ describe('UploadZone', () => {
   it('should not render back button when onBack is not provided', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
-    expect(screen.queryByText('Back')).not.toBeInTheDocument();
+    expect(screen.queryByText(uploadEN.zone.back)).not.toBeInTheDocument();
   });
 
   it('should show processing state when isProcessing is true', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} isProcessing={true} />);
 
     // zone.processing translation
-    expect(screen.getByText('Analyzing locally...')).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.processing)).toBeInTheDocument();
     // zone.processingHint translation
-    expect(
-      screen.getByText('Processing large datasets (up to 1M+) can take a moment.')
-    ).toBeInTheDocument();
+    expect(screen.getByText(uploadEN.zone.processingHint)).toBeInTheDocument();
   });
 
   it('should disable file input when processing', () => {
@@ -163,7 +161,7 @@ describe('UploadZone', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} onOpenWizard={mockOnOpenWizard} />);
 
     // errors.learnFix translation
-    const learnButton = screen.getByText('Learn how to fix');
+    const learnButton = screen.getByText(uploadEN.errors.learnFix);
     expect(learnButton).toBeInTheDocument();
 
     fireEvent.click(learnButton);
@@ -175,7 +173,7 @@ describe('UploadZone', () => {
 
     const fileInput = document.querySelector('input[type="file"]');
     // zone.ariaLabel translation
-    expect(fileInput).toHaveAttribute('aria-label', 'Upload Instagram data ZIP file');
+    expect(fileInput).toHaveAttribute('aria-label', uploadEN.zone.ariaLabel);
   });
 
   it('should track drag enter analytics on dragOver', () => {
@@ -220,7 +218,7 @@ describe('UploadZone', () => {
 
     // When there is a critical error, the diagnostic screen is shown
     // The main upload title should not be visible
-    expect(screen.queryByText('Upload Your Data')).not.toBeInTheDocument();
+    expect(screen.queryByText(uploadEN.zone.title)).not.toBeInTheDocument();
     // Analytics should track the diagnostic error view
     expect(analytics.diagnosticErrorView).toHaveBeenCalled();
   });

@@ -1,5 +1,11 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import commonEN from '@/locales/en/common.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(commonEN));
+
 import { TermsOfService } from '@/components/TermsOfService';
 
 describe('TermsOfService', () => {
@@ -159,14 +165,14 @@ describe('TermsOfService', () => {
     it('should render back button', () => {
       render(<TermsOfService {...defaultProps} />);
 
-      expect(screen.getByRole('button', { name: /Back to Home/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /back to home/i })).toBeInTheDocument();
     });
 
     it('should call onBack when back button is clicked', async () => {
       const user = userEvent.setup();
       render(<TermsOfService {...defaultProps} />);
 
-      await user.click(screen.getByRole('button', { name: /Back to Home/i }));
+      await user.click(screen.getByRole('button', { name: /back to home/i }));
 
       expect(defaultProps.onBack).toHaveBeenCalledTimes(1);
     });

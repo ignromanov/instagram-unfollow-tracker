@@ -27,42 +27,59 @@ function flattenTranslations(obj: Record<string, unknown>, prefix = ''): Record<
   return result;
 }
 
-// Build translations map from imported JSON files
-const translations: Record<string, string> = {
-  ...flattenTranslations(commonEN),
-  ...flattenTranslations(resultsEN),
-  ...flattenTranslations(heroEN),
-  ...flattenTranslations(wizardEN),
-  ...flattenTranslations(uploadEN),
-  ...flattenTranslations(faqEN),
-  ...flattenTranslations(howtoEN),
+// Build translations map per namespace
+const translationsByNamespace: Record<string, Record<string, string>> = {
+  common: flattenTranslations(commonEN),
+  results: flattenTranslations(resultsEN),
+  hero: flattenTranslations(heroEN),
+  wizard: flattenTranslations(wizardEN),
+  upload: flattenTranslations(uploadEN),
+  faq: flattenTranslations(faqEN),
+  howto: flattenTranslations(howtoEN),
+};
+
+// Build combined translations for default namespace
+const allTranslations: Record<string, string> = {
+  ...translationsByNamespace.common,
+  ...translationsByNamespace.results,
+  ...translationsByNamespace.hero,
+  ...translationsByNamespace.wizard,
+  ...translationsByNamespace.upload,
+  ...translationsByNamespace.faq,
+  ...translationsByNamespace.howto,
 };
 
 vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, options?: Record<string, unknown>) => {
-      let template = translations[key] || key;
+  useTranslation: (ns?: string) => {
+    // Get translations for specific namespace or all translations
+    const translations =
+      ns && translationsByNamespace[ns] ? translationsByNamespace[ns] : allTranslations;
 
-      // Handle interpolation
-      if (options && typeof options === 'object') {
-        Object.entries(options).forEach(([k, v]) => {
-          // Handle patterns like {{count, number}} - format with locale
-          template = template.replace(
-            new RegExp(`\\{\\{${k},\\s*number\\}\\}`, 'g'),
-            typeof v === 'number' ? v.toLocaleString('en-US') : String(v)
-          );
-          // Handle simple {{key}} patterns
-          template = template.replace(new RegExp(`\\{\\{${k}\\}\\}`, 'g'), String(v));
-        });
-      }
+    return {
+      t: (key: string, options?: Record<string, unknown>) => {
+        let template = translations[key] || key;
 
-      return template;
-    },
-    i18n: {
-      language: 'en',
-      changeLanguage: vi.fn().mockResolvedValue(undefined),
-    },
-  }),
+        // Handle interpolation
+        if (options && typeof options === 'object') {
+          Object.entries(options).forEach(([k, v]) => {
+            // Handle patterns like {{count, number}} - format with locale
+            template = template.replace(
+              new RegExp(`\\{\\{${k},\\s*number\\}\\}`, 'g'),
+              typeof v === 'number' ? v.toLocaleString('en-US') : String(v)
+            );
+            // Handle simple {{key}} patterns
+            template = template.replace(new RegExp(`\\{\\{${k}\\}\\}`, 'g'), String(v));
+          });
+        }
+
+        return template;
+      },
+      i18n: {
+        language: 'en',
+        changeLanguage: vi.fn().mockResolvedValue(undefined),
+      },
+    };
+  },
   Trans: ({ children }: { children: React.ReactNode }) => children,
   initReactI18next: {
     type: '3rdParty',
@@ -195,3 +212,37 @@ global.Worker = class MockWorker {
     return true;
   }
 } as any;
+
+// Mock localStorage with proper implementation
+class LocalStorageMock implements Storage {
+  private store: Map<string, string> = new Map();
+
+  get length(): number {
+    return this.store.size;
+  }
+
+  clear(): void {
+    this.store.clear();
+  }
+
+  getItem(key: string): string | null {
+    return this.store.get(key) ?? null;
+  }
+
+  key(index: number): string | null {
+    const keys = Array.from(this.store.keys());
+    return keys[index] ?? null;
+  }
+
+  removeItem(key: string): void {
+    this.store.delete(key);
+  }
+
+  setItem(key: string, value: string): void {
+    this.store.set(key, value);
+  }
+}
+
+// Replace global localStorage and sessionStorage
+global.localStorage = new LocalStorageMock();
+global.sessionStorage = new LocalStorageMock();

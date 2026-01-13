@@ -1,7 +1,7 @@
 import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Wizard } from '@/components/Wizard';
 import wizardEN from '@/locales/en/wizard.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
 // Mock react-router-dom with pathname tracking
 let mockPathname = '/wizard';
@@ -22,24 +22,9 @@ vi.mock('@/hooks/useLanguagePrefix', () => ({
   useLanguagePrefix: () => '',
 }));
 
-// Mock react-i18next with actual translations
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, options?: Record<string, unknown>) => {
-      // Handle interpolation for 'header.stepOf'
-      if (key === 'header.stepOf' && options) {
-        return `Step ${options.current} of ${options.total}`;
-      }
-      // Navigate nested keys like 'steps.1.title'
-      const keys = key.split('.');
-      let value: unknown = wizardEN;
-      for (const k of keys) {
-        value = (value as Record<string, unknown>)?.[k];
-      }
-      return (value as string) || key;
-    },
-  }),
-}));
+vi.mock('react-i18next', () => createI18nMock(wizardEN));
+
+import { Wizard } from '@/components/Wizard';
 
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({

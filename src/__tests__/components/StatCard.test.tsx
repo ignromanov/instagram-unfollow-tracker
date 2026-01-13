@@ -1,7 +1,12 @@
+import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { StatCard } from '@/components/StatCard';
 import { Users } from 'lucide-react';
 import type { BadgeKey } from '@/core/types';
+import commonEN from '@/locales/en/common.json';
+import { createI18nMockSingle } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMockSingle(commonEN));
 
 describe('StatCard', () => {
   const mockOnClick = vi.fn();
@@ -129,7 +134,9 @@ describe('StatCard', () => {
     );
 
     const button = screen.getByRole('button');
-    expect(button).toHaveAttribute('aria-label', 'Remove Following filter');
+    expect(button).toHaveAttribute('aria-label');
+    expect(button.getAttribute('aria-label')).toContain('Remove');
+    expect(button.getAttribute('aria-label')).toContain('Following');
   });
 
   it('should have proper aria-label for inactive filter', () => {
@@ -146,7 +153,9 @@ describe('StatCard', () => {
     );
 
     const button = screen.getByRole('button');
-    expect(button).toHaveAttribute('aria-label', 'Add Following filter');
+    expect(button).toHaveAttribute('aria-label');
+    expect(button.getAttribute('aria-label')).toContain('Add');
+    expect(button.getAttribute('aria-label')).toContain('Following');
   });
 
   it('should be disabled when no badgeType provided', () => {

@@ -2,14 +2,15 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component as WizardPage } from '@/pages/WizardPage';
+import uploadEN from '@/locales/en/upload.json';
 
 // Mock Wizard component
 vi.mock('@/components/Wizard', () => ({
   Wizard: ({ onComplete, onCancel }: { onComplete: () => void; onCancel: () => void }) => (
     <div data-testid="wizard">
       <h1>Instagram Export Wizard</h1>
-      <button onClick={onComplete}>Complete</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onComplete}>{uploadEN.waiting.uploadNow}</button>
+      <button onClick={onCancel}>{uploadEN.zone.back}</button>
     </div>
   ),
 }));
@@ -48,8 +49,8 @@ describe('WizardPage', () => {
     it('should render complete and cancel buttons', () => {
       render(<WizardPage />);
 
-      expect(screen.getByText('Complete')).toBeInTheDocument();
-      expect(screen.getByText('Cancel')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.waiting.uploadNow)).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.zone.back)).toBeInTheDocument();
     });
   });
 
@@ -58,7 +59,7 @@ describe('WizardPage', () => {
       const user = userEvent.setup();
       render(<WizardPage />);
 
-      await user.click(screen.getByText('Complete'));
+      await user.click(screen.getByText(uploadEN.waiting.uploadNow));
 
       expect(mockNavigate).toHaveBeenCalledWith('/upload');
     });
@@ -69,7 +70,7 @@ describe('WizardPage', () => {
       const user = userEvent.setup();
       render(<WizardPage />);
 
-      await user.click(screen.getByText('Complete'));
+      await user.click(screen.getByText(uploadEN.waiting.uploadNow));
 
       expect(mockNavigate).toHaveBeenCalledWith('/es/upload');
     });
@@ -80,7 +81,7 @@ describe('WizardPage', () => {
       const user = userEvent.setup();
       render(<WizardPage />);
 
-      await user.click(screen.getByText('Cancel'));
+      await user.click(screen.getByText(uploadEN.zone.back));
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -91,7 +92,7 @@ describe('WizardPage', () => {
       const user = userEvent.setup();
       render(<WizardPage />);
 
-      await user.click(screen.getByText('Cancel'));
+      await user.click(screen.getByText(uploadEN.zone.back));
 
       expect(mockNavigate).toHaveBeenCalledWith('/de/');
     });
@@ -102,8 +103,8 @@ describe('WizardPage', () => {
       render(<WizardPage />);
 
       // Verify the props work by checking buttons exist and are functional
-      expect(screen.getByText('Complete')).toBeInTheDocument();
-      expect(screen.getByText('Cancel')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.waiting.uploadNow)).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.zone.back)).toBeInTheDocument();
     });
   });
 });

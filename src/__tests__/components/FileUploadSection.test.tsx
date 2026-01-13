@@ -1,7 +1,12 @@
+import { vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@tests/utils/testUtils';
+import uploadEN from '@/locales/en/upload.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(uploadEN));
+
 import { FileUploadSection } from '@/components/FileUploadSection';
 import { useInstagramData } from '@/hooks/useInstagramData';
-import { fireEvent, render, screen, waitFor } from '@tests/utils/testUtils';
-import { beforeEach, vi } from 'vitest';
 
 // Mock the useInstagramData hook
 vi.mock('@/hooks/useInstagramData');
@@ -33,6 +38,7 @@ describe('FileUploadSection', () => {
   it('should render file upload component', () => {
     render(<FileUploadSection onHelpClick={mockOnHelpClick} />);
 
+    // FileUpload renders different text than UploadZone
     expect(screen.getByText('Drop your Instagram data here')).toBeInTheDocument();
     expect(screen.getByText('or click to browse for your ZIP file')).toBeInTheDocument();
   });
@@ -47,6 +53,7 @@ describe('FileUploadSection', () => {
 
     render(<FileUploadSection onHelpClick={mockOnHelpClick} />);
 
+    // FileUpload renders "Processing your data..." when loading
     expect(screen.getByText('Processing your data...')).toBeInTheDocument();
   });
 
@@ -105,6 +112,7 @@ describe('FileUploadSection', () => {
     render(<FileUploadSection onHelpClick={mockOnHelpClick} />);
 
     // Check that the processing state is shown
+    // FileUpload renders "Processing your data..." when loading
     expect(screen.getByText('Processing your data...')).toBeInTheDocument();
     // Component should be rendered in loading state
     expect(screen.queryByText('Drop your Instagram data here')).not.toBeInTheDocument();

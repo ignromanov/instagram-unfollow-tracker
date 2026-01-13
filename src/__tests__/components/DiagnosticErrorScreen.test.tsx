@@ -1,7 +1,21 @@
+import { vi, beforeEach, describe, expect, it } from 'vitest';
+import { render, screen, fireEvent } from '@tests/utils/testUtils';
+import uploadEN from '@/locales/en/upload.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(uploadEN));
+
 import { DiagnosticErrorScreen } from '@/components/DiagnosticErrorScreen';
 import type { DiagnosticErrorCode, ParseWarning } from '@/core/types';
-import { fireEvent, render, screen } from '@tests/utils/testUtils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+// Mock analytics
+vi.mock('@/lib/analytics', () => ({
+  analytics: {
+    diagnosticErrorView: vi.fn(),
+    diagnosticErrorRetry: vi.fn(),
+    diagnosticErrorHelp: vi.fn(),
+  },
+}));
 
 describe('DiagnosticErrorScreen', () => {
   const mockOnTryAgain = vi.fn();
@@ -111,7 +125,7 @@ describe('DiagnosticErrorScreen', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" />);
 
       // diagnostic.howToFix translation
-      expect(screen.getByText('How to fix this')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.howToFix)).toBeInTheDocument();
       // Fix instructions for NOT_ZIP
       expect(
         screen.getByText(/Look for a file ending in .zip in your Downloads folder/)
@@ -124,7 +138,7 @@ describe('DiagnosticErrorScreen', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" onTryAgain={mockOnTryAgain} />);
 
       // diagnostic.tryAgain translation
-      const tryAgainButton = screen.getByText('Try Again');
+      const tryAgainButton = screen.getByText(uploadEN.diagnostic.tryAgain);
       expect(tryAgainButton).toBeInTheDocument();
 
       fireEvent.click(tryAgainButton);
@@ -134,14 +148,14 @@ describe('DiagnosticErrorScreen', () => {
     it('should not render "Try Again" button when onTryAgain is not provided', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" />);
 
-      expect(screen.queryByText('Try Again')).not.toBeInTheDocument();
+      expect(screen.queryByText(uploadEN.diagnostic.tryAgain)).not.toBeInTheDocument();
     });
 
     it('should render "Show Where I Went Wrong" button when onOpenWizard is provided', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" onOpenWizard={mockOnOpenWizard} />);
 
       // diagnostic.showMistakes translation
-      const showMistakesButton = screen.getByText('Show Where I Went Wrong');
+      const showMistakesButton = screen.getByText(uploadEN.diagnostic.showMistakes);
       expect(showMistakesButton).toBeInTheDocument();
 
       fireEvent.click(showMistakesButton);
@@ -151,14 +165,14 @@ describe('DiagnosticErrorScreen', () => {
     it('should not render wizard button when onOpenWizard is not provided', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" />);
 
-      expect(screen.queryByText('Show Where I Went Wrong')).not.toBeInTheDocument();
+      expect(screen.queryByText(uploadEN.diagnostic.showMistakes)).not.toBeInTheDocument();
     });
 
     it('should render back button when onBack is provided', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" onBack={mockOnBack} />);
 
       // diagnostic.back translation
-      const backButton = screen.getByText('Back');
+      const backButton = screen.getByText(uploadEN.diagnostic.back);
       expect(backButton).toBeInTheDocument();
 
       fireEvent.click(backButton);
@@ -168,7 +182,7 @@ describe('DiagnosticErrorScreen', () => {
     it('should not render back button when onBack is not provided', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" />);
 
-      expect(screen.queryByText('Back')).not.toBeInTheDocument();
+      expect(screen.queryByText(uploadEN.diagnostic.back)).not.toBeInTheDocument();
     });
   });
 
@@ -177,16 +191,16 @@ describe('DiagnosticErrorScreen', () => {
       render(<DiagnosticErrorScreen errorCode="NOT_ZIP" />);
 
       // diagnostic.commonMistakes translation
-      expect(screen.getByText('Common Mistakes')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.commonMistakes)).toBeInTheDocument();
 
       // diagnostic.mistakes.html.title translation
-      expect(screen.getByText('HTML instead of JSON')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.mistakes.html.title)).toBeInTheDocument();
 
       // diagnostic.mistakes.missingData.title translation
-      expect(screen.getByText('Missing data category')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.mistakes.missingData.title)).toBeInTheDocument();
 
       // diagnostic.mistakes.wrongFile.title translation
-      expect(screen.getByText('Wrong file')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.mistakes.wrongFile.title)).toBeInTheDocument();
     });
 
     it('should display mistake descriptions', () => {
@@ -195,17 +209,17 @@ describe('DiagnosticErrorScreen', () => {
       // Descriptions are rendered inside spans with titles, so use regex to match partial text
       // diagnostic.mistakes.html.description translation
       expect(
-        screen.getByText(/Make sure to select "JSON" format when requesting your data/)
+        screen.getByText(new RegExp(uploadEN.diagnostic.mistakes.html.description))
       ).toBeInTheDocument();
 
       // diagnostic.mistakes.missingData.description translation
       expect(
-        screen.getByText(/You need to select "Followers and following" in the data types/)
+        screen.getByText(new RegExp(uploadEN.diagnostic.mistakes.missingData.description))
       ).toBeInTheDocument();
 
       // diagnostic.mistakes.wrongFile.description translation
       expect(
-        screen.getByText(/Upload the .zip file, not a folder or extracted files/)
+        screen.getByText(new RegExp(uploadEN.diagnostic.mistakes.wrongFile.description))
       ).toBeInTheDocument();
     });
   });
@@ -287,8 +301,8 @@ describe('DiagnosticErrorScreen', () => {
       expect(container).toBeInTheDocument();
       // Should have error card with proper structure
       expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
-      expect(screen.getByText('How to fix this')).toBeInTheDocument();
-      expect(screen.getByText('Try Again')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.howToFix)).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.tryAgain)).toBeInTheDocument();
     });
   });
 });

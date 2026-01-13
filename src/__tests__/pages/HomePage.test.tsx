@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component as HomePage } from '@/pages/HomePage';
+import heroEN from '@/locales/en/hero.json';
+import commonEN from '@/locales/en/common.json';
 
 // Mock child components
 vi.mock('@/components/Hero', () => ({
@@ -19,10 +21,10 @@ vi.mock('@/components/Hero', () => ({
     onContinue?: () => void;
   }) => (
     <div data-testid="hero">
-      <button onClick={() => onStartGuide(0)}>Start Guide</button>
-      <button onClick={onLoadSample}>Load Sample</button>
-      <button onClick={onUploadDirect}>Upload Direct</button>
-      {hasData && onContinue && <button onClick={onContinue}>Continue</button>}
+      <button onClick={() => onStartGuide(0)}>{heroEN.buttons.getGuide}</button>
+      <button onClick={onLoadSample}>{heroEN.buttons.trySample}</button>
+      <button onClick={onUploadDirect}>{heroEN.buttons.haveFile}</button>
+      {hasData && onContinue && <button onClick={onContinue}>{heroEN.buttons.viewResults}</button>}
       <span data-testid="has-data">{String(hasData)}</span>
     </div>
   ),
@@ -49,8 +51,8 @@ vi.mock('@/components/FooterCTA', () => ({
     onSample: () => void;
   }) => (
     <div data-testid="footer-cta">
-      <button onClick={() => onStart()}>CTA Start</button>
-      <button onClick={onSample}>CTA Sample</button>
+      <button onClick={() => onStart()}>{commonEN.cta.getStarted}</button>
+      <button onClick={onSample}>{commonEN.cta.trySample}</button>
     </div>
   ),
 }));
@@ -124,7 +126,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('Start Guide'));
+      await user.click(screen.getByText(heroEN.buttons.getGuide));
 
       expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/1');
     });
@@ -133,7 +135,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('Load Sample'));
+      await user.click(screen.getByText(heroEN.buttons.trySample));
 
       expect(mockNavigate).toHaveBeenCalledWith('/sample');
     });
@@ -142,7 +144,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('Upload Direct'));
+      await user.click(screen.getByText(heroEN.buttons.haveFile));
 
       expect(mockNavigate).toHaveBeenCalledWith('/upload');
     });
@@ -156,7 +158,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('Continue'));
+      await user.click(screen.getByText(heroEN.buttons.viewResults));
 
       expect(mockNavigate).toHaveBeenCalledWith('/results');
     });
@@ -178,7 +180,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('CTA Start'));
+      await user.click(screen.getByText(commonEN.cta.getStarted));
 
       expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/1');
     });
@@ -187,7 +189,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('CTA Sample'));
+      await user.click(screen.getByText(commonEN.cta.trySample));
 
       expect(mockNavigate).toHaveBeenCalledWith('/sample');
     });
@@ -200,7 +202,7 @@ describe('HomePage', () => {
       const user = userEvent.setup();
       render(<HomePage />);
 
-      await user.click(screen.getByText('Start Guide'));
+      await user.click(screen.getByText(heroEN.buttons.getGuide));
 
       expect(mockNavigate).toHaveBeenCalledWith('/es/wizard/step/1');
     });

@@ -1,6 +1,11 @@
 import { vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import howtoEN from '@/locales/en/howto.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(howtoEN));
+
 import { HowToSection } from '@/components/HowToSection';
 
 // Helper to render component with Router context
@@ -45,14 +50,14 @@ describe('HowToSection', () => {
     it('should render step titles', () => {
       renderWithRouter(<HowToSection />);
 
-      expect(screen.getByText('Open Instagram Export Page')).toBeInTheDocument();
-      expect(screen.getByText('Choose Your Instagram Profile')).toBeInTheDocument();
-      expect(screen.getByText('Select "Export to device"')).toBeInTheDocument();
-      expect(screen.getByText('Select Only "Followers and following"')).toBeInTheDocument();
-      expect(screen.getByText('Set Date Range to "All time"')).toBeInTheDocument();
-      expect(screen.getByText('Change Format to JSON')).toBeInTheDocument();
-      expect(screen.getByText('Review & Start Export')).toBeInTheDocument();
-      expect(screen.getByText('Wait for Email & Download')).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['1'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['2'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['3'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['4'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['5'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['6'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['7'].title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.steps['8'].title)).toBeInTheDocument();
     });
 
     it('should render step descriptions', () => {
@@ -99,7 +104,7 @@ describe('HowToSection', () => {
 
       expect(schema['@context']).toBe('https://schema.org');
       expect(schema['@type']).toBe('HowTo');
-      expect(schema.name).toBe('How to Check Who Unfollowed You on Instagram Without Login');
+      expect(schema.name).toBe(howtoEN.schema.name);
       expect(schema.totalTime).toBe('PT5M');
     });
 
@@ -112,7 +117,7 @@ describe('HowToSection', () => {
       expect(schema.step).toHaveLength(9);
       expect(schema.step[0]['@type']).toBe('HowToStep');
       expect(schema.step[0].position).toBe(1);
-      expect(schema.step[0].name).toBe('Open Instagram Export Page');
+      expect(schema.step[0].name).toBe(howtoEN.steps['1'].title);
     });
 
     it('should include supplies and tools in schema', () => {
@@ -122,9 +127,9 @@ describe('HowToSection', () => {
       const schema = JSON.parse(script!.innerHTML);
 
       expect(schema.supply).toHaveLength(2);
-      expect(schema.supply[0].name).toBe('Instagram account');
+      expect(schema.supply[0].name).toBe(howtoEN.schema.supplies.account);
       expect(schema.tool).toHaveLength(1);
-      expect(schema.tool[0].name).toBe('Instagram Unfollow Tracker (this website)');
+      expect(schema.tool[0].name).toBe(howtoEN.schema.tool);
     });
 
     it('should include estimated cost in schema', () => {
@@ -145,10 +150,8 @@ describe('HowToSection', () => {
     it('should render CTA title and subtitle', () => {
       renderWithRouter(<HowToSection />);
 
-      expect(screen.getByText('Ready to start?')).toBeInTheDocument();
-      expect(
-        screen.getByText(/Scan and process your Instagram data export privately/)
-      ).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.cta.title)).toBeInTheDocument();
+      expect(screen.getByText(howtoEN.cta.subtitle)).toBeInTheDocument();
     });
 
     it('should render CTA button', () => {
@@ -175,7 +178,7 @@ describe('HowToSection', () => {
       renderWithRouter(<HowToSection onStart={onStart} />);
 
       // Click on step 3 (index 2)
-      const step3Title = screen.getByText('Select "Export to device"');
+      const step3Title = screen.getByText(howtoEN.steps['3'].title);
       const stepElement = step3Title.closest('li');
       expect(stepElement).not.toBeNull();
 

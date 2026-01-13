@@ -1,6 +1,11 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
+import commonEN from '@/locales/en/common.json';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+vi.mock('react-i18next', () => createI18nMock(commonEN));
+
 import { PrivacyPolicy } from '@/components/PrivacyPolicy';
 
 describe('PrivacyPolicy Component', () => {

@@ -2,13 +2,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { Component as TermsPage } from '@/pages/TermsPage';
+import commonEN from '@/locales/en/common.json';
 
 // Mock TermsOfService component
 vi.mock('@/components/TermsOfService', () => ({
   TermsOfService: ({ onBack }: { onBack: () => void }) => (
     <div data-testid="terms-of-service">
-      <h1>Terms of Service</h1>
-      <button onClick={onBack}>Back to Home</button>
+      <h1>{commonEN.nav.terms}</h1>
+      <button onClick={onBack}>{commonEN.buttons.back} to Home</button>
     </div>
   ),
 }));
@@ -41,13 +42,13 @@ describe('TermsPage', () => {
     it('should render TermsOfService component', () => {
       render(<TermsPage />);
 
-      expect(screen.getByText('Terms of Service')).toBeInTheDocument();
+      expect(screen.getByText(commonEN.nav.terms)).toBeInTheDocument();
     });
 
     it('should render back button', () => {
       render(<TermsPage />);
 
-      expect(screen.getByText('Back to Home')).toBeInTheDocument();
+      expect(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`))).toBeInTheDocument();
     });
   });
 
@@ -56,7 +57,7 @@ describe('TermsPage', () => {
       const user = userEvent.setup();
       render(<TermsPage />);
 
-      await user.click(screen.getByText('Back to Home'));
+      await user.click(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`)));
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -67,7 +68,7 @@ describe('TermsPage', () => {
       const user = userEvent.setup();
       render(<TermsPage />);
 
-      await user.click(screen.getByText('Back to Home'));
+      await user.click(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`)));
 
       expect(mockNavigate).toHaveBeenCalledWith('/es/');
     });
@@ -78,7 +79,7 @@ describe('TermsPage', () => {
       const user = userEvent.setup();
       render(<TermsPage />);
 
-      await user.click(screen.getByText('Back to Home'));
+      await user.click(screen.getByText(new RegExp(`${commonEN.buttons.back}.*Home`)));
 
       expect(mockNavigate).toHaveBeenCalledWith('/pt/');
     });

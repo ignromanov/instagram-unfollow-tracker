@@ -1,8 +1,9 @@
-import { RescuePlanBanner } from '@/components/RescuePlanBanner';
-import * as dismissHook from '@/hooks/useRescuePlanDismiss';
-import { analytics } from '@/lib/analytics';
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { vi, beforeEach, describe, expect, it, afterEach } from 'vitest';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import { createI18nMock } from '@/__tests__/utils/mockI18n';
+
+// Note: RescuePlanBanner test uses simple key-only mock
+vi.mock('react-i18next', () => createI18nMock({}));
 
 // Mock analytics
 vi.mock('@/lib/analytics', () => ({
@@ -15,12 +16,9 @@ vi.mock('@/lib/analytics', () => ({
   },
 }));
 
-// Mock translations to return keys
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
-}));
+import { RescuePlanBanner } from '@/components/RescuePlanBanner';
+import * as dismissHook from '@/hooks/useRescuePlanDismiss';
+import { analytics } from '@/lib/analytics';
 
 // Mock useRescuePlanDismiss
 const mockDismiss = vi.fn();
