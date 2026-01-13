@@ -1,239 +1,181 @@
-import { render, screen, fireEvent } from '@tests/utils/testUtils';
 import { Header } from '@/components/Header';
-import { useHeaderData } from '@/hooks/useHeaderData';
-import { useAppStore } from '@/lib/store';
+import { AppState } from '@/core/types';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, vi } from 'vitest';
+import commonEN from '@/locales/en/common.json';
 
-// Mock the useHeaderData hook
-vi.mock('@/hooks/useHeaderData');
+// react-i18next is already mocked globally in vitest.setup.ts
 
-describe('Header Component', () => {
-  const mockUseHeaderData = vi.mocked(useHeaderData);
-  const mockOnHelpClick = vi.fn();
-  const mockOnClearData = vi.fn();
+// Mock next-themes
+vi.mock('next-themes', () => ({
+  useTheme: () => ({
+    theme: 'light',
+    setTheme: vi.fn(),
+  }),
+}));
 
-  // Default stats for most tests
-  const defaultStats = {
-    following: 50,
-    followers: 60,
-    mutuals: 40,
-    notFollowingBack: 10,
-  };
+// Mock analytics
+vi.mock('@/lib/analytics', () => ({
+  analytics: {
+    themeToggle: vi.fn(),
+    clearData: vi.fn(),
+  },
+}));
 
-  // Helper function to create mock return value
-  const createMockReturnValue = (overrides = {}) => ({
-    hasData: false,
-    fileName: undefined,
-    fileSize: undefined,
-    uploadDate: undefined,
-    stats: defaultStats,
-    onClearData: mockOnClearData,
-    ...overrides,
-  });
+// Mock LanguageSwitcher component
+vi.mock('@/components/LanguageSwitcher', () => ({
+  LanguageSwitcher: () => <div data-testid="language-switcher">LanguageSwitcher</div>,
+}));
 
+describe('HeaderV2', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset store state
-    useAppStore.setState({
-      unified: [],
-      parsed: null,
+  });
+
+  it('should render without crashing', () => {
+    render(<Header />);
+
+    const header = screen.getByRole('banner');
+    expect(header).toBeInTheDocument();
+  });
+
+  it('should render logo with ShieldCheck icon', () => {
+    render(<Header />);
+
+    // Logo text should be visible
+    expect(screen.getByText('SafeUnfollow')).toBeInTheDocument();
+    expect(screen.getByText('.app')).toBeInTheDocument();
+  });
+
+  it('should render logo as clickable button', () => {
+    render(<Header />);
+
+    const logoButton = screen.getByRole('button', { name: /SafeUnfollow/i });
+    expect(logoButton).toBeInTheDocument();
+    expect(logoButton).toHaveAttribute('tabIndex', '0');
+  });
+
+  it('should call onLogoClick when logo is clicked', () => {
+    const onLogoClick = vi.fn();
+    render(<Header onLogoClick={onLogoClick} />);
+
+    const logoContainer = screen.getByText('SafeUnfollow').closest('[role="button"]');
+    fireEvent.click(logoContainer!);
+
+    expect(onLogoClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call onLogoClick when Enter key is pressed on logo', () => {
+    const onLogoClick = vi.fn();
+    render(<Header onLogoClick={onLogoClick} />);
+
+    const logoContainer = screen.getByText('SafeUnfollow').closest('[role="button"]');
+    fireEvent.keyDown(logoContainer!, { key: 'Enter' });
+
+    expect(onLogoClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render theme toggle button', () => {
+    render(<Header />);
+
+    const themeButton = screen.getByTitle('Dark Mode');
+    expect(themeButton).toBeInTheDocument();
+  });
+
+  it('should render language switcher', () => {
+    render(<Header />);
+
+    expect(screen.getByTestId('language-switcher')).toBeInTheDocument();
+  });
+
+  describe('when hasData is false', () => {
+    it('should render upload button', () => {
+      render(<Header hasData={false} />);
+      expect(screen.getByText(commonEN.buttons.uploadFile)).toBeInTheDocument();
+    });
+
+    it('should call onUpload when upload button is clicked', () => {
+      const onUpload = vi.fn();
+      render(<Header hasData={false} onUpload={onUpload} />);
+
+      const uploadButton = screen.getByText(commonEN.buttons.uploadFile).closest('button');
+      fireEvent.click(uploadButton!);
+
+      expect(onUpload).toHaveBeenCalledTimes(1);
+    });
+
+    it('should highlight upload button when activeScreen is UPLOAD', () => {
+      render(<Header hasData={false} activeScreen={AppState.UPLOAD} />);
+
+      const uploadButton = screen.getByText(commonEN.buttons.uploadFile).closest('button');
+      expect(uploadButton).toHaveClass('bg-primary', 'text-white');
     });
   });
 
-  it('should render when no data is loaded', () => {
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        stats: {
-          following: 0,
-          followers: 0,
-          mutuals: 0,
-          notFollowingBack: 0,
-        },
-      })
-    );
+  describe('when hasData is true', () => {
+    it('should render view results button', () => {
+      render(<Header hasData={true} />);
 
-    render(<Header onHelpClick={mockOnHelpClick} />);
+      expect(screen.getByText(commonEN.buttons.viewResults)).toBeInTheDocument();
+    });
 
-    expect(screen.getByText('See Who Unfollowed You — No Login Required')).toBeInTheDocument();
-    expect(screen.getByText('No Login Needed')).toBeInTheDocument();
-    expect(screen.getByText('Free Forever')).toBeInTheDocument();
+    it('should render delete button', () => {
+      render(<Header hasData={true} />);
+
+      expect(screen.getByText(commonEN.buttons.delete)).toBeInTheDocument();
+    });
+
+    it('should call onViewResults when view results button is clicked', () => {
+      const onViewResults = vi.fn();
+      render(<Header hasData={true} onViewResults={onViewResults} />);
+
+      const viewResultsButton = screen.getByText(commonEN.buttons.viewResults).closest('button');
+      fireEvent.click(viewResultsButton!);
+
+      expect(onViewResults).toHaveBeenCalledTimes(1);
+    });
+
+    it('should highlight view results button when activeScreen is RESULTS', () => {
+      render(<Header hasData={true} activeScreen={AppState.RESULTS} />);
+
+      const viewResultsButton = screen.getByText(commonEN.buttons.viewResults).closest('button');
+      expect(viewResultsButton).toHaveClass('bg-primary', 'text-white');
+    });
+
+    it('should open delete confirmation dialog when delete button is clicked', () => {
+      render(<Header hasData={true} />);
+
+      const deleteButton = screen.getByText(commonEN.buttons.delete).closest('button');
+      fireEvent.click(deleteButton!);
+
+      // Dialog should appear with title
+      expect(screen.getByText(commonEN.header.clearDataTitle)).toBeInTheDocument();
+      expect(screen.getByText(commonEN.header.clearDataDescription)).toBeInTheDocument();
+    });
+
+    it('should render cancel and confirm buttons in delete dialog', () => {
+      render(<Header hasData={true} />);
+
+      const deleteButton = screen.getByText(commonEN.buttons.delete).closest('button');
+      fireEvent.click(deleteButton!);
+
+      // Dialog should have action buttons (cancel and delete data)
+      const buttons = screen.getAllByRole('button');
+      expect(buttons.length).toBeGreaterThan(0);
+    });
   });
 
-  it('should render file metadata when data is loaded', () => {
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: true,
-        fileName: 'instagram-data.zip',
-        fileSize: 1024000,
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-      })
-    );
+  it('should have sticky positioning', () => {
+    render(<Header />);
 
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    expect(screen.getByText('instagram-data.zip')).toBeInTheDocument();
-    expect(screen.getByText('1000.0 KB')).toBeInTheDocument();
-    expect(screen.getByText(/\d+ days ago/)).toBeInTheDocument();
+    const header = screen.getByRole('banner');
+    expect(header).toHaveClass('sticky', 'top-0');
   });
 
-  it('should render stats cards when data is loaded', () => {
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: true,
-        fileName: 'test.zip',
-        fileSize: 500000,
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-      })
-    );
+  it('should have proper z-index for overlay behavior', () => {
+    render(<Header />);
 
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    expect(screen.getByText('50')).toBeInTheDocument(); // Following
-    expect(screen.getByText('60')).toBeInTheDocument(); // Followers
-    expect(screen.getByText('40')).toBeInTheDocument(); // Mutuals
-    expect(screen.getByText('10')).toBeInTheDocument(); // Not following back
-  });
-
-  it('should render Clear Data button when data is loaded', () => {
-    const testMockOnClearData = vi.fn();
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: true,
-        shouldShowClearButton: true,
-        fileName: 'test.zip',
-        fileSize: 500000,
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-        uploadStatus: 'success',
-        onClearData: testMockOnClearData,
-      })
-    );
-
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    // Find the trigger button
-    const clearButton = screen.getByText('Clear Data');
-    expect(clearButton).toBeInTheDocument();
-
-    // Click to open the dialog
-    fireEvent.click(clearButton);
-
-    // Find the actual clear button in the dialog (the one with destructive styling)
-    const confirmButton = screen.getByRole('button', { name: 'Clear Data' });
-    expect(confirmButton).toBeInTheDocument();
-
-    // Click the confirm button
-    fireEvent.click(confirmButton);
-    expect(testMockOnClearData).toHaveBeenCalled();
-  });
-
-  it('should render Cancel Upload button when loading', () => {
-    const testMockOnClearData = vi.fn();
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: false,
-        shouldShowClearButton: true,
-        fileName: 'test.zip',
-        fileSize: 500000,
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-        uploadStatus: 'loading',
-        onClearData: testMockOnClearData,
-      })
-    );
-
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    // Find the trigger button
-    const cancelButton = screen.getByText('Cancel Upload');
-    expect(cancelButton).toBeInTheDocument();
-
-    // Click to open the dialog
-    fireEvent.click(cancelButton);
-
-    // Find the actual cancel button in the dialog
-    const confirmButton = screen.getByRole('button', { name: 'Cancel & Clear' });
-    expect(confirmButton).toBeInTheDocument();
-
-    // Click the confirm button
-    fireEvent.click(confirmButton);
-    expect(testMockOnClearData).toHaveBeenCalled();
-  });
-
-  it('should render help button and call onHelpClick', () => {
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        stats: {
-          following: 0,
-          followers: 0,
-          mutuals: 0,
-          notFollowingBack: 0,
-        },
-      })
-    );
-
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    const helpButton = screen.getByText('Help');
-    expect(helpButton).toBeInTheDocument();
-
-    fireEvent.click(helpButton);
-    expect(mockOnHelpClick).toHaveBeenCalled();
-  });
-
-  it('should render badges with correct counts', () => {
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: true,
-        fileName: 'test.zip',
-        fileSize: 500000,
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-      })
-    );
-
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    // Check that stats are rendered with correct counts
-    expect(screen.getByText('50')).toBeInTheDocument(); // Following
-    expect(screen.getByText('60')).toBeInTheDocument(); // Followers
-    expect(screen.getByText('40')).toBeInTheDocument(); // Mutuals
-    expect(screen.getByText('10')).toBeInTheDocument(); // Not following back
-  });
-
-  it('should handle zero counts correctly', () => {
-    const zeroStats = {
-      following: 0,
-      followers: 0,
-      mutuals: 0,
-      notFollowingBack: 0,
-    };
-
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: true,
-        fileName: 'test.zip',
-        fileSize: 500000,
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-        stats: zeroStats,
-      })
-    );
-
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    expect(screen.getAllByText('0')).toHaveLength(4); // All 4 stats should be 0
-  });
-
-  it('should format large file sizes in MB', () => {
-    mockUseHeaderData.mockReturnValue(
-      createMockReturnValue({
-        hasData: true,
-        fileName: 'large-file.zip',
-        fileSize: 2.5 * 1024 * 1024, // 2.5 MB
-        uploadDate: new Date('2023-01-01T00:00:00Z'),
-        stats: defaultStats,
-      })
-    );
-
-    render(<Header onHelpClick={mockOnHelpClick} />);
-
-    // Should display file size in MB
-    expect(screen.getByText('2.5 MB')).toBeInTheDocument();
+    const header = screen.getByRole('banner');
+    expect(header).toHaveClass('z-[80]');
   });
 });

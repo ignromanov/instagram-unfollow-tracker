@@ -2,12 +2,12 @@
  * Extended Store Tests
  *
  * Additional tests to improve coverage of store.ts beyond existing store.test.ts
- * Focuses on edge cases, journey state, and persistence logic
+ * Focuses on edge cases, state management, and persistence logic
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useAppStore } from '@/lib/store';
-import type { BadgeKey, HowToSubStep } from '@/lib/store';
+import type { BadgeKey } from '@/lib/store';
 
 describe('useAppStore - Extended Coverage', () => {
   beforeEach(() => {
@@ -15,165 +15,6 @@ describe('useAppStore - Extended Coverage', () => {
     const { clearData } = useAppStore.getState();
     clearData();
     vi.clearAllMocks();
-  });
-
-  describe('Journey state management', () => {
-    describe('advanceJourney', () => {
-      it('should advance to next step and mark previous as completed', () => {
-        const { advanceJourney, journey } = useAppStore.getState();
-
-        advanceJourney('how-to');
-
-        const newJourney = useAppStore.getState().journey;
-        expect(newJourney.currentStep).toBe('how-to');
-        expect(newJourney.completedSteps.has('hero')).toBe(true);
-        expect(newJourney.expandedSteps.has('how-to')).toBe(true);
-      });
-
-      it('should accumulate completed steps', () => {
-        const { advanceJourney } = useAppStore.getState();
-
-        advanceJourney('how-to');
-        advanceJourney('upload');
-        advanceJourney('results');
-
-        const { journey } = useAppStore.getState();
-        expect(journey.currentStep).toBe('results');
-        expect(journey.completedSteps.has('hero')).toBe(true);
-        expect(journey.completedSteps.has('how-to')).toBe(true);
-        expect(journey.completedSteps.has('upload')).toBe(true);
-      });
-
-      it('should expand new step when advancing', () => {
-        const { advanceJourney, journey } = useAppStore.getState();
-
-        // Initially only hero is expanded
-        expect(journey.expandedSteps.has('hero')).toBe(true);
-        expect(journey.expandedSteps.has('upload')).toBe(false);
-
-        advanceJourney('upload');
-
-        const newJourney = useAppStore.getState().journey;
-        expect(newJourney.expandedSteps.has('upload')).toBe(true);
-      });
-    });
-
-    describe('toggleStepExpansion', () => {
-      it('should collapse expanded step', () => {
-        const { toggleStepExpansion, journey } = useAppStore.getState();
-
-        // Hero starts expanded
-        expect(journey.expandedSteps.has('hero')).toBe(true);
-
-        toggleStepExpansion('hero');
-
-        const newJourney = useAppStore.getState().journey;
-        expect(newJourney.expandedSteps.has('hero')).toBe(false);
-      });
-
-      it('should expand collapsed step', () => {
-        const { toggleStepExpansion, journey } = useAppStore.getState();
-
-        // Upload starts collapsed
-        expect(journey.expandedSteps.has('upload')).toBe(false);
-
-        toggleStepExpansion('upload');
-
-        const newJourney = useAppStore.getState().journey;
-        expect(newJourney.expandedSteps.has('upload')).toBe(true);
-      });
-
-      it('should toggle same step multiple times', () => {
-        const { toggleStepExpansion } = useAppStore.getState();
-
-        toggleStepExpansion('upload');
-        expect(useAppStore.getState().journey.expandedSteps.has('upload')).toBe(true);
-
-        toggleStepExpansion('upload');
-        expect(useAppStore.getState().journey.expandedSteps.has('upload')).toBe(false);
-
-        toggleStepExpansion('upload');
-        expect(useAppStore.getState().journey.expandedSteps.has('upload')).toBe(true);
-      });
-    });
-
-    describe('toggleHowToSubStep', () => {
-      it('should mark sub-step as completed', () => {
-        const { toggleHowToSubStep, journey } = useAppStore.getState();
-
-        expect(journey.completedHowToSubSteps.has('opening-settings')).toBe(false);
-
-        toggleHowToSubStep('opening-settings');
-
-        const newJourney = useAppStore.getState().journey;
-        expect(newJourney.completedHowToSubSteps.has('opening-settings')).toBe(true);
-      });
-
-      it('should unmark completed sub-step', () => {
-        const { toggleHowToSubStep } = useAppStore.getState();
-
-        toggleHowToSubStep('opening-settings');
-        expect(useAppStore.getState().journey.completedHowToSubSteps.has('opening-settings')).toBe(
-          true
-        );
-
-        toggleHowToSubStep('opening-settings');
-        expect(useAppStore.getState().journey.completedHowToSubSteps.has('opening-settings')).toBe(
-          false
-        );
-      });
-
-      it('should track multiple sub-steps independently', () => {
-        const { toggleHowToSubStep } = useAppStore.getState();
-
-        toggleHowToSubStep('opening-settings');
-        toggleHowToSubStep('selecting-data');
-
-        const { journey } = useAppStore.getState();
-        expect(journey.completedHowToSubSteps.has('opening-settings')).toBe(true);
-        expect(journey.completedHowToSubSteps.has('selecting-data')).toBe(true);
-        expect(journey.completedHowToSubSteps.has('downloading')).toBe(false);
-      });
-
-      it('should handle all valid sub-step types', () => {
-        const { toggleHowToSubStep } = useAppStore.getState();
-
-        const subSteps: HowToSubStep[] = [
-          'opening-settings',
-          'selecting-data',
-          'downloading',
-          'uploading-analyzing',
-        ];
-
-        subSteps.forEach(step => {
-          toggleHowToSubStep(step);
-        });
-
-        const { journey } = useAppStore.getState();
-        subSteps.forEach(step => {
-          expect(journey.completedHowToSubSteps.has(step)).toBe(true);
-        });
-      });
-    });
-
-    describe('resetJourney', () => {
-      it('should reset all journey state to initial', () => {
-        const { advanceJourney, toggleHowToSubStep, resetJourney } = useAppStore.getState();
-
-        // Set some state
-        advanceJourney('upload');
-        toggleHowToSubStep('opening-settings');
-
-        resetJourney();
-
-        const { journey } = useAppStore.getState();
-        expect(journey.currentStep).toBe('hero');
-        expect(journey.completedSteps.size).toBe(0);
-        expect(journey.expandedSteps.has('hero')).toBe(true);
-        expect(journey.expandedSteps.size).toBe(1);
-        expect(journey.completedHowToSubSteps.size).toBe(0);
-      });
-    });
   });
 
   describe('setUploadInfo', () => {
@@ -303,8 +144,8 @@ describe('useAppStore - Extended Coverage', () => {
   });
 
   describe('clearData', () => {
-    it('should reset all state including journey', () => {
-      const { setFilters, setUploadInfo, advanceJourney, clearData } = useAppStore.getState();
+    it('should reset all state', () => {
+      const { setFilters, setUploadInfo, clearData } = useAppStore.getState();
 
       // Set various state
       setFilters(new Set<BadgeKey>(['mutuals', 'notFollowingBack']));
@@ -314,7 +155,6 @@ describe('useAppStore - Extended Coverage', () => {
         fileHash: 'abc123',
         accountCount: 100,
       });
-      advanceJourney('results');
 
       clearData();
 
@@ -326,8 +166,6 @@ describe('useAppStore - Extended Coverage', () => {
       expect(state.fileMetadata).toBeNull();
       expect(state.parseWarnings).toEqual([]);
       expect(state.fileDiscovery).toBeNull();
-      expect(state.journey.currentStep).toBe('hero');
-      expect(state.journey.completedSteps.size).toBe(0);
     });
   });
 
@@ -476,83 +314,16 @@ describe('useAppStore - Extended Coverage', () => {
       setLanguage('de');
       clearData();
 
-      // Note: clearData doesn't reset language, only upload/journey state
+      // Note: clearData doesn't reset language, only upload state
       // Language is preserved to maintain user preference
       expect(useAppStore.getState().language).toBe('de');
     });
   });
 
-  describe('Storage serialization', () => {
-    it('should serialize journey Sets when storing', () => {
-      const { advanceJourney, toggleHowToSubStep } = useAppStore.getState();
-
-      advanceJourney('upload');
-      toggleHowToSubStep('opening-settings');
-
-      // Trigger storage by getting from localStorage
-      const stored = localStorage.getItem('unfollow-radar-store');
-      expect(stored).toBeTruthy();
-
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        // Journey completedSteps should be serialized as array
-        expect(Array.isArray(parsed.state.journey.completedSteps)).toBe(true);
-        expect(Array.isArray(parsed.state.journey.expandedSteps)).toBe(true);
-        expect(Array.isArray(parsed.state.journey.completedHowToSubSteps)).toBe(true);
-      }
-    });
-
-    it('should deserialize journey Sets when loading', () => {
-      // Pre-populate localStorage with serialized data
-      const mockData = {
-        state: {
-          filters: ['mutuals'],
-          journey: {
-            currentStep: 'upload',
-            completedSteps: ['hero', 'how-to'],
-            expandedSteps: ['hero', 'upload'],
-            completedHowToSubSteps: ['opening-settings'],
-          },
-          language: 'es',
-        },
-        version: 4,
-      };
-
-      localStorage.setItem('unfollow-radar-store', JSON.stringify(mockData));
-
-      // The store's storage.getItem should deserialize these
-      const storedStr = localStorage.getItem('unfollow-radar-store');
-      expect(storedStr).toBeTruthy();
-    });
-
-    it('should handle missing completedHowToSubSteps in old data', () => {
-      // Simulate old data without completedHowToSubSteps
-      const oldData = {
-        state: {
-          filters: [],
-          journey: {
-            currentStep: 'hero',
-            completedSteps: [],
-            expandedSteps: ['hero'],
-            // completedHowToSubSteps is missing
-          },
-          language: 'en',
-        },
-        version: 3,
-      };
-
-      localStorage.setItem('unfollow-radar-store', JSON.stringify(oldData));
-
-      // Reading should not crash and should provide default empty Set
-      const storedStr = localStorage.getItem('unfollow-radar-store');
-      expect(storedStr).toBeTruthy();
-    });
-  });
-
   describe('Migration scenarios', () => {
-    it('should handle version 1 migration by resetting state', () => {
-      // Version 1 data should be completely reset
-      const oldV1Data = {
+    it('should handle old version migration', () => {
+      // Old versions should be migrated to latest
+      const oldData = {
         state: {
           filters: ['following'],
           currentFileName: 'old.zip',
@@ -560,49 +331,10 @@ describe('useAppStore - Extended Coverage', () => {
         version: 1,
       };
 
-      localStorage.setItem('unfollow-radar-store', JSON.stringify(oldV1Data));
+      localStorage.setItem('unfollow-radar-store', JSON.stringify(oldData));
 
-      // After migration, state should be reset to defaults
+      // After migration, state should be updated to v5
       // This is handled by persist middleware migrate function
-    });
-
-    it('should handle version 2 to 3 migration', () => {
-      // Version 2 didn't have completedHowToSubSteps
-      const v2Data = {
-        state: {
-          filters: [],
-          journey: {
-            currentStep: 'upload',
-            completedSteps: ['hero'],
-            expandedSteps: ['hero', 'upload'],
-          },
-        },
-        version: 2,
-      };
-
-      localStorage.setItem('unfollow-radar-store', JSON.stringify(v2Data));
-
-      // After migration, completedHowToSubSteps should be added
-    });
-
-    it('should handle version 3 to 4 migration by adding language', () => {
-      // Version 3 didn't have language
-      const v3Data = {
-        state: {
-          filters: [],
-          journey: {
-            currentStep: 'hero',
-            completedSteps: [],
-            expandedSteps: ['hero'],
-            completedHowToSubSteps: [],
-          },
-        },
-        version: 3,
-      };
-
-      localStorage.setItem('unfollow-radar-store', JSON.stringify(v3Data));
-
-      // After migration, language should default to 'en'
     });
   });
 
@@ -619,16 +351,15 @@ describe('useAppStore - Extended Coverage', () => {
   });
 
   describe('Complex state interactions', () => {
-    it('should handle journey advance with file upload', () => {
-      const { advanceJourney, setUploadInfo } = useAppStore.getState();
+    it('should handle file upload with filters', () => {
+      const { setFilters, setUploadInfo } = useAppStore.getState();
 
-      advanceJourney('upload');
+      setFilters(new Set<BadgeKey>(['mutuals', 'notFollowingBack']));
       setUploadInfo({
         currentFileName: 'test.zip',
         uploadStatus: 'loading',
       });
 
-      expect(useAppStore.getState().journey.currentStep).toBe('upload');
       expect(useAppStore.getState().uploadStatus).toBe('loading');
 
       setUploadInfo({
@@ -637,26 +368,10 @@ describe('useAppStore - Extended Coverage', () => {
         accountCount: 500,
       });
 
-      advanceJourney('results');
-
       const state = useAppStore.getState();
-      expect(state.journey.currentStep).toBe('results');
       expect(state.uploadStatus).toBe('success');
-      expect(state.journey.completedSteps.has('upload')).toBe(true);
-    });
-
-    it('should maintain filters through journey changes', () => {
-      const { setFilters, advanceJourney } = useAppStore.getState();
-
-      setFilters(new Set<BadgeKey>(['mutuals', 'notFollowingBack']));
-
-      advanceJourney('how-to');
-      advanceJourney('upload');
-      advanceJourney('results');
-
-      const { filters } = useAppStore.getState();
-      expect(filters.has('mutuals')).toBe(true);
-      expect(filters.has('notFollowingBack')).toBe(true);
+      expect(state.filters.has('mutuals')).toBe(true);
+      expect(state.filters.has('notFollowingBack')).toBe(true);
     });
   });
 });

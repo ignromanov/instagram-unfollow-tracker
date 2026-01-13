@@ -26,8 +26,8 @@ vi.mock('@/components/theme-provider', () => ({
 }));
 
 // Mock child components
-vi.mock('@/components/HeaderV2', () => ({
-  HeaderV2: ({
+vi.mock('@/components/Header', () => ({
+  Header: ({
     hasData,
     activeScreen,
     onViewResults,

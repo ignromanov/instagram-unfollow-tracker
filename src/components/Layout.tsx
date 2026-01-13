@@ -1,15 +1,15 @@
+import { Analytics } from '@vercel/analytics/react';
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Analytics } from '@vercel/analytics/react';
 
-import { AppState } from '@/core/types';
-import { ThemeProvider } from '@/components/theme-provider';
-import { HeaderV2 } from '@/components/HeaderV2';
-import { Footer } from '@/components/Footer';
-import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
 import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
+import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
 import { OrganizationSchema } from '@/components/OrganizationSchema';
 import { PageLoader } from '@/components/PageLoader';
+import { ThemeProvider } from '@/components/theme-provider';
+import { AppState } from '@/core/types';
 import { useHydration } from '@/hooks/useHydration';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
@@ -115,7 +115,7 @@ export function Layout({ lang }: LayoutProps) {
       {/* Loading state - must be inside ThemeProvider for useTheme() to work */}
       {!hasHydrated ? (
         <div className="min-h-screen bg-background flex flex-col">
-          <HeaderV2 />
+          <Header />
           <main className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
@@ -135,7 +135,7 @@ export function Layout({ lang }: LayoutProps) {
             Skip to main content
           </a>
 
-          <HeaderV2
+          <Header
             hasData={hasResults}
             activeScreen={activeScreen}
             onViewResults={handleViewResults}
