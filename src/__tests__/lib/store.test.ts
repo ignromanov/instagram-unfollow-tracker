@@ -1,5 +1,5 @@
 import type { BadgeKey } from '@/core/types';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, type HowToSubStep, type JourneyStep } from '@/lib/store';
 import { act, renderHook } from '@testing-library/react';
 
 // Mock localStorage
@@ -13,6 +13,14 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
+// Mock locales module for language sync testing
+vi.mock('@/locales', () => ({
+  loadLanguage: vi.fn().mockResolvedValue(undefined),
+  default: {
+    changeLanguage: vi.fn().mockResolvedValue(undefined),
+  },
+}));
+
 describe('useAppStore', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -23,6 +31,15 @@ describe('useAppStore', () => {
       uploadStatus: 'idle',
       uploadError: null,
       fileMetadata: null,
+      journey: {
+        currentStep: 'hero',
+        completedSteps: new Set<JourneyStep>(),
+        expandedSteps: new Set<JourneyStep>(['hero']),
+        completedHowToSubSteps: new Set<HowToSubStep>(),
+      },
+      language: 'en',
+      parseWarnings: [],
+      fileDiscovery: null,
       _hasHydrated: false,
     });
   });
@@ -36,6 +53,16 @@ describe('useAppStore', () => {
       expect(result.current.uploadStatus).toBe('idle');
       expect(result.current.uploadError).toBeNull();
       expect(result.current.fileMetadata).toBeNull();
+      expect(result.current.language).toBe('en');
+    });
+
+    it('should have correct initial journey state', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      expect(result.current.journey.currentStep).toBe('hero');
+      expect(result.current.journey.completedSteps).toEqual(new Set());
+      expect(result.current.journey.expandedSteps).toEqual(new Set(['hero']));
+      expect(result.current.journey.completedHowToSubSteps).toEqual(new Set());
     });
   });
 
@@ -130,6 +157,96 @@ describe('useAppStore', () => {
 
       expect(result.current.fileMetadata).toBeNull();
     });
+
+    it('should update parseWarnings and fileDiscovery', () => {
+      const { result } = renderHook(() => useAppStore());
+      const warnings = [{ severity: 'warning' as const, code: 'TEST', message: 'Test warning' }];
+      const discovery = { hasFollowers: true, hasFollowing: true };
+
+      act(() => {
+        result.current.setUploadInfo({
+          parseWarnings: warnings,
+          fileDiscovery: discovery,
+        });
+      });
+
+      expect(result.current.parseWarnings).toEqual(warnings);
+      expect(result.current.fileDiscovery).toEqual(discovery);
+    });
+  });
+
+  describe('journey actions', () => {
+    it('should advance journey to new step', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      act(() => {
+        result.current.advanceJourney('upload');
+      });
+
+      expect(result.current.journey.currentStep).toBe('upload');
+      expect(result.current.journey.completedSteps.has('hero')).toBe(true);
+      expect(result.current.journey.expandedSteps.has('upload')).toBe(true);
+    });
+
+    it('should toggle step expansion', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      // Hero is expanded by default
+      expect(result.current.journey.expandedSteps.has('hero')).toBe(true);
+
+      // Collapse hero
+      act(() => {
+        result.current.toggleStepExpansion('hero');
+      });
+      expect(result.current.journey.expandedSteps.has('hero')).toBe(false);
+
+      // Expand hero again
+      act(() => {
+        result.current.toggleStepExpansion('hero');
+      });
+      expect(result.current.journey.expandedSteps.has('hero')).toBe(true);
+    });
+
+    it('should toggle how-to sub-steps', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      // Initially empty
+      expect(result.current.journey.completedHowToSubSteps.size).toBe(0);
+
+      // Complete a sub-step
+      act(() => {
+        result.current.toggleHowToSubStep('opening-settings');
+      });
+      expect(result.current.journey.completedHowToSubSteps.has('opening-settings')).toBe(true);
+
+      // Toggle it off
+      act(() => {
+        result.current.toggleHowToSubStep('opening-settings');
+      });
+      expect(result.current.journey.completedHowToSubSteps.has('opening-settings')).toBe(false);
+    });
+
+    it('should reset journey to initial state', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      // Advance journey
+      act(() => {
+        result.current.advanceJourney('upload');
+        result.current.toggleHowToSubStep('opening-settings');
+      });
+
+      expect(result.current.journey.currentStep).toBe('upload');
+
+      // Reset journey
+      act(() => {
+        result.current.resetJourney();
+      });
+
+      expect(result.current.journey.currentStep).toBe('hero');
+      expect(result.current.journey.completedSteps.size).toBe(0);
+      expect(result.current.journey.expandedSteps).toEqual(new Set(['hero']));
+      expect(result.current.journey.completedHowToSubSteps.size).toBe(0);
+    });
   });
 
   describe('clearData', () => {
@@ -144,11 +261,13 @@ describe('useAppStore', () => {
           uploadStatus: 'success',
           fileSize: 1024,
         });
+        result.current.advanceJourney('results');
       });
 
       // Verify data is set
       expect(result.current.filters.size).toBe(2);
       expect(result.current.currentFileName).toBe('test.zip');
+      expect(result.current.journey.currentStep).toBe('results');
 
       // Clear data
       act(() => {
@@ -161,6 +280,34 @@ describe('useAppStore', () => {
       expect(result.current.uploadStatus).toBe('idle');
       expect(result.current.uploadError).toBeNull();
       expect(result.current.fileMetadata).toBeNull();
+      expect(result.current.journey.currentStep).toBe('hero');
+      expect(result.current.parseWarnings).toEqual([]);
+      expect(result.current.fileDiscovery).toBeNull();
+    });
+  });
+
+  describe('language management', () => {
+    it('should set language and trigger i18n sync', async () => {
+      const { result } = renderHook(() => useAppStore());
+
+      act(() => {
+        result.current.setLanguage('es');
+      });
+
+      expect(result.current.language).toBe('es');
+    });
+
+    it('should handle all supported languages', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      const languages = ['en', 'es', 'pt', 'ru', 'de', 'hi', 'ja', 'tr', 'id', 'ar'] as const;
+
+      for (const lang of languages) {
+        act(() => {
+          result.current.setLanguage(lang);
+        });
+        expect(result.current.language).toBe(lang);
+      }
     });
   });
 
@@ -214,6 +361,23 @@ describe('useAppStore', () => {
       expect(result.current.filters).toEqual(new Set());
       expect(result.current.currentFileName).toBeNull();
       expect(result.current.uploadStatus).toBe('idle');
+    });
+
+    it('should handle multiple filter toggle operations', () => {
+      const { result } = renderHook(() => useAppStore());
+
+      // Add multiple filters
+      act(() => {
+        result.current.setFilters(new Set(['following', 'followers', 'mutuals']));
+      });
+      expect(result.current.filters.size).toBe(3);
+
+      // Remove one filter by creating new set
+      act(() => {
+        result.current.setFilters(new Set(['following', 'followers']));
+      });
+      expect(result.current.filters.size).toBe(2);
+      expect(result.current.filters.has('mutuals')).toBe(false);
     });
   });
 });

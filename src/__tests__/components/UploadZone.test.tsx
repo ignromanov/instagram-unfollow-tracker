@@ -2,6 +2,19 @@ import { UploadZone } from '@/components/UploadZone';
 import { fireEvent, render, screen } from '@tests/utils/testUtils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+// Mock analytics
+vi.mock('@/lib/analytics', () => ({
+  analytics: {
+    uploadDragEnter: vi.fn(),
+    uploadDragLeave: vi.fn(),
+    uploadDrop: vi.fn(),
+    uploadClick: vi.fn(),
+    diagnosticErrorView: vi.fn(),
+  },
+}));
+
+import { analytics } from '@/lib/analytics';
+
 describe('UploadZone', () => {
   const mockOnUploadStart = vi.fn();
   const mockOnBack = vi.fn();
@@ -107,7 +120,7 @@ describe('UploadZone', () => {
     expect(fileInput).toBeDisabled();
   });
 
-  it('should call onUploadStart when file is selected via input', () => {
+  it('should call onUploadStart and track analytics when file is selected via input', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
     const file = new File(['test'], 'test.zip', { type: 'application/zip' });
@@ -116,9 +129,10 @@ describe('UploadZone', () => {
     fireEvent.change(fileInput!, { target: { files: [file] } });
 
     expect(mockOnUploadStart).toHaveBeenCalledWith(file);
+    expect(analytics.uploadClick).toHaveBeenCalled();
   });
 
-  it('should call onUploadStart when zip file is dropped', () => {
+  it('should call onUploadStart and track analytics when zip file is dropped', () => {
     render(<UploadZone onUploadStart={mockOnUploadStart} />);
 
     const file = new File(['test'], 'data.zip', { type: 'application/zip' });
@@ -129,6 +143,7 @@ describe('UploadZone', () => {
     });
 
     expect(mockOnUploadStart).toHaveBeenCalledWith(file);
+    expect(analytics.uploadDrop).toHaveBeenCalled();
   });
 
   it('should not call onUploadStart when non-zip file is dropped', () => {
@@ -161,5 +176,52 @@ describe('UploadZone', () => {
     const fileInput = document.querySelector('input[type="file"]');
     // zone.ariaLabel translation
     expect(fileInput).toHaveAttribute('aria-label', 'Upload Instagram data ZIP file');
+  });
+
+  it('should track drag enter analytics on dragOver', () => {
+    render(<UploadZone onUploadStart={mockOnUploadStart} />);
+
+    const dropZone = document.querySelector('[class*="border-dashed"]');
+    fireEvent.dragOver(dropZone!);
+
+    expect(analytics.uploadDragEnter).toHaveBeenCalled();
+  });
+
+  it('should track drag leave analytics on dragLeave', () => {
+    render(<UploadZone onUploadStart={mockOnUploadStart} />);
+
+    const dropZone = document.querySelector('[class*="border-dashed"]');
+    fireEvent.dragLeave(dropZone!);
+
+    expect(analytics.uploadDragLeave).toHaveBeenCalled();
+  });
+
+  it('should show screen reader announcement when processing', () => {
+    render(<UploadZone onUploadStart={mockOnUploadStart} isProcessing={true} />);
+
+    const srAnnouncement = screen.getByRole('status');
+    expect(srAnnouncement).toBeInTheDocument();
+    expect(srAnnouncement).toHaveClass('sr-only');
+  });
+
+  it('should show diagnostic screen when there are critical errors', () => {
+    const parseWarnings = [
+      { severity: 'error' as const, code: 'TEST_ERROR', message: 'Test error' },
+    ];
+
+    render(
+      <UploadZone
+        onUploadStart={mockOnUploadStart}
+        parseWarnings={parseWarnings}
+        onOpenWizard={mockOnOpenWizard}
+        onBack={mockOnBack}
+      />
+    );
+
+    // When there is a critical error, the diagnostic screen is shown
+    // The main upload title should not be visible
+    expect(screen.queryByText('Upload Your Data')).not.toBeInTheDocument();
+    // Analytics should track the diagnostic error view
+    expect(analytics.diagnosticErrorView).toHaveBeenCalled();
   });
 });

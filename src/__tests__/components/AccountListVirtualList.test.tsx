@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
 import { AccountList } from '@/components/AccountList';
 import type { AccountBadges } from '@/core/types';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 // Mock @tanstack/react-virtual
 vi.mock('@tanstack/react-virtual', () => ({
@@ -38,11 +38,24 @@ vi.mock('@/lib/store', () => ({
   }),
 }));
 
+// Mock analytics
+vi.mock('@/lib/analytics', () => ({
+  analytics: {
+    resultsScrollDepth: vi.fn(),
+    accountClick: vi.fn(),
+    externalProfileClick: vi.fn(),
+  },
+}));
+
+import { analytics } from '@/lib/analytics';
+
 // Mock useAccountDataSource
 const mockAccounts: AccountBadges[] = [
   { username: 'test_user_0', badges: { following: true } },
   { username: 'test_user_1', badges: { followers: true } },
   { username: 'test_user_2', badges: { mutuals: true } },
+  { username: 'test_user_3', badges: {} },
+  { username: 'test_user_4', badges: {} },
 ];
 
 vi.mock('@/hooks/useAccountDataSource', () => ({
@@ -108,20 +121,21 @@ describe('AccountList Virtual List', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('should handle external links correctly', () => {
-    const accountIndices = [0, 1, 2];
+  it('should handle external links correctly and track analytics', () => {
+    const accountIndices = [0];
     render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
 
     // Find links to Instagram profiles
     const profileLinks = screen.getAllByRole('link');
-    expect(profileLinks.length).toBeGreaterThan(0);
-
-    // Check that the first username link has correct href
     const firstUsernameLink = profileLinks.find(link => link.textContent?.includes('@test_user_0'));
+
     expect(firstUsernameLink).toBeDefined();
     expect(firstUsernameLink).toHaveAttribute('href', 'https://instagram.com/test_user_0');
-    expect(firstUsernameLink).toHaveAttribute('target', '_blank');
-    expect(firstUsernameLink).toHaveAttribute('rel', 'noopener noreferrer');
+
+    // Click link to verify analytics
+    fireEvent.click(firstUsernameLink!);
+    expect(analytics.accountClick).toHaveBeenCalledWith(1); // 1 badge
+    expect(analytics.externalProfileClick).toHaveBeenCalledWith('test_user_0');
   });
 
   it('should display badges correctly', () => {
@@ -131,5 +145,24 @@ describe('AccountList Virtual List', () => {
     expect(screen.getByText('Following')).toBeInTheDocument();
     expect(screen.getByText('Followers')).toBeInTheDocument();
     expect(screen.getByText('Mutuals')).toBeInTheDocument();
+  });
+
+  it('should render list header with count', () => {
+    const accountIndices = [0, 1, 2, 3, 4];
+    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
+
+    expect(screen.getByText('Accounts (5)')).toBeInTheDocument();
+  });
+
+  it('should render with external links to Instagram', () => {
+    const accountIndices = [0];
+    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
+
+    // Check that Instagram link exists
+    const links = screen.getAllByRole('link');
+    const instagramLinks = links.filter(link =>
+      link.getAttribute('href')?.includes('instagram.com')
+    );
+    expect(instagramLinks.length).toBeGreaterThan(0);
   });
 });

@@ -1,0 +1,1102 @@
+import { renderHook } from '@testing-library/react';
+import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
+import { useAppStore } from '@/lib/store';
+import { useLocation } from 'react-router-dom';
+import i18n, { initI18n, loadLanguage } from '@/locales';
+import type { SupportedLanguage } from '@/config/languages';
+
+// Mock dependencies
+vi.mock('@/lib/store');
+vi.mock('react-router-dom');
+vi.mock('@/locales', async () => {
+  const actual = await vi.importActual('@/locales');
+  return {
+    ...actual,
+    default: {
+      language: 'en',
+      changeLanguage: vi.fn(),
+    },
+    initI18n: vi.fn(),
+    loadLanguage: vi.fn(),
+  };
+});
+
+const mockUseAppStore = vi.mocked(useAppStore);
+const mockUseLocation = vi.mocked(useLocation);
+const mockInitI18n = vi.mocked(initI18n);
+const mockLoadLanguage = vi.mocked(loadLanguage);
+
+describe('useLanguageFromPath', () => {
+  let mockSetLanguage: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    // Reset DOM for each test
+    document.head.innerHTML = '';
+    document.documentElement.lang = 'en';
+
+    mockSetLanguage = vi.fn();
+
+    // Default mock implementations
+    mockUseAppStore.mockReturnValue({
+      language: 'en' as SupportedLanguage,
+      setLanguage: mockSetLanguage,
+      _hasHydrated: true,
+    });
+
+    mockUseLocation.mockReturnValue({
+      pathname: '/',
+      search: '',
+      hash: '',
+      state: null,
+      key: 'default',
+    });
+
+    mockInitI18n.mockResolvedValue();
+    mockLoadLanguage.mockResolvedValue();
+
+    // Reset i18n mock
+    (i18n as any).language = 'en';
+  });
+
+  describe('language detection from path', () => {
+    it('should detect English from root path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+    });
+
+    it('should detect Spanish from /es/ path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    });
+
+    it('should detect Russian from /ru/wizard path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('ru');
+    });
+
+    it('should detect Portuguese from /pt/upload path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/pt/upload',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('pt');
+    });
+
+    it('should detect German from /de/results path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/de/results',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('de');
+    });
+
+    it('should detect Hindi from /hi/ path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/hi/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('hi');
+    });
+
+    it('should detect Indonesian from /id/privacy path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/id/privacy',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('id');
+    });
+
+    it('should detect Turkish from /tr/terms path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/tr/terms',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('tr');
+    });
+
+    it('should detect Japanese from /ja/sample path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ja/sample',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('ja');
+    });
+
+    it('should detect Arabic from /ar/ path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ar/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('ar');
+    });
+  });
+
+  describe('language from route prop', () => {
+    it('should use langFromRoute prop when provided', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath('es'));
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    });
+
+    it('should prioritize langFromRoute over path detection', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath('es'));
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    });
+  });
+
+  describe('edge cases and invalid paths', () => {
+    it('should default to English for invalid language code', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/invalid/path',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+    });
+
+    it('should default to English for path without language prefix', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+    });
+
+    it('should handle empty path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+    });
+
+    it('should ignore query parameters', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '?foo=bar',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    });
+
+    it('should ignore hash', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/results',
+        search: '',
+        hash: '#section',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('ru');
+    });
+
+    it('should handle trailing slashes', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    });
+  });
+
+  describe('hydration awareness', () => {
+    it('should not set language when store is not hydrated', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: false,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+    });
+
+    it('should set language after store becomes hydrated', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: false,
+      });
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+
+      // Simulate hydration
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      rerender();
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    });
+  });
+
+  describe('language change optimization', () => {
+    it('should not call setLanguage if language already matches', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+    });
+
+    it('should call setLanguage when path changes to different language', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+
+      // Change path to Russian
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/results',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      rerender();
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('ru');
+    });
+  });
+
+  describe('HTML lang attribute', () => {
+    it('should update HTML lang attribute to Spanish', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(document.documentElement.lang).toBe('es');
+    });
+
+    it('should update HTML lang attribute to Russian', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'ru' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(document.documentElement.lang).toBe('ru');
+    });
+
+    it('should update HTML lang attribute when language changes', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
+
+      expect(document.documentElement.lang).toBe('es');
+
+      // Change to Russian
+      mockUseAppStore.mockReturnValue({
+        language: 'ru' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      rerender();
+
+      expect(document.documentElement.lang).toBe('ru');
+    });
+  });
+
+  describe('hreflang tags', () => {
+    it('should create hreflang tags for root path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const hreflangLinks = document.querySelectorAll('link[rel="alternate"][hreflang]');
+      expect(hreflangLinks.length).toBeGreaterThan(0);
+    });
+
+    it('should include x-default hreflang', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const xDefault = document.querySelector('link[hreflang="x-default"]');
+      expect(xDefault).toBeTruthy();
+      expect(xDefault?.getAttribute('href')).toBe('https://safeunfollow.app/');
+    });
+
+    it('should create correct hreflang URLs for /wizard path', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const enLink = document.querySelector('link[hreflang="en"]');
+      expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/wizard');
+
+      const esLink = document.querySelector('link[hreflang="es"]');
+      expect(esLink?.getAttribute('href')).toBe('https://safeunfollow.app/es/wizard');
+
+      const ruLink = document.querySelector('link[hreflang="ru"]');
+      expect(ruLink?.getAttribute('href')).toBe('https://safeunfollow.app/ru/wizard');
+    });
+
+    it('should strip language prefix from path for hreflang generation', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const enLink = document.querySelector('link[hreflang="en"]');
+      expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/wizard');
+
+      const esLink = document.querySelector('link[hreflang="es"]');
+      expect(esLink?.getAttribute('href')).toBe('https://safeunfollow.app/es/wizard');
+    });
+
+    it('should remove existing hreflang tags before adding new ones', () => {
+      // Add some existing tags
+      const existingLink = document.createElement('link');
+      existingLink.rel = 'alternate';
+      existingLink.setAttribute('hreflang', 'fr');
+      existingLink.href = 'https://example.com/fr';
+      document.head.appendChild(existingLink);
+
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const frLink = document.querySelector('link[hreflang="fr"]');
+      expect(frLink).toBeNull();
+    });
+
+    it('should update hreflang tags when path changes', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
+
+      let enLink = document.querySelector('link[hreflang="en"]');
+      expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/wizard');
+
+      // Change path
+      mockUseLocation.mockReturnValue({
+        pathname: '/upload',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      rerender();
+
+      enLink = document.querySelector('link[hreflang="en"]');
+      expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/upload');
+    });
+  });
+
+  describe('Open Graph locale meta tag', () => {
+    it('should create og:locale meta tag for English', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const ogLocale = document.querySelector('meta[property="og:locale"]');
+      expect(ogLocale?.getAttribute('content')).toBe('en_US');
+    });
+
+    it('should update og:locale for Spanish', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const ogLocale = document.querySelector('meta[property="og:locale"]');
+      expect(ogLocale?.getAttribute('content')).toBe('es_ES');
+    });
+
+    it('should update og:locale for Russian', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'ru' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const ogLocale = document.querySelector('meta[property="og:locale"]');
+      expect(ogLocale?.getAttribute('content')).toBe('ru_RU');
+    });
+
+    it('should update og:locale for Portuguese', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/pt/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'pt' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const ogLocale = document.querySelector('meta[property="og:locale"]');
+      expect(ogLocale?.getAttribute('content')).toBe('pt_BR');
+    });
+
+    it('should update existing og:locale tag', () => {
+      // Create existing tag
+      const existingOgLocale = document.createElement('meta');
+      existingOgLocale.setAttribute('property', 'og:locale');
+      existingOgLocale.setAttribute('content', 'en_US');
+      document.head.appendChild(existingOgLocale);
+
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      const ogLocaleTags = document.querySelectorAll('meta[property="og:locale"]');
+      expect(ogLocaleTags.length).toBe(1);
+      expect(ogLocaleTags[0].getAttribute('content')).toBe('es_ES');
+    });
+  });
+
+  describe('canonical URL', () => {
+    it('should update canonical URL for root path', () => {
+      // Create canonical tag
+      const canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      canonical.href = 'https://example.com/';
+      document.head.appendChild(canonical);
+
+      mockUseLocation.mockReturnValue({
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(canonical.getAttribute('href')).toBe('https://safeunfollow.app/');
+    });
+
+    it('should update canonical URL for language-specific path', () => {
+      // Create canonical tag
+      const canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      canonical.href = 'https://example.com/';
+      document.head.appendChild(canonical);
+
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(canonical.getAttribute('href')).toBe('https://safeunfollow.app/es/wizard');
+    });
+
+    it('should not error if canonical tag does not exist', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      expect(() => {
+        renderHook(() => useLanguageFromPath());
+      }).not.toThrow();
+    });
+  });
+
+  describe('i18next synchronization', () => {
+    it('should call loadLanguage when i18n language differs from store', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      (i18n as any).language = 'en';
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockInitI18n).toHaveBeenCalled();
+    });
+
+    it('should not call loadLanguage when i18n language matches store', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      (i18n as any).language = 'es';
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockInitI18n).not.toHaveBeenCalled();
+    });
+
+    it('should not sync i18n when store is not hydrated', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: false,
+      });
+
+      (i18n as any).language = 'en';
+
+      renderHook(() => useLanguageFromPath());
+
+      expect(mockInitI18n).not.toHaveBeenCalled();
+      expect(mockLoadLanguage).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('dependency changes', () => {
+    it('should react to pathname changes', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+
+      // Change pathname
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/results',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      rerender();
+
+      expect(mockSetLanguage).toHaveBeenCalledWith('ru');
+    });
+
+    it('should react to langFromRoute changes', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      const { rerender } = renderHook(({ lang }) => useLanguageFromPath(lang), {
+        initialProps: { lang: 'es' as SupportedLanguage },
+      });
+
+      expect(mockSetLanguage).not.toHaveBeenCalled();
+
+      // Change langFromRoute
+      mockUseAppStore.mockReturnValue({
+        language: 'ru' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      rerender({ lang: 'ru' as SupportedLanguage });
+
+      expect(mockSetLanguage).not.toHaveBeenCalled(); // Already matches
+    });
+
+    it('should react to language changes in store', () => {
+      mockUseLocation.mockReturnValue({
+        pathname: '/es/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      mockUseAppStore.mockReturnValue({
+        language: 'en' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      (i18n as any).language = 'en';
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
+
+      expect(document.documentElement.lang).toBe('en');
+
+      // Change store language
+      mockUseAppStore.mockReturnValue({
+        language: 'es' as SupportedLanguage,
+        setLanguage: mockSetLanguage,
+        _hasHydrated: true,
+      });
+
+      rerender();
+
+      expect(document.documentElement.lang).toBe('es');
+    });
+  });
+});

@@ -1,7 +1,7 @@
-import { vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
 import { HeaderV2 } from '@/components/HeaderV2';
 import { AppState } from '@/core/types';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, vi } from 'vitest';
 
 // Mock next-themes
 vi.mock('next-themes', () => ({
@@ -88,15 +88,14 @@ describe('HeaderV2', () => {
   describe('when hasData is false', () => {
     it('should render upload button', () => {
       render(<HeaderV2 hasData={false} />);
-
-      expect(screen.getByText('Upload File')).toBeInTheDocument();
+      expect(screen.getByText('Upload My File')).toBeInTheDocument();
     });
 
     it('should call onUpload when upload button is clicked', () => {
       const onUpload = vi.fn();
       render(<HeaderV2 hasData={false} onUpload={onUpload} />);
 
-      const uploadButton = screen.getByText('Upload File').closest('button');
+      const uploadButton = screen.getByText('Upload My File').closest('button');
       fireEvent.click(uploadButton!);
 
       expect(onUpload).toHaveBeenCalledTimes(1);
@@ -105,7 +104,7 @@ describe('HeaderV2', () => {
     it('should highlight upload button when activeScreen is UPLOAD', () => {
       render(<HeaderV2 hasData={false} activeScreen={AppState.UPLOAD} />);
 
-      const uploadButton = screen.getByText('Upload File').closest('button');
+      const uploadButton = screen.getByText('Upload My File').closest('button');
       expect(uploadButton).toHaveClass('bg-primary', 'text-white');
     });
   });

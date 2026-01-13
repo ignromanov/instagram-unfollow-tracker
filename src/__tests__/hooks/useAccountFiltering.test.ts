@@ -7,9 +7,11 @@ vi.mock('@/lib/filtering/IndexedDBFilterEngine');
 vi.mock('@/lib/indexeddb/indexeddb-service');
 vi.mock('use-debounce');
 vi.mock('@/lib/store');
+vi.mock('@/hooks/useFilterWorker');
 
 // Import after mocks
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
+import { useFilterWorker } from '@/hooks/useFilterWorker';
 import { IndexedDBFilterEngine } from '@/lib/filtering/IndexedDBFilterEngine';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
 import { useAppStore } from '@/lib/store';
@@ -19,6 +21,7 @@ describe('useAccountFiltering', () => {
   let mockEngine: any;
   let mockSetFilters: any;
   let mockFilters: Set<BadgeKey>;
+  let mockWorkerFilterToIndices: any;
 
   const mockFileMetadata: FileMetadata = {
     name: 'test.zip',
@@ -55,6 +58,16 @@ describe('useAccountFiltering', () => {
     vi.mocked(IndexedDBFilterEngine).mockImplementation(() => mockEngine as any);
     vi.mocked(indexedDBService.getBadgeStats).mockResolvedValue(mockFilterCounts);
     vi.mocked(useDebounce).mockImplementation((value: any) => [value, vi.fn()] as any);
+
+    // Mock Worker
+    mockWorkerFilterToIndices = vi.fn().mockResolvedValue([]);
+    vi.mocked(useFilterWorker).mockReturnValue({
+      filterToIndices: mockWorkerFilterToIndices,
+      isReady: false,
+      hasError: true, // Default to error so fallback engine is used (preserving existing test behavior)
+      terminate: vi.fn(),
+      recreate: vi.fn(),
+    });
 
     // Create stable mock state object to prevent infinite loops
     // CRITICAL: filters Set must be the same object across selector calls
@@ -644,6 +657,69 @@ describe('useAccountFiltering', () => {
       // Whitespace query should be treated as empty - show all
       await waitFor(() => {
         expect(result.current.filteredIndices).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      });
+
+      unmount();
+    });
+  });
+
+  describe('Worker integration', () => {
+    it('should use worker for filtering when ready', async () => {
+      // Setup worker ready state
+      mockWorkerFilterToIndices.mockResolvedValue([10, 20, 30]);
+      vi.mocked(useFilterWorker).mockReturnValue({
+        filterToIndices: mockWorkerFilterToIndices,
+        isReady: true,
+        hasError: false,
+        terminate: vi.fn(),
+        recreate: vi.fn(),
+      });
+
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
+
+      act(() => {
+        result.current.setQuery('test');
+      });
+
+      await waitFor(() => {
+        expect(mockWorkerFilterToIndices).toHaveBeenCalledWith('test', expect.any(Set));
+        expect(result.current.filteredIndices).toEqual([10, 20, 30]);
+      });
+
+      // Should NOT use fallback engine
+      expect(mockEngine.filterToIndices).not.toHaveBeenCalled();
+
+      unmount();
+    });
+
+    it('should fallback to engine when worker has error', async () => {
+      // This is the default setup in beforeEach, but explicit here for clarity
+      vi.mocked(useFilterWorker).mockReturnValue({
+        filterToIndices: mockWorkerFilterToIndices,
+        isReady: false,
+        hasError: true,
+        terminate: vi.fn(),
+        recreate: vi.fn(),
+      });
+
+      const { result, unmount } = renderHook(() =>
+        useAccountFiltering({
+          fileHash: mockFileMetadata.fileHash,
+          accountCount: mockFileMetadata.accountCount,
+        })
+      );
+
+      act(() => {
+        result.current.setQuery('test');
+      });
+
+      await waitFor(() => {
+        expect(mockEngine.filterToIndices).toHaveBeenCalled();
       });
 
       unmount();
