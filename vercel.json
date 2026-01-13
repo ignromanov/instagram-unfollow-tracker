@@ -10,7 +10,6 @@
       "destination": "/docs/:path*"
     },
     {
-      "comment": "SYNC: Update pattern when adding languages to src/config/languages.ts (NON_ENGLISH_LANGUAGES)",
       "source": "/:lang(es|pt|hi|id|tr|ja|ru|de|ar)/:path*",
       "destination": "/:lang/:path*"
     },
