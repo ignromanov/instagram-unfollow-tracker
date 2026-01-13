@@ -6,6 +6,11 @@
   "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/og.tsx": {
+      "runtime": "@vercel/edge"
+    }
+  },
   "rewrites": [
     {
       "source": "/docs/:path*",
