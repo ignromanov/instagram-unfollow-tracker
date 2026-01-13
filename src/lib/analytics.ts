@@ -276,7 +276,7 @@ export const analytics = {
   },
 
   // V2: Navigation
-  themeToggle: (mode: 'dark' | 'light') => {
+  themeToggle: (mode: 'dark' | 'light' | 'system') => {
     trackEvent(AnalyticsEvents.THEME_TOGGLE, { mode });
   },
 
