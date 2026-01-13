@@ -1,6 +1,63 @@
 import type { BuildOptions } from 'vite';
 
 /**
+ * Helper: Check if module is a Radix core primitive
+ */
+function isRadixCorePrimitive(id: string): boolean {
+  const corePatterns = [
+    '@radix-ui/primitive',
+    '@radix-ui/react-primitive',
+    '@radix-ui/react-slot',
+    '@radix-ui/react-compose-refs',
+    '@radix-ui/react-context',
+    '@radix-ui/react-id',
+    '@radix-ui/react-use-',
+    '@radix-ui/react-presence',
+    '@radix-ui/react-portal',
+    '@radix-ui/react-focus-',
+    '@radix-ui/react-dismissable-layer',
+    '@radix-ui/react-popper',
+  ];
+  return corePatterns.some(pattern => id.includes(pattern));
+}
+
+/**
+ * Helper: Determine Radix UI chunk name
+ */
+function getRadixChunk(id: string): string | undefined {
+  if (isRadixCorePrimitive(id)) return 'radix-core';
+
+  if (id.includes('@radix-ui/react-dialog') || id.includes('@radix-ui/react-alert-dialog')) {
+    return 'radix-dialog';
+  }
+
+  if (id.includes('@radix-ui/react-dropdown-menu') || id.includes('@radix-ui/react-menu')) {
+    return 'radix-menu';
+  }
+
+  if (id.includes('@radix-ui/react-accordion')) return 'radix-accordion';
+  if (id.includes('@radix-ui/react-tabs')) return 'radix-tabs';
+  if (id.includes('@radix-ui/react-collapsible')) return 'radix-accordion';
+
+  if (id.includes('@radix-ui')) return 'radix-core';
+
+  return undefined;
+}
+
+/**
+ * Helper: Determine vendor chunk name
+ */
+function getVendorChunk(id: string): string | undefined {
+  if (id.includes('lucide-react')) return 'icons';
+
+  if (id.includes('zustand') || id.includes('clsx') || id.includes('tailwind-merge')) {
+    return 'utils';
+  }
+
+  return undefined;
+}
+
+/**
  * Production build configuration with optimizations
  * - Source maps for debugging
  * - Terser minification with console.log removal
@@ -29,55 +86,9 @@ export const buildConfig: BuildOptions = {
       // Manual chunk splitting for better caching
       // Note: react/react-dom excluded - they're externalized during SSR build
       manualChunks: id => {
-        // Only split chunks for client build
-        if (id.includes('node_modules')) {
-          // Radix primitives and slots (shared dependencies) go to core
-          if (
-            id.includes('@radix-ui/primitive') ||
-            id.includes('@radix-ui/react-primitive') ||
-            id.includes('@radix-ui/react-slot') ||
-            id.includes('@radix-ui/react-compose-refs') ||
-            id.includes('@radix-ui/react-context') ||
-            id.includes('@radix-ui/react-id') ||
-            id.includes('@radix-ui/react-use-') ||
-            id.includes('@radix-ui/react-presence') ||
-            id.includes('@radix-ui/react-portal') ||
-            id.includes('@radix-ui/react-focus-') ||
-            id.includes('@radix-ui/react-dismissable-layer') ||
-            id.includes('@radix-ui/react-popper')
-          ) {
-            return 'radix-core';
-          }
+        if (!id.includes('node_modules')) return undefined;
 
-          // Dialog-related (alert-dialog depends on dialog)
-          if (
-            id.includes('@radix-ui/react-dialog') ||
-            id.includes('@radix-ui/react-alert-dialog')
-          ) {
-            return 'radix-dialog';
-          }
-
-          // Dropdown menu
-          if (id.includes('@radix-ui/react-dropdown-menu') || id.includes('@radix-ui/react-menu')) {
-            return 'radix-menu';
-          }
-
-          // Other Radix components
-          if (id.includes('@radix-ui/react-accordion')) return 'radix-accordion';
-          if (id.includes('@radix-ui/react-tabs')) return 'radix-tabs';
-          if (id.includes('@radix-ui/react-collapsible')) return 'radix-accordion';
-
-          // Remaining Radix goes to core
-          if (id.includes('@radix-ui')) return 'radix-core';
-
-          // Icons in separate chunk
-          if (id.includes('lucide-react')) return 'icons';
-
-          // Utils
-          if (id.includes('zustand') || id.includes('clsx') || id.includes('tailwind-merge')) {
-            return 'utils';
-          }
-        }
+        return getRadixChunk(id) ?? getVendorChunk(id);
       },
     },
   },
