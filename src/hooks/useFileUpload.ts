@@ -2,11 +2,19 @@ import type { ParseWarning } from '@/core/types';
 import { analytics } from '@/lib/analytics';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
+import { logger } from '@/lib/logger';
 import { useAppStore } from '@/lib/store';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 // ZIP magic bytes: PK\x03\x04 (0x504B0304)
 const ZIP_MAGIC_BYTES = [0x50, 0x4b, 0x03, 0x04];
+
+// Worker timeout constants (ms)
+const WORKER_INIT_TIMEOUT_MS = 5000;
+const WORKER_PROCESSING_TIMEOUT_MS = 60000;
+
+// Upload rate limiting (ms)
+const UPLOAD_DEBOUNCE_MS = 1000;
 
 /** Check if file is a valid ZIP by reading magic bytes */
 async function isValidZipFile(file: File): Promise<boolean> {
@@ -43,6 +51,7 @@ export function useFileUpload() {
   const abortControllerRef = useRef<AbortController | null>(null);
   const workerRef = useRef<Worker | null>(null);
   const workerReadyRef = useRef(false);
+  const lastUploadRef = useRef<number>(0);
 
   // Progress tracking
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -84,6 +93,12 @@ export function useFileUpload() {
           // Add global error handler
           workerRef.current.onerror = event => {
             const errorEvent = event as ErrorEvent;
+            logger.error('Parse worker error:', {
+              message: errorEvent?.message,
+              filename: errorEvent?.filename,
+              lineno: errorEvent?.lineno,
+              colno: errorEvent?.colno,
+            });
             if (typeof errorEvent?.preventDefault === 'function') {
               errorEvent.preventDefault();
             }
@@ -92,11 +107,12 @@ export function useFileUpload() {
           // Timeout to detect if worker doesn't respond
           setTimeout(() => {
             if (!workerReadyRef.current) {
+              logger.warn('Parse worker initialization timeout, proceeding anyway');
               workerReadyRef.current = true;
             }
-          }, 5000);
-        } catch {
-          // Silent error handling
+          }, WORKER_INIT_TIMEOUT_MS);
+        } catch (error) {
+          logger.error('Failed to initialize parse worker:', error);
         }
       };
 
@@ -117,6 +133,13 @@ export function useFileUpload() {
   const handleZipUpload = useCallback(
     // eslint-disable-next-line complexity -- Upload handler has high complexity due to multiple error paths, cache checks, and state management
     async (file: File) => {
+      // Debounce rapid uploads
+      const now = Date.now();
+      if (now - lastUploadRef.current < UPLOAD_DEBOUNCE_MS) {
+        return;
+      }
+      lastUploadRef.current = now;
+
       const uploadDate = new Date();
       const startTime = performance.now();
       const fileSizeMb = file.size / (1024 * 1024);
@@ -221,7 +244,7 @@ export function useFileUpload() {
             const timeoutId = setTimeout(() => {
               workerRef.current?.removeEventListener('message', handleMessage);
               reject(new Error('Worker timeout: Processing took too long'));
-            }, 60000); // 60 second timeout
+            }, WORKER_PROCESSING_TIMEOUT_MS);
 
             const handleMessage = (e: MessageEvent) => {
               if (e.data?.type === 'progress') {
@@ -279,9 +302,9 @@ export function useFileUpload() {
             });
           }
         } else {
-          console.warn('[Upload] Worker not available, falling back to main thread parsing');
-          console.warn('[Upload] This will be slower for large files!');
-          console.warn('[Upload] Worker status:', {
+          logger.warn('[Upload] Worker not available, falling back to main thread parsing');
+          logger.warn('[Upload] This will be slower for large files!');
+          logger.warn('[Upload] Worker status:', {
             workerExists: !!workerRef.current,
             workerReady: workerReadyRef.current,
           });

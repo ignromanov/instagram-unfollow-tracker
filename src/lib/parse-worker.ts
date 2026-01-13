@@ -6,12 +6,16 @@ import { parseInstagramZipFile } from '@/core/parsers/instagram';
 import { generateFileHash } from './indexeddb/indexeddb-cache';
 import { indexedDBService } from './indexeddb/indexeddb-service';
 import { buildAllSearchIndexes } from './search-index';
+import { logger } from './logger';
 
 // Configuration - optimized for balance between speed and memory
 // Smaller chunks = more frequent progress updates but more overhead
 // Larger chunks = faster processing but less frequent updates
 // Process 30k accounts per chunk (optimized for 1M+ datasets) - not currently used
 // const CHUNK_SIZE = 30000;
+
+// Search index build delay (ms) - allows UI to be responsive before background task
+const SEARCH_INDEX_BUILD_DELAY_MS = 100;
 
 // Send ready signal to main thread
 try {
@@ -88,10 +92,11 @@ self.onmessage = async (
         }));
 
         await buildAllSearchIndexes(fileHash, accountsWithIndices);
-      } catch {
+      } catch (error) {
         // Non-critical error - app will work without indexes (slower search)
+        logger.warn('Failed to build search indexes:', error);
       }
-    }, 100);
+    }, SEARCH_INDEX_BUILD_DELAY_MS);
 
     // Send success result with warnings and discovery info
     self.postMessage({
@@ -112,11 +117,12 @@ self.onmessage = async (
 };
 
 // Handle worker errors
-self.onerror = () => {
-  // Silent error handling
+self.onerror = (event: string | Event) => {
+  logger.error('Parse worker global error:', event);
 };
 
 // Handle unhandled promise rejections
-self.onunhandledrejection = event => {
+self.onunhandledrejection = (event: PromiseRejectionEvent) => {
+  logger.error('Parse worker unhandled rejection:', event.reason);
   event.preventDefault();
 };

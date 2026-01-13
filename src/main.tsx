@@ -1,6 +1,7 @@
 import { ViteReactSSG } from 'vite-react-ssg';
 import { routes } from './routes';
 import { initI18n } from './locales';
+import { loadUmami } from './lib/umami-loader';
 import './styles.css';
 
 /**
@@ -25,7 +26,8 @@ export const createRoot = ViteReactSSG(
 
     // Client-side only initialization
     if (isClient) {
-      // Any client-specific setup can go here
+      // Load analytics (respects user opt-out)
+      loadUmami();
     }
   }
 );

@@ -65,7 +65,7 @@ interface AppState {
 }
 
 // Helper to serialize Set for persist
-function serializeSet<T>(set: Set<T>): T[] {
+function serializeSet<T extends string | number>(set: Set<T>): T[] {
   return Array.from(set.values());
 }
 function deserializeSet<T>(arr: T[] | undefined): Set<T> {
@@ -195,7 +195,7 @@ export const useAppStore = create<AppState>()(
     {
       name: 'unfollow-radar-store',
       version: 4, // Increment version for language support
-      migrate: (persistedState: any, version: number) => {
+      migrate: (persistedState: unknown, version: number) => {
         // If version is 1 or older, clear all data and start fresh
         if (version <= 1) {
           return {
@@ -216,16 +216,33 @@ export const useAppStore = create<AppState>()(
 
         // Version 2 -> 3: Add completedHowToSubSteps if missing
         if (version === 2) {
-          const state = persistedState as any;
-          if (state.journey && !state.journey.completedHowToSubSteps) {
-            state.journey.completedHowToSubSteps = new Set<HowToSubStep>();
+          // Type guard for v2 state
+          if (
+            typeof persistedState === 'object' &&
+            persistedState !== null &&
+            'journey' in persistedState
+          ) {
+            const state = persistedState as Record<string, unknown>;
+            const journey = state.journey;
+            if (
+              typeof journey === 'object' &&
+              journey !== null &&
+              !('completedHowToSubSteps' in journey)
+            ) {
+              (journey as Record<string, unknown>).completedHowToSubSteps = new Set<HowToSubStep>();
+            }
+            return state;
           }
-          return state;
+          return persistedState;
         }
 
         // Version 3 -> 4: Add language support
         if (version === 3) {
-          return { ...persistedState, language: 'en' };
+          // Type guard for v3 state
+          if (typeof persistedState === 'object' && persistedState !== null) {
+            return { ...(persistedState as Record<string, unknown>), language: 'en' };
+          }
+          return persistedState;
         }
 
         // For future versions, return the persisted state as-is
@@ -264,37 +281,53 @@ export const useAppStore = create<AppState>()(
       },
       storage: {
         getItem: name => {
-          const str = localStorage.getItem(name);
-          if (!str) return null;
-          const json = JSON.parse(str);
-          if (Array.isArray(json.state?.filters)) {
-            json.state.filters = deserializeSet(json.state.filters);
-          }
-          if (json.state?.journey) {
-            if (Array.isArray(json.state.journey.completedSteps)) {
-              json.state.journey.completedSteps = deserializeSet(json.state.journey.completedSteps);
+          try {
+            const str = localStorage.getItem(name);
+            if (!str) return null;
+            const json = JSON.parse(str);
+            if (Array.isArray(json.state?.filters)) {
+              json.state.filters = deserializeSet(json.state.filters);
             }
-            if (Array.isArray(json.state.journey.expandedSteps)) {
-              json.state.journey.expandedSteps = deserializeSet(json.state.journey.expandedSteps);
+            if (json.state?.journey) {
+              if (Array.isArray(json.state.journey.completedSteps)) {
+                json.state.journey.completedSteps = deserializeSet(
+                  json.state.journey.completedSteps
+                );
+              }
+              if (Array.isArray(json.state.journey.expandedSteps)) {
+                json.state.journey.expandedSteps = deserializeSet(json.state.journey.expandedSteps);
+              }
+              // Ensure completedHowToSubSteps is always a Set (may be missing in old data)
+              json.state.journey.completedHowToSubSteps = Array.isArray(
+                json.state.journey.completedHowToSubSteps
+              )
+                ? deserializeSet(json.state.journey.completedHowToSubSteps)
+                : new Set<HowToSubStep>();
             }
-            // Ensure completedHowToSubSteps is always a Set (may be missing in old data)
-            json.state.journey.completedHowToSubSteps = Array.isArray(
-              json.state.journey.completedHowToSubSteps
-            )
-              ? deserializeSet(json.state.journey.completedHowToSubSteps)
-              : new Set<HowToSubStep>();
+            return json;
+          } catch {
+            // localStorage unavailable (private mode, quota exceeded)
+            return null;
           }
-          return json;
         },
         setItem: (name, value) => {
-          const val = { ...value } as any;
-          if (val.state?.filters instanceof Set) {
-            val.state.filters = serializeSet(val.state.filters);
+          try {
+            const val = { ...value } as Record<string, unknown>;
+            const state = val.state as Record<string, unknown> | undefined;
+            if (state?.filters instanceof Set) {
+              state.filters = serializeSet(state.filters);
+            }
+            localStorage.setItem(name, JSON.stringify(val));
+          } catch {
+            // localStorage unavailable (private mode, quota exceeded)
           }
-          localStorage.setItem(name, JSON.stringify(val));
         },
         removeItem: name => {
-          localStorage.removeItem(name);
+          try {
+            localStorage.removeItem(name);
+          } catch {
+            // localStorage unavailable (private mode, quota exceeded)
+          }
         },
       },
     }

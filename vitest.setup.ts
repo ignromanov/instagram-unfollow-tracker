@@ -1,14 +1,14 @@
-import { vi } from 'vitest';
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
 // Import real translation files
 import commonEN from './src/locales/en/common.json';
-import resultsEN from './src/locales/en/results.json';
-import heroEN from './src/locales/en/hero.json';
-import wizardEN from './src/locales/en/wizard.json';
-import uploadEN from './src/locales/en/upload.json';
 import faqEN from './src/locales/en/faq.json';
+import heroEN from './src/locales/en/hero.json';
 import howtoEN from './src/locales/en/howto.json';
+import resultsEN from './src/locales/en/results.json';
+import uploadEN from './src/locales/en/upload.json';
+import wizardEN from './src/locales/en/wizard.json';
 
 // Flatten nested JSON objects into dot-notation keys
 function flattenTranslations(obj: Record<string, unknown>, prefix = ''): Record<string, string> {
@@ -123,6 +123,12 @@ window.IntersectionObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }));
 
+// Mock window.scrollTo
+Object.defineProperty(window, 'scrollTo', {
+  value: vi.fn(),
+  writable: true,
+});
+
 // Fix for setimmediate package in test environment
 if (typeof global.attachEvent === 'undefined') {
   global.attachEvent = () => {};
@@ -160,5 +166,32 @@ global.File = class MockFile {
         controller.close();
       },
     });
+  }
+} as any;
+
+// Mock Worker
+global.Worker = class MockWorker {
+  url: string;
+  onmessage: (event: MessageEvent) => void;
+  onerror: (event: ErrorEvent) => void;
+
+  constructor(stringUrl: string) {
+    this.url = stringUrl;
+    this.onmessage = () => {};
+    this.onerror = () => {};
+  }
+
+  postMessage(msg: any) {
+    // console.log('Worker.postMessage', msg);
+  }
+
+  terminate() {
+    // console.log('Worker.terminate');
+  }
+
+  addEventListener(type: string, listener: EventListener) {}
+  removeEventListener(type: string, listener: EventListener) {}
+  dispatchEvent(event: Event): boolean {
+    return true;
   }
 } as any;

@@ -428,7 +428,11 @@ class IndexedDBService {
 
       if (!column) return [];
 
-      reader = new StringColumnReader(column.data, column.offsets!);
+      // Validate offsets before creating reader
+      if (!column.offsets) {
+        throw new Error(`Column ${cacheKey} missing required offsets array`);
+      }
+      reader = new StringColumnReader(column.data, column.offsets);
       this.columnCache.set(cacheKey, reader);
     }
 

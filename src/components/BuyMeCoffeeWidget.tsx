@@ -75,8 +75,12 @@ export function BuyMeCoffeeWidget({
 
     // Check localStorage (unless skipped for sample data) — only for auto-expand
     if (!skipStorageCheck) {
-      const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
-      if (alreadyShown) return; // Skip auto-expand, but icon is already loaded
+      try {
+        const alreadyShown = localStorage.getItem(BMC_STORAGE_KEY);
+        if (alreadyShown) return; // Skip auto-expand, but icon is already loaded
+      } catch {
+        // localStorage unavailable (private mode, quota exceeded)
+      }
     }
 
     // Don't re-expand in same session
@@ -89,7 +93,11 @@ export function BuyMeCoffeeWidget({
 
       // Save to localStorage (only for non-sample)
       if (!skipStorageCheck) {
-        localStorage.setItem(BMC_STORAGE_KEY, 'true');
+        try {
+          localStorage.setItem(BMC_STORAGE_KEY, 'true');
+        } catch {
+          // localStorage unavailable (private mode, quota exceeded)
+        }
       }
 
       // Auto-collapse
@@ -129,8 +137,7 @@ function loadBMCScript(): void {
 
   script.onload = () => {
     // Dispatch DOMContentLoaded to trigger BMC widget initialization
-    const evt = document.createEvent('Event');
-    evt.initEvent('DOMContentLoaded', false, false);
+    const evt = new Event('DOMContentLoaded', { bubbles: false, cancelable: false });
     window.dispatchEvent(evt);
   };
 

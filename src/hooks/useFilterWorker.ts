@@ -12,6 +12,7 @@ import * as Comlink from 'comlink';
 
 import type { FilterWorkerApi } from '@/workers/filter-worker';
 import type { BadgeKey } from '@/core/types';
+import { logger } from '@/lib/logger';
 
 interface UseFilterWorkerOptions {
   fileHash: string | null;
@@ -82,7 +83,7 @@ export function useFilterWorker(options: UseFilterWorkerOptions): UseFilterWorke
           setError(null);
         }
       } catch (err) {
-        console.error('[useFilterWorker] Failed to initialize worker:', err);
+        logger.error('[useFilterWorker] Failed to initialize worker:', err);
         if (isActive) {
           setError(err instanceof Error ? err.message : 'Worker initialization failed');
           setIsReady(false);
@@ -120,7 +121,7 @@ export function useFilterWorker(options: UseFilterWorkerOptions): UseFilterWorke
         const filtersArray = Array.from(filters);
         return await apiRef.current.filterToIndices(query, filtersArray);
       } catch (err) {
-        console.error('[useFilterWorker] Filter operation failed:', err);
+        logger.error('[useFilterWorker] Filter operation failed:', err);
         throw err;
       }
     },
@@ -136,7 +137,7 @@ export function useFilterWorker(options: UseFilterWorkerOptions): UseFilterWorke
     try {
       return await apiRef.current.getStats();
     } catch (err) {
-      console.error('[useFilterWorker] getStats failed:', err);
+      logger.error('[useFilterWorker] getStats failed:', err);
       throw err;
     }
   }, []);

@@ -118,20 +118,6 @@
         ]
       }
     </script>
-
-    <!-- Umami Analytics (conditionally loaded based on opt-out preference) -->
-    <script>
-      (function() {
-        // Check if user has opted out of tracking
-        if (localStorage.getItem('umami-opt-out') !== 'true') {
-          var script = document.createElement('script');
-          script.defer = true;
-          script.src = 'https://cloud.umami.is/script.js';
-          script.dataset.websiteId = '48136699-8e66-4397-bf85-89f46b28fc6d';
-          document.head.appendChild(script);
-        }
-      })();
-    </script>
   </head>
 
   <body class="font-sans antialiased">

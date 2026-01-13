@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { AccountListSection } from '@/components/AccountListSection';
 import { Hero } from '@/components/Hero';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Results page (account list)
@@ -14,7 +14,11 @@ export function Component() {
   const prefix = useLanguagePrefix();
   const { uploadState, fileMetadata } = useInstagramData();
 
-  const hasResults = uploadState.status === 'success' && fileMetadata !== null;
+  const hasResults =
+    uploadState.status === 'success' &&
+    fileMetadata !== null &&
+    Boolean(fileMetadata.fileHash) &&
+    typeof fileMetadata.accountCount === 'number';
 
   // Fallback handlers for Hero
   const handleStartGuide = () => {
@@ -48,7 +52,6 @@ export function Component() {
       onLoadSample={handleLoadSample}
       onUploadDirect={handleUploadDirect}
       hasData={false}
-      onContinue={() => {}}
     />
   );
 }

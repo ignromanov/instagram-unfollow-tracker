@@ -127,7 +127,7 @@ export interface ColumnRecord {
   fileHash: string;
   column: 'usernames' | 'displayNames' | 'hrefs';
   data: Uint8Array; // Packed data buffer
-  offsets?: Uint32Array; // Offset table for variable-length data
+  offsets: Uint32Array; // Offset table for variable-length data (required)
   length: number; // Number of entries
 }
 

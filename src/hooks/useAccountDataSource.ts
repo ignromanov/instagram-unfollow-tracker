@@ -7,6 +7,7 @@
 
 import type { AccountBadges } from '@/core/types';
 import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
+import { logger } from '@/lib/logger';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface AccountSlice {
@@ -160,7 +161,7 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
           if (isMountedRef.current) {
             // Track failed slice for retry on next access
             failedSlicesRef.current.add(cacheKey);
-            console.error('[Account Data Source] Error loading range:', error);
+            logger.error('[Account Data Source] Error loading range:', error);
             // Trigger re-render so components can detect the failure
             forceUpdate();
           }
@@ -305,7 +306,7 @@ export function useAccountDataSource(options: UseAccountDataSourceOptions) {
 
       // Not in cache and not loading - trigger async load (fire and forget)
       getRange(sliceStart, sliceEnd).catch(err => {
-        console.error('[Account Data Source] Failed to load slice:', err);
+        logger.error('[Account Data Source] Failed to load slice:', err);
       });
 
       // Return undefined while loading

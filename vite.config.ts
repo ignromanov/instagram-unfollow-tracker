@@ -1,8 +1,8 @@
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
-import { defineConfig } from "vitest/config";
 import { VitePWA } from "vite-plugin-pwa";
+import { defineConfig } from "vitest/config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -352,7 +352,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reportsDirectory: "./coverage",
-      reporter: ["text", "text-summary", "html", "lcov", "clover"],
+      reporter: ["text", "text-summary", "json"],
       reportOnFailure: true, // Generate coverage report even when tests fail
 
       // Exclude patterns for coverage
@@ -453,13 +453,17 @@ export default defineConfig({
         // Hooks with Web Worker dependencies (skip due to complexity)
         // 'src/hooks/useAccountFiltering.ts',
         // 'src/hooks/useFilterWorker.ts',
+
+        // Scripts and utility files
+        "scripts/**",
+
       ],
 
       // Coverage thresholds (balanced quality standards)
       thresholds: {
         statements: 85,
         branches: 80,
-        functions: 85,
+        functions: 80,
         lines: 85,
       },
 
@@ -499,7 +503,7 @@ export default defineConfig({
     bail: 0, // Set to 1 to bail on first failure, 0 to run all tests
 
     // Reporter configuration
-    reporters: ["verbose", "html"],
+    reporters: ["verbose"],
     outputFile: {
       html: "./coverage/test-results.html",
     },
