@@ -627,10 +627,10 @@ describe('BuyMeCoffeeWidget', () => {
         throw new Error('localStorage unavailable');
       });
 
-      // Component should throw when trying to access localStorage
+      // Component should NOT throw - it catches localStorage errors internally
       expect(() => {
         render(<BuyMeCoffeeWidget show={true} />);
-      }).toThrow('localStorage unavailable');
+      }).not.toThrow();
 
       // Restore original
       Storage.prototype.getItem = originalGetItem;

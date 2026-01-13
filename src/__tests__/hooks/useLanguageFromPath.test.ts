@@ -14,10 +14,10 @@ vi.mock('@/locales', async () => {
     ...actual,
     default: {
       language: 'en',
-      changeLanguage: vi.fn(),
+      changeLanguage: vi.fn().mockResolvedValue(undefined),
     },
-    initI18n: vi.fn(),
-    loadLanguage: vi.fn(),
+    initI18n: vi.fn().mockResolvedValue(undefined),
+    loadLanguage: vi.fn().mockResolvedValue(undefined),
   };
 });
 

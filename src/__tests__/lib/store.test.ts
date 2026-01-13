@@ -16,6 +16,7 @@ Object.defineProperty(window, 'localStorage', {
 // Mock locales module for language sync testing
 vi.mock('@/locales', () => ({
   loadLanguage: vi.fn().mockResolvedValue(undefined),
+  initI18n: vi.fn().mockResolvedValue(undefined),
   default: {
     changeLanguage: vi.fn().mockResolvedValue(undefined),
   },
