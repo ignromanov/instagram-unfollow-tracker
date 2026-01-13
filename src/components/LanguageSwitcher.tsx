@@ -1,7 +1,7 @@
 'use client';
 
 import { Globe, ChevronDown } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, type SupportedLanguage } from '@/locales';
 import {
@@ -35,18 +35,17 @@ export function LanguageSwitcher() {
   const { t } = useTranslation('common');
   const { language, setLanguage } = useAppStore();
   const location = useLocation();
-  const navigate = useNavigate();
 
   const handleLanguageChange = (lang: SupportedLanguage) => {
     // Update store
     setLanguage(lang);
     analytics.languageChange(lang);
 
-    // Navigate to new language path
+    // Full page reload to get correct SSG meta tags for new language
     const basePath = getPathWithoutLang(location.pathname);
     const newPath = lang === 'en' ? basePath : `/${lang}${basePath === '/' ? '' : basePath}`;
 
-    navigate(newPath || '/');
+    window.location.href = newPath || '/';
   };
 
   return (
