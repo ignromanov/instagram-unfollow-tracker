@@ -1,14 +1,15 @@
 import { ImageResponse } from '@vercel/og';
 
-import {
-  SUPPORTED_LANGUAGES,
-  RTL_LANGUAGES,
-  type SupportedLanguage,
-} from '../src/config/languages';
-
 export const config = {
   runtime: 'edge',
 };
+
+// Inlined from src/config/languages.ts (Edge Functions can't import from src/)
+const SUPPORTED_LANGUAGES = ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de', 'ar'] as const;
+
+type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+
+const RTL_LANGUAGES: SupportedLanguage[] = ['ar'];
 
 interface OgTranslations {
   subtitle: string;

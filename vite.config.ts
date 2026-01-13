@@ -2,7 +2,6 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
 import { VitePWA } from "vite-plugin-pwa";
-import vercel from "vite-plugin-vercel";
 import { defineConfig } from "vite";
 import { buildConfig } from "./vite/build-config";
 import { pwaConfig } from "./vite/pwa-config";
@@ -13,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  plugins: [react(), VitePWA(pwaConfig), vercel()],
+  plugins: [react(), VitePWA(pwaConfig)],
   base: "/",
   // Include font assets from @fontsource packages
   assetsInclude: ["**/*.woff2", "**/*.woff"],
