@@ -18,6 +18,26 @@ function updateHtmlLang(lang: SupportedLanguage): void {
 }
 
 /**
+ * Removes language prefix from path
+ * E.g., /es/wizard -> /wizard, /ru/ -> /
+ */
+function getPathWithoutLang(pathname: string): string {
+  const nonEnglishLangs = SUPPORTED_LANGUAGES.filter(l => l !== 'en');
+
+  for (const lang of nonEnglishLangs) {
+    const prefix = `/${lang}`;
+    if (pathname === prefix || pathname === `${prefix}/`) {
+      return '/';
+    }
+    if (pathname.startsWith(`${prefix}/`)) {
+      return pathname.slice(prefix.length);
+    }
+  }
+
+  return pathname;
+}
+
+/**
  * Updates or creates hreflang link tags for SEO
  */
 function updateHreflangTags(currentPath: string): void {
@@ -26,8 +46,8 @@ function updateHreflangTags(currentPath: string): void {
 
   const head = document.head;
 
-  // Get base path without language prefix
-  const pathWithoutLang = currentPath.replace(/^\/(es|pt|hi|id|tr|ja|ru|de|ar)/, '') || '/';
+  // Get base path without language prefix (dynamically from SUPPORTED_LANGUAGES)
+  const pathWithoutLang = getPathWithoutLang(currentPath);
 
   // Add hreflang for each supported language
   for (const lang of SUPPORTED_LANGUAGES) {
