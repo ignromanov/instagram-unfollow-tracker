@@ -1,4 +1,5 @@
 import { vi } from 'vitest';
+import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES } from '../src/config/languages.js';
 
 // Import real translation files
 import commonEN from '../src/locales/en/common.json';
@@ -96,6 +97,7 @@ export function setupI18nMocks() {
   }));
 
   // Mock the locales module to prevent i18next initialization issues in tests
+  // Uses real language constants from src/config/languages.ts
   vi.mock('@/locales', () => ({
     default: {
       language: 'en',
@@ -103,18 +105,8 @@ export function setupI18nMocks() {
       hasResourceBundle: vi.fn().mockReturnValue(true),
       addResourceBundle: vi.fn(),
     },
-    SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de'],
-    LANGUAGE_NAMES: {
-      en: 'English',
-      es: 'Español',
-      pt: 'Português',
-      hi: 'हिन्दी',
-      id: 'Indonesia',
-      tr: 'Türkçe',
-      ja: '日本語',
-      ru: 'Русский',
-      de: 'Deutsch',
-    },
+    SUPPORTED_LANGUAGES,
+    LANGUAGE_NAMES,
     initI18n: vi.fn().mockResolvedValue(undefined),
     loadLanguage: vi.fn().mockResolvedValue(undefined),
   }));

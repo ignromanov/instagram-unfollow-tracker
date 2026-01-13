@@ -7,6 +7,7 @@ import i18n, {
   initI18n,
   type SupportedLanguage,
 } from '@/locales';
+import { NON_ENGLISH_LANGUAGES, getLocaleCode } from '@/config/languages';
 
 const BASE_URL = 'https://safeunfollow.app';
 
@@ -22,9 +23,7 @@ function updateHtmlLang(lang: SupportedLanguage): void {
  * E.g., /es/wizard -> /wizard, /ru/ -> /
  */
 function getPathWithoutLang(pathname: string): string {
-  const nonEnglishLangs = SUPPORTED_LANGUAGES.filter(l => l !== 'en');
-
-  for (const lang of nonEnglishLangs) {
+  for (const lang of NON_ENGLISH_LANGUAGES) {
     const prefix = `/${lang}`;
     if (pathname === prefix || pathname === `${prefix}/`) {
       return '/';
@@ -72,26 +71,13 @@ function updateHreflangTags(currentPath: string): void {
  * Updates Open Graph locale meta tag
  */
 function updateOgLocale(lang: SupportedLanguage): void {
-  const localeMap: Record<SupportedLanguage, string> = {
-    en: 'en_US',
-    es: 'es_ES',
-    pt: 'pt_BR',
-    hi: 'hi_IN',
-    id: 'id_ID',
-    tr: 'tr_TR',
-    ja: 'ja_JP',
-    ru: 'ru_RU',
-    de: 'de_DE',
-    ar: 'ar_SA',
-  };
-
   let ogLocale = document.querySelector('meta[property="og:locale"]');
   if (!ogLocale) {
     ogLocale = document.createElement('meta');
     ogLocale.setAttribute('property', 'og:locale');
     document.head.appendChild(ogLocale);
   }
-  ogLocale.setAttribute('content', localeMap[lang]);
+  ogLocale.setAttribute('content', getLocaleCode(lang));
 }
 
 /**

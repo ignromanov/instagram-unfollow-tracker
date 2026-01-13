@@ -68,3 +68,34 @@ export const LOCALE_CODES: Record<SupportedLanguage, string> = {
 export function getLocaleCode(lang: string): string {
   return LOCALE_CODES[lang as SupportedLanguage] || 'en_US';
 }
+
+/**
+ * Non-English languages (for routing, regex patterns)
+ * Excludes 'en' as it's the default/base language
+ */
+export const NON_ENGLISH_LANGUAGES = SUPPORTED_LANGUAGES.filter(lang => lang !== 'en');
+
+/**
+ * Language regex pattern for URL matching (without 'en')
+ * Format: (es|pt|hi|id|tr|ja|ru|de|ar)
+ *
+ * Usage examples:
+ * - Vercel rewrites: /:lang(es|pt|hi|id|tr|ja|ru|de|ar)/:path*
+ * - Route matching: /^\/(es|pt|hi|id|tr|ja|ru|de|ar)(\/|$)/
+ */
+export const LANGUAGE_REGEX_PATTERN = NON_ENGLISH_LANGUAGES.join('|');
+
+/**
+ * Creates a regex pattern for matching language prefixes in URLs
+ * @param flags - Optional regex flags (e.g., 'i' for case-insensitive)
+ * @returns RegExp for matching /<lang>/ or /<lang>
+ *
+ * @example
+ * const pattern = createLanguagePrefixRegex();
+ * pattern.test('/es/wizard'); // true
+ * pattern.test('/en/wizard'); // false
+ * pattern.test('/wizard');    // false
+ */
+export function createLanguagePrefixRegex(flags?: string): RegExp {
+  return new RegExp(`^\\/(${LANGUAGE_REGEX_PATTERN})(\\/|$)`, flags);
+}
