@@ -258,7 +258,7 @@ describe('UploadPage', () => {
 
       await user.click(screen.getByText('Open Wizard'));
 
-      expect(mockNavigate).toHaveBeenCalledWith('/wizard');
+      expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/6');
     });
   });
 
@@ -300,7 +300,7 @@ describe('UploadPage', () => {
 
       await user.click(screen.getByText('Open Wizard'));
 
-      expect(mockNavigate).toHaveBeenCalledWith('/es/wizard');
+      expect(mockNavigate).toHaveBeenCalledWith('/es/wizard/step/6');
     });
 
     it('should use language prefix in auto-navigation to results', async () => {

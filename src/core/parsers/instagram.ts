@@ -8,97 +8,18 @@ import type {
   ParseWarning,
   RawItem,
 } from '@/core/types';
+import {
+  BASE_PATH_CANDIDATES,
+  FILE_SPECS,
+  PERMANENT_REQUESTS_SPEC,
+  type FileSpec,
+} from './instagram-file-specs';
+import { escapeRegExp, extractUsernames, listToMap, listToRaw } from './instagram-utils';
+import { analyzeZipStructure, createCriticalError } from './instagram-zip-analysis';
 
-// === File Expectations Definition ===
-// Describes all files we look for in Instagram export
-
-interface FileSpec {
-  name: string;
-  description: string;
-  required: boolean;
-  fileNames: string[];
-  propCandidates?: string[];
-}
-
-const FILE_SPECS: FileSpec[] = [
-  {
-    name: 'following.json',
-    description: 'Accounts you follow — required for unfollower detection',
-    required: true,
-    fileNames: ['following.json'],
-    propCandidates: ['relationships_following'],
-  },
-  {
-    name: 'followers_*.json',
-    description: 'Accounts that follow you — required for mutual detection',
-    required: true,
-    fileNames: ['followers_1.json', 'followers_2.json', 'followers_3.json'],
-    propCandidates: ['relationships_followers'],
-  },
-  {
-    name: 'pending_follow_requests.json',
-    description: 'Outgoing follow requests still pending',
-    required: false,
-    fileNames: ['pending_follow_requests.json'],
-    propCandidates: ['relationships_follow_requests_sent'],
-  },
-  {
-    name: 'restricted_profiles.json',
-    description: 'Accounts you have restricted',
-    required: false,
-    fileNames: ['restricted_profiles.json'],
-    propCandidates: ['relationships_restricted_users'],
-  },
-  {
-    name: 'close_friends.json',
-    description: 'Your close friends list',
-    required: false,
-    fileNames: ['close_friends.json', 'friends.json'],
-    propCandidates: ['relationships_close_friends'],
-  },
-  {
-    name: 'recently_unfollowed.json',
-    description: 'Accounts you recently unfollowed',
-    required: false,
-    fileNames: [
-      'recently_unfollowed_profiles.json',
-      'recently_unfollowed.json',
-      'unfollowed_profiles.json',
-    ],
-    propCandidates: ['relationships_unfollowed_users'],
-  },
-  {
-    name: 'dismissed_suggestions.json',
-    description: 'Suggested accounts you dismissed',
-    required: false,
-    fileNames: ['removed_suggestions.json', 'dismissed_suggestions.json'],
-    propCandidates: ['relationships_dismissed_suggested_users'],
-  },
-];
-
-// === Utility Functions ===
-
-const normalize = (username: string | undefined | null): string | null => {
-  if (!username) return null;
-  const trimmed = username.trim().toLowerCase();
-  return trimmed.length ? trimmed : null;
-};
-
-function escapeRegExp(literal: string): string {
-  return literal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-const extractUsernames = (entries: InstagramExportEntry[]): string[] => {
-  const usernames: string[] = [];
-  for (const entry of entries) {
-    const item = entry.string_list_data?.[0];
-    // Instagram changed format: username can be in item.value (old) or entry.title (new)
-    const norm = normalize(item?.value) ?? normalize(entry.title);
-    if (norm) usernames.push(norm);
-  }
-  return Array.from(new Set(usernames));
-};
-
+/**
+ * Parse following.json file
+ */
 export async function parseFollowingJson(jsonText: string): Promise<string[]> {
   const data = JSON.parse(jsonText) as
     | { relationships_following?: InstagramExportEntry[] }
@@ -111,6 +32,9 @@ export async function parseFollowingJson(jsonText: string): Promise<string[]> {
   return extractUsernames(data.relationships_following);
 }
 
+/**
+ * Parse followers_*.json file
+ */
 export async function parseFollowersJson(jsonText: string): Promise<string[]> {
   const data = JSON.parse(jsonText) as
     | InstagramExportEntry[]
@@ -125,109 +49,6 @@ export async function parseFollowersJson(jsonText: string): Promise<string[]> {
       (data as { relationships_followers: InstagramExportEntry[] }).relationships_followers
     );
   throw new Error('Invalid followers json format');
-}
-
-function listToRaw(entries: InstagramExportEntry[] | undefined): RawItem[] {
-  const result: RawItem[] = [];
-  if (!entries) return result;
-  const seen = new Set<string>();
-  for (const e of entries) {
-    const item = e.string_list_data?.[0];
-    // Instagram changed format: username can be in item.value (old) or entry.title (new)
-    const username = normalize(item?.value) ?? normalize(e.title);
-    if (!username || seen.has(username)) continue;
-    seen.add(username);
-    result.push({ username, href: item?.href, timestamp: item?.timestamp });
-  }
-  return result;
-}
-
-function listToMap(entries: InstagramExportEntry[] | undefined): Map<string, number> {
-  const m = new Map<string, number>();
-  if (!entries) return m;
-  for (const e of entries) {
-    const item = e.string_list_data?.[0];
-    // Instagram changed format: username can be in item.value (old) or entry.title (new)
-    const u = normalize(item?.value) ?? normalize(e.title);
-    if (!u) continue;
-    if (!m.has(u)) m.set(u, item?.timestamp ?? 0);
-  }
-  return m;
-}
-
-// === Export Discovery ===
-
-interface ZipAnalysis {
-  hasHtmlFiles: boolean;
-  hasJsonFiles: boolean;
-  hasConnections: boolean;
-  hasFollowersFolder: boolean;
-  basePath: string | undefined;
-  topLevelFolders: string[];
-}
-
-function analyzeZipStructure(allFiles: string[]): ZipAnalysis {
-  const hasHtmlFiles = allFiles.some(f => f.endsWith('.html'));
-  const hasJsonFiles = allFiles.some(f => f.endsWith('.json'));
-  const hasConnections = allFiles.some(f => f.includes('connections/'));
-  const hasFollowersFolder = allFiles.some(f => f.includes('followers_and_following'));
-
-  // Determine base path
-  let basePath: string | undefined;
-  if (allFiles.some(f => f.startsWith('connections/followers_and_following/'))) {
-    basePath = 'connections/followers_and_following';
-  } else if (allFiles.some(f => f.startsWith('followers_and_following/'))) {
-    basePath = 'followers_and_following';
-  }
-
-  const topLevelFolders = [
-    ...new Set(allFiles.map(f => f.split('/')[0]).filter((f): f is string => Boolean(f))),
-  ].slice(0, 5);
-
-  return {
-    hasHtmlFiles,
-    hasJsonFiles,
-    hasConnections,
-    hasFollowersFolder,
-    basePath,
-    topLevelFolders,
-  };
-}
-
-function createCriticalError(analysis: ZipAnalysis): ParseWarning {
-  if (analysis.hasHtmlFiles && !analysis.hasJsonFiles) {
-    return {
-      code: 'HTML_FORMAT',
-      message: 'Wrong format: You uploaded HTML format, but JSON is required.',
-      severity: 'error',
-      fix: 'Re-request your data from Instagram and select JSON format instead of HTML. Go to Settings → Meta Accounts Center → Your information and permissions → Download your information → Select JSON format.',
-    };
-  }
-
-  if (!analysis.hasConnections && !analysis.hasFollowersFolder) {
-    return {
-      code: 'NOT_INSTAGRAM_EXPORT',
-      message: "This doesn't appear to be an Instagram data export.",
-      severity: 'error',
-      fix: `Found folders: ${analysis.topLevelFolders.join(', ') || 'none'}. Please download your data from Instagram Settings → Download Your Data → Select JSON format → Include "Followers and following".`,
-    };
-  }
-
-  if (analysis.hasConnections && !analysis.hasFollowersFolder) {
-    return {
-      code: 'INCOMPLETE_EXPORT',
-      message: 'The export is missing the followers_and_following folder.',
-      severity: 'error',
-      fix: 'Re-request your data and make sure to select "Followers and following" option in the data types.',
-    };
-  }
-
-  return {
-    code: 'NO_DATA_FILES',
-    message: 'Could not find following.json or followers files.',
-    severity: 'error',
-    fix: `Expected files under ${analysis.basePath || 'connections/followers_and_following'}. Found top-level: ${analysis.topLevelFolders.join(', ') || 'none'}.`,
-  };
 }
 
 // === Main Parser ===
@@ -280,7 +101,7 @@ export async function parseInstagramZipFile(file: File): Promise<ParseResult> {
   }
 
   // Try common paths
-  const baseCandidates = ['connections/followers_and_following', 'followers_and_following'];
+  const baseCandidates = BASE_PATH_CANDIDATES;
 
   const readJsonFromZip = async (
     patterns: string[]
@@ -475,17 +296,8 @@ export async function parseInstagramZipFile(file: File): Promise<ParseResult> {
   const unfollowedResult = optionalResults[3] ?? emptyResult;
   const dismissedResult = optionalResults[4] ?? emptyResult;
 
-  // We don't have permanentRequests in FILE_SPECS, parse it separately
-  const permanentResult = await readListMapFlexible({
-    name: 'permanent_follow_requests.json',
-    description: 'Follow requests that were declined or blocked',
-    required: false,
-    fileNames: ['recent_follow_requests.json', 'permanent_follow_requests.json'],
-    propCandidates: [
-      'relationships_permanent_follow_requests',
-      'relationships_follow_requests_permanent',
-    ],
-  });
+  // Parse permanent follow requests (separate spec for historical reasons)
+  const permanentResult = await readListMapFlexible(PERMANENT_REQUESTS_SPEC);
 
   // Add optional file expectations
   for (let i = 0; i < optionalSpecs.length; i++) {

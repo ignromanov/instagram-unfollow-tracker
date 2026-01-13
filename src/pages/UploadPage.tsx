@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UploadZone } from '@/components/UploadZone';
-import { HowToSection } from '@/components/HowToSection';
 import { FAQSection } from '@/components/FAQSection';
 import { FooterCTA } from '@/components/FooterCTA';
+import { HowToSection } from '@/components/HowToSection';
 import { PageLoader } from '@/components/PageLoader';
+import { UploadZone } from '@/components/UploadZone';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Upload page
@@ -38,7 +38,7 @@ export function Component() {
   };
 
   const handleOpenWizard = () => {
-    navigate(`${prefix}/wizard`);
+    navigate(`${prefix}/wizard/step/6`);
   };
 
   const handleStartGuide = () => {

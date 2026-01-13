@@ -21,6 +21,14 @@ import {
   type SearchIndexRecord,
   type SearchIndexType,
 } from './indexeddb-schema';
+import {
+  executeDelete,
+  executeRead,
+  executeWrite,
+  getAllKeysFromIndex,
+  getAllRecords,
+  waitForTransaction,
+} from './transaction-helpers';
 
 class IndexedDBService {
   private db: IDBDatabase | null = null;
@@ -77,14 +85,7 @@ class IndexedDBService {
     const db = await this.init();
     const tx = db.transaction([STORES.FILES], 'readwrite');
     const store = tx.objectStore(STORES.FILES);
-
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(metadata);
-      request.onsuccess = () => {
-        resolve();
-      };
-      request.onerror = () => reject(request.error);
-    });
+    await executeWrite(store, metadata);
   }
 
   /**
@@ -95,17 +96,11 @@ class IndexedDBService {
     const tx = db.transaction([STORES.FILES], 'readonly');
     const store = tx.objectStore(STORES.FILES);
 
-    return new Promise((resolve, reject) => {
-      const request = store.get(fileHash);
-      request.onsuccess = () => {
-        const data = request.result;
-        if (data && data.uploadDate) {
-          data.uploadDate = new Date(data.uploadDate);
-        }
-        resolve(data || null);
-      };
-      request.onerror = () => reject(request.error);
-    });
+    const data = await executeRead<FileMetadataRecord>(store, fileHash);
+    if (data && data.uploadDate) {
+      data.uploadDate = new Date(data.uploadDate);
+    }
+    return data || null;
   }
 
   /**
@@ -174,54 +169,37 @@ class IndexedDBService {
     const columnsStore = tx.objectStore(STORES.COLUMNS);
 
     await Promise.all([
-      new Promise<void>((resolve, reject) => {
-        const request = columnsStore.put({
-          fileHash,
-          column: 'usernames',
-          data: usernameColumn.data,
-          offsets: usernameColumn.offsets,
-          length: usernameColumn.length,
-        });
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
+      executeWrite(columnsStore, {
+        fileHash,
+        column: 'usernames',
+        data: usernameColumn.data,
+        offsets: usernameColumn.offsets,
+        length: usernameColumn.length,
       }),
-      new Promise<void>((resolve, reject) => {
-        const request = columnsStore.put({
-          fileHash,
-          column: 'displayNames',
-          data: displayNameColumn.data,
-          offsets: displayNameColumn.offsets,
-          length: displayNameColumn.length,
-        });
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
+      executeWrite(columnsStore, {
+        fileHash,
+        column: 'displayNames',
+        data: displayNameColumn.data,
+        offsets: displayNameColumn.offsets,
+        length: displayNameColumn.length,
       }),
     ]);
 
     // Write all bitsets
     const bitsetsStore = tx.objectStore(STORES.BITSETS);
-    const bitsetPromises = Array.from(bitsets.entries()).map(([badge, { bitset, count }]) => {
-      return new Promise<void>((resolve, reject) => {
-        const request = bitsetsStore.put({
-          fileHash,
-          badge,
-          data: bitset.toUint8Array(),
-          accountCount: count,
-        });
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-      });
-    });
+    const bitsetPromises = Array.from(bitsets.entries()).map(([badge, { bitset, count }]) =>
+      executeWrite(bitsetsStore, {
+        fileHash,
+        badge,
+        data: bitset.toUint8Array(),
+        accountCount: count,
+      })
+    );
 
     await Promise.all(bitsetPromises);
 
     // Wait for transaction to complete
-    await new Promise<void>((resolve, reject) => {
-      tx.oncomplete = () => {
-        resolve();
-      };
-      tx.onerror = () => reject(tx.error);
-    });
+    await waitForTransaction(tx);
   }
 
   /**
@@ -278,12 +256,7 @@ class IndexedDBService {
     await Promise.all([columnsPromise, bitsetsPromise]);
 
     // Wait for transaction to complete
-    await new Promise<void>((resolve, reject) => {
-      tx.oncomplete = () => {
-        resolve();
-      };
-      tx.onerror = () => reject(tx.error);
-    });
+    await waitForTransaction(tx);
   }
 
   private async appendColumn(
@@ -296,11 +269,7 @@ class IndexedDBService {
     const store = tx.objectStore(STORES.COLUMNS);
 
     // Get existing column or create new
-    const existing = await new Promise<ColumnRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, column]);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const existing = await executeRead<ColumnRecord>(store, [fileHash, column]);
 
     let finalData: Uint8Array;
     let finalOffsets: Uint32Array;
@@ -342,11 +311,7 @@ class IndexedDBService {
       length: finalLength,
     };
 
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(record);
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
+    await executeWrite(store, record);
   }
 
   private async updateBadgeBitset(
@@ -359,11 +324,7 @@ class IndexedDBService {
     const store = tx.objectStore(STORES.BITSETS);
 
     // Get existing bitset or create new
-    const existing = await new Promise<BitsetRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, badge]);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const existing = await executeRead<BitsetRecord>(store, [fileHash, badge]);
 
     let bitset: BitSet;
     let count = existing?.accountCount || 0;
@@ -395,15 +356,7 @@ class IndexedDBService {
       accountCount: count,
     };
 
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(record);
-      request.onsuccess = () => {
-        resolve();
-      };
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
+    await executeWrite(store, record);
   }
 
   /**
@@ -420,11 +373,7 @@ class IndexedDBService {
       const tx = db.transaction([STORES.COLUMNS], 'readonly');
       const store = tx.objectStore(STORES.COLUMNS);
 
-      const column = await new Promise<ColumnRecord>((resolve, reject) => {
-        const request = store.get([fileHash, 'usernames']);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      });
+      const column = await executeRead<ColumnRecord>(store, [fileHash, 'usernames']);
 
       if (!column) return [];
 
@@ -504,15 +453,7 @@ class IndexedDBService {
     const tx = db.transaction([STORES.BITSETS], 'readonly');
     const store = tx.objectStore(STORES.BITSETS);
 
-    const record = await new Promise<BitsetRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, badge]);
-      request.onsuccess = () => {
-        resolve(request.result);
-      };
-      request.onerror = () => {
-        reject(request.error);
-      };
-    });
+    const record = await executeRead<BitsetRecord>(store, [fileHash, badge]);
 
     if (!record) {
       return null;
@@ -578,11 +519,7 @@ class IndexedDBService {
       expiresAt: now + ttl,
     };
 
-    await new Promise<void>((resolve, reject) => {
-      const request = store.put(record);
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
+    await executeWrite(store, record);
   }
 
   /**
@@ -597,11 +534,7 @@ class IndexedDBService {
     const tx = db.transaction([STORES.INDEXES], 'readonly');
     const store = tx.objectStore(STORES.INDEXES);
 
-    const record = await new Promise<SearchIndexRecord | undefined>((resolve, reject) => {
-      const request = store.get([fileHash, type, key]);
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
-    });
+    const record = await executeRead<SearchIndexRecord>(store, [fileHash, type, key]);
 
     if (!record) return null;
 
@@ -629,30 +562,17 @@ class IndexedDBService {
       const store = tx.objectStore(storeName);
 
       if (storeName === STORES.FILES) {
-        await new Promise<void>((resolve, reject) => {
-          const request = store.delete(fileHash);
-          request.onsuccess = () => resolve();
-          request.onerror = () => reject(request.error);
-        });
+        await executeDelete(store, fileHash);
       } else {
         // Use getAllKeys for batch deletion (much faster than cursor-based)
         const index = store.index('fileHash');
         const range = IDBKeyRange.only(fileHash);
 
-        await new Promise<void>((resolve, reject) => {
-          const request = index.getAllKeys(range);
-
-          request.onsuccess = () => {
-            const keys = request.result;
-            // Delete all keys in batch (within same transaction)
-            for (const key of keys) {
-              store.delete(key);
-            }
-            resolve();
-          };
-
-          request.onerror = () => reject(request.error);
-        });
+        const keys = await getAllKeysFromIndex(index, range);
+        // Delete all keys in batch (within same transaction)
+        for (const key of keys) {
+          store.delete(key);
+        }
       }
     }
 
@@ -692,18 +612,12 @@ class IndexedDBService {
     const tx = db.transaction([STORES.FILES], 'readonly');
     const store = tx.objectStore(STORES.FILES);
 
-    return new Promise((resolve, reject) => {
-      const request = store.getAll();
-      request.onsuccess = () => {
-        const files = request.result.map(file => {
-          if (file.uploadDate) {
-            file.uploadDate = new Date(file.uploadDate);
-          }
-          return file;
-        });
-        resolve(files);
-      };
-      request.onerror = () => reject(request.error);
+    const files = await getAllRecords<FileMetadataRecord>(store);
+    return files.map(file => {
+      if (file.uploadDate) {
+        file.uploadDate = new Date(file.uploadDate);
+      }
+      return file;
     });
   }
 }

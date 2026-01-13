@@ -1,56 +1,17 @@
 import type { ParseWarning } from '@/core/types';
 import { analytics } from '@/lib/analytics';
+import { isValidZipFile } from '@/lib/file-validation';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
-import { indexedDBService } from '@/lib/indexeddb/indexeddb-service';
-import { logger } from '@/lib/logger';
+import { parseOnMainThread, parseWithWorker } from '@/lib/parse-orchestration';
 import { useAppStore } from '@/lib/store';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-// ZIP magic bytes: PK\x03\x04 (0x504B0304)
-const ZIP_MAGIC_BYTES = [0x50, 0x4b, 0x03, 0x04];
-
-// Worker timeout constants (ms)
-const WORKER_INIT_TIMEOUT_MS = 5000;
-const WORKER_PROCESSING_TIMEOUT_MS = 60000;
+import { useCallback, useRef, useState } from 'react';
+import { useParseWorker } from './useParseWorker';
 
 // Upload rate limiting (ms)
 const UPLOAD_DEBOUNCE_MS = 1000;
 
-/** Check if file is a valid ZIP by reading magic bytes */
-async function isValidZipFile(file: File): Promise<boolean> {
-  // Check extension first (quick check)
-  if (!file.name.toLowerCase().endsWith('.zip')) {
-    return false;
-  }
-
-  // In test environment, file.slice may not be available
-  if (typeof file.slice !== 'function') {
-    // Fall back to extension check only
-    return true;
-  }
-
-  try {
-    // Read first 4 bytes to verify ZIP signature
-    const header = await file.slice(0, 4).arrayBuffer();
-    const bytes = new Uint8Array(header);
-
-    return (
-      bytes.length >= 4 &&
-      bytes[0] === ZIP_MAGIC_BYTES[0] &&
-      bytes[1] === ZIP_MAGIC_BYTES[1] &&
-      bytes[2] === ZIP_MAGIC_BYTES[2] &&
-      bytes[3] === ZIP_MAGIC_BYTES[3]
-    );
-  } catch {
-    // If reading fails, fall back to extension check
-    return true;
-  }
-}
-
 export function useFileUpload() {
   const abortControllerRef = useRef<AbortController | null>(null);
-  const workerRef = useRef<Worker | null>(null);
-  const workerReadyRef = useRef(false);
   const lastUploadRef = useRef<number>(0);
 
   // Progress tracking
@@ -63,72 +24,8 @@ export function useFileUpload() {
   const setFilters = useAppStore(s => s.setFilters);
   const filters = useAppStore(s => s.filters);
 
-  // Initialize Web Worker for file parsing
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.Worker && !workerRef.current) {
-      const initializeWorker = async () => {
-        try {
-          // Create TypeScript module worker directly
-          try {
-            const worker = new Worker(new URL('../lib/parse-worker.ts', import.meta.url), {
-              type: 'module',
-            });
-            workerRef.current = worker;
-          } catch (error) {
-            throw new Error(
-              `Failed to create worker: ${error instanceof Error ? error.message : 'Unknown error'}`
-            );
-          }
-
-          // Wait for worker to be ready
-          const readyHandler = (e: MessageEvent) => {
-            if (e.data?.type === 'ready') {
-              workerReadyRef.current = true;
-              workerRef.current?.removeEventListener('message', readyHandler);
-            }
-          };
-
-          workerRef.current.addEventListener('message', readyHandler);
-
-          // Add global error handler
-          workerRef.current.onerror = event => {
-            const errorEvent = event as ErrorEvent;
-            logger.error('Parse worker error:', {
-              message: errorEvent?.message,
-              filename: errorEvent?.filename,
-              lineno: errorEvent?.lineno,
-              colno: errorEvent?.colno,
-            });
-            if (typeof errorEvent?.preventDefault === 'function') {
-              errorEvent.preventDefault();
-            }
-          };
-
-          // Timeout to detect if worker doesn't respond
-          setTimeout(() => {
-            if (!workerReadyRef.current) {
-              logger.warn('Parse worker initialization timeout, proceeding anyway');
-              workerReadyRef.current = true;
-            }
-          }, WORKER_INIT_TIMEOUT_MS);
-        } catch (error) {
-          logger.error('Failed to initialize parse worker:', error);
-        }
-      };
-
-      // Call the async function
-      initializeWorker();
-    }
-
-    // Cleanup worker on unmount
-    return () => {
-      if (workerRef.current) {
-        workerRef.current.terminate();
-        workerRef.current = null;
-        workerReadyRef.current = false;
-      }
-    };
-  }, []);
+  // Web Worker for file parsing
+  const { workerRef, isWorkerReady } = useParseWorker();
 
   const handleZipUpload = useCallback(
     // eslint-disable-next-line complexity -- Upload handler has high complexity due to multiple error paths, cache checks, and state management
@@ -231,124 +128,59 @@ export function useFileUpload() {
         let accountCount: number = 0;
         let resultFileHash: string = fileHash;
 
-        if (workerRef.current && workerReadyRef.current) {
+        const handleProgress = (progress: number, processed: number, total: number) => {
+          setUploadProgress(progress);
+          setProcessedCount(processed);
+          setTotalCount(total);
+        };
+
+        if (workerRef.current && isWorkerReady()) {
           // Parse file using Web Worker with progress updates
+          try {
+            const result = await parseWithWorker(
+              workerRef.current,
+              file,
+              fileHash,
+              handleProgress,
+              abortControllerRef.current?.signal
+            );
 
-          const result = await new Promise<{
-            fileHash: string;
-            accountCount: number;
-            warnings?: import('@/core/types').ParseWarning[];
-            discovery?: import('@/core/types').FileDiscovery;
-          }>((resolve, reject) => {
-            // Add timeout to detect infinite loading
-            const timeoutId = setTimeout(() => {
-              workerRef.current?.removeEventListener('message', handleMessage);
-              reject(new Error('Worker timeout: Processing took too long'));
-            }, WORKER_PROCESSING_TIMEOUT_MS);
+            accountCount = result.accountCount;
+            resultFileHash = result.fileHash;
 
-            const handleMessage = (e: MessageEvent) => {
-              if (e.data?.type === 'progress') {
-                // Progress update from chunked processing
-                const { progress, processedCount, totalCount } = e.data;
-                setUploadProgress(progress);
-                setProcessedCount(processedCount);
-                setTotalCount(totalCount);
-              } else if (e.data?.type === 'result') {
-                clearTimeout(timeoutId);
-                const {
-                  fileHash: resultHash,
-                  accountCount: resultAccountCount,
-                  warnings,
-                  discovery,
-                } = e.data;
-                workerRef.current?.removeEventListener('message', handleMessage);
-                resolve({
-                  fileHash: resultHash || fileHash,
-                  accountCount: resultAccountCount,
-                  warnings,
-                  discovery,
-                });
-              } else if (e.data?.type === 'error') {
-                clearTimeout(timeoutId);
-                workerRef.current?.removeEventListener('message', handleMessage);
-                // Save warnings and discovery for DiagnosticErrorScreen before rejecting
-                if (e.data.warnings || e.data.discovery) {
-                  setUploadInfo({
-                    parseWarnings: e.data.warnings ?? [],
-                    fileDiscovery: e.data.discovery,
-                  });
-                }
-                reject(new Error(e.data.error));
-              }
-            };
-
-            workerRef.current?.addEventListener('message', handleMessage);
-
-            workerRef.current?.postMessage({ type: 'parse', file, fileHash });
-          });
-
-          if (abortControllerRef.current?.signal.aborted) {
-            throw new Error('Upload cancelled');
+            // Store warnings and discovery from worker
+            if (result.warnings || result.discovery) {
+              setUploadInfo({
+                parseWarnings: result.warnings ?? [],
+                fileDiscovery: result.discovery,
+              });
+            }
+          } catch (error) {
+            // Extract warnings/discovery from error if available
+            if (error instanceof Error && 'warnings' in error) {
+              setUploadInfo({
+                parseWarnings: (error as { warnings?: ParseWarning[] }).warnings ?? [],
+                fileDiscovery: (error as { discovery?: import('@/core/types').FileDiscovery })
+                  .discovery,
+              });
+            }
+            throw error;
           }
+        } else {
+          // Fallback: parse on main thread
+          const result = await parseOnMainThread(
+            file,
+            fileHash,
+            abortControllerRef.current?.signal
+          );
 
           accountCount = result.accountCount;
           resultFileHash = result.fileHash;
 
-          // Store warnings and discovery from worker
-          if (result.warnings || result.discovery) {
-            setUploadInfo({
-              parseWarnings: result.warnings ?? [],
-              fileDiscovery: result.discovery,
-            });
-          }
-        } else {
-          logger.warn('[Upload] Worker not available, falling back to main thread parsing');
-          logger.warn('[Upload] This will be slower for large files!');
-          logger.warn('[Upload] Worker status:', {
-            workerExists: !!workerRef.current,
-            workerReady: workerReadyRef.current,
-          });
-
-          // Fallback: parse on main thread (imports needed for fallback)
-          const { parseInstagramZipFile } = await import('@/core/parsers/instagram');
-          const { buildAccountBadgeIndex } = await import('@/core/badges');
-
-          const parseResult = await parseInstagramZipFile(file);
-
-          if (abortControllerRef.current?.signal.aborted) {
-            throw new Error('Upload cancelled');
-          }
-
-          // Check if we have enough data to continue
-          if (!parseResult.hasMinimalData) {
-            const error = parseResult.warnings.find(w => w.severity === 'error');
-            throw new Error(error?.message ?? 'Could not parse Instagram data');
-          }
-
-          const unified = buildAccountBadgeIndex(parseResult.data);
-
-          if (abortControllerRef.current?.signal.aborted) {
-            throw new Error('Upload cancelled');
-          }
-
-          // Save to IndexedDB
-          await indexedDBService.saveFileMetadata({
-            fileHash: resultFileHash,
-            fileName: file.name,
-            fileSize: file.size,
-            uploadDate: new Date(),
-            accountCount: unified.length,
-            lastAccessed: Date.now(),
-            version: 2,
-          });
-
-          await indexedDBService.storeAllAccounts(resultFileHash, unified);
-          accountCount = unified.length;
-
           // Store warnings and discovery from main thread parsing
           setUploadInfo({
-            parseWarnings: parseResult.warnings,
-            fileDiscovery: parseResult.discovery,
+            parseWarnings: result.warnings ?? [],
+            fileDiscovery: result.discovery,
           });
         }
 
