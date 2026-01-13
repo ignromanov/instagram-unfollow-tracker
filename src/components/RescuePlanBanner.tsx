@@ -274,7 +274,7 @@ export function RescuePlanBanner({
       </div>
 
       {/* Tools grid with CTA buttons and trust signals */}
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
         {tools.map((tool, index) => (
           <a
             key={tool.id}
