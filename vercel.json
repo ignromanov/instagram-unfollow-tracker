@@ -6,11 +6,6 @@
   "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
-  "functions": {
-    "api/og.tsx": {
-      "runtime": "edge"
-    }
-  },
   "rewrites": [
     {
       "source": "/docs/:path*",
