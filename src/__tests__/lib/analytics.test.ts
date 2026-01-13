@@ -281,6 +281,183 @@ describe('Analytics', () => {
         const call = windowSpy.umami.track.mock.calls[0];
         expect(call[1].processing_time_ms).toBe(1235);
       });
+
+      it('should track language change', () => {
+        analytics.languageChange('es');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.LANGUAGE_CHANGE, {
+          language: 'es',
+        });
+      });
+
+      it('should track page view with language', () => {
+        analytics.pageView('hero', 'en');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.PAGE_VIEW, {
+          page: 'hero',
+          language: 'en',
+        });
+      });
+
+      it('should track page view without language', () => {
+        analytics.pageView('wizard');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.PAGE_VIEW, {
+          page: 'wizard',
+        });
+      });
+
+      it('should track upload zone interactions', () => {
+        analytics.uploadDragEnter();
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(
+          AnalyticsEvents.UPLOAD_DRAG_ENTER,
+          undefined
+        );
+
+        analytics.uploadDragLeave();
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(
+          AnalyticsEvents.UPLOAD_DRAG_LEAVE,
+          undefined
+        );
+
+        analytics.uploadDrop();
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.UPLOAD_DROP, undefined);
+
+        analytics.uploadClick();
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.UPLOAD_CLICK, undefined);
+      });
+
+      it('should track diagnostic error events', () => {
+        analytics.diagnosticErrorView('NOT_ZIP', 'upload');
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.DIAGNOSTIC_ERROR_VIEW, {
+          error_code: 'NOT_ZIP',
+          source: 'upload',
+        });
+
+        analytics.diagnosticErrorRetry('NOT_ZIP');
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.DIAGNOSTIC_ERROR_RETRY, {
+          error_code: 'NOT_ZIP',
+        });
+
+        analytics.diagnosticErrorHelp('NOT_ZIP');
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.DIAGNOSTIC_ERROR_HELP, {
+          error_code: 'NOT_ZIP',
+        });
+      });
+
+      it('should track diagnostic error view without source', () => {
+        analytics.diagnosticErrorView('HTML_FORMAT');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.DIAGNOSTIC_ERROR_VIEW, {
+          error_code: 'HTML_FORMAT',
+        });
+      });
+
+      it('should track waiting dashboard interactions', () => {
+        analytics.waitingUploadClick();
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(
+          AnalyticsEvents.WAITING_UPLOAD_CLICK,
+          undefined
+        );
+
+        analytics.waitingBackClick();
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(
+          AnalyticsEvents.WAITING_BACK_CLICK,
+          undefined
+        );
+      });
+
+      it('should track FAQ expansion with truncated text', () => {
+        const longQuestion = 'Q: '.repeat(50); // 150+ chars
+        analytics.faqExpand(1, longQuestion);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.FAQ_EXPAND, {
+          question_id: 1,
+          question_text: expect.stringContaining('Q:'),
+        });
+
+        const call = windowSpy.umami.track.mock.calls[0];
+        expect(call[1].question_text.length).toBeLessThanOrEqual(100);
+      });
+
+      it('should track results scroll depth', () => {
+        analytics.resultsScrollDepth(50, 1500);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESULTS_SCROLL_DEPTH, {
+          depth: 50,
+          total_accounts: 1500,
+        });
+      });
+
+      it('should track sample data load', () => {
+        analytics.sampleDataLoad(500, 1234.567);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.SAMPLE_DATA_LOAD, {
+          account_count: 500,
+          load_time_ms: 1235,
+        });
+      });
+
+      it('should track rescue plan impression', () => {
+        analytics.rescuePlanImpression('high', 'large', 45.678);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESCUE_PLAN_IMPRESSION, {
+          severity: 'high',
+          size: 'large',
+          unfollowed_percent: 46,
+        });
+      });
+
+      it('should track rescue plan tool click', () => {
+        analytics.rescuePlanToolClick('tool-1', 'medium', 'small');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESCUE_PLAN_TOOL_CLICK, {
+          tool_id: 'tool-1',
+          severity: 'medium',
+          size: 'small',
+        });
+      });
+
+      it('should track rescue plan dismiss', () => {
+        analytics.rescuePlanDismiss('low', 'medium', 12.345);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESCUE_PLAN_DISMISS, {
+          severity: 'low',
+          size: 'medium',
+          unfollowed_percent: 12,
+        });
+      });
+
+      it('should track rescue plan hover', () => {
+        analytics.rescuePlanHover('tool-2', 1234.567);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESCUE_PLAN_HOVER, {
+          tool_id: 'tool-2',
+          duration_ms: 1235,
+        });
+      });
+
+      it('should track rescue plan view time', () => {
+        analytics.rescuePlanViewTime(45.678, 'high', 'large');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESCUE_PLAN_VIEW_TIME, {
+          view_time_seconds: 46,
+          severity: 'high',
+          size: 'large',
+        });
+      });
+
+      it('should track rescue plan re-engagement', () => {
+        analytics.rescuePlanReEngagement('low', 'high');
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(
+          AnalyticsEvents.RESCUE_PLAN_RE_ENGAGEMENT,
+          {
+            old_severity: 'low',
+            new_severity: 'high',
+          }
+        );
+      });
     });
 
     describe('in development mode', () => {

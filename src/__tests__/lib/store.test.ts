@@ -1,5 +1,5 @@
 import type { BadgeKey } from '@/core/types';
-import { useAppStore, type HowToSubStep, type JourneyStep } from '@/lib/store';
+import { useAppStore } from '@/lib/store';
 import { act, renderHook } from '@testing-library/react';
 
 // Mock localStorage
@@ -32,12 +32,6 @@ describe('useAppStore', () => {
       uploadStatus: 'idle',
       uploadError: null,
       fileMetadata: null,
-      journey: {
-        currentStep: 'hero',
-        completedSteps: new Set<JourneyStep>(),
-        expandedSteps: new Set<JourneyStep>(['hero']),
-        completedHowToSubSteps: new Set<HowToSubStep>(),
-      },
       language: 'en',
       parseWarnings: [],
       fileDiscovery: null,
@@ -55,15 +49,9 @@ describe('useAppStore', () => {
       expect(result.current.uploadError).toBeNull();
       expect(result.current.fileMetadata).toBeNull();
       expect(result.current.language).toBe('en');
-    });
-
-    it('should have correct initial journey state', () => {
-      const { result } = renderHook(() => useAppStore());
-
-      expect(result.current.journey.currentStep).toBe('hero');
-      expect(result.current.journey.completedSteps).toEqual(new Set());
-      expect(result.current.journey.expandedSteps).toEqual(new Set(['hero']));
-      expect(result.current.journey.completedHowToSubSteps).toEqual(new Set());
+      expect(result.current.parseWarnings).toEqual([]);
+      expect(result.current.fileDiscovery).toBeNull();
+      expect(result.current._hasHydrated).toBe(false);
     });
   });
 
@@ -302,6 +290,251 @@ describe('useAppStore', () => {
       });
       expect(result.current.filters.size).toBe(2);
       expect(result.current.filters.has('mutuals')).toBe(false);
+    });
+  });
+
+  describe('persistence', () => {
+    it('should handle localStorage getItem with null value', () => {
+      localStorageMock.getItem.mockReturnValue(null);
+
+      const result = useAppStore.persist.getOptions().storage?.getItem('test-key');
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle localStorage getItem with valid JSON', () => {
+      const mockData = {
+        state: {
+          filters: ['following', 'followers'],
+          language: 'es',
+        },
+        version: 5,
+      };
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(mockData));
+
+      const result = useAppStore.persist.getOptions().storage?.getItem('test-key');
+
+      expect(result).toEqual({
+        state: {
+          filters: new Set(['following', 'followers']),
+          language: 'es',
+        },
+        version: 5,
+      });
+    });
+
+    it('should handle localStorage getItem with parse error', () => {
+      localStorageMock.getItem.mockReturnValue('invalid json');
+
+      const result = useAppStore.persist.getOptions().storage?.getItem('test-key');
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle localStorage getItem when localStorage throws', () => {
+      localStorageMock.getItem.mockImplementation(() => {
+        throw new Error('QuotaExceededError');
+      });
+
+      const result = useAppStore.persist.getOptions().storage?.getItem('test-key');
+
+      expect(result).toBeNull();
+    });
+
+    it('should handle localStorage setItem with Set serialization', () => {
+      const value = {
+        state: {
+          filters: new Set(['following', 'followers']),
+          language: 'en',
+        },
+      };
+
+      useAppStore.persist.getOptions().storage?.setItem('test-key', value);
+
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'test-key',
+        JSON.stringify({
+          state: {
+            filters: ['following', 'followers'],
+            language: 'en',
+          },
+        })
+      );
+    });
+
+    it('should handle localStorage setItem when localStorage throws', () => {
+      localStorageMock.setItem.mockImplementation(() => {
+        throw new Error('QuotaExceededError');
+      });
+
+      expect(() => {
+        useAppStore.persist.getOptions().storage?.setItem('test-key', { state: {} });
+      }).not.toThrow();
+    });
+
+    it('should handle localStorage removeItem', () => {
+      useAppStore.persist.getOptions().storage?.removeItem('test-key');
+
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith('test-key');
+    });
+
+    it('should handle localStorage removeItem when localStorage throws', () => {
+      localStorageMock.removeItem.mockImplementation(() => {
+        throw new Error('Error');
+      });
+
+      expect(() => {
+        useAppStore.persist.getOptions().storage?.removeItem('test-key');
+      }).not.toThrow();
+    });
+  });
+
+  describe('migration', () => {
+    it('should migrate from version 4 to version 5 (remove journey)', () => {
+      const oldState = {
+        filters: new Set(['following']),
+        language: 'es',
+        journey: {
+          currentStep: 'hero',
+          completedSteps: new Set(),
+        },
+      };
+
+      const migrate = useAppStore.persist.getOptions().migrate;
+      const result = migrate?.(oldState, 4);
+
+      expect(result).toEqual({
+        filters: new Set(['following']),
+        language: 'es',
+        _hasHydrated: false,
+      });
+    });
+
+    it('should add default language during migration if missing', () => {
+      const oldState = {
+        filters: new Set(['followers']),
+      };
+
+      const migrate = useAppStore.persist.getOptions().migrate;
+      const result = migrate?.(oldState, 3);
+
+      expect(result).toEqual({
+        filters: new Set(['followers']),
+        language: 'en',
+        _hasHydrated: false,
+      });
+    });
+
+    it('should return fresh state when migration fails', () => {
+      const migrate = useAppStore.persist.getOptions().migrate;
+      const result = migrate?.(null, 4);
+
+      expect(result).toEqual({
+        filters: new Set(),
+        currentFileName: null,
+        uploadStatus: 'idle',
+        uploadError: null,
+        fileMetadata: null,
+        language: 'en',
+        _hasHydrated: false,
+      });
+    });
+
+    it('should return state as-is for future versions', () => {
+      const newState = {
+        filters: new Set(['following']),
+        language: 'en',
+        someNewField: 'value',
+      };
+
+      const migrate = useAppStore.persist.getOptions().migrate;
+      const result = migrate?.(newState, 6);
+
+      expect(result).toEqual(newState);
+    });
+  });
+
+  describe('rehydration', () => {
+    it('should set _hasHydrated to true on rehydration', () => {
+      const state = {
+        filters: new Set<BadgeKey>(),
+        language: 'en' as const,
+        _hasHydrated: false,
+      };
+
+      const onRehydrate = useAppStore.persist.getOptions().onRehydrateStorage;
+      const callback = onRehydrate?.();
+      callback?.(state as any, undefined);
+
+      expect(state._hasHydrated).toBe(true);
+    });
+
+    it('should handle null state during rehydration', () => {
+      const onRehydrate = useAppStore.persist.getOptions().onRehydrateStorage;
+      const callback = onRehydrate?.();
+
+      expect(() => {
+        callback?.(null as any, undefined);
+      }).not.toThrow();
+    });
+
+    it('should sync non-English language on rehydration', () => {
+      const state = {
+        filters: new Set<BadgeKey>(),
+        language: 'ru' as const,
+        _hasHydrated: false,
+      };
+
+      const onRehydrate = useAppStore.persist.getOptions().onRehydrateStorage;
+      const callback = onRehydrate?.();
+      callback?.(state as any, undefined);
+
+      expect(state._hasHydrated).toBe(true);
+    });
+
+    it('should handle English language on rehydration', () => {
+      const state = {
+        filters: new Set<BadgeKey>(),
+        language: 'en' as const,
+        _hasHydrated: false,
+      };
+
+      const onRehydrate = useAppStore.persist.getOptions().onRehydrateStorage;
+      const callback = onRehydrate?.();
+      callback?.(state as any, undefined);
+
+      expect(state._hasHydrated).toBe(true);
+    });
+  });
+
+  describe('partialize', () => {
+    it('should only persist specified fields', () => {
+      const fullState = {
+        filters: new Set(['following']),
+        currentFileName: 'test.zip',
+        uploadStatus: 'success' as const,
+        uploadError: null,
+        fileMetadata: { name: 'test.zip', size: 1024 },
+        language: 'en' as const,
+        parseWarnings: [],
+        fileDiscovery: null,
+        _hasHydrated: true,
+      };
+
+      const partialize = useAppStore.persist.getOptions().partialize;
+      const result = partialize?.(fullState as any);
+
+      expect(result).toEqual({
+        filters: ['following'],
+        currentFileName: 'test.zip',
+        uploadStatus: 'success',
+        uploadError: null,
+        fileMetadata: { name: 'test.zip', size: 1024 },
+        language: 'en',
+      });
+      expect(result).not.toHaveProperty('parseWarnings');
+      expect(result).not.toHaveProperty('fileDiscovery');
+      expect(result).not.toHaveProperty('_hasHydrated');
     });
   });
 });
