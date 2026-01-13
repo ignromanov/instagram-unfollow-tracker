@@ -8,7 +8,7 @@
   "trailingSlash": false,
   "functions": {
     "api/og.tsx": {
-      "runtime": "@vercel/edge"
+      "runtime": "edge"
     }
   },
   "rewrites": [
