@@ -1,13 +1,14 @@
 import { render } from '@testing-library/react';
+import { forwardRef } from 'react';
 import { Separator } from '@/components/ui/separator';
 
-// Mock Radix UI Separator
+// Mock Radix UI Separator with proper decorative behavior
 vi.mock('@radix-ui/react-separator', () => ({
-  Root: ({ children, ...props }: any) => (
-    <div data-testid="separator" {...props}>
-      {children}
-    </div>
-  ),
+  Root: forwardRef(({ decorative = true, ...props }: any, ref: any) => {
+    // Mimic Radix behavior: decorative=true -> role="none", decorative=false -> role="separator"
+    const role = decorative ? 'none' : 'separator';
+    return <div ref={ref} data-testid="separator" role={role} {...props} />;
+  }),
 }));
 
 describe('Separator Component', () => {
@@ -18,7 +19,7 @@ describe('Separator Component', () => {
       const separator = getByTestId('separator');
       expect(separator).toBeInTheDocument();
       expect(separator).toHaveAttribute('orientation', 'horizontal');
-      expect(separator).toHaveAttribute('decorative', 'true');
+      expect(separator).toHaveAttribute('role', 'none'); // decorative=true -> role="none"
     });
 
     it('should render with horizontal orientation classes', () => {
@@ -39,14 +40,14 @@ describe('Separator Component', () => {
       const { getByTestId } = render(<Separator decorative={true} />);
 
       const separator = getByTestId('separator');
-      expect(separator).toHaveAttribute('decorative', 'true');
+      expect(separator).toHaveAttribute('role', 'none'); // decorative=true -> role="none"
     });
 
     it('should render with decorative false', () => {
       const { getByTestId } = render(<Separator decorative={false} />);
 
       const separator = getByTestId('separator');
-      expect(separator).toHaveAttribute('decorative', 'false');
+      expect(separator).toHaveAttribute('role', 'separator'); // decorative=false -> role="separator"
     });
 
     it('should apply custom className', () => {
@@ -109,10 +110,11 @@ describe('Separator Component', () => {
     });
 
     it('should handle ref forwarding', () => {
-      const ref = vi.fn();
+      const ref = { current: null };
       render(<Separator ref={ref} />);
 
-      expect(ref).toHaveBeenCalled();
+      expect(ref.current).not.toBeNull();
+      expect(ref.current).toBeInstanceOf(HTMLElement);
     });
 
     it('should handle all props combination', () => {
@@ -129,7 +131,7 @@ describe('Separator Component', () => {
       const separator = getByTestId('custom-separator');
       expect(separator).toBeInTheDocument();
       expect(separator).toHaveAttribute('orientation', 'vertical');
-      expect(separator).toHaveAttribute('decorative', 'false');
+      expect(separator).toHaveAttribute('role', 'separator'); // decorative=false -> role="separator"
       expect(separator).toHaveAttribute('aria-label', 'Divider');
       expect(separator).toHaveClass('custom');
     });
@@ -140,14 +142,14 @@ describe('Separator Component', () => {
       const { getByTestId } = render(<Separator />);
 
       const separator = getByTestId('separator');
-      expect(separator).toHaveAttribute('decorative', 'true');
+      expect(separator).toHaveAttribute('role', 'none'); // decorative=true -> role="none" (hidden from a11y tree)
     });
 
     it('should support non-decorative mode with aria-label', () => {
       const { getByTestId } = render(<Separator decorative={false} aria-label="Section divider" />);
 
       const separator = getByTestId('separator');
-      expect(separator).toHaveAttribute('decorative', 'false');
+      expect(separator).toHaveAttribute('role', 'separator'); // decorative=false -> role="separator" (visible to a11y)
       expect(separator).toHaveAttribute('aria-label', 'Section divider');
     });
   });

@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import '@vitest/web-worker';
 import { vi } from 'vitest';
 
 // Import real translation files
@@ -186,32 +187,7 @@ global.File = class MockFile {
   }
 } as any;
 
-// Mock Worker
-global.Worker = class MockWorker {
-  url: string;
-  onmessage: (event: MessageEvent) => void;
-  onerror: (event: ErrorEvent) => void;
-
-  constructor(stringUrl: string) {
-    this.url = stringUrl;
-    this.onmessage = () => {};
-    this.onerror = () => {};
-  }
-
-  postMessage(_msg: unknown) {
-    // Mock: no-op
-  }
-
-  terminate() {
-    // Mock: no-op
-  }
-
-  addEventListener(_type: string, _listener: EventListener) {}
-  removeEventListener(_type: string, _listener: EventListener) {}
-  dispatchEvent(_event: Event): boolean {
-    return true;
-  }
-} as any;
+// Note: Worker is now provided by @vitest/web-worker for realistic testing
 
 // Mock localStorage with proper implementation
 class LocalStorageMock implements Storage {

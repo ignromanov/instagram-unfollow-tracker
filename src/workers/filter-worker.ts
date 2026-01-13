@@ -17,9 +17,18 @@ let engineInstance: IndexedDBFilterEngine | null = null;
 let isInitialized = false;
 
 /**
- * Filter Worker API exposed via Comlink
+ * Reset worker state (for testing purposes)
  */
-const filterWorkerApi = {
+export function resetWorkerState(): void {
+  engineInstance = null;
+  isInitialized = false;
+}
+
+/**
+ * Filter Worker API exposed via Comlink
+ * Exported for direct unit testing
+ */
+export const filterWorkerApi = {
   /**
    * Initialize the filter engine with file hash and account count
    */
@@ -82,5 +91,11 @@ const filterWorkerApi = {
 // Export type for use in the hook
 export type FilterWorkerApi = typeof filterWorkerApi;
 
-// Expose the API via Comlink
-Comlink.expose(filterWorkerApi);
+// Expose the API via Comlink only in worker environment
+// Check for postMessage which exists in real workers and @vitest/web-worker
+// but not when imported directly in Node/test for unit testing
+const isWorkerContext = typeof self !== 'undefined' && typeof self.postMessage === 'function';
+
+if (isWorkerContext) {
+  Comlink.expose(filterWorkerApi);
+}
