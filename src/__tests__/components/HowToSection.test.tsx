@@ -1,17 +1,12 @@
 import { vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, fireEvent } from '@testing-library/react';
+import { renderWithRouter } from '@/__tests__/test-utils';
 import howtoEN from '@/locales/en/howto.json';
 import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
 vi.mock('react-i18next', () => createI18nMock(howtoEN));
 
 import { HowToSection } from '@/components/HowToSection';
-
-// Helper to render component with Router context
-function renderWithRouter(ui: React.ReactElement, { initialEntries = ['/'] } = {}) {
-  return render(<MemoryRouter initialEntries={initialEntries}>{ui}</MemoryRouter>);
-}
 
 describe('HowToSection', () => {
   beforeEach(() => {

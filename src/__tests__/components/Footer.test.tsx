@@ -1,6 +1,6 @@
 import { vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, fireEvent } from '@testing-library/react';
+import { renderWithRouter } from '@/__tests__/test-utils';
 import commonEN from '@/locales/en/common.json';
 import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
@@ -13,10 +13,6 @@ vi.mock('react-i18next', () => createI18nMock(commonEN));
 
 import { Footer } from '@/components/Footer';
 import * as analytics from '@/lib/analytics';
-
-const renderWithRouter = (ui: React.ReactElement) => {
-  return render(<MemoryRouter>{ui}</MemoryRouter>);
-};
 
 // Mock analytics module
 vi.mock('@/lib/analytics', () => ({

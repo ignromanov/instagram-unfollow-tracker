@@ -1,3 +1,4 @@
+import 'fake-indexeddb/auto';
 import { renderHook, act } from '@testing-library/react';
 import { useDataManagement } from '@/hooks/useDataManagement';
 

@@ -19,6 +19,11 @@ export const createRoot = ViteReactSSG(
   {
     routes,
     basename: import.meta.env.BASE_URL,
+    // React Router v7 future flags
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    },
   },
   async ({ isClient }) => {
     // Initialize i18n (loads English resources dynamically)

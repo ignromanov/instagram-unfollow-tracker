@@ -1,5 +1,6 @@
 import { vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@tests/utils/testUtils';
+import { screen, fireEvent } from '@tests/utils/testUtils';
+import { renderWithRouter } from '@/__tests__/test-utils';
 import resultsEN from '@/locales/en/results.json';
 import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
@@ -8,12 +9,6 @@ vi.mock('react-i18next', () => createI18nMock(resultsEN));
 import { AccountListSection } from '@/components/AccountListSection';
 import type { BadgeKey } from '@/core/types';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
-import { MemoryRouter } from 'react-router-dom';
-
-// Helper to render with Router context
-function renderWithRouter(ui: React.ReactElement) {
-  return render(<MemoryRouter>{ui}</MemoryRouter>);
-}
 
 // Mock the useAccountFiltering hook
 vi.mock('@/hooks/useAccountFiltering');

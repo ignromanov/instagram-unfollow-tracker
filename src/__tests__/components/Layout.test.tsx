@@ -129,7 +129,13 @@ const renderLayout = (initialPath = '/', lang?: 'en' | 'es' | 'ar') => {
   const TestOutlet = () => <div data-testid="page-content">Page Content</div>;
 
   return render(
-    <MemoryRouter initialEntries={[initialPath]}>
+    <MemoryRouter
+      initialEntries={[initialPath]}
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <Routes>
         <Route path="*" element={<Layout lang={lang} />}>
           <Route index element={<TestOutlet />} />

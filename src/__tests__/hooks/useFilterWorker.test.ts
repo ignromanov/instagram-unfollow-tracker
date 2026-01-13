@@ -68,7 +68,7 @@ describe('useFilterWorker', () => {
   });
 
   describe('initialization', () => {
-    it('should start with isReady=false', () => {
+    it('should start with isReady=false', async () => {
       const { result } = renderHook(() =>
         useFilterWorker({ fileHash: mockFileHash, totalAccounts })
       );
@@ -77,6 +77,11 @@ describe('useFilterWorker', () => {
       expect(result.current.isReady).toBe(false);
       expect(result.current.hasError).toBe(false);
       expect(result.current.error).toBeNull();
+
+      // Wait for async initialization to complete to avoid act() warnings
+      await waitFor(() => {
+        expect(result.current.isReady).toBe(true);
+      });
     });
 
     it('should become ready after worker initialization', async () => {
@@ -389,6 +394,11 @@ describe('useFilterWorker', () => {
 
       // dispose should be called for cleanup
       expect(mockApi.dispose).toHaveBeenCalled();
+
+      // Wait for new worker initialization to complete
+      await waitFor(() => {
+        expect(result.current.isReady).toBe(true);
+      });
     });
   });
 
@@ -397,6 +407,11 @@ describe('useFilterWorker', () => {
       const { result, rerender } = renderHook(() =>
         useFilterWorker({ fileHash: mockFileHash, totalAccounts })
       );
+
+      // Wait for initialization to complete
+      await waitFor(() => {
+        expect(result.current.isReady).toBe(true);
+      });
 
       const callback1 = result.current.filterToIndices;
 
@@ -411,6 +426,11 @@ describe('useFilterWorker', () => {
       const { result, rerender } = renderHook(() =>
         useFilterWorker({ fileHash: mockFileHash, totalAccounts })
       );
+
+      // Wait for initialization to complete
+      await waitFor(() => {
+        expect(result.current.isReady).toBe(true);
+      });
 
       const callback1 = result.current.getStats;
 
