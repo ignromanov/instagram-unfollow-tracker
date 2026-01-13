@@ -4,18 +4,12 @@
   "buildCommand": "npm run build && cd docs && bundle install && bundle exec jekyll build -d ../dist/docs",
   "outputDirectory": "dist",
   "installCommand": "npm install",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/docs/:path*",
       "destination": "/docs/:path*"
-    },
-    {
-      "source": "/:lang(es|pt|hi|id|tr|ja|ru|de|ar)/:path*",
-      "destination": "/:lang/:path*"
-    },
-    {
-      "source": "/((?!assets|docs|favicon|apple-touch|site\\.webmanifest|robots\\.txt|sitemap\\.xml).*)",
-      "destination": "/index.html"
     }
   ],
   "headers": [

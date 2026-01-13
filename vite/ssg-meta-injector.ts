@@ -3,6 +3,7 @@ import path from 'path';
 import {
   SUPPORTED_LANGUAGES,
   LOCALE_CODES,
+  RTL_LANGUAGES,
   getLocaleCode,
   createLanguagePrefixRegex,
 } from '../src/config/languages.js';
@@ -97,6 +98,13 @@ export async function injectLocalizedMeta(
 
   // Replace all meta tags in HTML
   let html = renderedHTML;
+
+  // 0. Replace <html lang="en"> with current language (+ dir="rtl" for Arabic)
+  const isRtl = RTL_LANGUAGES.includes(currentLang as (typeof RTL_LANGUAGES)[number]);
+  const htmlOpenTag = isRtl
+    ? `<html lang="${currentLang}" dir="rtl"`
+    : `<html lang="${currentLang}"`;
+  html = html.replace(/<html\s+lang="[^"]*"(\s+dir="[^"]*")?/, htmlOpenTag);
 
   // 1. Replace <title>
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapedTitle}</title>`);
