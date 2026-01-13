@@ -478,21 +478,7 @@ describe('useAppStore', () => {
       }).not.toThrow();
     });
 
-    it('should sync non-English language on rehydration', () => {
-      const state = {
-        filters: new Set<BadgeKey>(),
-        language: 'ru' as const,
-        _hasHydrated: false,
-      };
-
-      const onRehydrate = useAppStore.persist.getOptions().onRehydrateStorage;
-      const callback = onRehydrate?.();
-      callback?.(state as any, undefined);
-
-      expect(state._hasHydrated).toBe(true);
-    });
-
-    it('should handle English language on rehydration', () => {
+    it('should set _hasHydrated on rehydration without language sync', () => {
       const state = {
         filters: new Set<BadgeKey>(),
         language: 'en' as const,
@@ -503,6 +489,7 @@ describe('useAppStore', () => {
       const callback = onRehydrate?.();
       callback?.(state as any, undefined);
 
+      // Language is NOT synced from localStorage - URL is source of truth
       expect(state._hasHydrated).toBe(true);
     });
   });
@@ -524,14 +511,15 @@ describe('useAppStore', () => {
       const partialize = useAppStore.persist.getOptions().partialize;
       const result = partialize?.(fullState as any);
 
+      // Language is NOT persisted - URL is the source of truth
       expect(result).toEqual({
         filters: ['following'],
         currentFileName: 'test.zip',
         uploadStatus: 'success',
         uploadError: null,
         fileMetadata: { name: 'test.zip', size: 1024 },
-        language: 'en',
       });
+      expect(result).not.toHaveProperty('language');
       expect(result).not.toHaveProperty('parseWarnings');
       expect(result).not.toHaveProperty('fileDiscovery');
       expect(result).not.toHaveProperty('_hasHydrated');

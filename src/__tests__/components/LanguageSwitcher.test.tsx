@@ -6,8 +6,9 @@ import { createI18nMock } from '@/__tests__/utils/mockI18n';
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
+const mockUseLocation = vi.fn();
 vi.mock('react-router-dom', () => ({
-  useLocation: () => ({ pathname: '/' }),
+  useLocation: () => mockUseLocation(),
   useNavigate: () => mockNavigate,
 }));
 
@@ -51,6 +52,10 @@ describe('LanguageSwitcher', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Default location mock
+    mockUseLocation.mockReturnValue({ pathname: '/' });
+
     vi.mocked(store.useAppStore).mockReturnValue({
       language: 'en',
       setLanguage: mockSetLanguage,
@@ -132,8 +137,16 @@ describe('LanguageSwitcher', () => {
     expect(await screen.findByText('Deutsch')).toBeInTheDocument();
   });
 
-  it('should call setLanguage when language is selected', async () => {
+  it('should trigger full page reload to new language URL when language is selected', async () => {
     const user = userEvent.setup();
+
+    // Mock location for /wizard path
+    mockUseLocation.mockReturnValue({ pathname: '/wizard' });
+
+    // Mock window.location.href
+    delete (window as any).location;
+    (window as any).location = { href: '', pathname: '/wizard' };
+
     render(<LanguageSwitcher />);
 
     await openDropdown();
@@ -141,7 +154,9 @@ describe('LanguageSwitcher', () => {
     const spanishOption = await screen.findByText('Español');
     await user.click(spanishOption);
 
-    expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    // Should reload to Spanish URL (not call setLanguage)
+    expect(window.location.href).toBe('/es/wizard');
+    expect(mockSetLanguage).not.toHaveBeenCalled();
   });
 
   it('should call analytics.languageChange when language is selected', async () => {

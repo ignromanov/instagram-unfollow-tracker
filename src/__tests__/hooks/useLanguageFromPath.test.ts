@@ -42,7 +42,6 @@ describe('useLanguageFromPath', () => {
     mockUseAppStore.mockReturnValue({
       language: 'en' as SupportedLanguage,
       setLanguage: mockSetLanguage,
-      _hasHydrated: true,
     });
 
     mockUseLocation.mockReturnValue({
@@ -87,7 +86,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -107,7 +105,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -127,7 +124,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -147,7 +143,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -167,7 +162,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -187,7 +181,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -207,7 +200,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -227,7 +219,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -247,7 +238,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -269,7 +259,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath('es'));
@@ -289,7 +278,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath('es'));
@@ -353,7 +341,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -373,7 +360,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -393,7 +379,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -402,58 +387,8 @@ describe('useLanguageFromPath', () => {
     });
   });
 
-  describe('hydration awareness', () => {
-    it('should not set language when store is not hydrated', () => {
-      mockUseLocation.mockReturnValue({
-        pathname: '/es/wizard',
-        search: '',
-        hash: '',
-        state: null,
-        key: 'default',
-      });
-
-      mockUseAppStore.mockReturnValue({
-        language: 'en' as SupportedLanguage,
-        setLanguage: mockSetLanguage,
-        _hasHydrated: false,
-      });
-
-      renderHook(() => useLanguageFromPath());
-
-      expect(mockSetLanguage).not.toHaveBeenCalled();
-    });
-
-    it('should set language after store becomes hydrated', () => {
-      mockUseLocation.mockReturnValue({
-        pathname: '/es/wizard',
-        search: '',
-        hash: '',
-        state: null,
-        key: 'default',
-      });
-
-      mockUseAppStore.mockReturnValue({
-        language: 'en' as SupportedLanguage,
-        setLanguage: mockSetLanguage,
-        _hasHydrated: false,
-      });
-
-      const { rerender } = renderHook(() => useLanguageFromPath());
-
-      expect(mockSetLanguage).not.toHaveBeenCalled();
-
-      // Simulate hydration
-      mockUseAppStore.mockReturnValue({
-        language: 'en' as SupportedLanguage,
-        setLanguage: mockSetLanguage,
-        _hasHydrated: true,
-      });
-
-      rerender();
-
-      expect(mockSetLanguage).toHaveBeenCalledWith('es');
-    });
-  });
+  // Note: "hydration awareness" tests removed - hook now works immediately
+  // URL is the source of truth, no dependency on _hasHydrated
 
   describe('language change optimization', () => {
     it('should not call setLanguage if language already matches', () => {
@@ -468,7 +403,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -488,7 +422,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       const { rerender } = renderHook(() => useLanguageFromPath());
@@ -523,7 +456,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -543,7 +475,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'ru' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -563,7 +494,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       const { rerender } = renderHook(() => useLanguageFromPath());
@@ -574,7 +504,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'ru' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       rerender();
@@ -596,7 +525,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -617,7 +545,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -639,7 +566,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -666,7 +592,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -697,7 +622,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -718,7 +642,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       const { rerender } = renderHook(() => useLanguageFromPath());
@@ -755,7 +678,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -776,7 +698,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -797,7 +718,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'ru' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -818,7 +738,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'pt' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -845,7 +764,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -875,7 +793,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -901,7 +818,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       renderHook(() => useLanguageFromPath());
@@ -921,7 +837,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       expect(() => {
@@ -943,14 +858,13 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       (i18n as any).language = 'en';
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockInitI18n).toHaveBeenCalled();
+      expect(mockLoadLanguage).toHaveBeenCalledWith('es');
     });
 
     it('should not call loadLanguage when i18n language matches store', () => {
@@ -965,36 +879,12 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       (i18n as any).language = 'es';
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockInitI18n).not.toHaveBeenCalled();
-    });
-
-    it('should not sync i18n when store is not hydrated', () => {
-      mockUseLocation.mockReturnValue({
-        pathname: '/es/wizard',
-        search: '',
-        hash: '',
-        state: null,
-        key: 'default',
-      });
-
-      mockUseAppStore.mockReturnValue({
-        language: 'es' as SupportedLanguage,
-        setLanguage: mockSetLanguage,
-        _hasHydrated: false,
-      });
-
-      (i18n as any).language = 'en';
-
-      renderHook(() => useLanguageFromPath());
-
-      expect(mockInitI18n).not.toHaveBeenCalled();
       expect(mockLoadLanguage).not.toHaveBeenCalled();
     });
   });
@@ -1012,7 +902,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       const { rerender } = renderHook(() => useLanguageFromPath());
@@ -1045,7 +934,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       const { rerender } = renderHook(({ lang }) => useLanguageFromPath(lang), {
@@ -1058,7 +946,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'ru' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       rerender({ lang: 'ru' as SupportedLanguage });
@@ -1078,7 +965,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'en' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       (i18n as any).language = 'en';
@@ -1091,7 +977,6 @@ describe('useLanguageFromPath', () => {
       mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
-        _hasHydrated: true,
       });
 
       rerender();
