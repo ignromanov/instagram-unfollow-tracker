@@ -1,6 +1,8 @@
 /**
  * Environment-aware logger
- * Only logs in development mode to keep production builds clean
+ *
+ * - error: Always logs (needed for production debugging)
+ * - warn/info/debug: Dev mode only (keeps production clean)
  */
 
 /* eslint-disable no-console */
@@ -9,10 +11,11 @@ const isDev = import.meta.env.DEV;
 
 export const logger = {
   /**
-   * Log error messages (only in dev mode)
+   * Log error messages (always, even in production)
+   * Errors are critical for debugging user-reported issues
    */
   error: (...args: unknown[]) => {
-    if (isDev) console.error('[App]', ...args);
+    console.error('[App]', ...args);
   },
 
   /**

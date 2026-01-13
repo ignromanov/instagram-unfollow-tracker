@@ -27,7 +27,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite-react-ssg build && npm generate:sitemap",
+    "build": "tsc -b && vite-react-ssg build && npm run generate:sitemap",
     "generate:sitemap": "npx tsx scripts/generate-sitemap.ts",
     "build:spa": "tsc -b && vite build",
     "build:all": "npm run build && cd docs && bundle install && bundle exec jekyll build -d ../dist/docs",

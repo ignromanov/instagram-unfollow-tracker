@@ -291,7 +291,12 @@ export async function parseInstagramZipFile(file: File): Promise<ParseResult> {
         try {
           const text = await f.async('text');
           return { data: JSON.parse(text), path: f.name };
-        } catch {
+        } catch (error) {
+          warnings.push({
+            code: 'JSON_PARSE_ERROR',
+            message: `Failed to parse ${f.name}: ${error instanceof Error ? error.message : 'Invalid JSON'}`,
+            severity: 'warning',
+          });
           return null;
         }
       }
@@ -381,7 +386,12 @@ export async function parseInstagramZipFile(file: File): Promise<ParseResult> {
     let json: unknown;
     try {
       json = JSON.parse(text);
-    } catch {
+    } catch (error) {
+      warnings.push({
+        code: 'JSON_PARSE_ERROR',
+        message: `Failed to parse ${f.name}: ${error instanceof Error ? error.message : 'Invalid JSON'}`,
+        severity: 'warning',
+      });
       continue;
     }
     const entries = Array.isArray(json)

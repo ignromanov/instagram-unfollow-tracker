@@ -273,8 +273,9 @@ export const useAppStore = create<AppState>()(
             });
           } else if (state.language === 'en') {
             // Ensure i18next is set to English if that's the persisted language
-            import('@/locales').then(({ default: i18n }) => {
-              i18n.changeLanguage('en');
+            // Must call initI18n() first to avoid SSG crash (i18n.store undefined)
+            import('@/locales').then(({ default: i18n, initI18n }) => {
+              initI18n().then(() => i18n.changeLanguage('en'));
             });
           }
         }
