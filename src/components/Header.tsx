@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { AppState } from '@/core/types';
 import { analytics } from '@/lib/analytics';
-import { LayoutDashboard, Moon, ShieldCheck, Sun, Trash2, Upload } from 'lucide-react';
+import { LayoutDashboard, Moon, ShieldCheck, Sun, SunMoon, Trash2, Upload } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -37,18 +37,17 @@ export function Header({
   activeScreen = AppState.HERO,
 }: HeaderProps) {
   const { t } = useTranslation('common');
-  const { resolvedTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   // Prevent hydration mismatch - theme is unknown on server
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const isDark = resolvedTheme === 'dark';
-
   const handleThemeToggle = () => {
-    const newTheme = isDark ? 'light' : 'dark';
-    setTheme(newTheme);
-    analytics.themeToggle(newTheme);
+    // Cycle: system → light → dark → system
+    const nextTheme = theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system';
+    setTheme(nextTheme);
+    analytics.themeToggle(nextTheme);
   };
 
   const handleClear = () => {
@@ -147,16 +146,34 @@ export function Header({
           <button
             onClick={handleThemeToggle}
             className="cursor-pointer p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
-            title={mounted ? (isDark ? t('theme.light') : t('theme.dark')) : ''}
-            aria-label={mounted ? (isDark ? t('theme.light') : t('theme.dark')) : ''}
+            title={
+              mounted
+                ? theme === 'system'
+                  ? t('theme.system')
+                  : theme === 'light'
+                    ? t('theme.dark')
+                    : t('theme.light')
+                : ''
+            }
+            aria-label={
+              mounted
+                ? theme === 'system'
+                  ? t('theme.system')
+                  : theme === 'light'
+                    ? t('theme.dark')
+                    : t('theme.light')
+                : ''
+            }
           >
             {/* Render placeholder before mount to avoid hydration mismatch */}
             {!mounted ? (
               <div className="w-5 h-5" />
-            ) : isDark ? (
-              <Sun size={20} />
-            ) : (
+            ) : theme === 'system' ? (
+              <SunMoon size={20} />
+            ) : theme === 'light' ? (
               <Moon size={20} />
+            ) : (
+              <Sun size={20} />
             )}
           </button>
         </div>

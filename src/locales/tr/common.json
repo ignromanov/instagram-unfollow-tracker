@@ -25,6 +25,7 @@
   "theme": {
     "light": "Açık Mod",
     "dark": "Koyu Mod",
+    "system": "Sistem Modu",
     "switchToLight": "Açık moda geç",
     "switchToDark": "Koyu moda geç"
   },

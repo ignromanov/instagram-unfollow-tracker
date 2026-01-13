@@ -25,6 +25,7 @@
   "theme": {
     "light": "लाइट मोड",
     "dark": "डार्क मोड",
+    "system": "सिस्टम मोड",
     "switchToLight": "लाइट मोड पर जाएं",
     "switchToDark": "डार्क मोड पर जाएं"
   },

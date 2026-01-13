@@ -25,6 +25,7 @@
   "theme": {
     "light": "Light Mode",
     "dark": "Dark Mode",
+    "system": "System Mode",
     "switchToLight": "Switch to light mode",
     "switchToDark": "Switch to dark mode"
   },

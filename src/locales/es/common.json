@@ -25,6 +25,7 @@
   "theme": {
     "light": "Modo claro",
     "dark": "Modo oscuro",
+    "system": "Automático",
     "switchToLight": "Cambiar a modo claro",
     "switchToDark": "Cambiar a modo oscuro"
   },

@@ -25,6 +25,7 @@
   "theme": {
     "light": "ライトモード",
     "dark": "ダークモード",
+    "system": "システムモード",
     "switchToLight": "ライトモードに切り替え",
     "switchToDark": "ダークモードに切り替え"
   },

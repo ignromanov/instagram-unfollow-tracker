@@ -25,6 +25,7 @@
   "theme": {
     "light": "Mode Terang",
     "dark": "Mode Gelap",
+    "system": "Mode Sistem",
     "switchToLight": "Beralih ke mode terang",
     "switchToDark": "Beralih ke mode gelap"
   },
