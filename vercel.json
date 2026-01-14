@@ -6,7 +6,7 @@
   "installCommand": "npm install",
   "functions": {
     "api/**/*.ts": {
-      "runtime": "edge"
+      "runtime": "edge@1.0.0"
     }
   },
   "cleanUrls": true,
