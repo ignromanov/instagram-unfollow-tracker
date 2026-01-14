@@ -110,10 +110,14 @@ export function Layout({ lang }: LayoutProps) {
     navigate(`${prefix}/`);
   };
 
+  // Show loading only for pages that need hydrated store data (not for hero)
+  const needsHydration = activeScreen !== AppState.HERO;
+  const showLoading = needsHydration && !hasHydrated;
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      {/* Loading state - must be inside ThemeProvider for useTheme() to work */}
-      {!hasHydrated ? (
+      {/* Loading state - only for pages that need store data */}
+      {showLoading ? (
         <div className="min-h-screen bg-background flex flex-col">
           <Header />
           <main className="flex-1 flex items-center justify-center">
