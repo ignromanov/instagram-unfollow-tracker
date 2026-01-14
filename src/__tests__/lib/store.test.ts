@@ -511,15 +511,16 @@ describe('useAppStore', () => {
       const partialize = useAppStore.persist.getOptions().partialize;
       const result = partialize?.(fullState as any);
 
-      // Language is NOT persisted - URL is the source of truth
+      // Language IS persisted - used for redirect from language-less paths
+      // URL remains the source of truth for current rendering
       expect(result).toEqual({
         filters: ['following'],
         currentFileName: 'test.zip',
         uploadStatus: 'success',
         uploadError: null,
         fileMetadata: { name: 'test.zip', size: 1024 },
+        language: 'en',
       });
-      expect(result).not.toHaveProperty('language');
       expect(result).not.toHaveProperty('parseWarnings');
       expect(result).not.toHaveProperty('fileDiscovery');
       expect(result).not.toHaveProperty('_hasHydrated');

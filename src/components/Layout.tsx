@@ -16,6 +16,7 @@ import { useI18nReady } from '@/hooks/useI18nReady';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+import { useLanguageRedirect } from '@/hooks/useLanguageRedirect';
 import { analytics } from '@/lib/analytics';
 import { RTL_LANGUAGES, type SupportedLanguage } from '@/locales';
 
@@ -87,6 +88,10 @@ export function Layout({ lang }: LayoutProps) {
 
   // Sync language from URL path (e.g., /es/wizard -> Spanish)
   useLanguageFromPath(lang);
+
+  // Redirect from language-less paths to user's preferred language
+  // Uses useLayoutEffect to redirect BEFORE paint
+  useLanguageRedirect();
 
   // Get language prefix for navigation
   const prefix = useLanguagePrefix();

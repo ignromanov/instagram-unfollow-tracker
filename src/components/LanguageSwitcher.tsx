@@ -4,6 +4,7 @@ import { Globe, ChevronDown } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, type SupportedLanguage } from '@/locales';
+import { detectLanguageFromPathname } from '@/config/currentLanguages';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,7 @@ import { analytics } from '@/lib/analytics';
 import { useTranslation } from 'react-i18next';
 
 /**
- * Get current path without language prefix
+ * Get current path without currentLanguage prefix
  */
 function getPathWithoutLang(pathname: string): string {
   const langPrefixes = SUPPORTED_LANGUAGES.filter(l => l !== 'en').map(l => `/${l}`);
@@ -33,15 +34,20 @@ function getPathWithoutLang(pathname: string): string {
 
 export function LanguageSwitcher() {
   const { t } = useTranslation('common');
-  const { language } = useAppStore();
+  const { setLanguage } = useAppStore();
   const location = useLocation();
 
-  const handleLanguageChange = (lang: SupportedLanguage) => {
-    analytics.languageChange(lang);
+  // Get currentLanguage from URL synchronously (source of truth)
+  const currentLanguage = detectLanguageFromPathname(location.pathname);
 
-    // Full page reload to get correct SSG meta tags for new language
-    // Note: We don't call setLanguage(lang) here to avoid race condition
-    // useLanguageFromPath will sync the language from URL after reload
+  const handleLanguageChange = (lang: SupportedLanguage) => {
+    analytics.currentLanguageChange(lang);
+
+    // Update store BEFORE redirect - this persists the preference to localStorage
+    // so that future visits to currentLanguage-less paths will redirect correctly
+    setLanguage(lang);
+
+    // Full page reload to get correct SSG HTML for new currentLanguage
     const basePath = getPathWithoutLang(location.pathname);
     const newPath = lang === 'en' ? basePath : `/${lang}${basePath === '/' ? '' : basePath}`;
 
@@ -53,10 +59,10 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <button
           className="cursor-pointer flex items-center gap-1.5 p-2.5 md:px-3 md:py-2 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
-          aria-label={t('language.changeLanguage')}
+          aria-label={t('currentLanguage.changeLanguage')}
         >
           <Globe size={20} />
-          <span className="hidden md:inline text-xs font-bold uppercase">{language}</span>
+          <span className="hidden md:inline text-xs font-bold uppercase">{currentLanguage}</span>
           <ChevronDown size={14} className="hidden md:block" />
         </button>
       </DropdownMenuTrigger>
@@ -66,7 +72,7 @@ export function LanguageSwitcher() {
             key={lang}
             onClick={() => handleLanguageChange(lang)}
             className={`cursor-pointer ${
-              language === lang ? 'bg-primary/10 text-primary font-bold' : ''
+              currentLanguage === lang ? 'bg-primary/10 text-primary font-bold' : ''
             }`}
           >
             <span className="uppercase text-xs font-bold w-6">{lang}</span>

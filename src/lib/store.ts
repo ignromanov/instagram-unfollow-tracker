@@ -95,11 +95,9 @@ export const useAppStore = create<AppState>()(
           filters: new Set<BadgeKey>(),
         }),
       setLanguage: (lang: SupportedLanguage) => {
+        // Only update store for persistence
+        // i18n is synced with URL by useLanguageFromPath, not by store
         set({ language: lang });
-        // Sync with i18next (language is already loaded by initI18n from URL)
-        import('@/locales').then(({ loadLanguage }) => {
-          loadLanguage(lang);
-        });
       },
     }),
     {
@@ -142,13 +140,15 @@ export const useAppStore = create<AppState>()(
           uploadStatus: state.uploadStatus,
           uploadError: state.uploadError,
           fileMetadata: state.fileMetadata,
-          // Note: language is NOT persisted - URL is the source of truth
+          // Language IS persisted - used for redirect from language-less paths
+          // URL remains the source of truth for current rendering
+          language: state.language,
         }) as unknown as Partial<AppState>,
       onRehydrateStorage: () => state => {
         if (state) {
           state._hasHydrated = true;
-          // Note: Language is NOT restored from localStorage
-          // URL is the source of truth, handled by initI18n()
+          // Language IS restored from localStorage for redirect purposes
+          // But URL remains the source of truth for current rendering (i18n)
         }
       },
       storage: {

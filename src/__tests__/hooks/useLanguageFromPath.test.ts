@@ -71,7 +71,8 @@ describe('useLanguageFromPath', () => {
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence (even for default English)
+      expect(mockSetLanguage).toHaveBeenCalledWith('en');
     });
 
     it('should detect Spanish from /es/ path', () => {
@@ -298,7 +299,8 @@ describe('useLanguageFromPath', () => {
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence
+      expect(mockSetLanguage).toHaveBeenCalledWith('en');
     });
 
     it('should default to English for path without language prefix', () => {
@@ -312,7 +314,8 @@ describe('useLanguageFromPath', () => {
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence
+      expect(mockSetLanguage).toHaveBeenCalledWith('en');
     });
 
     it('should handle empty path', () => {
@@ -326,7 +329,8 @@ describe('useLanguageFromPath', () => {
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence
+      expect(mockSetLanguage).toHaveBeenCalledWith('en');
     });
 
     it('should ignore query parameters', () => {
@@ -390,8 +394,8 @@ describe('useLanguageFromPath', () => {
   // Note: "hydration awareness" tests removed - hook now works immediately
   // URL is the source of truth, no dependency on _hasHydrated
 
-  describe('language change optimization', () => {
-    it('should not call setLanguage if language already matches', () => {
+  describe('language persistence', () => {
+    it('should always call setLanguage to persist URL language', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/es/wizard',
         search: '',
@@ -407,10 +411,11 @@ describe('useLanguageFromPath', () => {
 
       renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
     });
 
-    it('should call setLanguage when path changes to different language', () => {
+    it('should update store when path changes to different language', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/es/wizard',
         search: '',
@@ -426,7 +431,7 @@ describe('useLanguageFromPath', () => {
 
       const { rerender } = renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
 
       // Change path to Russian
       mockUseLocation.mockReturnValue({
@@ -437,6 +442,7 @@ describe('useLanguageFromPath', () => {
         key: 'default',
       });
 
+      mockSetLanguage.mockClear();
       rerender();
 
       expect(mockSetLanguage).toHaveBeenCalledWith('ru');
@@ -482,7 +488,7 @@ describe('useLanguageFromPath', () => {
       expect(document.documentElement.lang).toBe('ru');
     });
 
-    it('should update HTML lang attribute when language changes', () => {
+    it('should update HTML lang attribute when URL changes', () => {
       mockUseLocation.mockReturnValue({
         pathname: '/es/wizard',
         search: '',
@@ -500,10 +506,13 @@ describe('useLanguageFromPath', () => {
 
       expect(document.documentElement.lang).toBe('es');
 
-      // Change to Russian
-      mockUseAppStore.mockReturnValue({
-        language: 'ru' as SupportedLanguage,
-        setLanguage: mockSetLanguage,
+      // Change URL to Russian (HTML lang follows URL, not store)
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
       });
 
       rerender();
@@ -906,7 +915,8 @@ describe('useLanguageFromPath', () => {
 
       const { rerender } = renderHook(() => useLanguageFromPath());
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
 
       // Change pathname
       mockUseLocation.mockReturnValue({
@@ -917,6 +927,7 @@ describe('useLanguageFromPath', () => {
         key: 'default',
       });
 
+      mockSetLanguage.mockClear();
       rerender();
 
       expect(mockSetLanguage).toHaveBeenCalledWith('ru');
@@ -940,7 +951,8 @@ describe('useLanguageFromPath', () => {
         initialProps: { lang: 'es' as SupportedLanguage },
       });
 
-      expect(mockSetLanguage).not.toHaveBeenCalled();
+      // setLanguage is always called for persistence
+      expect(mockSetLanguage).toHaveBeenCalledWith('es');
 
       // Change langFromRoute
       mockUseAppStore.mockReturnValue({
@@ -948,12 +960,15 @@ describe('useLanguageFromPath', () => {
         setLanguage: mockSetLanguage,
       });
 
+      mockSetLanguage.mockClear();
       rerender({ lang: 'ru' as SupportedLanguage });
 
-      expect(mockSetLanguage).not.toHaveBeenCalled(); // Already matches
+      // setLanguage called with new language
+      expect(mockSetLanguage).toHaveBeenCalledWith('ru');
     });
 
-    it('should react to language changes in store', () => {
+    it('should react to URL pathname changes (URL is source of truth)', () => {
+      // Start with Spanish URL
       mockUseLocation.mockReturnValue({
         pathname: '/es/wizard',
         search: '',
@@ -963,25 +978,29 @@ describe('useLanguageFromPath', () => {
       });
 
       mockUseAppStore.mockReturnValue({
-        language: 'en' as SupportedLanguage,
-        setLanguage: mockSetLanguage,
-      });
-
-      (i18n as any).language = 'en';
-
-      const { rerender } = renderHook(() => useLanguageFromPath());
-
-      expect(document.documentElement.lang).toBe('en');
-
-      // Change store language
-      mockUseAppStore.mockReturnValue({
         language: 'es' as SupportedLanguage,
         setLanguage: mockSetLanguage,
       });
 
-      rerender();
+      (i18n as any).language = 'es';
+
+      const { rerender } = renderHook(() => useLanguageFromPath());
 
       expect(document.documentElement.lang).toBe('es');
+
+      // Change URL to Russian (simulating navigation)
+      mockUseLocation.mockReturnValue({
+        pathname: '/ru/wizard',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default',
+      });
+
+      rerender();
+
+      // HTML lang should update based on URL, not store
+      expect(document.documentElement.lang).toBe('ru');
     });
   });
 });

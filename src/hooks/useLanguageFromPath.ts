@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import i18n, { SUPPORTED_LANGUAGES, loadLanguage, type SupportedLanguage } from '@/locales';
-import { NON_ENGLISH_LANGUAGES, getLocaleCode } from '@/config/languages';
+import {
+  NON_ENGLISH_LANGUAGES,
+  getLocaleCode,
+  detectLanguageFromPathname,
+} from '@/config/languages';
 
 const BASE_URL = 'https://safeunfollow.app';
 
@@ -88,60 +92,46 @@ function updateCanonical(currentPath: string): void {
 /**
  * Hook to sync language from URL path prefix
  *
- * URL is the single source of truth for language.
- * This hook:
- * 1. Syncs Zustand store with URL language
- * 2. Updates HTML attributes (lang, dir)
- * 3. Updates SEO meta tags (hreflang, og:locale, canonical)
+ * URL is the SINGLE SOURCE OF TRUTH for language.
  *
- * URL structure:
- * - / (English, default)
- * - /es (Spanish)
- * - /ru (Russian)
- * - /es/wizard (Spanish wizard page)
+ * This hook:
+ * 1. Detects language from URL
+ * 2. Updates store (for persistence/redirect on next visit)
+ * 3. Syncs i18next with URL language
+ * 4. Updates HTML attributes and SEO meta tags
+ *
+ * IMPORTANT: i18n syncs with URL, NOT with store.
+ * Store is only used for persisting preference for future redirects.
  */
 export function useLanguageFromPath(langFromRoute?: SupportedLanguage): void {
   const location = useLocation();
-  const { language, setLanguage } = useAppStore();
+  const { setLanguage } = useAppStore();
 
-  // Sync store with URL language
+  // Detect language from URL (single source of truth)
+  const urlLang = langFromRoute ?? detectLanguageFromPathname(location.pathname);
+
+  // Update store when URL language changes (for persistence only)
   useEffect(() => {
-    let detectedLang: SupportedLanguage = 'en';
+    setLanguage(urlLang);
+  }, [urlLang, setLanguage]);
 
-    if (langFromRoute) {
-      detectedLang = langFromRoute;
-    } else {
-      const pathSegments = location.pathname.split('/').filter(Boolean);
-      const firstSegment = pathSegments[0];
-
-      if (firstSegment && SUPPORTED_LANGUAGES.includes(firstSegment as SupportedLanguage)) {
-        detectedLang = firstSegment as SupportedLanguage;
-      }
-    }
-
-    // Update store if language changed
-    if (detectedLang !== language) {
-      setLanguage(detectedLang);
-    }
-  }, [location.pathname, langFromRoute, language, setLanguage]);
-
-  // Sync HTML attributes and meta tags
+  // Sync HTML attributes, meta tags, and i18next with URL language
   useEffect(() => {
     // Update HTML lang attribute
-    updateHtmlLang(language);
+    updateHtmlLang(urlLang);
 
     // Update hreflang tags for SEO
     updateHreflangTags(location.pathname);
 
     // Update Open Graph locale
-    updateOgLocale(language);
+    updateOgLocale(urlLang);
 
     // Update canonical URL
     updateCanonical(location.pathname);
 
-    // Ensure i18next is synced
-    if (i18n.language !== language) {
-      loadLanguage(language);
+    // Sync i18next with URL (NOT store!)
+    if (i18n.language !== urlLang) {
+      loadLanguage(urlLang);
     }
-  }, [language, location.pathname]);
+  }, [urlLang, location.pathname]);
 }

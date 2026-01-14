@@ -110,6 +110,10 @@ vi.mock('@/hooks/useHydration', () => ({
   useHydration: vi.fn(() => true),
 }));
 
+vi.mock('@/hooks/useI18nReady', () => ({
+  useI18nReady: vi.fn(() => true),
+}));
+
 vi.mock('@/hooks/useLanguageFromPath', () => ({
   useLanguageFromPath: vi.fn(),
 }));
@@ -118,10 +122,25 @@ vi.mock('@/hooks/useLanguagePrefix', () => ({
   useLanguagePrefix: () => '',
 }));
 
+vi.mock('@/hooks/useLanguageRedirect', () => ({
+  useLanguageRedirect: vi.fn(),
+}));
+
+// Mock i18next (used directly in Layout.tsx)
+vi.mock('i18next', () => ({
+  default: {
+    language: 'en',
+    changeLanguage: vi.fn(),
+    hasResourceBundle: vi.fn(() => true),
+  },
+}));
+
 // Mock locales
 vi.mock('@/locales', () => ({
   RTL_LANGUAGES: ['ar', 'he'],
   SUPPORTED_LANGUAGES: ['en', 'es', 'pt', 'ru', 'de', 'hi', 'ja', 'tr', 'id', 'ar'],
+  subscribeToI18nInit: vi.fn(() => () => {}),
+  isI18nReady: vi.fn(() => true),
 }));
 
 // Helper to render Layout with router
@@ -493,7 +512,9 @@ describe('Layout', () => {
   describe('loading state (hydration)', () => {
     it('should show loading state when not hydrated', async () => {
       const { useHydration } = await import('@/hooks/useHydration');
+      const { useI18nReady } = await import('@/hooks/useI18nReady');
       vi.mocked(useHydration).mockReturnValueOnce(false);
+      vi.mocked(useI18nReady).mockReturnValueOnce(false);
 
       renderLayout();
 
@@ -503,7 +524,9 @@ describe('Layout', () => {
 
     it('should render header during loading state', async () => {
       const { useHydration } = await import('@/hooks/useHydration');
+      const { useI18nReady } = await import('@/hooks/useI18nReady');
       vi.mocked(useHydration).mockReturnValueOnce(false);
+      vi.mocked(useI18nReady).mockReturnValueOnce(false);
 
       renderLayout();
 
@@ -512,7 +535,9 @@ describe('Layout', () => {
 
     it('should not render footer during loading state', async () => {
       const { useHydration } = await import('@/hooks/useHydration');
+      const { useI18nReady } = await import('@/hooks/useI18nReady');
       vi.mocked(useHydration).mockReturnValueOnce(false);
+      vi.mocked(useI18nReady).mockReturnValueOnce(false);
 
       renderLayout();
 
@@ -521,7 +546,9 @@ describe('Layout', () => {
 
     it('should show spinner during loading state', async () => {
       const { useHydration } = await import('@/hooks/useHydration');
+      const { useI18nReady } = await import('@/hooks/useI18nReady');
       vi.mocked(useHydration).mockReturnValueOnce(false);
+      vi.mocked(useI18nReady).mockReturnValueOnce(false);
 
       renderLayout();
 

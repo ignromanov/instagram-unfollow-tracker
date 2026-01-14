@@ -154,9 +154,10 @@ describe('LanguageSwitcher', () => {
     const spanishOption = await screen.findByText('Español');
     await user.click(spanishOption);
 
-    // Should reload to Spanish URL (not call setLanguage)
+    // Should save to store BEFORE redirect (for future redirects from language-less paths)
+    expect(mockSetLanguage).toHaveBeenCalledWith('es');
+    // Should reload to Spanish URL
     expect(window.location.href).toBe('/es/wizard');
-    expect(mockSetLanguage).not.toHaveBeenCalled();
   });
 
   it('should call analytics.languageChange when language is selected', async () => {
