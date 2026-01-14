@@ -26,8 +26,10 @@ export const createRoot = ViteReactSSG(
     },
   },
   async ({ isClient }) => {
-    // Initialize i18n (loads English resources dynamically)
-    await initI18n();
+    // Initialize i18n
+    // - SSG (isClient=false): Loads ALL languages for prerendering
+    // - Client (isClient=true): Loads only the language from URL
+    await initI18n({ isClient });
 
     // Client-side only initialization
     if (isClient) {

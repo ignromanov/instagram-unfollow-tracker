@@ -12,7 +12,11 @@ export {
   type SupportedLanguage,
 } from '@/config/languages';
 
-import { detectLanguageFromUrl, type SupportedLanguage } from '@/config/languages';
+import {
+  SUPPORTED_LANGUAGES,
+  detectLanguageFromUrl,
+  type SupportedLanguage,
+} from '@/config/languages';
 
 // Track initialization state
 let isInitialized = false;
@@ -71,57 +75,95 @@ async function loadLanguageResources(lang: SupportedLanguage) {
 }
 
 /**
+ * Load resources for ALL languages (used during SSG build)
+ * This enables synchronous language switching when rendering each page
+ */
+async function loadAllLanguageResources() {
+  const entries = await Promise.all(
+    SUPPORTED_LANGUAGES.map(async lang => {
+      const resources = await loadLanguageResources(lang);
+      return [lang, resources] as const;
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
+interface InitI18nOptions {
+  /** Whether running in browser (client) or Node.js (SSG build) */
+  isClient?: boolean;
+}
+
+/**
  * Initialize i18next with language detected from URL
  *
  * Key behavior:
- * - Detects language from URL pathname (e.g., /es/wizard → 'es')
- * - Loads both English (fallback) and target language resources
- * - Sets i18n to target language immediately (no FOUC)
+ * - SSG (isClient=false): Loads ALL languages for rendering all pages
+ * - Client (isClient=true): Loads only the language from URL
+ *
+ * During SSG, Layout component calls i18n.changeLanguage() synchronously
+ * before rendering each page, which works because all resources are loaded.
  */
-export async function initI18n(): Promise<void> {
+export async function initI18n(options?: InitI18nOptions): Promise<void> {
   if (isInitialized) return;
   if (initPromise) return initPromise;
 
+  const isClient = options?.isClient ?? typeof window !== 'undefined';
+
   initPromise = (async () => {
-    // Detect language from URL - this is the source of truth
-    const urlLang = detectLanguageFromUrl();
+    if (!isClient) {
+      // SSG: Load ALL languages for rendering all pages
+      // This enables synchronous language switching in Layout
+      const allResources = await loadAllLanguageResources();
 
-    // Always load English as fallback
-    const enResources = await loadLanguageResources('en');
-
-    // Build initial resources
-    const resources: Record<string, typeof enResources> = {
-      en: enResources,
-    };
-
-    // If URL specifies non-English language, load it too
-    if (urlLang !== 'en') {
-      try {
-        resources[urlLang] = await loadLanguageResources(urlLang);
-      } catch (error) {
-        console.error(`Failed to load language: ${urlLang}`, error);
-        // Fall back to English if loading fails
-      }
-    }
-
-    await i18n
-      .use(LanguageDetector)
-      .use(initReactI18next)
-      .init({
-        resources,
-        lng: urlLang, // Set language immediately from URL
+      await i18n.use(initReactI18next).init({
+        resources: allResources,
+        lng: 'en', // Default, will be switched per-page in Layout
         fallbackLng: 'en',
         defaultNS: 'common',
         ns: ['common', 'hero', 'wizard', 'upload', 'results', 'faq', 'howto', 'meta'],
         interpolation: {
           escapeValue: false,
         },
-        detection: {
-          // Disable detection - URL is source of truth
-          order: [],
-          caches: [],
-        },
       });
+    } else {
+      // Client: Load only the language from URL (lazy loading)
+      const urlLang = detectLanguageFromUrl();
+
+      // Always load English as fallback
+      const enResources = await loadLanguageResources('en');
+      const resources: Record<string, typeof enResources> = {
+        en: enResources,
+      };
+
+      // If URL specifies non-English language, load it too
+      if (urlLang !== 'en') {
+        try {
+          resources[urlLang] = await loadLanguageResources(urlLang);
+        } catch (error) {
+          console.error(`Failed to load language: ${urlLang}`, error);
+          // Fall back to English if loading fails
+        }
+      }
+
+      await i18n
+        .use(LanguageDetector)
+        .use(initReactI18next)
+        .init({
+          resources,
+          lng: urlLang, // Set language immediately from URL
+          fallbackLng: 'en',
+          defaultNS: 'common',
+          ns: ['common', 'hero', 'wizard', 'upload', 'results', 'faq', 'howto', 'meta'],
+          interpolation: {
+            escapeValue: false,
+          },
+          detection: {
+            // Disable detection - URL is source of truth
+            order: [],
+            caches: [],
+          },
+        });
+    }
 
     isInitialized = true;
     notifyInitSubscribers();

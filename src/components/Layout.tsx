@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
+import i18n from 'i18next';
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
@@ -75,6 +76,14 @@ export function Layout({ lang }: LayoutProps) {
   const hasHydrated = useHydration();
   const isI18nReady = useI18nReady();
   const { uploadState, handleClearData, fileMetadata } = useInstagramData();
+
+  // SSG: Switch language synchronously BEFORE rendering
+  // This works because during SSG all language resources are preloaded
+  // On client, this is a no-op since language is already set from URL
+  const targetLang = lang ?? 'en';
+  if (i18n.language !== targetLang && i18n.hasResourceBundle(targetLang, 'common')) {
+    i18n.changeLanguage(targetLang);
+  }
 
   // Sync language from URL path (e.g., /es/wizard -> Spanish)
   useLanguageFromPath(lang);
