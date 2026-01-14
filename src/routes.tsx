@@ -3,6 +3,15 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/locales';
 
+// Direct imports for parallel loading (no lazy waterfall)
+import HomePage from './pages/HomePage';
+import WizardPage from './pages/WizardPage';
+import UploadPage from './pages/UploadPage';
+import ResultsPage from './pages/ResultsPage';
+import SamplePage from './pages/SamplePage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
+
 /**
  * Route definitions for SSG prerendering
  *
@@ -25,46 +34,14 @@ export const routes: RouteRecord[] = [
     element: <Layout />,
     entry: 'src/components/Layout.tsx',
     children: [
-      // Hero (landing page)
-      {
-        index: true,
-        lazy: () => import('./pages/HomePage'),
-      },
-      // Wizard (step-by-step guide)
-      {
-        path: 'wizard',
-        lazy: () => import('./pages/WizardPage'),
-      },
-      // Wizard step deep links (e.g., /wizard/step/8 for calendar reminder)
-      {
-        path: 'wizard/step/:stepId',
-        lazy: () => import('./pages/WizardPage'),
-      },
-      // Upload
-      {
-        path: 'upload',
-        lazy: () => import('./pages/UploadPage'),
-      },
-      // Results (client-only - requires IndexedDB data)
-      {
-        path: 'results',
-        lazy: () => import('./pages/ResultsPage'),
-      },
-      // Sample data demo
-      {
-        path: 'sample',
-        lazy: () => import('./pages/SamplePage'),
-      },
-      // Privacy Policy
-      {
-        path: 'privacy',
-        lazy: () => import('./pages/PrivacyPage'),
-      },
-      // Terms of Service
-      {
-        path: 'terms',
-        lazy: () => import('./pages/TermsPage'),
-      },
+      { index: true, element: <HomePage /> },
+      { path: 'wizard', element: <WizardPage /> },
+      { path: 'wizard/step/:stepId', element: <WizardPage /> },
+      { path: 'upload', element: <UploadPage /> },
+      { path: 'results', element: <ResultsPage /> },
+      { path: 'sample', element: <SamplePage /> },
+      { path: 'privacy', element: <PrivacyPage /> },
+      { path: 'terms', element: <TermsPage /> },
     ],
   },
   // Language-prefixed routes (es, ru, de, etc.)
@@ -74,38 +51,14 @@ export const routes: RouteRecord[] = [
       element: <Layout lang={lang} />,
       entry: 'src/components/Layout.tsx',
       children: [
-        {
-          index: true,
-          lazy: () => import('./pages/HomePage'),
-        },
-        {
-          path: 'wizard',
-          lazy: () => import('./pages/WizardPage'),
-        },
-        {
-          path: 'wizard/step/:stepId',
-          lazy: () => import('./pages/WizardPage'),
-        },
-        {
-          path: 'upload',
-          lazy: () => import('./pages/UploadPage'),
-        },
-        {
-          path: 'results',
-          lazy: () => import('./pages/ResultsPage'),
-        },
-        {
-          path: 'sample',
-          lazy: () => import('./pages/SamplePage'),
-        },
-        {
-          path: 'privacy',
-          lazy: () => import('./pages/PrivacyPage'),
-        },
-        {
-          path: 'terms',
-          lazy: () => import('./pages/TermsPage'),
-        },
+        { index: true, element: <HomePage /> },
+        { path: 'wizard', element: <WizardPage /> },
+        { path: 'wizard/step/:stepId', element: <WizardPage /> },
+        { path: 'upload', element: <UploadPage /> },
+        { path: 'results', element: <ResultsPage /> },
+        { path: 'sample', element: <SamplePage /> },
+        { path: 'privacy', element: <PrivacyPage /> },
+        { path: 'terms', element: <TermsPage /> },
       ],
     })
   ),
