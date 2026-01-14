@@ -1,10 +1,24 @@
+import { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { Hero } from '@/components/Hero';
-import { HowToSection } from '@/components/HowToSection';
-import { FAQSection } from '@/components/FAQSection';
-import { FooterCTA } from '@/components/FooterCTA';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+
+// Lazy load below-the-fold sections for code splitting
+const HowToSection = lazy(() =>
+  import('@/components/HowToSection').then(m => ({ default: m.HowToSection }))
+);
+const FAQSection = lazy(() =>
+  import('@/components/FAQSection').then(m => ({ default: m.FAQSection }))
+);
+const FooterCTA = lazy(() =>
+  import('@/components/FooterCTA').then(m => ({ default: m.FooterCTA }))
+);
+
+function SectionSkeleton() {
+  return <div className="h-96 animate-pulse rounded-lg bg-muted/30" />;
+}
 
 /**
  * Home page (landing)
@@ -44,9 +58,15 @@ export function Component() {
         onContinue={handleContinue}
       />
       <div className="animate-in fade-in duration-1000">
-        <HowToSection onStart={handleStartGuide} />
-        <FAQSection />
-        <FooterCTA onStart={handleStartGuide} onSample={handleLoadSample} />
+        <Suspense fallback={<SectionSkeleton />}>
+          <HowToSection onStart={handleStartGuide} />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <FAQSection />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <FooterCTA onStart={handleStartGuide} onSample={handleLoadSample} />
+        </Suspense>
       </div>
     </>
   );

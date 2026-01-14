@@ -145,9 +145,13 @@ export function Layout({ lang }: LayoutProps) {
           />
 
           <main id="main-content" className="flex-1 container mx-auto px-4">
-            <Suspense fallback={<PageLoader />}>
+            {activeScreen === AppState.HERO ? (
               <Outlet />
-            </Suspense>
+            ) : (
+              <Suspense fallback={<PageLoader />}>
+                <Outlet />
+              </Suspense>
+            )}
           </main>
 
           <Footer />
