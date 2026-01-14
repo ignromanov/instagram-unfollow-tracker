@@ -13,11 +13,32 @@ import {
 } from '@/components/ui/alert-dialog';
 import { AppState } from '@/core/types';
 import { analytics } from '@/lib/analytics';
-import { LayoutDashboard, Moon, ShieldCheck, Sun, SunMoon, Trash2, Upload } from 'lucide-react';
+import {
+  Globe,
+  LayoutDashboard,
+  Moon,
+  ShieldCheck,
+  Sun,
+  SunMoon,
+  Trash2,
+  Upload,
+} from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LanguageSwitcher } from './LanguageSwitcher';
+
+// Lazy load LanguageSwitcher for code splitting
+const LanguageSwitcher = lazy(() =>
+  import('./LanguageSwitcher').then(m => ({ default: m.LanguageSwitcher }))
+);
+
+function LanguageSwitcherSkeleton() {
+  return (
+    <div className="p-2.5 rounded-2xl text-zinc-400">
+      <Globe size={20} />
+    </div>
+  );
+}
 
 interface HeaderProps {
   hasData?: boolean;
@@ -140,7 +161,9 @@ export function Header({
           <div className="w-[1px] h-6 md:h-8 bg-border" />
 
           {/* Language Switcher */}
-          <LanguageSwitcher />
+          <Suspense fallback={<LanguageSwitcherSkeleton />}>
+            <LanguageSwitcher />
+          </Suspense>
 
           {/* Theme Toggle */}
           <button

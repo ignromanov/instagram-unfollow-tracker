@@ -11,6 +11,7 @@ import { PageLoader } from '@/components/PageLoader';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AppState } from '@/core/types';
 import { useHydration } from '@/hooks/useHydration';
+import { useI18nReady } from '@/hooks/useI18nReady';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
@@ -72,6 +73,7 @@ export function Layout({ lang }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const hasHydrated = useHydration();
+  const isI18nReady = useI18nReady();
   const { uploadState, handleClearData, fileMetadata } = useInstagramData();
 
   // Sync language from URL path (e.g., /es/wizard -> Spanish)
@@ -110,9 +112,11 @@ export function Layout({ lang }: LayoutProps) {
     navigate(`${prefix}/`);
   };
 
-  // Show loading only for pages that need hydrated store data (not for hero)
-  const needsHydration = activeScreen !== AppState.HERO;
-  const showLoading = needsHydration && !hasHydrated;
+  // Show loading:
+  // - Hero: only wait for i18n (no store dependency)
+  // - Other pages: wait for both i18n and Zustand hydration
+  const isHero = activeScreen === AppState.HERO;
+  const showLoading = isHero ? !isI18nReady : !hasHydrated || !isI18nReady;
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
@@ -149,7 +153,7 @@ export function Layout({ lang }: LayoutProps) {
           />
 
           <main id="main-content" className="flex-1 container mx-auto px-4">
-            {activeScreen === AppState.HERO ? (
+            {isHero ? (
               <Outlet />
             ) : (
               <Suspense fallback={<PageLoader />}>

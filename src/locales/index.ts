@@ -19,6 +19,31 @@ let isInitialized = false;
 let initPromise: Promise<void> | null = null;
 
 /**
+ * Check if i18n is initialized and ready
+ */
+export function isI18nReady(): boolean {
+  return isInitialized;
+}
+
+// Subscribers for initialization state
+const initSubscribers = new Set<() => void>();
+
+/**
+ * Subscribe to i18n initialization
+ */
+export function subscribeToI18nInit(callback: () => void): () => void {
+  initSubscribers.add(callback);
+  return () => initSubscribers.delete(callback);
+}
+
+/**
+ * Notify subscribers when i18n is initialized
+ */
+function notifyInitSubscribers(): void {
+  initSubscribers.forEach(cb => cb());
+}
+
+/**
  * Load resources for a specific language
  */
 async function loadLanguageResources(lang: SupportedLanguage) {
@@ -99,6 +124,7 @@ export async function initI18n(): Promise<void> {
       });
 
     isInitialized = true;
+    notifyInitSubscribers();
   })();
 
   return initPromise;
