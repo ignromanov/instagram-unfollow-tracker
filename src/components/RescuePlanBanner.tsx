@@ -1,6 +1,13 @@
 'use client';
 
-import { TrendingDown, AlertTriangle, TrendingUp, X, ExternalLink, Bug } from 'lucide-react';
+import {
+  TrendingDown,
+  AlertTriangle,
+  TrendingUp,
+  ChevronDown,
+  ExternalLink,
+  Bug,
+} from 'lucide-react';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -81,8 +88,17 @@ export function RescuePlanBanner({
   // Use override in dev mode, otherwise real segment
   const segment = devOverride ?? realSegment;
 
+  // Don't render if no data available
+  const unfollowedCount = filterCounts.unfollowed ?? 0;
+  if (!devOverride && (totalCount === 0 || unfollowedCount === 0)) {
+    return null;
+  }
+
   // Get dismiss state from localStorage (with segment change detection)
   const { isDismissed, dismiss } = useRescuePlanDismiss(segment);
+
+  // NEW: Track expanded/collapsed state - starts collapsed, expands after delay
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Get tools for this segment
   const tools = useMemo(() => getToolsForSegment(segment), [segment]);
@@ -128,20 +144,24 @@ export function RescuePlanBanner({
     };
   }, []);
 
-  // Delayed show effect with tiered timing (skip in dev override mode)
+  // Show banner immediately, then expand after delay
   useEffect(() => {
+    // Show banner collapsed immediately
+    setIsVisible(true);
+    visibilityStartRef.current = Date.now();
+
+    // If dismissed, don't auto-expand
     if (isDismissed && !devOverride) return;
 
-    // In dev mode with override, show immediately
+    // In dev mode with override, expand immediately
     if (devOverride) {
-      setIsVisible(true);
-      visibilityStartRef.current = Date.now();
+      setIsExpanded(true);
       return;
     }
 
+    // Auto-expand after delay
     showTimerRef.current = setTimeout(() => {
-      setIsVisible(true);
-      visibilityStartRef.current = Date.now();
+      setIsExpanded(true);
     }, effectiveDelay);
 
     return () => {
@@ -202,7 +222,7 @@ export function RescuePlanBanner({
     [segment, devOverride]
   );
 
-  // Handle dismiss with analytics
+  // Handle dismiss with analytics (collapses instead of hiding)
   const handleDismiss = useCallback(() => {
     if (devOverride) {
       setDevOverride(null);
@@ -211,15 +231,23 @@ export function RescuePlanBanner({
     }
     analytics.rescuePlanDismiss(segment.severity, segment.size, segment.unfollowedPercent);
     dismiss();
-    setIsVisible(false);
+    setIsExpanded(false); // Collapse instead of hide
   }, [dismiss, segment, devOverride]);
 
-  // Don't render if dismissed or not yet visible (unless dev override)
-  if ((isDismissed || !isVisible) && !devOverride) return null;
+  // Handle expand with analytics
+  const handleExpand = useCallback(() => {
+    setIsExpanded(true);
+    // Optional: track expand event
+    // analytics.rescuePlanExpanded?.(segment.severity, segment.size);
+  }, []);
+
+  // Don't render if not yet visible (unless dev override)
+  // Note: isDismissed now shows collapsed view instead of hiding
+  if (!isVisible && !devOverride) return null;
 
   return (
     <div
-      className={`relative bg-gradient-to-r ${style.gradientClass} border-2 ${style.borderClass} rounded-3xl p-6 md:p-8 shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 ${className ?? ''}`}
+      className={`relative bg-gradient-to-r ${style.gradientClass} border-2 ${style.borderClass} rounded-3xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 transition-all duration-300 ${className ?? ''}`}
       role="complementary"
       aria-label={t('rescue.ariaLabel')}
     >
@@ -227,7 +255,7 @@ export function RescuePlanBanner({
       {import.meta.env.DEV && (
         <button
           onClick={handleDevCycle}
-          className="absolute top-4 left-4 p-2 text-zinc-400 hover:text-primary transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1 text-xs font-mono"
+          className="absolute top-4 left-4 p-2 text-zinc-400 hover:text-primary transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1 text-xs font-mono z-10"
           title="Cycle through severity/size combinations"
         >
           <Bug size={16} />
@@ -237,124 +265,148 @@ export function RescuePlanBanner({
         </button>
       )}
 
-      {/* Dismiss button */}
-      <button
-        onClick={handleDismiss}
-        className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5"
-        aria-label={t('rescue.dismiss')}
-      >
-        <X size={20} />
-      </button>
-
-      {/* Header */}
-      <div className="flex items-start gap-4 mb-6">
-        <div
-          className={`p-4 rounded-2xl shrink-0 ${
-            segment.severity === 'critical'
-              ? 'bg-red-100 dark:bg-red-900/50'
-              : segment.severity === 'warning'
-                ? 'bg-amber-100 dark:bg-amber-900/50'
-                : 'bg-emerald-100 dark:bg-emerald-900/50'
-          }`}
-        >
-          <SeverityIcon className={`w-8 h-8 ${style.iconColorClass}`} />
-        </div>
-        <div className="pr-8">
-          <h3 className="text-xl md:text-2xl font-display font-bold text-zinc-900 dark:text-white">
-            {t(getTitleKey(segment.severity) as any, {
-              unfollowedPercent: segment.unfollowedPercent.toFixed(1),
-            })}
-          </h3>
-          <p className="text-zinc-600 dark:text-zinc-400 mt-1 text-sm md:text-base">
-            {t(getSubtitleKey(segment.severity, segment.size) as any, {
-              count: segment.totalAccounts,
-            })}
-          </p>
-        </div>
-      </div>
-
-      {/* Tools grid with CTA buttons and trust signals */}
-      <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-        {tools.map((tool, index) => (
-          <a
-            key={tool.id}
-            href={tool.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={e => handleToolClick(tool, e)}
-            onMouseEnter={() => handleToolHover(tool.id, true)}
-            onMouseLeave={() => handleToolHover(tool.id, false)}
-            className={`group relative p-4 bg-white dark:bg-zinc-900 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] flex flex-col ${
-              index === 0
-                ? 'border-zinc-300 dark:border-zinc-700 hover:border-primary hover:ring-2 hover:ring-primary/20 hover:shadow-xl'
-                : 'border-zinc-200 dark:border-zinc-800 hover:border-primary hover:shadow-lg'
-            }`}
+      {isExpanded ? (
+        <>
+          {/* Collapse button (replaces X) */}
+          <button
+            onClick={handleDismiss}
+            className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5"
+            aria-label={t('rescue.dismiss')}
           >
-            {/* Badge */}
-            {tool.badge && (
-              <span
-                className={`absolute -top-2 -right-2 px-2 py-0.5 text-xs font-bold rounded-full ${BADGE_STYLES[tool.badge]}`}
-              >
-                {tool.badge === 'popular'
-                  ? `🔥 ${t('rescue.badges.popular')}`
-                  : tool.badge === 'trial'
-                    ? `✨ ${t('rescue.badges.trial')}`
-                    : `🆕 ${t('rescue.badges.new')}`}
-              </span>
-            )}
+            <ChevronDown size={20} className="rotate-180" />
+          </button>
 
-            {/* Recommended label for first item */}
-            {index === 0 && (
-              <span className="absolute -top-2 left-3 px-2 py-0.5 text-xs font-bold rounded-full bg-primary text-white">
-                ⭐ {t('rescue.recommended')}
-              </span>
-            )}
-
-            {/* Content area - grows to fill space */}
-            <div className="flex-grow">
-              {/* Tool header */}
-              <div className="flex items-center gap-3 mb-2 mt-2">
-                <tool.icon
-                  className={`w-5 h-5 ${tool.color} group-hover:scale-110 transition-transform`}
-                />
-                <span className="font-bold text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
-                  {tool.name}
-                </span>
+          {/* Original expanded content */}
+          <div className="p-6 md:p-8">
+            {/* Header */}
+            <div className="flex items-start gap-4 mb-6">
+              <div className={`p-4 rounded-2xl shrink-0 ${style.bgLightClass}`}>
+                <SeverityIcon className={`w-8 h-8 ${style.iconColorClass}`} />
               </div>
+              <div className="pr-8">
+                <h3 className="text-xl md:text-2xl font-display font-bold text-zinc-900 dark:text-white">
+                  {t(getTitleKey(segment.severity) as any, {
+                    unfollowedPercent: segment.unfollowedPercent.toFixed(1),
+                  })}
+                </h3>
+                <p className="text-zinc-600 dark:text-zinc-400 mt-1 text-sm md:text-base">
+                  {t(getSubtitleKey(segment.severity, segment.size) as any, {
+                    count: segment.totalAccounts,
+                  })}
+                </p>
+              </div>
+            </div>
 
-              {/* Description */}
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
-                {t(tool.descKey as any)}
+            {/* Tools grid with CTA buttons and trust signals */}
+            <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {tools.map((tool, index) => (
+                <a
+                  key={tool.id}
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={e => handleToolClick(tool, e)}
+                  onMouseEnter={() => handleToolHover(tool.id, true)}
+                  onMouseLeave={() => handleToolHover(tool.id, false)}
+                  className={`group relative p-4 bg-white dark:bg-zinc-900 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] flex flex-col ${
+                    index === 0
+                      ? 'border-zinc-300 dark:border-zinc-700 hover:border-primary hover:ring-2 hover:ring-primary/20 hover:shadow-xl'
+                      : 'border-zinc-200 dark:border-zinc-800 hover:border-primary hover:shadow-lg'
+                  }`}
+                >
+                  {/* Badge */}
+                  {tool.badge && (
+                    <span
+                      className={`absolute -top-2 -right-2 px-2 py-0.5 text-xs font-bold rounded-full ${BADGE_STYLES[tool.badge]}`}
+                    >
+                      {tool.badge === 'popular'
+                        ? `🔥 ${t('rescue.badges.popular')}`
+                        : tool.badge === 'trial'
+                          ? `✨ ${t('rescue.badges.trial')}`
+                          : `🆕 ${t('rescue.badges.new')}`}
+                    </span>
+                  )}
+
+                  {/* Recommended label for first item */}
+                  {index === 0 && (
+                    <span className="absolute -top-2 left-3 px-2 py-0.5 text-xs font-bold rounded-full bg-primary text-white">
+                      ⭐ {t('rescue.recommended')}
+                    </span>
+                  )}
+
+                  {/* Content area - grows to fill space */}
+                  <div className="flex-grow">
+                    {/* Tool header */}
+                    <div className="flex items-center gap-3 mb-2 mt-2">
+                      <tool.icon
+                        className={`w-5 h-5 ${tool.color} group-hover:scale-110 transition-transform`}
+                      />
+                      <span className="font-bold text-zinc-900 dark:text-white group-hover:text-primary transition-colors">
+                        {tool.name}
+                      </span>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
+                      {t(tool.descKey as any)}
+                    </p>
+                  </div>
+
+                  {/* Trust signals - fixed height row */}
+                  <div className="flex items-center justify-between text-xs mb-3 gap-2">
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold whitespace-nowrap">
+                      {t(tool.priceKey as any)}
+                    </span>
+                    <span className="text-zinc-400 whitespace-nowrap">
+                      {t(tool.socialKey as any)}
+                    </span>
+                  </div>
+
+                  {/* CTA Button - always at bottom */}
+                  <div
+                    className={`w-full py-2 px-3 rounded-xl text-center text-sm font-semibold transition-all mt-auto ${
+                      index === 0
+                        ? 'bg-primary text-white group-hover:bg-primary/90'
+                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 group-hover:bg-primary group-hover:text-white'
+                    }`}
+                  >
+                    <span className="flex items-center justify-center gap-1.5">
+                      {t('rescue.tryTool', { name: tool.name })}
+                      <ExternalLink className="w-3.5 h-3.5 opacity-70 shrink-0" />
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            {/* Disclaimer with transparency */}
+            <p className="text-xs text-zinc-400 mt-4 text-center">💡 {t('rescue.disclaimer')}</p>
+          </div>
+        </>
+      ) : (
+        /* Collapsed view - compact 40px bar */
+        <button
+          onClick={handleExpand}
+          className="w-full flex items-center justify-between p-2 gap-3 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+        >
+          {/* Left: Icon + Text */}
+          <div className="flex items-center gap-2">
+            <div className={`p-1.5 rounded-lg shrink-0 ${style.bgLightClass}`}>
+              <SeverityIcon className={`w-4 h-4 ${style.iconColorClass}`} />
+            </div>
+            <div className="text-left">
+              <p className="font-semibold text-xs text-zinc-900 dark:text-white">
+                {t(getTitleKey(segment.severity) as any, {
+                  unfollowedPercent: segment.unfollowedPercent.toFixed(1),
+                })}
               </p>
             </div>
+          </div>
 
-            {/* Trust signals - fixed height row */}
-            <div className="flex items-center justify-between text-xs mb-3 gap-2">
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold whitespace-nowrap">
-                {t(tool.priceKey as any)}
-              </span>
-              <span className="text-zinc-400 whitespace-nowrap">{t(tool.socialKey as any)}</span>
-            </div>
-
-            {/* CTA Button - always at bottom */}
-            <div
-              className={`w-full py-2 px-3 rounded-xl text-center text-sm font-semibold transition-all mt-auto ${
-                index === 0
-                  ? 'bg-primary text-white group-hover:bg-primary/90'
-                  : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 group-hover:bg-primary group-hover:text-white'
-              }`}
-            >
-              <span className="flex items-center justify-center gap-1.5">
-                {t('rescue.tryTool', { name: tool.name })}
-                <ExternalLink className="w-3.5 h-3.5 opacity-70 shrink-0" />
-              </span>
-            </div>
-          </a>
-        ))}
-      </div>
-
-      {/* Disclaimer with transparency */}
-      <p className="text-xs text-zinc-400 mt-4 text-center">💡 {t('rescue.disclaimer')}</p>
+          {/* Right: Expand icon */}
+          <ChevronDown className="w-4 h-4 text-zinc-400 shrink-0" />
+        </button>
+      )}
     </div>
   );
 }

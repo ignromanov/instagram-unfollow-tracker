@@ -57,4 +57,5 @@ export interface SeverityStyle {
   gradientClass: string;
   borderClass: string;
   iconColorClass: string;
+  bgLightClass: string;
 }

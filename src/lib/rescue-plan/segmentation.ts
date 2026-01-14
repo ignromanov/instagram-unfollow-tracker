@@ -91,17 +91,20 @@ export const SEVERITY_STYLES: Record<LossSeverity, SeverityStyle> = {
     gradientClass: 'from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30',
     borderClass: 'border-red-200 dark:border-red-900',
     iconColorClass: 'text-red-500',
+    bgLightClass: 'bg-red-100 dark:bg-red-900/50',
   },
   warning: {
     iconType: 'warning',
     gradientClass: 'from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30',
     borderClass: 'border-amber-200 dark:border-amber-900',
     iconColorClass: 'text-amber-500',
+    bgLightClass: 'bg-amber-100 dark:bg-amber-900/50',
   },
   growth: {
     iconType: 'growth',
     gradientClass: 'from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30',
     borderClass: 'border-emerald-200 dark:border-emerald-900',
     iconColorClass: 'text-emerald-500',
+    bgLightClass: 'bg-emerald-100 dark:bg-emerald-900/50',
   },
 };
