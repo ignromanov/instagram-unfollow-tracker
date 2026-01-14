@@ -107,6 +107,7 @@ export function Header({
                     ? 'bg-primary text-white shadow-md'
                     : 'text-zinc-500 hover:bg-[oklch(0.5_0_0_/_0.05)]'
                 }`}
+                aria-label={t('buttons.viewResults')}
               >
                 <LayoutDashboard size={18} />
                 <span className="hidden md:inline">{t('buttons.viewResults')}</span>
@@ -116,6 +117,7 @@ export function Header({
                   <button
                     className="cursor-pointer flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-xl text-xs md:text-sm font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-all"
                     title={t('header.deleteData')}
+                    aria-label={t('header.deleteData')}
                   >
                     <Trash2 size={18} />
                     <span className="hidden md:inline">{t('buttons.delete')}</span>
@@ -151,6 +153,7 @@ export function Header({
                   ? 'bg-primary text-white shadow-md'
                   : 'text-zinc-500 hover:bg-[oklch(0.5_0_0_/_0.05)]'
               }`}
+              aria-label={t('buttons.uploadFile')}
             >
               <Upload size={18} />
               <span className="hidden md:inline">{t('buttons.uploadFile')}</span>
