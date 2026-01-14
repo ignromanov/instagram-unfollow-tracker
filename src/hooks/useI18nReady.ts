@@ -9,5 +9,5 @@ import { isI18nReady, subscribeToI18nInit } from '@/locales';
  * Returns true when i18n has loaded the correct language resources.
  */
 export function useI18nReady(): boolean {
-  return useSyncExternalStore(subscribeToI18nInit, isI18nReady, () => true);
+  return useSyncExternalStore(subscribeToI18nInit, isI18nReady, isI18nReady);
 }
