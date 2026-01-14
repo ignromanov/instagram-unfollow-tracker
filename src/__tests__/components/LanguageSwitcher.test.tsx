@@ -82,11 +82,9 @@ describe('LanguageSwitcher', () => {
     expect(screen.getByText('en')).toBeInTheDocument();
   });
 
-  it('should show different language when store value changes', () => {
-    vi.mocked(store.useAppStore).mockReturnValue({
-      language: 'es',
-      setLanguage: mockSetLanguage,
-    });
+  it('should show different language when URL path changes', () => {
+    // Mock Spanish URL path - language comes from URL, not store
+    mockUseLocation.mockReturnValue({ pathname: '/es/wizard' });
 
     render(<LanguageSwitcher />);
 

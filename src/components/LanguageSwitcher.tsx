@@ -4,7 +4,7 @@ import { Globe, ChevronDown } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import { SUPPORTED_LANGUAGES, LANGUAGE_NAMES, type SupportedLanguage } from '@/locales';
-import { detectLanguageFromPathname } from '@/config/currentLanguages';
+import { detectLanguageFromPathname } from '@/config/languages';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,7 +41,7 @@ export function LanguageSwitcher() {
   const currentLanguage = detectLanguageFromPathname(location.pathname);
 
   const handleLanguageChange = (lang: SupportedLanguage) => {
-    analytics.currentLanguageChange(lang);
+    analytics.languageChange(lang);
 
     // Update store BEFORE redirect - this persists the preference to localStorage
     // so that future visits to currentLanguage-less paths will redirect correctly
@@ -59,7 +59,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <button
           className="cursor-pointer flex items-center gap-1.5 p-2.5 md:px-3 md:py-2 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
-          aria-label={t('currentLanguage.changeLanguage')}
+          aria-label={t('language.changeLanguage')}
         >
           <Globe size={20} />
           <span className="hidden md:inline text-xs font-bold uppercase">{currentLanguage}</span>
