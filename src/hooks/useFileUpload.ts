@@ -21,8 +21,6 @@ export function useFileUpload() {
 
   // Store actions
   const setUploadInfo = useAppStore(s => s.setUploadInfo);
-  const setFilters = useAppStore(s => s.setFilters);
-  const filters = useAppStore(s => s.filters);
 
   // Web Worker for file parsing
   const { workerRef, isWorkerReady } = useParseWorker();
@@ -97,11 +95,6 @@ export function useFileUpload() {
         if (cachedData) {
           // Restore data from cache
           // Data is in IndexedDB, just update metadata
-
-          // Set default filters only if current filters are empty
-          if (filters.size === 0) {
-            setFilters(new Set(['following', 'followers']));
-          }
 
           setUploadInfo({
             currentFileName: cachedData.metadata.name,
@@ -186,11 +179,6 @@ export function useFileUpload() {
 
         // Data already cached in IndexedDB by worker during chunked processing
 
-        // Set default filters only if current filters are empty
-        if (filters.size === 0) {
-          setFilters(new Set(['following', 'followers']));
-        }
-
         setUploadInfo({
           currentFileName: file.name,
           uploadStatus: 'success',
@@ -226,7 +214,7 @@ export function useFileUpload() {
         throw err;
       }
     },
-    [setFilters, setUploadInfo, filters]
+    [setUploadInfo]
   );
 
   const abortUpload = useCallback(() => {
