@@ -145,7 +145,8 @@ type PageName =
   | 'results'
   | 'sample'
   | 'privacy'
-  | 'terms';
+  | 'terms'
+  | '404';
 type ScrollDepth = 25 | 50 | 75 | 100;
 
 // Re-export DiagnosticErrorCode from core/types to ensure consistency
@@ -445,6 +446,24 @@ export const analytics = {
     trackEvent(AnalyticsEvents.RESCUE_PLAN_RE_ENGAGEMENT, {
       old_severity: oldSeverity,
       new_severity: newSeverity,
+    });
+  },
+
+  // Error Boundary (optional tracking)
+  errorBoundary: (errorMessage: string, componentStack: string) => {
+    // Note: Not in AnalyticsEvents const - optional tracking
+    trackEvent('error_boundary' as AnalyticsEventName, {
+      error_message: errorMessage.slice(0, 200),
+      component_stack: componentStack.slice(0, 500),
+    });
+  },
+
+  // Route Error (optional tracking)
+  routeError: (status: number, message: string) => {
+    // Note: Not in AnalyticsEvents const - optional tracking
+    trackEvent('route_error' as AnalyticsEventName, {
+      status,
+      message: message.slice(0, 200),
     });
   },
 };

@@ -1,4 +1,5 @@
 import { AccountListSection } from '@/components/AccountListSection';
+import { DiagnosticErrorScreen } from '@/components/DiagnosticErrorScreen';
 import { Hero } from '@/components/Hero';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
@@ -32,6 +33,21 @@ export function Component() {
   const handleUploadDirect = () => {
     navigate(`${prefix}/upload`);
   };
+
+  const handleTryAgain = () => {
+    navigate(`${prefix}/upload`);
+  };
+
+  // Show error if upload failed
+  if (uploadState.status === 'error') {
+    return (
+      <DiagnosticErrorScreen
+        errorMessage={uploadState.error || 'An error occurred while processing your file.'}
+        onTryAgain={handleTryAgain}
+        onOpenWizard={handleStartGuide}
+      />
+    );
+  }
 
   // Show results if data available
   if (hasResults && fileMetadata) {

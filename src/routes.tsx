@@ -1,6 +1,7 @@
 import type { RouteRecord } from 'vite-react-ssg';
 import React from 'react';
 import { Layout } from '@/components/Layout';
+import { RouteErrorPage } from '@/components/RouteErrorPage';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/locales';
 
 // Direct imports for parallel loading (no lazy waterfall)
@@ -11,6 +12,7 @@ import ResultsPage from './pages/ResultsPage';
 import SamplePage from './pages/SamplePage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 /**
  * Route definitions for SSG prerendering
@@ -32,6 +34,7 @@ export const routes: RouteRecord[] = [
   {
     path: '/',
     element: <Layout />,
+    errorElement: <RouteErrorPage />,
     entry: 'src/components/Layout.tsx',
     children: [
       { index: true, element: <HomePage /> },
@@ -42,6 +45,7 @@ export const routes: RouteRecord[] = [
       { path: 'sample', element: <SamplePage /> },
       { path: 'privacy', element: <PrivacyPage /> },
       { path: 'terms', element: <TermsPage /> },
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
   // Language-prefixed routes (es, ru, de, etc.)
@@ -49,6 +53,7 @@ export const routes: RouteRecord[] = [
     (lang): RouteRecord => ({
       path: `/${lang}`,
       element: <Layout lang={lang} />,
+      errorElement: <RouteErrorPage />,
       entry: 'src/components/Layout.tsx',
       children: [
         { index: true, element: <HomePage /> },
@@ -59,6 +64,7 @@ export const routes: RouteRecord[] = [
         { path: 'sample', element: <SamplePage /> },
         { path: 'privacy', element: <PrivacyPage /> },
         { path: 'terms', element: <TermsPage /> },
+        { path: '*', element: <NotFoundPage /> },
       ],
     })
   ),

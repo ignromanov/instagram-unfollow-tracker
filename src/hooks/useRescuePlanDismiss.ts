@@ -90,7 +90,7 @@ export function useRescuePlanDismiss(segment: UserSegment | null) {
 
     const { isDismissed: newIsDismissed } = getDismissState(segment);
     setIsDismissed(newIsDismissed);
-  }, [segment?.severity, segment?.size]);
+  }, [segment]);
 
   const dismiss = useCallback(() => {
     if (typeof window === 'undefined' || !segment) return;

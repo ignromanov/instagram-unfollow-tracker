@@ -5,6 +5,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
 import { BuyMeCoffeeWidget } from '@/components/BuyMeCoffeeWidget';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { OrganizationSchema } from '@/components/OrganizationSchema';
@@ -133,67 +134,69 @@ export function Layout({ lang }: LayoutProps) {
   const showLoading = isHero ? !isI18nReady : !hasHydrated || !isI18nReady;
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      {/* Loading state - only for pages that need store data */}
-      {showLoading ? (
-        <div className="min-h-screen bg-background flex flex-col">
-          <Header />
-          <main className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-              <p className="text-muted-foreground">Loading...</p>
-            </div>
-          </main>
-        </div>
-      ) : (
-        <div
-          dir={isRTL ? 'rtl' : 'ltr'}
-          className="min-h-screen bg-background flex flex-col transition-colors duration-300"
-        >
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:inset-inline-start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+    <ErrorBoundary>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        {/* Loading state - only for pages that need store data */}
+        {showLoading ? (
+          <div className="min-h-screen bg-background flex flex-col">
+            <Header />
+            <main className="flex-1 flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+                <p className="text-muted-foreground">Loading...</p>
+              </div>
+            </main>
+          </div>
+        ) : (
+          <div
+            dir={isRTL ? 'rtl' : 'ltr'}
+            className="min-h-screen bg-background flex flex-col transition-colors duration-300"
           >
-            Skip to main content
-          </a>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:inset-inline-start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              Skip to main content
+            </a>
 
-          <Header
-            hasData={hasResults}
-            activeScreen={activeScreen}
-            onViewResults={handleViewResults}
-            onUpload={handleUpload}
-            onLogoClick={handleLogoClick}
-            onClear={handleClear}
-          />
+            <Header
+              hasData={hasResults}
+              activeScreen={activeScreen}
+              onViewResults={handleViewResults}
+              onUpload={handleUpload}
+              onLogoClick={handleLogoClick}
+              onClear={handleClear}
+            />
 
-          <main id="main-content" className="flex-1 container mx-auto px-4">
-            {isHero ? (
-              <Outlet />
-            ) : (
-              <Suspense fallback={<PageLoader />}>
+            <main id="main-content" className="flex-1 container mx-auto px-4">
+              {isHero ? (
                 <Outlet />
-              </Suspense>
-            )}
-          </main>
+              ) : (
+                <Suspense fallback={<PageLoader />}>
+                  <Outlet />
+                </Suspense>
+              )}
+            </main>
 
-          <Footer />
+            <Footer />
 
-          {/* BMC Widget - shows only on results pages, auto-open disabled */}
-          <BuyMeCoffeeWidget
-            show={isResultsPage}
-            expandDelay={999999999}
-            autoCollapseAfter={10000}
-            skipStorageCheck={location.pathname.endsWith('/sample')}
-          />
+            {/* BMC Widget - shows only on results pages, auto-open disabled */}
+            <BuyMeCoffeeWidget
+              show={isResultsPage}
+              expandDelay={999999999}
+              autoCollapseAfter={10000}
+              skipStorageCheck={location.pathname.endsWith('/sample')}
+            />
 
-          <Analytics />
+            <Analytics />
 
-          {/* Structured data for SEO */}
-          <BreadcrumbSchema />
-          <OrganizationSchema />
-        </div>
-      )}
-    </ThemeProvider>
+            {/* Structured data for SEO */}
+            <BreadcrumbSchema />
+            <OrganizationSchema />
+          </div>
+        )}
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
