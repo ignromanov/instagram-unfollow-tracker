@@ -28,9 +28,11 @@ export default defineConfig({
     // Client-only pages (results, sample) will be handled by SPA fallback
     script: "async",
     formatting: "minify",
-    crittersOptions: {
-      // Inline critical CSS
-      preload: "swap",
+    beastiesOptions: {
+      // Inline critical CSS and @font-face rules
+      inlineFonts: true,     // Inline @font-face rules to resolve font URLs
+      preloadFonts: true,    // Add preload hints for fonts
+      preload: "swap",       // Font display strategy
     },
 
     // Include dynamic routes (wizard steps 1-8) for all languages
