@@ -81,6 +81,8 @@ const translations: Record<SupportedLanguage, OgTranslations> = {
   },
 };
 
+// React-element-like object syntax (required for non-Next.js Edge Functions)
+// JSX only works in Next.js projects on Vercel
 export default function handler(request: Request) {
   const { searchParams } = new URL(request.url);
   const langParam = searchParams.get('lang') || 'en';
@@ -90,94 +92,116 @@ export default function handler(request: Request) {
   const t = translations[lang];
   const isRTL = RTL_LANGUAGES.includes(lang);
 
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#0a0a0a',
-          backgroundImage: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)',
-          direction: isRTL ? 'rtl' : 'ltr',
-        }}
-      >
-        {/* Shield icon */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 120,
-            height: 120,
-            borderRadius: 32,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            marginBottom: 40,
-          }}
-        >
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth="2.5"
-          >
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            <path d="M9 12l2 2 4-4" />
-          </svg>
-        </div>
+  const html = {
+    type: 'div',
+    props: {
+      style: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0a0a0a',
+        backgroundImage: 'linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%)',
+        direction: isRTL ? 'rtl' : 'ltr',
+      },
+      children: [
+        // Shield icon container
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 120,
+              height: 120,
+              borderRadius: 32,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              marginBottom: 40,
+            },
+            children: {
+              type: 'svg',
+              props: {
+                width: 64,
+                height: 64,
+                viewBox: '0 0 24 24',
+                fill: 'none',
+                stroke: 'white',
+                strokeWidth: 2.5,
+                children: [
+                  {
+                    type: 'path',
+                    props: {
+                      d: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+                    },
+                  },
+                  {
+                    type: 'path',
+                    props: {
+                      d: 'M9 12l2 2 4-4',
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+        // Title
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              fontSize: 64,
+              fontWeight: 800,
+              color: 'white',
+              textAlign: 'center',
+              marginBottom: 20,
+            },
+            children: 'Safe Unfollow',
+          },
+        },
+        // Subtitle
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              fontSize: 28,
+              color: '#a1a1aa',
+              textAlign: 'center',
+              maxWidth: 900,
+              lineHeight: 1.4,
+            },
+            children: t.subtitle,
+          },
+        },
+        // Trust badges
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              gap: 40,
+              marginTop: 50,
+              fontSize: 22,
+              color: '#71717a',
+            },
+            children: [
+              { type: 'span', props: { children: t.free } },
+              { type: 'span', props: { children: t.noPassword } },
+              { type: 'span', props: { children: t.privacy } },
+            ],
+          },
+        },
+      ],
+    },
+  };
 
-        {/* Title - brand name stays in English */}
-        <div
-          style={{
-            display: 'flex',
-            fontSize: 64,
-            fontWeight: 800,
-            color: 'white',
-            textAlign: 'center',
-            marginBottom: 20,
-          }}
-        >
-          Safe Unfollow
-        </div>
-
-        {/* Subtitle - localized */}
-        <div
-          style={{
-            display: 'flex',
-            fontSize: 28,
-            color: '#a1a1aa',
-            textAlign: 'center',
-            maxWidth: 900,
-            lineHeight: 1.4,
-          }}
-        >
-          {t.subtitle}
-        </div>
-
-        {/* Trust badges - localized */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 40,
-            marginTop: 50,
-            fontSize: 22,
-            color: '#71717a',
-          }}
-        >
-          <span>{t.free}</span>
-          <span>{t.noPassword}</span>
-          <span>{t.privacy}</span>
-        </div>
-      </div>
-    ),
-    {
-      width: 1200,
-      height: 630,
-    }
-  );
+  return new ImageResponse(html, {
+    width: 1200,
+    height: 630,
+  });
 }
