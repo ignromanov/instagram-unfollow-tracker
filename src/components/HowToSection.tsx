@@ -2,6 +2,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { ChevronRight, Play, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+import { ResponsiveGif } from '@/components/ResponsiveGif';
 
 interface HowToStep {
   id: number;
@@ -14,14 +15,14 @@ interface HowToStep {
 // Step metadata (visuals and warnings are not translated)
 // Step 9 has no visual - it's the final CTA to upload
 const STEP_META: Array<{ isWarning?: boolean; visual?: string }> = [
-  { visual: '/wizard/step-1.gif' },
-  { visual: '/wizard/step-2.gif' },
-  { visual: '/wizard/step-3.gif' },
-  { isWarning: true, visual: '/wizard/step-4.gif' },
-  { visual: '/wizard/step-5.gif' },
-  { isWarning: true, visual: '/wizard/step-6.gif' },
-  { visual: '/wizard/step-7.gif' },
-  { visual: '/wizard/step-8.gif' },
+  { visual: '/wizard/step-1' },
+  { visual: '/wizard/step-2' },
+  { visual: '/wizard/step-3' },
+  { isWarning: true, visual: '/wizard/step-4' },
+  { visual: '/wizard/step-5' },
+  { isWarning: true, visual: '/wizard/step-6' },
+  { visual: '/wizard/step-7' },
+  { visual: '/wizard/step-8' },
   {}, // Step 9: no visual, navigates to upload page
 ];
 
@@ -64,7 +65,7 @@ export function HowToSection({ onStart }: HowToSectionProps) {
       position: step.id,
       name: step.title,
       text: step.description,
-      image: step.visual,
+      image: step.visual ? `${step.visual}-600w.gif` : undefined,
     })),
   };
 
@@ -146,14 +147,11 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                   </p>
                   {step.visual && (
                     <div className="rounded-3xl md:rounded-4xl overflow-hidden border border-border shadow-md max-w-xl mt-6 group-hover:border-primary/30 transition-all aspect-[4/3]">
-                      <img
-                        src={step.visual}
+                      <ResponsiveGif
+                        basePath={step.visual}
                         alt={step.title}
-                        width={800}
-                        height={600}
                         className="w-full h-full grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 object-cover"
                         loading="lazy"
-                        decoding="async"
                       />
                     </div>
                   )}

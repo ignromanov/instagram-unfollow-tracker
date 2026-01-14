@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { analytics } from '@/lib/analytics';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+import { ResponsiveGif } from '@/components/ResponsiveGif';
 
 interface WizardStep {
   id: number;
@@ -20,37 +21,37 @@ const WIZARD_STEPS: WizardStep[] = [
     id: 1,
     externalLink:
       'https://accountscenter.instagram.com/info_and_permissions/dyi/?entry_point=app_settings',
-    visual: '/wizard/step-1.gif',
+    visual: '/wizard/step-1',
   },
   {
     id: 2,
-    visual: '/wizard/step-2.gif',
+    visual: '/wizard/step-2',
   },
   {
     id: 3,
-    visual: '/wizard/step-3.gif',
+    visual: '/wizard/step-3',
   },
   {
     id: 4,
     isWarning: true,
-    visual: '/wizard/step-4.gif',
+    visual: '/wizard/step-4',
   },
   {
     id: 5,
-    visual: '/wizard/step-5.gif',
+    visual: '/wizard/step-5',
   },
   {
     id: 6,
     isWarning: true,
-    visual: '/wizard/step-6.gif',
+    visual: '/wizard/step-6',
   },
   {
     id: 7,
-    visual: '/wizard/step-7.gif',
+    visual: '/wizard/step-7',
   },
   {
     id: 8,
-    visual: '/wizard/step-8.gif',
+    visual: '/wizard/step-8',
   },
 ];
 
@@ -184,15 +185,24 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
           >
             {/* Image */}
             <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative aspect-[4/3]">
-              <img
-                src={step.visual || `https://picsum.photos/seed/${step.id}/800/600`}
-                alt={t(`steps.${currentStep}.alt` as any)}
-                width={800}
-                height={600}
-                className="w-full h-full block object-cover"
-                loading="lazy"
-                decoding="async"
-              />
+              {step.visual ? (
+                <ResponsiveGif
+                  basePath={step.visual}
+                  alt={t(`steps.${currentStep}.alt` as any)}
+                  className="w-full h-full block object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <img
+                  src={`https://picsum.photos/seed/${step.id}/800/600`}
+                  alt={t(`steps.${currentStep}.alt` as any)}
+                  width={800}
+                  height={600}
+                  className="w-full h-full block object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
               {step.isWarning && (
                 <div className="absolute top-4 left-4 p-2.5 bg-amber-400 text-black rounded-xl shadow-lg flex items-center gap-2 font-black text-xs animate-bounce">
                   <AlertTriangle size={18} />
