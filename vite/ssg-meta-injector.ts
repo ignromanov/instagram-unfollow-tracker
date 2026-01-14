@@ -93,8 +93,8 @@ export async function injectLocalizedMeta(
     ${alternateLocales}
   `;
 
-  // OG image URL with language parameter
-  const ogImageUrl = `${BASE_URL}/api/og?lang=${currentLang}`;
+  // OG image URL - using static image (same for all languages)
+  const ogImageUrl = `${BASE_URL}/og.png`;
 
   // Replace all meta tags in HTML
   let html = renderedHTML;
