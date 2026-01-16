@@ -61,7 +61,30 @@ const ROUTE_CONFIG: Record<string, { priority: number; changefreq: string }> = {
   "/sample": { priority: 0.6, changefreq: "monthly" },
   "/privacy": { priority: 0.5, changefreq: "yearly" },
   "/terms": { priority: 0.5, changefreq: "yearly" },
+  // Documentation pages (English only, no i18n)
+  "/docs": { priority: 0.7, changefreq: "monthly" },
+  "/docs/user-guide": { priority: 0.7, changefreq: "monthly" },
+  "/docs/instagram-export": { priority: 0.7, changefreq: "monthly" },
+  "/docs/faq": { priority: 0.7, changefreq: "monthly" },
+  "/docs/troubleshooting": { priority: 0.6, changefreq: "monthly" },
+  "/docs/privacy": { priority: 0.5, changefreq: "yearly" },
+  "/docs/tech-spec": { priority: 0.5, changefreq: "monthly" },
+  "/docs/roadmap": { priority: 0.5, changefreq: "monthly" },
+  "/docs/accessibility": { priority: 0.5, changefreq: "yearly" },
 };
+
+// Paths that are English-only (no i18n versions)
+const ENGLISH_ONLY_PATHS = [
+  "/docs",
+  "/docs/user-guide",
+  "/docs/instagram-export",
+  "/docs/faq",
+  "/docs/troubleshooting",
+  "/docs/privacy",
+  "/docs/tech-spec",
+  "/docs/roadmap",
+  "/docs/accessibility",
+];
 
 const DEFAULT_CONFIG = { priority: 0.7, changefreq: "monthly" };
 
@@ -170,9 +193,24 @@ function getRouteConfig(
 }
 
 /**
+ * Check if path is English-only (no i18n versions)
+ */
+function isEnglishOnlyPath(basePath: string): boolean {
+  return ENGLISH_ONLY_PATHS.some(
+    (p) => basePath === p || basePath.startsWith(p + "/")
+  );
+}
+
+/**
  * Generate hreflang links for a base path
+ * Returns empty string for English-only paths (docs)
  */
 function generateHreflangLinks(basePath: string): string {
+  // No hreflang for English-only pages
+  if (isEnglishOnlyPath(basePath)) {
+    return "";
+  }
+
   const links = SUPPORTED_LANGUAGES.map((lang) => {
     const url = buildUrl(basePath, lang);
     return `        <xhtml:link rel="alternate" hreflang="${lang}" href="${url}"/>`;
@@ -200,9 +238,11 @@ function generateUrlEntry(
   // Non-English versions get slightly lower priority
   const priority = lang === "en" ? config.priority : Math.max(config.priority - 0.1, 0.1);
 
+  const hreflangLinks = generateHreflangLinks(basePath);
+  const hreflangSection = hreflangLinks ? `\n${hreflangLinks}` : "";
+
   return `    <url>
-        <loc>${url}</loc>
-${generateHreflangLinks(basePath)}
+        <loc>${url}</loc>${hreflangSection}
         <lastmod>${lastmod}</lastmod>
         <changefreq>${config.changefreq}</changefreq>
         <priority>${priority.toFixed(1)}</priority>

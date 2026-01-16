@@ -5,6 +5,19 @@
   "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "instagram-unfollow-tracker.vercel.app"
+        }
+      ],
+      "destination": "https://safeunfollow.app/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/docs/:path*",
