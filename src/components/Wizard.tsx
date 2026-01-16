@@ -228,15 +228,25 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
 
               {/* External Link Button (step 1) */}
               {step.externalLink && (
-                <a
-                  href={step.externalLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleExternalLinkClick}
-                  className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto"
-                >
-                  {t('buttons.openInstagram')} <ExternalLink size={20} />
-                </a>
+                <>
+                  <a
+                    href={step.externalLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleExternalLinkClick}
+                    className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-black shadow-xl hover:scale-105 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto"
+                  >
+                    {t('buttons.openInstagram')} <ExternalLink size={20} />
+                  </a>
+
+                  {/* Already have file shortcut */}
+                  <button
+                    onClick={() => navigate(`${prefix}/upload`)}
+                    className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary text-primary rounded-2xl font-bold hover:bg-primary/5 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto mt-4"
+                  >
+                    {t('buttons.alreadyHaveFile')}
+                  </button>
+                </>
               )}
 
               {/* Last step: Calendar reminder button */}

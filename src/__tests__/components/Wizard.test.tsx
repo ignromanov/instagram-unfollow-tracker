@@ -184,4 +184,36 @@ describe('Wizard', () => {
 
     expect(mockNavigate).toHaveBeenCalledWith('/wizard/step/4', { replace: true });
   });
+
+  it('should render "I already have my ZIP file" button on step 1', () => {
+    mockPathname = '/wizard/step/1';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+
+    const alreadyHaveFileButton = screen.getByRole('button', {
+      name: wizardEN.buttons.alreadyHaveFile,
+    });
+    expect(alreadyHaveFileButton).toBeInTheDocument();
+  });
+
+  it('should navigate to /upload when "I already have my ZIP file" is clicked', () => {
+    mockPathname = '/wizard/step/1';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+
+    const alreadyHaveFileButton = screen.getByRole('button', {
+      name: wizardEN.buttons.alreadyHaveFile,
+    });
+    fireEvent.click(alreadyHaveFileButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/upload');
+  });
+
+  it('should not render "I already have my ZIP file" button on other steps', () => {
+    mockPathname = '/wizard/step/2';
+    render(<Wizard onComplete={mockOnComplete} onCancel={mockOnCancel} />);
+
+    const alreadyHaveFileButton = screen.queryByRole('button', {
+      name: wizardEN.buttons.alreadyHaveFile,
+    });
+    expect(alreadyHaveFileButton).not.toBeInTheDocument();
+  });
 });

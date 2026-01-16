@@ -1,0 +1,69 @@
+{
+  "header": {
+    "stepOf": "Étape {{current}} sur {{total}}"
+  },
+  "calendar": {
+    "addReminder": "Ajouter un rappel au calendrier",
+    "title": "Vérifier l'e-mail d'exportation Instagram",
+    "details": "Vérifiez votre e-mail pour l'exportation de données Instagram et téléversez-la sur Unfollow Tracker à safeunfollow.app"
+  },
+  "buttons": {
+    "back": "Retour",
+    "next": "Étape suivante",
+    "done": "C'est fait, allons-y !",
+    "openInstagram": "Ouvrir la page d'exportation",
+    "close": "Fermer le guide",
+    "uploadFile": "Téléverser mon fichier",
+    "alreadyHaveFile": "J'ai déjà mon fichier ZIP"
+  },
+  "format": {
+    "warning": "ÉTAPE CRITIQUE"
+  },
+  "steps": {
+    "1": {
+      "title": "Ouvrez la page d'exportation Instagram",
+      "description": "Cliquez sur le bouton ci-dessous pour ouvrir le Centre de comptes Meta. Ensuite, cliquez sur « Créer une exportation ».",
+      "alt": "Étape 1 : Ouvrez la page d'exportation et cliquez sur Créer une exportation"
+    },
+    "2": {
+      "title": "Choisissez votre profil Instagram",
+      "description": "Sélectionnez votre compte Instagram dans la liste des profils connectés.",
+      "alt": "Étape 2 : Choisissez votre profil Instagram"
+    },
+    "3": {
+      "title": "Sélectionnez « Exporter vers l'appareil »",
+      "description": "Choisissez d'exporter directement vers votre appareil pour une confidentialité maximale. Vos données restent avec vous.",
+      "alt": "Étape 3 : Sélectionnez l'option Exporter vers l'appareil"
+    },
+    "4": {
+      "title": "⚠️ Sélectionnez uniquement « Abonnés et abonnements »",
+      "description": "Cliquez sur « Personnaliser » → Décochez tout → Cochez UNIQUEMENT « Abonnés et abonnements ». Cela garde votre fichier petit et rapide.",
+      "alt": "Étape 4 : Personnalisez pour sélectionner uniquement Abonnés et abonnements"
+    },
+    "5": {
+      "title": "Définissez la plage de dates sur « Tout »",
+      "description": "Cliquez sur « Plage de dates » → Sélectionnez « Tout » → Enregistrer. Cela garantit votre historique complet d'abonnés.",
+      "alt": "Étape 5 : Définissez la plage de dates sur Tout"
+    },
+    "6": {
+      "title": "⚠️ Changez le format en JSON",
+      "description": "C'est crucial ! Cliquez sur « Format » → Sélectionnez « JSON » (pas HTML). Les fichiers HTML NE fonctionneront PAS avec notre analyseur.",
+      "alt": "Étape 6 : Changez le format en JSON"
+    },
+    "7": {
+      "title": "Vérifiez et lancez l'exportation",
+      "description": "Vérifiez que vos paramètres affichent : Abonnés et abonnements, Tout, format JSON. Puis cliquez sur « Démarrer l'exportation ».",
+      "alt": "Étape 7 : Vérifiez les paramètres et lancez l'exportation"
+    },
+    "8": {
+      "title": "Attendez l'e-mail et téléchargez",
+      "description": "Instagram vous enverra un e-mail quand ce sera prêt (généralement 5-30 minutes). Cliquez sur le lien de téléchargement dans l'e-mail pour obtenir votre fichier ZIP.",
+      "alt": "Étape 8 : Attendez l'e-mail et téléchargez le fichier ZIP"
+    },
+    "9": {
+      "title": "Téléversez votre fichier",
+      "description": "Vous êtes prêt ! Cliquez sur le bouton ci-dessous pour téléverser vos données Instagram et voir qui s'est désabonné.",
+      "alt": "Étape 9 : Téléversez votre fichier de données Instagram"
+    }
+  }
+}

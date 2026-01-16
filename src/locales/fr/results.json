@@ -1,0 +1,124 @@
+{
+  "header": {
+    "title": "Résultats de l'analyse",
+    "fileInfo": "{{filename}} • {{count, number}} au total",
+    "showing": "Affichage de {{filtered}} sur {{total}} comptes"
+  },
+  "sample": {
+    "banner": "Affichage des données exemple",
+    "hint": "Ce sont des données de démonstration pour explorer l'application.",
+    "uploadPrompt": "Téléversez vos données",
+    "toSeeReal": "pour voir vos vrais abonnés."
+  },
+  "search": {
+    "placeholder": "Rechercher des noms d'utilisateur...",
+    "ariaLabel": "Rechercher des comptes par nom d'utilisateur",
+    "clearAriaLabel": "Effacer la recherche",
+    "resultsCount": "Affichage de {{result}} sur {{total}}",
+    "accounts": "comptes",
+    "time": "{{time}}ms"
+  },
+  "sort": {
+    "asc": "Trier A→Z",
+    "desc": "Trier Z→A"
+  },
+  "stats": {
+    "followers": "Abonnés",
+    "following": "Abonnements",
+    "unfollowed": "Désabonnés",
+    "notFollowing": "Ne vous suivent pas"
+  },
+  "filters": {
+    "title": "Filtrer les résultats",
+    "reset": "Réinitialiser",
+    "emptyCategories": "Catégories vides ({{count, number}})",
+    "addFilter": "Ajouter le filtre {{label}} ({{count, number}} comptes)",
+    "removeFilter": "Retirer le filtre {{label}} ({{count, number}} comptes)"
+  },
+  "badges": {
+    "followers": "Abonnés",
+    "following": "Abonnements",
+    "unfollowed": "Désabonnés",
+    "notFollowingBack": "Ne vous suivent pas",
+    "mutuals": "Mutuels",
+    "notFollowedBack": "Vous ne suivez pas en retour",
+    "pending": "En attente",
+    "permanent": "En attente (permanent)",
+    "restricted": "Restreint",
+    "close": "Ami proche",
+    "dismissed": "Suggestion ignorée"
+  },
+  "empty": {
+    "noUsers": "Aucun utilisateur trouvé",
+    "resetFilters": "Réinitialiser les filtres"
+  },
+  "list": {
+    "header": "Comptes ({{count, number}})",
+    "viewProfile": "Voir le profil"
+  },
+  "rescue": {
+    "critical": {
+      "title": "Vous avez perdu {{unfollowedPercent}}% — voici comment vous rétablir",
+      "subtitle": {
+        "influencer": "Avec {{count}}+ abonnés, chaque perte affecte votre portée. Récupérez en 7 jours :",
+        "power": "Vous êtes au top — les créateurs intelligents se rétablissent vite avec ceci :",
+        "regular": "Arrêtez la perte et récupérez votre communauté :",
+        "casual": "Petite audience = récupération rapide. Commencez maintenant :"
+      }
+    },
+    "warning": {
+      "title": "Baisse de {{unfollowedPercent}}% détectée — il est temps d'optimiser",
+      "subtitle": {
+        "influencer": "À votre échelle, l'optimisation précoce prévient des pertes plus importantes :",
+        "power": "Agissez tôt — voici ce qu'utilisent les meilleurs créateurs :",
+        "regular": "Gardez votre audience avant qu'elle ne parte :",
+        "casual": "Construisez des connexions plus fortes maintenant :"
+      }
+    },
+    "growth": {
+      "title": "Seulement {{unfollowedPercent}}% de perte — vous vous en sortez très bien !",
+      "subtitle": {
+        "influencer": "Augmentez votre portée avec des outils professionnels :",
+        "power": "Prêt pour le niveau suivant ? Voici votre kit :",
+        "regular": "Construisez la régularité et grandissez 2x plus vite :",
+        "casual": "Commencez votre parcours de croissance de la bonne manière :"
+      }
+    },
+    "collapsed": {
+      "cta": "Appuyez pour voir les recommandations"
+    },
+    "tools": {
+      "submagic": "Transformez vos clips en Reels viraux → 3-5x plus de portée",
+      "predis": "L'IA crée posts + designs → contenu 3x plus rapide",
+      "manychat": "Réponses automatiques 24/7 → économisez 10+ heures/semaine",
+      "metricool": "Trouvez vos meilleurs horaires → croissance 40% plus rapide",
+      "vistacreate": "Designs pro en 60 sec → ne manquez jamais un post",
+      "later": "Planifiez votre mois en 1 heure → gardez la régularité"
+    },
+    "dismiss": "Peut-être plus tard",
+    "disclaimer": "Outils sélectionnés que nous recommandons. Les liens d'affiliation financent les mises à jour gratuites — sans coût pour vous.",
+    "ariaLabel": "Outils recommandés pour améliorer votre présence sur Instagram",
+    "badges": {
+      "popular": "Populaire",
+      "trial": "Essai",
+      "new": "Nouveau"
+    },
+    "recommended": "Recommandé",
+    "tryTool": "Essayer {{name}}",
+    "price": {
+      "freeTrial7": "7 jours gratuits",
+      "freeTrial14": "14 jours gratuits",
+      "freePlan": "Plan gratuit",
+      "freeContacts": "1K gratuits",
+      "freeForever": "Gratuit pour toujours"
+    },
+    "social": {
+      "creators50k": "50K+ créateurs",
+      "posts1m": "1M+ posts",
+      "businesses1m": "1M+ entreprises",
+      "users200k": "200K+ utilisateurs",
+      "designs10m": "10M+ designs",
+      "users7m": "7M+ utilisateurs"
+    }
+  }
+}

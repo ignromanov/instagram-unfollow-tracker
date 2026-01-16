@@ -34,7 +34,7 @@ export function Component() {
   };
 
   const handleBack = () => {
-    navigate(`${prefix}/waiting`);
+    navigate(`${prefix}/wizard`);
   };
 
   const handleOpenWizard = () => {

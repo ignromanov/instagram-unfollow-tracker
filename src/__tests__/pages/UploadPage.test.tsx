@@ -243,13 +243,13 @@ describe('UploadPage', () => {
   });
 
   describe('navigation - UploadZone handlers', () => {
-    it('should navigate to waiting page when Back is clicked', async () => {
+    it('should navigate to wizard page when Back is clicked', async () => {
       const user = userEvent.setup();
       render(<UploadPage />);
 
       await user.click(screen.getByText(uploadEN.zone.back));
 
-      expect(mockNavigate).toHaveBeenCalledWith('/waiting');
+      expect(mockNavigate).toHaveBeenCalledWith('/wizard');
     });
 
     it('should navigate to wizard when Open Wizard is clicked', async () => {

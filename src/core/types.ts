@@ -342,7 +342,6 @@ export function createDiagnosticError(
 export enum AppState {
   HERO = 'HERO',
   WIZARD = 'WIZARD',
-  WAITING = 'WAITING',
   UPLOAD = 'UPLOAD',
   RESULTS = 'RESULTS',
   SAMPLE = 'SAMPLE',

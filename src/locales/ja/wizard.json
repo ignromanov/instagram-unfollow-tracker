@@ -13,7 +13,8 @@
     "done": "完了、始めましょう！",
     "openInstagram": "エクスポートページを開く",
     "close": "ガイドを閉じる",
-    "uploadFile": "ファイルをアップロード"
+    "uploadFile": "ファイルをアップロード",
+    "alreadyHaveFile": "ZIPファイルを持っています"
   },
   "format": {
     "warning": "重要なステップ"

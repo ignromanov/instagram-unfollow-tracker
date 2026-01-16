@@ -1,0 +1,39 @@
+{
+  "version": "V1.5 Optimisé pour plus de 1 000 000 de comptes",
+  "headline": {
+    "prefix": "Découvrez qui",
+    "highlight": "s'est désabonné de vous sur Instagram",
+    "suffix": "sans connexion"
+  },
+  "subheadline": "Découvrez qui s'est désabonné de vous sur Instagram gratuitement, sans connexion. Téléversez votre ZIP, analyse locale. 100% privé. Fonctionne hors ligne.",
+  "buttons": {
+    "getGuide": "Voir qui s'est désabonné",
+    "trySample": "Essayer avec des données exemple",
+    "haveFile": "J'ai déjà mon fichier ZIP",
+    "viewResults": "Voir les résultats de l'analyse"
+  },
+  "trust": {
+    "free": "100% Gratuit • Pour toujours",
+    "noPassword": "Sans mot de passe • Sans risque",
+    "privacy": "100% Privé • Analyse locale"
+  },
+  "features": {
+    "heading": "Fonctionnalités principales",
+    "local": {
+      "title": "100% Local",
+      "description": "Vos données ne quittent jamais votre appareil"
+    },
+    "noLogin": {
+      "title": "Sans connexion",
+      "description": "Aucun risque de suspension ou de piratage"
+    },
+    "scale": {
+      "title": "Grande échelle",
+      "description": "Gère plus de 1M de comptes à pleine vitesse"
+    },
+    "openSource": {
+      "title": "Open source",
+      "description": "Consultez notre code, nous valorisons votre confiance"
+    }
+  }
+}

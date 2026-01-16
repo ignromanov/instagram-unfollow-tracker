@@ -1,0 +1,60 @@
+{
+  "title": "Comment voir qui <gradient>s'est désabonné de vous sur Instagram</gradient>",
+  "subtitle": "Suivez ces 9 étapes simples pour analyser votre compte en toute sécurité sans partager votre mot de passe.",
+  "important": "Critique",
+  "openStep": "Ouvrir l'étape dans le guide",
+  "uploadButton": "Téléverser mon fichier",
+  "openStepAria": "Étape {{step}} : {{title}}. Cliquez pour ouvrir dans le guide",
+  "steps": {
+    "1": {
+      "title": "Ouvrez la page d'exportation Instagram",
+      "description": "Cliquez sur le bouton pour ouvrir le Centre de comptes Meta. Ensuite, cliquez sur « Créer une exportation »."
+    },
+    "2": {
+      "title": "Choisissez votre profil Instagram",
+      "description": "Sélectionnez votre compte Instagram dans la liste des profils connectés du Centre de comptes."
+    },
+    "3": {
+      "title": "Sélectionnez « Exporter vers l'appareil »",
+      "description": "Choisissez d'exporter directement vers votre appareil. Cela garde vos données privées et sécurisées."
+    },
+    "4": {
+      "title": "Sélectionnez uniquement « Abonnés et abonnements »",
+      "description": "Cliquez sur « Personnaliser » → Décochez tout → Cochez UNIQUEMENT « Abonnés et abonnements ». Cela garde votre fichier compact."
+    },
+    "5": {
+      "title": "Définissez la plage de dates sur « Tout »",
+      "description": "Cliquez sur « Plage de dates » → Sélectionnez « Tout » → Enregistrer. Cela garantit l'historique complet."
+    },
+    "6": {
+      "title": "Changez le format en JSON",
+      "description": "Étape critique ! Cliquez sur « Format » → Sélectionnez « JSON » (pas HTML). Les fichiers HTML NE fonctionneront PAS."
+    },
+    "7": {
+      "title": "Vérifiez et lancez l'exportation",
+      "description": "Vérifiez les paramètres : Abonnés et abonnements, Tout, JSON. Puis cliquez sur « Démarrer l'exportation »."
+    },
+    "8": {
+      "title": "Attendez l'e-mail et téléchargez",
+      "description": "Instagram vous envoie un e-mail quand c'est prêt (5-30 min). Téléchargez le fichier ZIP depuis le lien de l'e-mail."
+    },
+    "9": {
+      "title": "Téléversez votre fichier",
+      "description": "Vous êtes prêt ! Cliquez sur le bouton ci-dessous pour téléverser vos données Instagram."
+    }
+  },
+  "cta": {
+    "title": "Prêt à commencer ?",
+    "subtitle": "Analysez votre exportation de données en privé en quelques secondes.",
+    "button": "Ouvrir le guide d'analyse"
+  },
+  "schema": {
+    "name": "Comment voir qui s'est désabonné de vous sur Instagram sans connexion",
+    "description": "Guide étape par étape pour trouver qui s'est désabonné de vous sur Instagram en utilisant votre exportation officielle de données. Aucune connexion requise, 100% privé.",
+    "supplies": {
+      "account": "Compte Instagram",
+      "email": "Accès à l'e-mail"
+    },
+    "tool": "Suivi des désabonnements Instagram (ce site web)"
+  }
+}

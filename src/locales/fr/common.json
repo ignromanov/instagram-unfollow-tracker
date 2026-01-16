@@ -1,0 +1,69 @@
+{
+  "buttons": {
+    "back": "Retour",
+    "next": "Suivant",
+    "cancel": "Annuler",
+    "tryAgain": "Réessayer",
+    "clearData": "Effacer les données",
+    "viewResults": "Résultats",
+    "uploadFile": "Téléverser le fichier",
+    "delete": "Supprimer"
+  },
+  "badges": {
+    "followers": "Abonnés",
+    "following": "Abonnements",
+    "unfollowed": "Désabonnés",
+    "notFollowingBack": "Ne vous suivent pas",
+    "mutuals": "Mutuels",
+    "notFollowedBack": "Vous ne suivez pas en retour",
+    "pending": "En attente",
+    "permanent": "En attente (permanent)",
+    "restricted": "Restreint",
+    "close": "Ami proche",
+    "dismissed": "Suggestion ignorée"
+  },
+  "theme": {
+    "light": "Mode clair",
+    "dark": "Mode sombre",
+    "system": "Automatique",
+    "switchToLight": "Passer au mode clair",
+    "switchToDark": "Passer au mode sombre"
+  },
+  "header": {
+    "logoAria": "SafeUnfollow.app — Aller à la page d'accueil",
+    "clearDataTitle": "Effacer toutes les données ?",
+    "clearDataDescription": "Cela supprimera toutes les données Instagram téléversées et vous ramènera à l'écran d'accueil. Cette action est irréversible.",
+    "deleteData": "Supprimer les données"
+  },
+  "footer": {
+    "description": "Le seul analyseur de relations qui fonctionne 100% dans votre navigateur. Sans serveur, sans journaux, juste vos données et votre appareil.",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation",
+    "contact": "Contact",
+    "trackingOff": "Suivi désactivé",
+    "dontTrackMe": "Ne pas me suivre",
+    "trackingDisabled": "Analyses désactivées",
+    "trackingEnabled": "Désactiver les analyses anonymes",
+    "keepItFree": "Gardez-le gratuit et privé",
+    "supportPrivacy": "Soutenez la confidentialité",
+    "madeWithLove": "Fait avec",
+    "forTheCommunity": "pour la communauté",
+    "copyright": "© 2026 SafeUnfollow.app",
+    "license": "Licence MIT",
+    "viewSource": "Code source"
+  },
+  "nav": {
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation"
+  },
+  "language": {
+    "changeLanguage": "Changer de langue"
+  },
+  "cta": {
+    "title": "Commencez votre analyse privée aujourd'hui",
+    "subtitle": "Rejoignez des milliers d'utilisateurs qui suivent leurs abonnés sans risquer leurs comptes.",
+    "getStarted": "Commencer",
+    "trySample": "Essayer la démo",
+    "tagline": "100% Gratuit • Sans connexion • Confidentialité garantie"
+  }
+}

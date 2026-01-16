@@ -1,0 +1,60 @@
+{
+  "zone": {
+    "back": "Retour",
+    "title": "Téléversez votre ZIP Instagram",
+    "description": "Vos données restent 100% privées. Nous analysons votre fichier ZIP Instagram localement dans votre navigateur.",
+    "dropHere": "Déposez votre fichier ZIP Instagram ici",
+    "orBrowse": "Ou appuyez pour parcourir votre stockage local.",
+    "jsonOnly": "Format JSON uniquement",
+    "processing": "Analyse locale en cours...",
+    "processingHint": "Le traitement de grands ensembles de données (jusqu'à 1M+) peut prendre un moment.",
+    "ariaLabel": "Téléverser le fichier ZIP de données Instagram"
+  },
+  "checklist": {
+    "title": "Liste de vérification",
+    "format": "Format : JSON (pas HTML)",
+    "includes": "Inclut : « Abonnés et abonnements »",
+    "timeframe": "Période : « Tout »",
+    "fileType": "Type de fichier : .zip"
+  },
+  "errors": {
+    "commonTitle": "Erreur la plus courante",
+    "commonHint": "Si votre exportation affiche 0 abonné, vous avez probablement exporté au format <strong>HTML</strong> ou n'avez pas sélectionné la catégorie « Abonnés et abonnements ».",
+    "learnFix": "Apprenez comment corriger cela"
+  },
+  "diagnostic": {
+    "back": "Retour",
+    "howToFix": "Comment corriger cela",
+    "tryAgain": "Réessayer",
+    "showMistakes": "Montrer où je me suis trompé",
+    "commonMistakes": "Erreurs courantes",
+    "mistakes": {
+      "html": {
+        "title": "HTML au lieu de JSON",
+        "description": "Assurez-vous de sélectionner le format « JSON » lors de la demande de vos données"
+      },
+      "missingData": {
+        "title": "Catégorie de données manquante",
+        "description": "Vous devez sélectionner « Abonnés et abonnements » dans les types de données"
+      },
+      "wrongFile": {
+        "title": "Mauvais fichier",
+        "description": "Téléversez le fichier .zip, pas un dossier ou des fichiers extraits"
+      }
+    }
+  },
+  "waiting": {
+    "title": "En attente d'Instagram...",
+    "description": "Instagram prépare votre exportation de données. Vous recevrez un e-mail dans les 48 heures (généralement beaucoup plus vite !).",
+    "addReminder": "Ajouter un rappel au calendrier",
+    "reminderHint": "Me rappeler de vérifier dans 2 jours",
+    "calendarTitle": "Vérifier l'e-mail d'exportation Instagram",
+    "calendarDetails": "Vérifiez votre e-mail pour l'exportation de données Instagram et téléversez-la sur le Suivi des désabonnements",
+    "haveFile": "Vous avez déjà votre fichier ?",
+    "haveFileHint": "Si vous avez déjà téléchargé l'exportation ZIP depuis votre e-mail, passez directement à l'analyse.",
+    "uploadNow": "Téléverser maintenant",
+    "proTip": "Astuce : Vérifiez votre dossier Spam",
+    "proTipHint": "Les e-mails d'Instagram finissent souvent là. Recherchez les e-mails de <b>Meta</b> ou <b>Instagram</b>. Le lien de téléchargement expire dans 4 jours.",
+    "skip": "Passer pour l'instant"
+  }
+}

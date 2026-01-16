@@ -13,7 +13,8 @@
     "done": "Selesai, ayo mulai!",
     "openInstagram": "Buka halaman ekspor",
     "close": "Tutup panduan",
-    "uploadFile": "Unggah File Saya"
+    "uploadFile": "Unggah File Saya",
+    "alreadyHaveFile": "Saya sudah punya file ZIP"
   },
   "format": {
     "warning": "LANGKAH PENTING"

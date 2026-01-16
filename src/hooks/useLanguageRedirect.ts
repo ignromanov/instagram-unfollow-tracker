@@ -1,7 +1,10 @@
 import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
-import { NON_ENGLISH_LANGUAGES } from '@/config/languages';
+import { detectBrowserLanguage, NON_ENGLISH_LANGUAGES } from '@/config/languages';
+
+/** localStorage key to track if user has visited before */
+const VISITED_KEY = 'unfollow-radar-visited';
 
 /**
  * Redirect from language-less paths to user's preferred language
@@ -9,19 +12,19 @@ import { NON_ENGLISH_LANGUAGES } from '@/config/languages';
  * Uses useLayoutEffect to redirect BEFORE paint — user won't see wrong content.
  *
  * Flow:
- * 1. User visits /wizard (no language prefix)
- * 2. Store has language: 'ru' from previous session
- * 3. Redirect to /ru/wizard BEFORE any content is painted
+ * 1. If URL already has language prefix → do nothing (explicit choice)
+ * 2. If first visit (no localStorage key) → detect browser language, redirect if not English
+ * 3. If returning user → use stored Zustand preference
  *
  * Examples:
- * - / → /ru/ (if store.language = 'ru')
- * - /wizard → /ru/wizard
- * - /es/wizard → no redirect (explicit language choice)
- * - /wizard → /wizard (if store.language = 'en', English is default)
+ * - / → /ru/ (first visit, browser language is Russian)
+ * - /wizard → /es/wizard (returning user, store.language = 'es')
+ * - /es/wizard → no redirect (explicit language choice in URL)
+ * - /wizard → /wizard (if detected/stored language = 'en', English is default)
  */
 export function useLanguageRedirect(): void {
   const location = useLocation();
-  const { language, _hasHydrated } = useAppStore();
+  const { language, setLanguage, _hasHydrated } = useAppStore();
 
   // useLayoutEffect runs synchronously before paint
   useLayoutEffect(() => {
@@ -33,10 +36,27 @@ export function useLanguageRedirect(): void {
       lang => location.pathname === `/${lang}` || location.pathname.startsWith(`/${lang}/`)
     );
 
-    // If no language prefix and user prefers non-English → redirect
-    if (!hasLangPrefix && language !== 'en') {
-      const newPath = `/${language}${location.pathname}`;
+    // If URL has explicit language prefix, respect it
+    if (hasLangPrefix) return;
+
+    // Determine target language
+    let targetLanguage = language;
+
+    // First visit: detect from browser and persist
+    const isFirstVisit = !localStorage.getItem(VISITED_KEY);
+    if (isFirstVisit) {
+      targetLanguage = detectBrowserLanguage();
+      // Mark as visited and persist detected language
+      localStorage.setItem(VISITED_KEY, 'true');
+      if (targetLanguage !== language) {
+        setLanguage(targetLanguage);
+      }
+    }
+
+    // Redirect if target language is not English
+    if (targetLanguage !== 'en') {
+      const newPath = `/${targetLanguage}${location.pathname}`;
       window.location.href = newPath;
     }
-  }, [location.pathname, language, _hasHydrated]);
+  }, [location.pathname, language, setLanguage, _hasHydrated]);
 }

@@ -136,17 +136,6 @@ describe('BreadcrumbSchema', () => {
 
       expect(schema.itemListElement[1].name).toBe('Terms of Service');
     });
-
-    it('should include correct page name for /waiting', () => {
-      const { container } = renderWithRouter(<BreadcrumbSchema />, {
-        initialEntries: ['/waiting'],
-      });
-
-      const script = container.querySelector('script[type="application/ld+json"]');
-      const schema = JSON.parse(script!.textContent!);
-
-      expect(schema.itemListElement[1].name).toBe('Waiting');
-    });
   });
 
   describe('language prefix handling', () => {

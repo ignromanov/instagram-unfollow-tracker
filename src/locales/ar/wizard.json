@@ -13,7 +13,8 @@
     "done": "انتهيت، هيا بنا!",
     "openInstagram": "افتح صفحة تصدير انستغرام",
     "close": "إغلاق الدليل",
-    "uploadFile": "رفع ملفي"
+    "uploadFile": "رفع ملفي",
+    "alreadyHaveFile": "لدي بالفعل ملف ZIP"
   },
   "format": {
     "warning": "خطوة حاسمة"

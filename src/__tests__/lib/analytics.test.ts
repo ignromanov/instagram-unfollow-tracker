@@ -353,20 +353,6 @@ describe('Analytics', () => {
         });
       });
 
-      it('should track waiting dashboard interactions', () => {
-        analytics.waitingUploadClick();
-        expect(windowSpy.umami.track).toHaveBeenCalledWith(
-          AnalyticsEvents.WAITING_UPLOAD_CLICK,
-          undefined
-        );
-
-        analytics.waitingBackClick();
-        expect(windowSpy.umami.track).toHaveBeenCalledWith(
-          AnalyticsEvents.WAITING_BACK_CLICK,
-          undefined
-        );
-      });
-
       it('should track FAQ expansion with truncated text', () => {
         const longQuestion = 'Q: '.repeat(50); // 150+ chars
         analytics.faqExpand(1, longQuestion);

@@ -19,6 +19,7 @@ export const SUPPORTED_LANGUAGES = [
   'ru',
   'de',
   'ar',
+  'fr',
 ] as const;
 
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
@@ -34,6 +35,7 @@ export const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {
   ru: 'Русский',
   de: 'Deutsch',
   ar: 'العربية',
+  fr: 'Français',
 };
 
 /** RTL languages that require dir="rtl" attribute */
@@ -58,6 +60,7 @@ export const LOCALE_CODES: Record<SupportedLanguage, string> = {
   tr: 'tr_TR',
   id: 'id_ID',
   ar: 'ar_SA',
+  fr: 'fr_FR',
 };
 
 /**
@@ -140,4 +143,44 @@ export function detectLanguageFromUrl(): SupportedLanguage {
   }
 
   return detectLanguageFromPathname(window.location.pathname);
+}
+
+/**
+ * Detect preferred language from browser settings
+ *
+ * Checks navigator.languages (array of preferred languages) first,
+ * then falls back to navigator.language.
+ * Returns DEFAULT_LANGUAGE if no supported language is found or on server.
+ *
+ * @returns Detected language code from browser preferences
+ *
+ * @example
+ * // Browser with navigator.languages = ['ru-RU', 'en-US']
+ * detectBrowserLanguage(); // 'ru'
+ *
+ * // Browser with navigator.language = 'es-MX'
+ * detectBrowserLanguage(); // 'es'
+ *
+ * // Browser with unsupported language 'zh-CN'
+ * detectBrowserLanguage(); // 'en' (default)
+ */
+export function detectBrowserLanguage(): SupportedLanguage {
+  if (typeof navigator === 'undefined') {
+    return DEFAULT_LANGUAGE;
+  }
+
+  const languages = navigator.languages?.length ? navigator.languages : [navigator.language];
+
+  for (const browserLang of languages) {
+    if (!browserLang) continue;
+
+    const langCode = browserLang.split('-')[0]?.toLowerCase();
+    if (!langCode) continue;
+
+    if (SUPPORTED_LANGUAGES.includes(langCode as SupportedLanguage)) {
+      return langCode as SupportedLanguage;
+    }
+  }
+
+  return DEFAULT_LANGUAGE;
 }

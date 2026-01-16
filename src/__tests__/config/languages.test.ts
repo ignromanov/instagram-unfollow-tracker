@@ -4,10 +4,11 @@
  * Validates the single source of truth for supported languages.
  */
 
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   DEFAULT_LANGUAGE,
+  detectBrowserLanguage,
   LANGUAGE_NAMES,
   RTL_LANGUAGES,
   SUPPORTED_LANGUAGES,
@@ -22,7 +23,7 @@ describe('languages configuration', () => {
     });
 
     it('should contain expected languages', () => {
-      const expectedLanguages = ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de', 'ar'];
+      const expectedLanguages = ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de', 'ar', 'fr'];
       expect(SUPPORTED_LANGUAGES).toEqual(expectedLanguages);
     });
 
@@ -68,6 +69,7 @@ describe('languages configuration', () => {
       expect(LANGUAGE_NAMES.ru).toBe('Русский');
       expect(LANGUAGE_NAMES.de).toBe('Deutsch');
       expect(LANGUAGE_NAMES.ar).toBe('العربية');
+      expect(LANGUAGE_NAMES.fr).toBe('Français');
     });
 
     it('should have non-empty names', () => {
@@ -178,6 +180,159 @@ describe('languages configuration', () => {
       expect(typeof LANGUAGE_NAMES).toBe('object');
       expect(typeof RTL_LANGUAGES).toBe('object'); // array
       expect(typeof DEFAULT_LANGUAGE).toBe('string');
+    });
+  });
+
+  describe('detectBrowserLanguage', () => {
+    const originalNavigator = global.navigator;
+
+    beforeEach(() => {
+      vi.resetAllMocks();
+    });
+
+    afterEach(() => {
+      // Restore original navigator
+      Object.defineProperty(global, 'navigator', {
+        value: originalNavigator,
+        writable: true,
+        configurable: true,
+      });
+    });
+
+    it('should detect language from navigator.languages array', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['ru-RU', 'en-US'], language: 'ru-RU' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('ru');
+    });
+
+    it('should return first supported language from navigator.languages', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['zh-CN', 'es-MX', 'en-US'], language: 'zh-CN' },
+        writable: true,
+        configurable: true,
+      });
+
+      // zh-CN is not supported, es-MX is, so should return 'es'
+      expect(detectBrowserLanguage()).toBe('es');
+    });
+
+    it('should fall back to navigator.language when languages array is empty', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: [], language: 'de-DE' },
+        writable: true,
+        configurable: true,
+      });
+
+      // Empty array falls back to [navigator.language] via nullish coalescing
+      expect(detectBrowserLanguage()).toBe('de');
+    });
+
+    it('should fall back to navigator.language when languages is undefined', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: undefined, language: 'pt-BR' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('pt');
+    });
+
+    it('should return default language for unsupported browser language', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['zh-CN', 'ko-KR'], language: 'zh-CN' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('en');
+    });
+
+    it('should return default language when navigator is undefined (server-side)', () => {
+      // Temporarily remove navigator to simulate server environment
+      const navDescriptor = Object.getOwnPropertyDescriptor(global, 'navigator');
+      // @ts-expect-error - intentionally deleting for test
+      delete global.navigator;
+
+      expect(detectBrowserLanguage()).toBe('en');
+
+      // Restore navigator
+      if (navDescriptor) {
+        Object.defineProperty(global, 'navigator', navDescriptor);
+      }
+    });
+
+    it('should handle language codes with region correctly', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['ja-JP'], language: 'ja-JP' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('ja');
+    });
+
+    it('should handle lowercase language codes', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['TR'], language: 'TR' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('tr');
+    });
+
+    it('should handle Arabic language for RTL support', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['ar-SA'], language: 'ar-SA' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('ar');
+    });
+
+    it('should skip null/undefined entries in languages array', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: [null, undefined, 'es-ES'], language: 'es-ES' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('es');
+    });
+
+    it('should detect Hindi language', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['hi-IN'], language: 'hi-IN' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('hi');
+    });
+
+    it('should detect Indonesian language', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['id-ID'], language: 'id-ID' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('id');
+    });
+
+    it('should detect French language', () => {
+      Object.defineProperty(global, 'navigator', {
+        value: { languages: ['fr-FR'], language: 'fr-FR' },
+        writable: true,
+        configurable: true,
+      });
+
+      expect(detectBrowserLanguage()).toBe('fr');
     });
   });
 });

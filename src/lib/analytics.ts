@@ -106,10 +106,6 @@ export const AnalyticsEvents = {
   DIAGNOSTIC_ERROR_RETRY: 'diagnostic_error_retry',
   DIAGNOSTIC_ERROR_HELP: 'diagnostic_error_help',
 
-  // V3: Waiting Dashboard
-  WAITING_UPLOAD_CLICK: 'waiting_upload_click',
-  WAITING_BACK_CLICK: 'waiting_back_click',
-
   // V3: FAQ
   FAQ_EXPAND: 'faq_expand',
 
@@ -137,16 +133,7 @@ type LinkType =
   | 'buy-me-coffee';
 type HelpSource = 'header' | 'upload_section';
 type FilterAction = 'enable' | 'disable';
-type PageName =
-  | 'hero'
-  | 'wizard'
-  | 'waiting'
-  | 'upload'
-  | 'results'
-  | 'sample'
-  | 'privacy'
-  | 'terms'
-  | '404';
+type PageName = 'hero' | 'wizard' | 'upload' | 'results' | 'sample' | 'privacy' | 'terms' | '404';
 type ScrollDepth = 25 | 50 | 75 | 100;
 
 // Re-export DiagnosticErrorCode from core/types to ensure consistency
@@ -367,15 +354,6 @@ export const analytics = {
     trackEvent(AnalyticsEvents.DIAGNOSTIC_ERROR_HELP, {
       error_code: code,
     });
-  },
-
-  // V3: Waiting Dashboard
-  waitingUploadClick: () => {
-    trackEvent(AnalyticsEvents.WAITING_UPLOAD_CLICK);
-  },
-
-  waitingBackClick: () => {
-    trackEvent(AnalyticsEvents.WAITING_BACK_CLICK);
   },
 
   // V3: FAQ

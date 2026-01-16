@@ -164,7 +164,6 @@ const renderLayout = (initialPath = '/', lang?: 'en' | 'es' | 'ar') => {
           <Route path="sample" element={<TestOutlet />} />
           <Route path="privacy" element={<TestOutlet />} />
           <Route path="terms" element={<TestOutlet />} />
-          <Route path="waiting" element={<TestOutlet />} />
           <Route path=":lang/*" element={<TestOutlet />} />
         </Route>
       </Routes>
@@ -316,12 +315,6 @@ describe('Layout', () => {
       renderLayout('/terms');
 
       expect(screen.getByText(`activeScreen: ${AppState.TERMS}`)).toBeInTheDocument();
-    });
-
-    it('should pass activeScreen as WAITING for /waiting path', () => {
-      renderLayout('/waiting');
-
-      expect(screen.getByText(`activeScreen: ${AppState.WAITING}`)).toBeInTheDocument();
     });
   });
 
@@ -500,12 +493,6 @@ describe('Layout', () => {
       renderLayout('/terms');
 
       expect(mockPageView).toHaveBeenCalledWith('terms', undefined);
-    });
-
-    it('should track waiting page view', () => {
-      renderLayout('/waiting');
-
-      expect(mockPageView).toHaveBeenCalledWith('waiting', undefined);
     });
   });
 

@@ -13,7 +13,8 @@
     "done": "Pronto, vamos lá!",
     "openInstagram": "Abrir página de exportação",
     "close": "Fechar guia",
-    "uploadFile": "Enviar meu arquivo"
+    "uploadFile": "Enviar meu arquivo",
+    "alreadyHaveFile": "Já tenho meu arquivo ZIP"
   },
   "format": {
     "warning": "PASSO CRÍTICO"

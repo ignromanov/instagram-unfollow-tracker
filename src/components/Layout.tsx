@@ -25,15 +25,7 @@ interface LayoutProps {
   lang?: SupportedLanguage;
 }
 
-type PageName =
-  | 'hero'
-  | 'wizard'
-  | 'waiting'
-  | 'upload'
-  | 'results'
-  | 'sample'
-  | 'privacy'
-  | 'terms';
+type PageName = 'hero' | 'wizard' | 'upload' | 'results' | 'sample' | 'privacy' | 'terms';
 
 /**
  * Map pathname to page name for analytics
@@ -42,7 +34,6 @@ function getPageNameFromPath(pathname: string): PageName {
   if (pathname.endsWith('/results')) return 'results';
   if (pathname.endsWith('/upload')) return 'upload';
   if (pathname.endsWith('/wizard')) return 'wizard';
-  if (pathname.endsWith('/waiting')) return 'waiting';
   if (pathname.endsWith('/sample')) return 'sample';
   if (pathname.endsWith('/privacy')) return 'privacy';
   if (pathname.endsWith('/terms')) return 'terms';
@@ -56,7 +47,6 @@ function getActiveScreen(pathname: string): AppState {
   if (pathname.endsWith('/results')) return AppState.RESULTS;
   if (pathname.endsWith('/upload')) return AppState.UPLOAD;
   if (pathname.endsWith('/wizard')) return AppState.WIZARD;
-  if (pathname.endsWith('/waiting')) return AppState.WAITING;
   if (pathname.endsWith('/sample')) return AppState.SAMPLE;
   if (pathname.endsWith('/privacy')) return AppState.PRIVACY;
   if (pathname.endsWith('/terms')) return AppState.TERMS;

@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 const BREADCRUMB_NAMES: Record<string, string> = {
   '/': 'Home',
   '/wizard': 'Export Guide',
-  '/waiting': 'Waiting',
   '/upload': 'Upload',
   '/results': 'Results',
   '/sample': 'Sample',

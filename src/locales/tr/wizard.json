@@ -13,7 +13,8 @@
     "done": "Tamam, başlayalım!",
     "openInstagram": "Dışa aktarma sayfasını aç",
     "close": "Rehberi kapat",
-    "uploadFile": "Dosyamı Yükle"
+    "uploadFile": "Dosyamı Yükle",
+    "alreadyHaveFile": "ZIP dosyam zaten var"
   },
   "format": {
     "warning": "KRİTİK ADIM"
