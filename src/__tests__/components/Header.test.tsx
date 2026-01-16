@@ -6,11 +6,16 @@ import commonEN from '@/locales/en/common.json';
 
 // react-i18next is already mocked globally in vitest.setup.ts
 
-// Mock next-themes
+// Mock next-themes with controllable state
+const mockSetTheme = vi.fn();
+const mockTheme = 'light';
+
 vi.mock('next-themes', () => ({
   useTheme: () => ({
-    theme: 'light',
-    setTheme: vi.fn(),
+    get theme() {
+      return mockTheme;
+    },
+    setTheme: mockSetTheme,
   }),
 }));
 

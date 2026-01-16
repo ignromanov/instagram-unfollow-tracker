@@ -194,5 +194,92 @@ describe('HowToSection', () => {
       // The test passes if no errors occur during click
       expect(button).toBeInTheDocument();
     });
+
+    it('should navigate to upload page when step 9 is clicked', () => {
+      const onStart = vi.fn();
+      renderWithRouter(<HowToSection onStart={onStart} />);
+
+      // Step 9 is the upload step (index 8)
+      const step9Title = screen.getByText(howtoEN.steps['9'].title);
+      const stepElement = step9Title.closest('li');
+      expect(stepElement).not.toBeNull();
+
+      fireEvent.click(stepElement!);
+
+      // Step 9 should NOT call onStart, it navigates directly to upload
+      expect(onStart).not.toHaveBeenCalled();
+    });
+
+    it('should navigate to upload page when upload button in step 9 is clicked', () => {
+      renderWithRouter(<HowToSection />);
+
+      // Find the upload button (it's distinct from the CTA button)
+      const uploadButton = screen.getByRole('button', { name: howtoEN.uploadButton });
+      expect(uploadButton).toBeInTheDocument();
+
+      // Click should work and stop propagation
+      fireEvent.click(uploadButton);
+
+      // Navigation happens via react-router's navigate()
+      // The test passes if no errors occur during click
+      expect(uploadButton).toBeInTheDocument();
+    });
+  });
+
+  describe('keyboard accessibility', () => {
+    it('should trigger step click on Enter key press', () => {
+      const onStart = vi.fn();
+      renderWithRouter(<HowToSection onStart={onStart} />);
+
+      // Get step 2 (index 1)
+      const step2Title = screen.getByText(howtoEN.steps['2'].title);
+      const stepElement = step2Title.closest('li');
+      expect(stepElement).not.toBeNull();
+
+      fireEvent.keyDown(stepElement!, { key: 'Enter' });
+
+      expect(onStart).toHaveBeenCalledWith(1);
+    });
+
+    it('should trigger step click on Space key press', () => {
+      const onStart = vi.fn();
+      renderWithRouter(<HowToSection onStart={onStart} />);
+
+      // Get step 4 (index 3)
+      const step4Title = screen.getByText(howtoEN.steps['4'].title);
+      const stepElement = step4Title.closest('li');
+      expect(stepElement).not.toBeNull();
+
+      fireEvent.keyDown(stepElement!, { key: ' ' });
+
+      expect(onStart).toHaveBeenCalledWith(3);
+    });
+
+    it('should not trigger step click on other key press', () => {
+      const onStart = vi.fn();
+      renderWithRouter(<HowToSection onStart={onStart} />);
+
+      const step1Title = screen.getByText(howtoEN.steps['1'].title);
+      const stepElement = step1Title.closest('li');
+      expect(stepElement).not.toBeNull();
+
+      fireEvent.keyDown(stepElement!, { key: 'Tab' });
+
+      expect(onStart).not.toHaveBeenCalled();
+    });
+
+    it('should navigate to upload on Enter key for step 9', () => {
+      const onStart = vi.fn();
+      renderWithRouter(<HowToSection onStart={onStart} />);
+
+      const step9Title = screen.getByText(howtoEN.steps['9'].title);
+      const stepElement = step9Title.closest('li');
+      expect(stepElement).not.toBeNull();
+
+      fireEvent.keyDown(stepElement!, { key: 'Enter' });
+
+      // Step 9 navigates to upload, not calls onStart
+      expect(onStart).not.toHaveBeenCalled();
+    });
   });
 });

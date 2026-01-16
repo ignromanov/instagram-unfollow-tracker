@@ -585,4 +585,70 @@ describe('Layout', () => {
       expect(main).toBeInTheDocument();
     });
   });
+
+  describe('navigation handlers', () => {
+    it('should call handleClearData and navigate to home when Clear is clicked', async () => {
+      const { userEvent } = await import('@testing-library/user-event');
+      const user = userEvent.setup();
+
+      // Start on results page to have a different route
+      renderLayout('/results');
+
+      // Click Clear button (from mocked Header)
+      const clearButton = screen.getByRole('button', { name: 'Clear' });
+      await user.click(clearButton);
+
+      // Verify handleClearData was called
+      expect(mockHandleClearData).toHaveBeenCalledTimes(1);
+
+      // Verify navigation to home (the component should navigate to '/')
+      // Since we use MemoryRouter, we can check if the page changes
+      await waitFor(() => {
+        // The activeScreen should change to HERO after navigation
+        expect(screen.getByText(`activeScreen: ${AppState.HERO}`)).toBeInTheDocument();
+      });
+    });
+
+    it('should navigate to results when View Results is clicked', async () => {
+      const { userEvent } = await import('@testing-library/user-event');
+      const user = userEvent.setup();
+
+      renderLayout('/');
+
+      const viewResultsButton = screen.getByRole('button', { name: 'View Results' });
+      await user.click(viewResultsButton);
+
+      await waitFor(() => {
+        expect(screen.getByText(`activeScreen: ${AppState.RESULTS}`)).toBeInTheDocument();
+      });
+    });
+
+    it('should navigate to upload when Upload is clicked', async () => {
+      const { userEvent } = await import('@testing-library/user-event');
+      const user = userEvent.setup();
+
+      renderLayout('/');
+
+      const uploadButton = screen.getByRole('button', { name: 'Upload' });
+      await user.click(uploadButton);
+
+      await waitFor(() => {
+        expect(screen.getByText(`activeScreen: ${AppState.UPLOAD}`)).toBeInTheDocument();
+      });
+    });
+
+    it('should navigate to home when Logo is clicked', async () => {
+      const { userEvent } = await import('@testing-library/user-event');
+      const user = userEvent.setup();
+
+      renderLayout('/results');
+
+      const logoButton = screen.getByRole('button', { name: 'Logo' });
+      await user.click(logoButton);
+
+      await waitFor(() => {
+        expect(screen.getByText(`activeScreen: ${AppState.HERO}`)).toBeInTheDocument();
+      });
+    });
+  });
 });
