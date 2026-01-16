@@ -68,6 +68,25 @@ describe('Footer', () => {
     expect(contactLink).toHaveAttribute('href', 'mailto:hello@safeunfollow.app');
   });
 
+  it('should render Docs link', () => {
+    renderWithRouter(<Footer />);
+
+    const docsLink = screen.getByText(commonEN.footer.docs);
+    expect(docsLink).toBeInTheDocument();
+    expect(docsLink).toHaveAttribute('href', 'https://safeunfollow.app/docs');
+    expect(docsLink).toHaveAttribute('target', '_blank');
+    expect(docsLink).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('should call analytics on Docs click', () => {
+    renderWithRouter(<Footer />);
+
+    const docsLink = screen.getByText(commonEN.footer.docs);
+    fireEvent.click(docsLink);
+
+    expect(analytics.analytics.linkClick).toHaveBeenCalledWith('docs');
+  });
+
   it('should render tracking toggle button', () => {
     renderWithRouter(<Footer />);
 

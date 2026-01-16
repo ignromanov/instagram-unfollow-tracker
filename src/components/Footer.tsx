@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Heart, Shield, EyeOff, Eye, Github } from 'lucide-react';
+import { Heart, Shield, EyeOff, Eye, Github, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { analytics, isTrackingOptedOut, optOutOfTracking, optIntoTracking } from '@/lib/analytics';
@@ -64,6 +64,16 @@ export function Footer() {
               >
                 {t('footer.termsOfService')}
               </Link>
+              <a
+                href="https://safeunfollow.app/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors py-2 px-1 flex items-center gap-1.5 cursor-pointer"
+                onClick={() => analytics.linkClick('docs')}
+              >
+                <BookOpen size={14} />
+                {t('footer.docs')}
+              </a>
               <a
                 href="mailto:hello@safeunfollow.app"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
