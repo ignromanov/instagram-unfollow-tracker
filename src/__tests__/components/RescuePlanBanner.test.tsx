@@ -48,19 +48,21 @@ describe('RescuePlanBanner', () => {
     showDelay: 1000, // 1 second delay for testing
   };
 
-  it('should not render initially due to delay', () => {
-    render(<RescuePlanBanner {...defaultProps} />);
-    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
-  });
-
-  it('should render after the specified delay', () => {
+  it('should render collapsed immediately, expand after delay', () => {
     render(<RescuePlanBanner {...defaultProps} />);
 
+    // Banner renders immediately in collapsed state
+    expect(screen.getByRole('complementary')).toBeInTheDocument();
+    // Should not have expanded content yet (no dismiss button)
+    expect(screen.queryByLabelText('rescue.dismiss')).not.toBeInTheDocument();
+
+    // After delay, should expand
     act(() => {
       vi.advanceTimersByTime(1000);
     });
 
-    expect(screen.getByRole('complementary')).toBeInTheDocument();
+    // Now should have expanded content (dismiss button visible)
+    expect(screen.getByLabelText('rescue.dismiss')).toBeInTheDocument();
   });
 
   it('should call analytics impression when visible', () => {
@@ -73,7 +75,7 @@ describe('RescuePlanBanner', () => {
     expect(analytics.rescuePlanImpression).toHaveBeenCalled();
   });
 
-  it('should not render if already dismissed', () => {
+  it('should show collapsed view if already dismissed', () => {
     vi.spyOn(dismissHook, 'useRescuePlanDismiss').mockReturnValue({
       isDismissed: true,
       dismiss: mockDismiss,
@@ -85,10 +87,13 @@ describe('RescuePlanBanner', () => {
       vi.advanceTimersByTime(1000);
     });
 
-    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+    // Banner still renders but in collapsed state (no auto-expand)
+    expect(screen.getByRole('complementary')).toBeInTheDocument();
+    // Should not have expanded content (dismiss button with aria-label)
+    expect(screen.queryByLabelText('rescue.dismiss')).not.toBeInTheDocument();
   });
 
-  it('should dismiss the banner when close button is clicked', () => {
+  it('should collapse the banner when close button is clicked', () => {
     render(<RescuePlanBanner {...defaultProps} />);
 
     act(() => {
@@ -100,7 +105,10 @@ describe('RescuePlanBanner', () => {
 
     expect(mockDismiss).toHaveBeenCalled();
     expect(analytics.rescuePlanDismiss).toHaveBeenCalled();
-    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+    // Banner collapses instead of hiding completely
+    expect(screen.getByRole('complementary')).toBeInTheDocument();
+    // Dismiss button should be gone (collapsed state)
+    expect(screen.queryByLabelText('rescue.dismiss')).not.toBeInTheDocument();
   });
 
   it('should track tool clicks', () => {

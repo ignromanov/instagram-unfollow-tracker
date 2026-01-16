@@ -23,7 +23,8 @@ describe('languages configuration', () => {
     });
 
     it('should contain expected languages', () => {
-      const expectedLanguages = ['en', 'es', 'pt', 'hi', 'id', 'tr', 'ja', 'ru', 'de', 'ar', 'fr'];
+      // Languages sorted alphabetically after 'en' (default)
+      const expectedLanguages = ['en', 'ar', 'de', 'es', 'fr', 'hi', 'id', 'ja', 'pt', 'ru', 'tr'];
       expect(SUPPORTED_LANGUAGES).toEqual(expectedLanguages);
     });
 
