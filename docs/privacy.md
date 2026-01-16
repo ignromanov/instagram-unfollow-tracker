@@ -3,6 +3,7 @@ layout: default
 title: Privacy Policy
 description: Data handling principles and privacy commitment
 permalink: /privacy/
+last_updated: 2026-01-16
 ---
 
 # Privacy Policy - Instagram Unfollow Tracker
@@ -13,11 +14,11 @@ permalink: /privacy/
 
 ## What We Do NOT Do
 
-### ❌ No Data Collection
+### ❌ No Personal Data Collection
 - We don't collect any personal information
-- We don't track your usage
-- We don't use analytics or cookies
-- We don't store your Instagram data anywhere
+- We don't track individual user behavior
+- We don't use tracking cookies
+- We don't store your Instagram data on any server
 
 ### ❌ No Server Processing
 - Your data never leaves your device
@@ -25,9 +26,9 @@ permalink: /privacy/
 - No cloud storage or databases involved
 - No network requests after the initial page load
 
-### ❌ No Third-Party Services
-- No Google Analytics, Facebook Pixel, or similar tracking
-- No external APIs or services
+### ❌ No Invasive Third-Party Services
+- No Google Analytics, Facebook Pixel, or similar invasive tracking
+- No external APIs processing your Instagram data
 - No data sharing with third parties
 - No advertising or marketing integrations
 
@@ -38,11 +39,27 @@ permalink: /privacy/
 - All calculations happen on your device using JavaScript
 - Results are displayed locally and never transmitted
 
-### ✅ Optional Local Storage
-- The app may store your filter preferences in browser LocalStorage
-- This includes which filters you have selected (e.g., "show only mutuals")
-- You can clear this data anytime through your browser settings
-- No personal Instagram data is stored
+### ✅ Local Storage (IndexedDB)
+- Your Instagram data is stored locally in IndexedDB for fast access
+- Filter preferences are stored in LocalStorage
+- All data stays on your device and never leaves
+- You can clear this data anytime through browser settings or by uploading new data
+
+### ✅ Privacy-Respecting Analytics
+We use minimal, privacy-focused analytics to improve the app:
+- **Umami Analytics** — anonymous page view counts, no personal data
+- **Vercel Analytics** — performance monitoring only (load times, errors)
+
+**What we track:**
+- Page views (anonymous counts)
+- Performance metrics (load times)
+- Error rates (to fix bugs)
+
+**What we DON'T track:**
+- Your Instagram data or usernames
+- Individual user behavior or sessions
+- Personal identifiers or IP addresses
+- Any content from your uploads
 
 ### ✅ Open Source Transparency
 - All code is publicly available on GitHub
@@ -59,14 +76,14 @@ permalink: /privacy/
 4. No data is sent anywhere or stored permanently
 
 ### Browser Storage
-- **LocalStorage**: Stores filter preferences (can be cleared)
-- **SessionStorage**: Temporary data during processing (cleared when tab closes)
-- **Memory**: Data exists only while the page is open
+- **IndexedDB**: Stores your Instagram data locally for fast filtering (~5MB for 1M accounts)
+- **LocalStorage**: Stores filter preferences and theme choice
+- **Memory**: Active data during filtering operations
 
 ### Network Activity
 - **Initial Load**: Downloads the app files (HTML, CSS, JavaScript)
-- **After Load**: Zero network activity
-- **No API Calls**: No requests to external services
+- **Analytics**: Minimal anonymous requests to Umami/Vercel (page views only)
+- **No Data Upload**: Your Instagram data is NEVER sent anywhere
 
 ## Your Rights
 
@@ -84,11 +101,11 @@ permalink: /privacy/
 
 ## Third-Party Hosting
 
-### GitHub Pages
-- The live demo is hosted on GitHub Pages
-- GitHub may collect standard web server logs
-- We don't have access to these logs
-- No personal data is collected by us
+### Vercel Hosting
+- The live app is hosted on Vercel (safeunfollow.app)
+- Vercel may collect standard web server logs
+- We use Vercel Analytics for performance monitoring only
+- No personal Instagram data is collected
 
 ### Self-Hosting
 If you deploy your own version:
@@ -123,8 +140,8 @@ If you deploy your own version:
 
 This privacy policy may be updated to reflect changes in the app or legal requirements. Changes will be posted on GitHub with clear version history.
 
-**Last Updated**: January 2025  
-**Version**: 1.0
+**Last Updated**: January 2026
+**Version**: 1.5
 
 ---
 

@@ -1,11 +1,14 @@
 ---
 layout: default
 title: Technical Specs
-description: Technical details and architecture
+description: Technical architecture and implementation details
 permalink: /tech-spec/
+last_updated: 2026-01-16
 ---
 
 # Technical Specification - Instagram Unfollow Tracker
+
+**Version:** 1.5.0 | **Last Updated:** January 16, 2026
 
 ## 1. Project Overview
 
@@ -16,166 +19,278 @@ A privacy-focused, local web application that analyzes Instagram Data Download (
 - **Unfollow tracking**: Identify users you follow who don't follow back
 - **Follower analysis**: Find users who follow you but you don't follow back
 - **Smart badges**: Categorize accounts (mutuals, close friends, restricted, etc.)
-- **Real-time search**: Fast, debounced search with Map-based indexing
-- **Advanced filtering**: Multiple filter combinations with Select All/Clear All
+- **Lightning search**: <2ms search with trigram/prefix indexes (1M+ accounts)
+- **Advanced filtering**: <5ms BitSet-based filtering for any badge combination
 - **Direct profile links**: Click to open Instagram profiles in new tabs
 
 ### Privacy Principles
 - **100% local processing**: All data processing happens in the browser
-- **No data collection**: No analytics, tracking, or data transmission
-- **No authentication**: Uses official Instagram data export only
-- **Open source**: Full transparency and community auditability
+- **No Instagram login**: Uses official Instagram data export only
+- **Open source**: MIT license, full transparency and auditability
+- **Privacy-respecting analytics**: Umami (anonymous) + Vercel (performance only)
+
+---
 
 ## 2. Technical Architecture
 
 ### Frontend Stack
-- **React 18**: Modern React with hooks and functional components
-- **TypeScript**: Strict mode enabled for type safety
-- **Vite**: Fast build tool and development server
-- **shadcn/ui (New York)**: Composable UI components built on Radix UI
-- **Tailwind CSS**: Utility-first styling with OKLCH color system
-- **Zustand**: Lightweight state management (~1KB UI state only)
+| Technology | Purpose |
+|------------|---------|
+| **React 18** | UI framework with hooks and functional components |
+| **TypeScript** | Strict mode, zero `any` types |
+| **Vite** | Build tool and development server |
+| **vite-react-ssg** | Static Site Generation (80+ pre-rendered pages) |
+| **shadcn/ui** | Composable UI components built on Radix UI |
+| **Tailwind CSS** | Utility-first styling with OKLCH color system |
+| **Zustand** | Lightweight state management (<1KB UI state only) |
+| **i18next** | Internationalization (11 languages) |
 
-### Data Storage & Caching
-- **IndexedDB v2**: Columnar storage with bitset-based filtering
-- **FastBitSet.js**: High-performance bitwise operations (32x faster)
-- **LRU Caching**: In-memory caches for frequently accessed data
-- **Search Indexes**: Trigram/prefix indexes for O(1) lookups
-- **Auto-migration**: Seamless upgrade from localStorage/v1
+### Data Storage & Processing
+| Technology | Purpose |
+|------------|---------|
+| **IndexedDB v2** | Columnar storage with 40x compression |
+| **FastBitSet.js** | Bitwise filtering operations (75x faster) |
+| **Comlink** | Type-safe Web Worker communication |
+| **TanStack Virtual** | Virtual scrolling for 1M+ items at 60 FPS |
+| **Web Workers** | Off-thread filtering (INP: 180ms) |
 
-### Performance Optimizations
-- **Virtualization**: `@tanstack/react-virtual` for 1M+ items at 60 FPS
-- **Lazy Loading**: Load accounts on-demand (500-1000 at a time)
-- **Chunked Processing**: 10k account chunks with progress reporting
-- **Web Workers**: Background parsing and filtering
-- **Bitset Filtering**: 75x faster than linear scans
-- **Indexed Search**: 100x faster with trigram indexes
+### Build & Deployment
+| Technology | Purpose |
+|------------|---------|
+| **Vercel** | Hosting with Edge Functions |
+| **vite-plugin-pwa** | PWA with 176 precached assets |
+| **@fontsource** | Self-hosted fonts (Inter, Plus Jakarta Sans) |
+| **@vercel/og** | Dynamic OG image generation |
 
 ### Testing & Quality
-- **Vitest**: Fast unit testing framework
-- **React Testing Library**: Component testing utilities
-- **98% test coverage**: 151 tests covering all core functionality
-- **TypeScript strict mode**: Compile-time error prevention
-- **ESLint**: Code quality and consistency
-- **Husky**: Git hooks for automated quality checks
-- **CI/CD**: GitHub Actions for automated testing and deployment
+| Technology | Purpose |
+|------------|---------|
+| **Vitest** | Fast unit testing (1,601 tests) |
+| **React Testing Library** | Component testing |
+| **@vitest/web-worker** | Web Worker testing |
+| **98% coverage** | Comprehensive test suite |
+| **ESLint** | Code quality (zero warnings) |
+| **Husky** | Git hooks for quality gates |
 
-## 3. Data Structure & Processing
+---
 
-### Input Format
-Instagram Data Download ZIP files containing JSON data:
+## 3. State Management
 
+### Zustand Store (<1KB constraint)
+```typescript
+interface AppState {
+  // Filter state
+  filters: Set<BadgeKey>;
+  setFilters: (filters: Set<BadgeKey>) => void;
+
+  // Upload state
+  uploadStatus: 'idle' | 'loading' | 'success' | 'error';
+  uploadError: string | null;
+  currentFileName: string | null;
+
+  // File metadata (NOT account data)
+  fileMetadata: FileMetadata | null;
+
+  // Theme (3-way toggle)
+  theme: 'light' | 'dark' | 'system';
+  setTheme: (theme: 'light' | 'dark' | 'system') => void;
+
+  // Hydration
+  _hasHydrated: boolean;
+}
+```
+
+**Critical Constraints:**
+- ❌ NO account data arrays in store
+- ❌ NO arrays >10 items
+- ❌ NO parsed data of any kind
+- ❌ NO language state (URL is source of truth)
+- ✅ If store >1KB, architecture is broken
+
+### Language Detection (URL as Source of Truth)
+```typescript
+// src/config/languages.ts
+export const SUPPORTED_LANGUAGES = ['en', 'es', 'ru', 'de', 'pt', 'tr', 'hi', 'id', 'ja', 'ar', 'fr'];
+export const RTL_LANGUAGES = ['ar'];
+
+export function detectLanguageFromUrl(): SupportedLanguage {
+  const pathname = window.location.pathname;
+  const match = pathname.match(/^\/(en|es|ru|de|pt|tr|hi|id|ja|ar|fr)(\/|$)/);
+  return match ? match[1] as SupportedLanguage : 'en';
+}
+```
+
+---
+
+## 4. IndexedDB v2 Architecture
+
+### Database: `instagram-tracker-v2`
+
+| Store | Purpose | Key |
+|-------|---------|-----|
+| **files** | File metadata registry | `hash` |
+| **columns** | Username/href as packed Uint8Arrays | `${hash}:${column}` |
+| **bitsets** | Badge presence (1-bit per account) | `${hash}:${badge}` |
+| **timestamps** | Sparse time data for temporal badges | `${hash}:timestamps` |
+| **indexes** | Trigram/prefix search indexes (3-day TTL) | `${hash}:search` |
+
+### Data Flow
+```
+Upload ZIP
+    ↓
+Parse Worker (Web Worker)
+    ├── Extract ZIP (JSZip)
+    ├── Parse JSON files
+    └── Emit 10k account chunks
+    ↓
+IndexedDB Service
+    ├── Pack columns (Uint8Array)
+    └── Update bitsets (FastBitSet)
+    ↓
+Background: Build search indexes (trigram + prefix)
+    ↓
+Zustand: uploadStatus = 'success'
+```
+
+### Filter Flow (via Web Worker)
+```
+FilterChips.onClick(badge)
+    ↓
+useFilterWorker.filterToIndices(query, filters)
+    ↓
+Web Worker (filter-worker.ts via Comlink)
+    ├── Load bitsets (cached)
+    ├── Intersect bitsets (FastBitSet.intersection)
+    └── Apply search if query
+    ↓
+Result: number[] indices
+    ↓
+TanStack Virtual: render visible items (~20)
+    ↓
+useAccountDataSource: lazy load accounts by indices
+```
+
+---
+
+## 5. Performance Specifications
+
+### Benchmarks (1M accounts)
+
+| Metric | Target | Achieved |
+|--------|--------|----------|
+| Filter (single badge) | <10ms | ~3ms |
+| Filter (3 badges) | <10ms | ~5ms |
+| Search (indexed) | <5ms | ~2ms |
+| Storage | <20MB | ~5MB |
+| Memory (runtime) | <20MB | ~5MB |
+| INP | <200ms | 180ms |
+| LCP | <2.5s | ~1.3s |
+
+### Optimization Strategies
+- **Columnar storage**: 40x space reduction vs row-based
+- **BitSet filtering**: 32x faster than boolean arrays
+- **Web Workers**: Filter operations off main thread
+- **Virtual scrolling**: Render only ~20 visible items
+- **LRU caching**: 500 accounts per slice, 20 slices max
+- **Trigram indexes**: O(1) search vs O(n) linear scan
+
+---
+
+## 6. Internationalization (i18n)
+
+### Supported Languages (11)
+
+| Language | Code | RTL | Locale |
+|----------|------|-----|--------|
+| English | en | — | en_US |
+| Español | es | — | es_ES |
+| Русский | ru | — | ru_RU |
+| Deutsch | de | — | de_DE |
+| Português | pt | — | pt_BR |
+| Türkçe | tr | — | tr_TR |
+| हिन्दी | hi | — | hi_IN |
+| Bahasa Indonesia | id | — | id_ID |
+| 日本語 | ja | — | ja_JP |
+| العربية | ar | ✅ | ar_SA |
+| Français | fr | — | fr_FR |
+
+### SSG Architecture
+- **80+ pre-rendered pages**: 11 languages × 8 routes
+- **Path-based routing**: `/es/wizard`, `/ar/upload`, etc.
+- **Localized meta tags**: Dynamic title/description per language
+- **hreflang tags**: SEO optimization for language variants
+- **Full page reload on language change**: Ensures correct SSG meta
+
+---
+
+## 7. File Structure
+
+```
+src/
+├── core/                 # Domain logic
+│   ├── types.ts          # Core types (Account, BadgeKey, etc.)
+│   ├── badges/           # Badge computation logic
+│   └── parsers/          # Instagram ZIP parsing
+├── lib/                  # Infrastructure
+│   ├── store.ts          # Zustand (UI state only!)
+│   ├── indexeddb/        # Columnar storage, bitsets
+│   ├── filtering/        # BitSet filter engine
+│   └── search-index.ts   # Trigram/prefix indexes
+├── config/               # Configuration
+│   └── languages.ts      # Language config (single source of truth)
+├── hooks/                # React hooks
+│   ├── useInstagramData.ts
+│   ├── useAccountFiltering.ts
+│   ├── useAccountDataSource.ts
+│   ├── useFilterWorker.ts      # Web Worker hook
+│   ├── useLanguageFromPath.ts  # Sync language from URL
+│   └── useLanguagePrefix.ts    # Get language prefix for nav
+├── workers/              # Web Workers
+│   └── filter-worker.ts  # IndexedDBFilterEngine (Comlink)
+├── pages/                # SSG page components
+│   ├── HomePage.tsx      # / route
+│   ├── WizardPage.tsx    # /wizard route
+│   ├── UploadPage.tsx    # /upload route
+│   ├── ResultsPage.tsx   # /results route
+│   └── ...               # 8 pages total
+├── components/           # UI components
+│   ├── ui/               # shadcn/ui primitives
+│   ├── Layout.tsx        # Root layout (ThemeProvider, Header, Footer)
+│   └── *.tsx             # App components
+├── locales/              # i18n translations
+│   ├── en/               # English
+│   ├── es/               # Spanish
+│   └── ...               # 11 languages
+├── routes.tsx            # SSG route definitions
+├── main.tsx              # ViteReactSSG entry point
+└── __tests__/            # Tests (mirror structure)
+```
+
+---
+
+## 8. Data Schema
+
+### Input Format (Instagram Data Download)
 ```
 connections/followers_and_following/
-├── following.json          # Accounts you follow
-├── followers_1.json        # Your followers (may be split)
-├── followers_2.json        # Additional follower files
-├── close_friends.json      # Close friends list (optional)
-├── pending_follow_requests.json  # Pending requests (optional)
+├── following.json              # Accounts you follow
+├── followers_1.json            # Your followers (may be split)
+├── close_friends.json          # Close friends list (optional)
+├── pending_follow_requests.json    # Pending requests (optional)
 ├── recently_unfollowed_profiles.json  # Recently unfollowed (optional)
-└── restricted_profiles.json  # Restricted accounts (optional)
-```
-
-### Data Schema
-```typescript
-interface InstagramExportEntry {
-  title: string;
-  string_list_data: InstagramListItem[];
-  media_list_data: unknown[];
-}
-
-interface InstagramListItem {
-  href: string;        // Profile URL
-  value: string;       // Username
-  timestamp?: number;  // Optional timestamp
-}
+└── restricted_profiles.json    # Restricted accounts (optional)
 ```
 
 ### Core Calculations
 - **Set A**: Usernames you follow (from `following.json`)
-- **Set B**: Usernames who follow you (from all `followers_*.json`)
+- **Set B**: Usernames who follow you (from `followers_*.json`)
 - **Not following back**: A − B (excluding pending/restricted)
 - **Not followed back**: B − A
 - **Mutuals**: A ∩ B
-- **Badge assignment**: Based on presence in different lists
 
-## 4. User Interface Design
+---
 
-### Layout Structure
-- **Header**: App title, theme toggle, instructions button
-- **Upload area**: Drag & drop ZIP upload with visual feedback
-- **Filter controls**: Badge filters with Select All/Clear All
-- **Search bar**: Real-time search with debouncing
-- **Results area**: Virtualized list with account cards
-- **Statistics**: Count badges and summary information
-
-### Responsive Design
-- **Desktop**: Full feature set with optimal performance
-- **Tablet**: Adapted layout with touch-friendly interactions
-- **Mobile**: Simplified interface with essential features
-
-### Accessibility Features
-- **ARIA labels**: Screen reader support
-- **Keyboard navigation**: Full keyboard accessibility
-- **High contrast**: Support for high contrast themes
-- **Focus management**: Clear focus indicators
-
-## 5. State Management
-
-### Zustand Store Structure
-```typescript
-interface AppState {
-  // Upload state
-  uploadStatus: 'idle' | 'loading' | 'success' | 'error';
-  uploadError: string | null;
-  
-  // Data state
-  accounts: AccountBadges[];
-  filterCounts: Record<BadgeType, number>;
-  
-  // UI state
-  selectedFilters: BadgeType[];
-  searchQuery: string;
-  sortBy: 'username' | 'date';
-  sortOrder: 'asc' | 'desc';
-}
-```
-
-### Persistence
-- **LocalStorage**: Filter preferences and UI state
-- **SessionStorage**: Temporary data during processing
-- **No server storage**: All data remains local
-
-## 6. Performance Specifications
-
-### Processing Targets
-- **Parse time**: < 2 seconds for 50,000 total accounts
-- **Search response**: < 100ms for 10,000 items
-- **Filter updates**: < 50ms for any filter combination
-- **Memory usage**: < 100MB for large datasets
-
-### Optimization Strategies
-- **Lazy loading**: Components loaded on demand
-- **Virtual scrolling**: Only render visible items
-- **Debounced search**: Reduce search frequency
-- **Memoized calculations**: Cache expensive operations
-- **Efficient data structures**: Map-based lookups
-
-## 7. Error Handling
-
-### Error Categories
-- **Upload errors**: Invalid ZIP, missing files, corrupted data
-- **Parse errors**: Malformed JSON, unexpected schema
-- **Runtime errors**: Memory limits, browser compatibility
-- **User errors**: Wrong file format, incomplete data
-
-### Error Recovery
-- **Graceful degradation**: Partial data processing when possible
-- **Clear error messages**: User-friendly error descriptions
-- **Retry mechanisms**: Allow users to retry failed operations
-- **Fallback options**: Sample data for testing
-
-## 8. Browser Compatibility
+## 9. Browser Compatibility
 
 ### Supported Browsers
 - **Chrome**: 90+ (recommended)
@@ -184,92 +299,62 @@ interface AppState {
 - **Edge**: 90+
 
 ### Required Features
-- **ES2020 support**: Modern JavaScript features
-- **File API**: ZIP file processing
-- **LocalStorage**: State persistence
-- **CSS Grid/Flexbox**: Modern layout support
+- ES2020+ support
+- IndexedDB
+- Web Workers
+- Service Workers (for PWA)
+- CSS Grid/Flexbox
 
-## 9. Security Considerations
+---
+
+## 10. Security Considerations
 
 ### Client-Side Security
 - **Input validation**: Sanitize all user inputs
 - **XSS prevention**: No dynamic HTML injection
-- **CSRF protection**: Not applicable (no server)
 - **Content Security Policy**: Strict CSP headers
+- **Subresource Integrity**: For CDN resources
 
 ### Data Privacy
 - **No data transmission**: All processing local
-- **No tracking**: No analytics or cookies
-- **No logging**: No user behavior logging
+- **Anonymous analytics**: Umami (no personal data)
+- **No cookies**: No tracking cookies
 - **Secure defaults**: Privacy-first configuration
-
-## 10. Deployment & Distribution
-
-### GitHub Pages Deployment
-- **Automatic CI/CD**: GitHub Actions workflow
-- **Static hosting**: No server required
-- **Custom domain**: Optional custom domain support
-- **HTTPS**: Automatic SSL certificate
-
-### Build Process
-```bash
-npm run build    # TypeScript compilation + Vite build
-npm run test     # Run test suite
-npm run preview  # Local preview of production build
-```
-
-### Environment Configuration
-- **Development**: Hot reload, source maps, dev tools
-- **Production**: Minified, optimized, no dev tools
-- **Testing**: Mock data, isolated test environment
-
-## 11. Development Workflow
-
-### Code Organization
-```
-src/
-├── components/     # React components
-├── hooks/         # Custom React hooks
-├── lib/           # Core business logic
-├── core/          # Data processing and types
-├── data/          # Static data and constants
-├── types/         # TypeScript type definitions
-└── ui/            # Main application component
-```
-
-### Testing Strategy
-- **Unit tests**: Individual function testing
-- **Component tests**: React component testing
-- **Integration tests**: Full workflow testing
-- **E2E tests**: User journey testing (planned)
-
-### Code Quality
-- **TypeScript strict**: Compile-time error prevention
-- **ESLint**: Code style and quality rules with flat config
-- **Husky**: Pre-commit and pre-push hooks for quality gates
-- **Automated checks**: `npm run code:check` for comprehensive validation
-- **Unused exports detection**: Automatic detection of dead code
-
-## 12. Future Technical Considerations
-
-### Scalability
-- **Web Workers**: Move heavy processing to background threads
-- **IndexedDB**: Client-side database for large datasets
-- **Streaming**: Process large files in chunks
-- **Caching**: Intelligent caching strategies
-
-### Advanced Features
-- **PWA**: Progressive Web App capabilities
-- **Offline support**: Service worker implementation
-- **Push notifications**: Update notifications
-- **Background sync**: Offline data synchronization
-
-### Performance Monitoring
-- **Web Vitals**: Core web vitals tracking
-- **Performance API**: Browser performance metrics
-- **Memory profiling**: Memory usage optimization
-- **Bundle analysis**: Bundle size optimization
 
 ---
 
-*This technical specification is a living document that evolves with the project. It serves as the foundation for development decisions and architectural choices.*
+## 11. PWA Configuration
+
+### Workbox Strategy
+- **Precache**: 176 static assets
+- **Runtime caching**: NetworkFirst for HTML pages
+- **Offline fallback**: Cached app shell
+
+### Manifest
+```json
+{
+  "name": "Instagram Unfollow Tracker",
+  "short_name": "Unfollow Radar",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000"
+}
+```
+
+---
+
+## 12. Development Commands
+
+```bash
+npm run dev          # Dev server (http://localhost:5173)
+npm run build        # Production build (SSG)
+npm run test         # Run tests (Vitest)
+npm run test:coverage # Tests with 85% threshold
+npm run lint:strict  # ESLint (zero warnings)
+npm run type-check   # TypeScript validation
+npm run code:check   # lint:strict + type-check
+```
+
+---
+
+*This specification reflects v1.5.0 architecture. See CHANGELOG.md for version history.*

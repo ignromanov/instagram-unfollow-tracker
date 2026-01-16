@@ -3,6 +3,7 @@ layout: default
 title: FAQ
 description: Frequently asked questions about Instagram Unfollow Tracker
 permalink: /faq/
+last_updated: 2026-01-16
 ---
 
 # FAQ - Instagram Unfollow Tracker
@@ -33,8 +34,8 @@ Instagram may split followers into multiple files (`followers_1.json`, `follower
 - Downloaded "All time" data range
 
 ### What file formats are supported?
-- **Input**: Instagram Data Download ZIP files (JSON format)
-- **Output**: Currently display only, CSV export planned for v0.2
+- **Input**: Instagram Data Download ZIP files (JSON format only, not HTML)
+- **Output**: Currently display only, CSV/JSON export planned for v1.6
 
 ## Technical
 
@@ -52,10 +53,12 @@ Modern browsers with JavaScript enabled:
 - Edge 90+
 
 ### How many accounts can it handle?
-The app is optimized for:
-- **Up to 50,000 total accounts** (following + followers)
-- **Parse time**: Under 2 seconds on modern devices
-- **Search/filter**: Under 100ms for 10,000 items
+The app is optimized for massive scale:
+- **1,000,000+ accounts** — tested and verified with 1M+ accounts
+- **Filter speed**: <5ms for any badge combination (even 1M accounts)
+- **Search speed**: <2ms with trigram/prefix indexes
+- **Storage**: ~5 MB for 1M accounts (40x compression)
+- **Memory**: ~5 MB runtime usage
 
 ## Comparison
 
@@ -105,18 +108,21 @@ This is normal and expected:
 - Contribute improvements back
 
 ### Is there a roadmap for new features?
-Yes! See [Project Roadmap](roadmap/) for planned features including CSV export, PWA support, and multi-language UI.
+Yes! See [Project Roadmap](roadmap/) for upcoming features. Already live:
+- ✅ **PWA support** — install as app, works offline
+- ✅ **11 languages** — including Arabic with RTL support
+- ✅ **3-way theme** — light/dark/system
 
 ## Advanced Usage
 
 ### Can I compare data from different time periods?
-Currently, the app analyzes one export at a time. Future versions (v1.0+) will support multiple data imports and historical tracking.
+Currently, the app analyzes one export at a time. Historical tracking with multiple data imports is planned for v1.7.
 
 ### How accurate are the results?
 Results are 100% accurate based on your Instagram data export. The app shows the exact state of your followers/following at the time you downloaded the data.
 
 ### Can I export my results?
-CSV export functionality is planned for v0.2. You'll be able to save filtered results to CSV files for external analysis.
+CSV/JSON export functionality is planned for v1.6. You'll be able to save filtered results for external analysis.
 
 ### Does the app work with private accounts?
 Yes, the app works with any Instagram account type (public, private, business). It only processes the follower/following data from your export.
@@ -133,7 +139,13 @@ Yes! After the initial page load, the app works completely offline. You can even
 The app is designed to handle various Instagram export formats. If Instagram changes their format, we'll update the app to support the new format.
 
 ### Is my data stored anywhere?
-No, your Instagram data is never stored. It's processed in memory and disappears when you close the browser tab.
+Your Instagram data is stored locally in your browser's IndexedDB for fast access. It never leaves your device. You can clear data anytime by clearing browser data or uploading a new file.
+
+### What languages are supported?
+The app is available in **11 languages**: English, Spanish, Russian, German, Portuguese, Turkish, Hindi, Indonesian, Japanese, Arabic (with RTL support), and French. The app auto-detects your browser language.
+
+### Can I install it as an app?
+**Yes!** The app is a PWA (Progressive Web App). Click "Install" in your browser to add it to your home screen. It works fully offline after installation.
 
 ## Community & Support
 
