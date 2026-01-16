@@ -88,20 +88,19 @@ export function RescuePlanBanner({
   // Use override in dev mode, otherwise real segment
   const segment = devOverride ?? realSegment;
 
-  // Don't render if no data available
-  const unfollowedCount = filterCounts.unfollowed ?? 0;
-  if (!devOverride && (totalCount === 0 || unfollowedCount === 0)) {
-    return null;
-  }
-
   // Get dismiss state from localStorage (with segment change detection)
+  // IMPORTANT: All hooks must be called before any early returns!
   const { isDismissed, dismiss } = useRescuePlanDismiss(segment);
 
-  // NEW: Track expanded/collapsed state - starts collapsed, expands after delay
+  // Track expanded/collapsed state - starts collapsed, expands after delay
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Get tools for this segment
   const tools = useMemo(() => getToolsForSegment(segment), [segment]);
+
+  // Check if no data available (used in final guard after all hooks)
+  const unfollowedCount = filterCounts.unfollowed ?? 0;
+  const hasNoData = !devOverride && (totalCount === 0 || unfollowedCount === 0);
 
   // Get styling for severity
   const style = SEVERITY_STYLES[segment.severity];
@@ -241,13 +240,13 @@ export function RescuePlanBanner({
     // analytics.rescuePlanExpanded?.(segment.severity, segment.size);
   }, []);
 
-  // Don't render if not yet visible (unless dev override)
+  // Don't render if no data OR not yet visible (unless dev override)
   // Note: isDismissed now shows collapsed view instead of hiding
-  if (!isVisible && !devOverride) return null;
+  if (hasNoData || (!isVisible && !devOverride)) return null;
 
   return (
     <div
-      className={`relative bg-gradient-to-r ${style.gradientClass} border-2 ${style.borderClass} rounded-3xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-500 transition-all duration-300 ${className ?? ''}`}
+      className={`relative bg-gradient-to-r ${style.gradientClass} border-2 ${style.borderClass} rounded-3xl shadow-xl animate-in fade-in slide-in-from-top-4 duration-300 transition-all ${className ?? ''}`}
       role="complementary"
       aria-label={t('rescue.ariaLabel')}
     >
