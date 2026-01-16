@@ -5,12 +5,15 @@
 
 <br>
 
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-blue)
 ![Privacy: 100% local](https://img.shields.io/badge/Privacy-100%25%20local-success)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Yes-informational)
 ![Free](https://img.shields.io/badge/Free-Forever-green)
 ![Coverage: 98%](https://img.shields.io/badge/Coverage-98%25-brightgreen)
-![Tests: 151 passed](https://img.shields.io/badge/Tests-151%20passed-success)
+![Tests: 1601 passed](https://img.shields.io/badge/Tests-1601%20passed-success)
+![Languages: 10](https://img.shields.io/badge/Languages-10-purple)
+![PWA Ready](https://img.shields.io/badge/PWA-Ready-orange)
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
@@ -81,6 +84,30 @@ All processing happens **100% locally** in your browser. Your data never leaves 
 - 🌙 **Dark mode** — comfortable viewing in any lighting
 - 💾 **Smart caching** — instant reload with IndexedDB persistence
 - 📊 **Sample data** — try it without uploading your own data
+- 🌍 **10 languages** — English, Spanish, Russian, German, Portuguese, Turkish, Hindi, Indonesian, Japanese, Arabic (RTL)
+- 📲 **PWA support** — install as app, works fully offline
+- 🛡️ **Error recovery** — graceful error handling with recovery options
+
+## 🌍 Multilingual Support
+
+Available in **10 languages** with full RTL support:
+
+| Language         | Code | RTL |
+| ---------------- | ---- | --- |
+| English          | en   | —   |
+| Español          | es   | —   |
+| Русский          | ru   | —   |
+| Deutsch          | de   | —   |
+| Português        | pt   | —   |
+| Türkçe           | tr   | —   |
+| हिन्दी           | hi   | —   |
+| Bahasa Indonesia | id   | —   |
+| 日本語           | ja   | —   |
+| العربية          | ar   | ✅  |
+
+- **80 pre-rendered pages** — SSG for instant load and SEO
+- **Dynamic meta tags** — localized titles/descriptions per language
+- **Browser language detection** — auto-redirects to preferred language
 
 ## 🚀 Why choose this over paid tools?
 
@@ -161,18 +188,22 @@ Built to handle massive datasets with cutting-edge optimization:
 - **IndexedDB v2** — columnar storage for 40x space reduction
 - **FastBitSet.js** — 32x faster filtering with bitwise operations
 - **TanStack Virtual** — renders only visible items (60 FPS scrolling)
-- **Web Workers** — background processing keeps UI responsive
+- **Web Workers + Comlink** — type-safe off-thread filtering (INP: 350ms → 180ms)
 - **Trigram/Prefix Indexes** — O(1) search instead of O(n) linear scan
+- **vite-react-ssg** — 80 pre-rendered pages for SEO and instant loads
+- **PWA (Workbox)** — offline-first with 176 precached entries
 
 📖 **Deep dive:** [IndexedDB Architecture](INDEXEDDB_ARCHITECTURE.md)
 
 ## 🧪 Quality & Reliability
 
 - **98% Test Coverage** — thoroughly tested codebase
-- **151 Tests Passed** — comprehensive test suite covering all features
-- **TypeScript** — type-safe development with full type checking
+- **1,601 Tests Passed** — comprehensive test suite covering all features
+- **TypeScript Strict Mode** — type-safe development with full type checking
 - **Modern Stack** — React 18, Vite, shadcn/ui, Tailwind CSS
 - **Code Quality** — ESLint, Husky git hooks, automated quality checks
+- **Error Boundaries** — graceful error handling with recovery UI
+- **PWA** — installable, works offline with 176 precached assets
 
 ## ❓ FAQ
 
@@ -188,8 +219,11 @@ A: Accounts you follow who don't follow you back (excluding pending/restricted a
 **Q: Can I use it offline?**  
 A: Yes! After the page loads, the app works completely offline.
 
-**Q: Does it work on mobile?**  
+**Q: Does it work on mobile?**
 A: Yes, the interface is fully responsive and works on all devices.
+
+**Q: What languages are supported?**
+A: 10 languages including Arabic with RTL support. The app auto-detects your browser language.
 
 📖 **More questions?** See [FAQ](docs/faq.md) or [Troubleshooting Guide](docs/troubleshooting.md)
 

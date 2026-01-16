@@ -1,125 +1,119 @@
-# Instagram Unfollow Tracker v1.0.0 Release Notes
+# Instagram Unfollow Tracker v1.5.0 Release Notes
 
-**Release Date:** October 9, 2025
+**Release Date:** January 14, 2026
 
-We're excited to announce the **v1.0.0 release** of Instagram Unfollow Tracker! This is a major milestone with significant performance improvements, modern UI, and a rock-solid foundation.
+We're excited to announce **v1.5.0** — a major internationalization milestone with 10 languages, full RTL support, and comprehensive error handling!
 
-## 🎉 What's New
+## 🎉 What's New in 1.5.0
 
-### ⚡ Lightning-Fast Performance
+### 🌍 10 Languages with Full i18n
 
-- **75x faster filtering** - Find unfollowers in milliseconds, not seconds
-- **40x smaller storage** - 1 million accounts take only ~5 MB vs ~200 MB before
-- **Handles 1M+ accounts** - No limits, no slowdowns
-- **Instant search** - Trigram/prefix indexing for blazing-fast results
+- **Arabic (RTL)** — 10th language with complete right-to-left layout support
+- **Dynamic Meta Tags** — localized titles, descriptions, and OG images per language
+- **80 Pre-rendered Pages** — SSG for instant load and SEO optimization
+- **Browser Detection** — auto-redirects to user's preferred language
 
-### 🎨 Modern UI with shadcn/ui
+| Language         | Code | RTL |
+| ---------------- | ---- | --- |
+| English          | en   | —   |
+| Español          | es   | —   |
+| Русский          | ru   | —   |
+| Deutsch          | de   | —   |
+| Português        | pt   | —   |
+| Türkçe           | tr   | —   |
+| हिन्दी           | hi   | —   |
+| Bahasa Indonesia | id   | —   |
+| 日本語           | ja   | —   |
+| العربية          | ar   | ✅  |
 
-- **Beautiful new design** - Built with shadcn/ui and Tailwind CSS
-- **Improved accessibility** - ARIA labels, keyboard navigation, screen reader support
-- **Better dark mode** - Automatic theme detection with smooth transitions
-- **Responsive everywhere** - Perfect experience on desktop, tablet, and mobile
+### 🎨 System Theme Toggle
 
-### 🏗️ IndexedDB v2 Architecture
+- **3-way theme** — Light / Dark / System
+- **Respects OS preference** — automatic switching with `prefers-color-scheme`
+- **Persistent choice** — remembers your preference
 
-- **Columnar storage** - 40x space reduction with smart data organization
-- **Bitset operations** - 32x faster filtering using FastBitSet.js
-- **Lazy loading** - Only loads what you see, saves memory
-- **Background processing** - Web Workers keep UI responsive during large uploads
+### 🛡️ Error Handling
 
-## ✨ Key Features
+- **ErrorBoundary** — graceful error recovery with user-friendly UI
+- **404 Page** — custom not found page
+- **RouteErrorPage** — handles routing errors
 
-### What You Can Do
+### 📱 Rescue Plan Banner
 
-- ✅ **Find unfollowers** - See exactly who stopped following you
-- ✅ **Mutual analysis** - Discover who follows you back vs. one-way connections
-- ✅ **Smart badges** - 10 badge types: Following, Followers, Mutuals, Not following back, Not followed back, Pending, Restricted, Close friends, Unfollowed, Dismissed
-- ✅ **Lightning search** - Find any account instantly with intelligent indexing
-- ✅ **Advanced filters** - Combine multiple badges to find exactly who you're looking for
-- ✅ **Direct links** - Click any account to open their Instagram profile
+- **Progressive disclosure** — collapsible banner with smart timing
+- **Affiliate recommendations** — tiered by account size and loss severity
 
-### Why You'll Love It
+## ⚡ Performance
 
-- 🔒 **100% Private** - All processing happens locally in your browser
-- 💰 **Completely Free** - No subscriptions, no hidden costs, no limits
-- 🔓 **Open Source** - MIT licensed, transparent code you can audit
-- ⚡ **Blazing Fast** - 75x faster than previous version
-- 🛡️ **No Account Risk** - No Instagram login required, respects platform rules
-- 📊 **Scales to millions** - Handles 1M+ accounts with ease
+| Metric             | v1.0.0 | v1.5.0 |
+| ------------------ | ------ | ------ |
+| Languages          | 1      | 10     |
+| Pre-rendered pages | 0      | 80     |
+| INP                | 350ms  | 180ms  |
+| LCP                | 2.0s   | 1.3s   |
+| Test count         | 151    | 1,601  |
 
-## 🚀 Performance Benchmarks
+## 🚀 Since v1.0.0
 
-| Dataset Size  | Filter Speed | Search Speed | Storage | Memory Usage |
-| ------------- | ------------ | ------------ | ------- | ------------ |
-| 10k accounts  | <1ms         | <1ms         | ~100 KB | ~500 KB      |
-| 100k accounts | ~2ms         | <1ms         | ~1 MB   | ~2 MB        |
-| 1M accounts   | ~5ms         | ~1ms         | ~5 MB   | ~5 MB        |
+### v1.4.0 (Jan 12, 2026)
 
-**Compared to v0.9:**
+- Wizard deep links (`/wizard/step/N`)
+- Calendar reminder for data download
+- GitHub source link in footer
 
-- Filtering: **75x faster** (2ms vs 150ms for 3 badges)
-- Search: **100x faster** (1ms vs 3000ms with indexing)
-- Storage: **40x smaller** (5 MB vs 200 MB for 1M accounts)
-- Memory: **20x less** (5 MB vs 100 MB runtime usage)
+### v1.3.0 (Jan 11, 2026)
+
+- SSG with path-based routing (80 pages)
+- Web Worker filtering via Comlink (INP: 350ms → 180ms)
+- PWA support with 176 precached entries
+- Self-hosted fonts (LCP -400ms)
+- Dynamic OG images
+
+### v1.2.0 (Jan 10, 2026)
+
+- 9 languages (ES, RU, DE, PT, TR, HI, ID, JA)
+- FAQ section with Schema.org markup
+- HowTo section with structured data
+
+### v1.1.0 (Jan 7, 2026)
+
+- Sample data mode (`/sample`)
+- Diagnostic error screen
+- BuyMeACoffee widget
 
 ## 🔧 Technical Highlights
 
-### Architecture Improvements
+### Architecture
 
-- **IndexedDB v2** - Complete rewrite with columnar storage
-- **FastBitSet.js** - Efficient bitwise operations for filtering
-- **TanStack Virtual** - Virtual scrolling for smooth 60 FPS performance
-- **Web Workers** - Background ZIP parsing with chunked ingestion
-- **LRU Caching** - Smart data caching with lazy loading
+- **URL as Single Source of Truth** — language determined from URL path
+- **Centralized Config** — `src/config/languages.ts` for all language constants
+- **Full Page Reload** — language switch triggers reload for correct SSG meta
 
 ### Code Quality
 
-- **98% Test Coverage** - 151 tests passing, comprehensive test suite
-- **TypeScript Strict Mode** - Full type safety and error prevention
-- **ESLint + Husky** - Automated code quality checks
-- **Modern Stack** - React 18, Vite 7, shadcn/ui, Tailwind CSS
+- **1,601 Tests** — comprehensive test suite (up from 151)
+- **98% Coverage** — maintained through all changes
+- **TypeScript Strict** — zero `any` types
+- **ESLint Strict** — zero warnings
 
-## 📚 Documentation
+## 📦 New Dependencies
 
-### User Guides
+| Package                                | Purpose                  |
+| -------------------------------------- | ------------------------ |
+| @fontsource-variable/inter             | Self-hosted fonts        |
+| @fontsource-variable/plus-jakarta-sans | Self-hosted fonts        |
+| comlink                                | Web Worker communication |
+| vite-plugin-pwa                        | PWA support              |
 
-- **[User Guide](docs/user-guide.md)** - Complete step-by-step tutorial
-- **[FAQ](docs/faq.md)** - Common questions and answers
-- **[Troubleshooting](docs/troubleshooting.md)** - Problem-solving guide
-- **[Instagram Export Guide](docs/instagram-export.md)** - How to get your data
+## 🔄 Migration from v1.4.x
 
-### Technical Docs
-
-- **[IndexedDB Architecture](INDEXEDDB_ARCHITECTURE.md)** - Deep dive into storage layer
-- **[Filter Optimization](FILTER_OPTIMIZATION.md)** - Performance optimization guide
-- **[Technical Specs](docs/tech-spec.md)** - Technical details and architecture
-- **[Roadmap](docs/roadmap.md)** - Future features and development plans
-
-## 🤝 Contributing
-
-We welcome contributions! Whether it's bug reports, feature requests, or code improvements:
-
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
-- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** - Community standards
-- **[SECURITY.md](SECURITY.md)** - Security policy
-
-## 🆕 Migration from v0.9
-
-### Breaking Changes
-
-- **UI Framework Change** - Migrated from Mantine UI to shadcn/ui
-- **IndexedDB v2** - New storage format (old data will be migrated automatically)
+**No breaking changes!** Simply update and enjoy the new features.
 
 ### What to Expect
 
-1. **First load after upgrade** - May take a moment to migrate old data
-2. **IndexedDB migration** - Happens automatically in the background
-3. **New UI** - Familiar functionality with a fresh, modern look
-4. **Better performance** - Immediately notice faster filtering and search
-
-### No Action Required
-
-The app will handle migration automatically. Your existing data is safe!
+1. **First load** — may take a moment to cache PWA assets
+2. **Language detection** — app will redirect to your browser's language
+3. **Theme preference** — defaults to system, remembers your choice
 
 ## 🐛 Known Issues
 
@@ -129,22 +123,13 @@ None at this time! If you encounter any issues:
 - Search [existing issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
 - [Report a new issue](https://github.com/ignromanov/instagram-unfollow-tracker/issues/new/choose)
 
-## 💖 Acknowledgments
-
-Thank you to everyone who:
-
-- Tested early versions and provided feedback
-- Reported bugs and suggested improvements
-- Contributed code and documentation
-- Shared the project with others
-
 ## 🔮 What's Next
 
-See our [Roadmap](docs/roadmap.md) for upcoming features:
+- **JSON vs HTML Quiz** — interactive guide for correct file upload
+- **Mobile File Picker UX** — iOS/Android-specific hints
+- **Historical Comparison** — compare multiple data exports
 
-- **v1.1** - CSV export, enhanced data parsing
-- **v1.2** - Advanced UI features, custom filters
-- **v1.3** - PWA support, internationalization
+See our [Roadmap](docs/roadmap.md) for the full list.
 
 ---
 
@@ -158,4 +143,4 @@ See our [Roadmap](docs/roadmap.md) for upcoming features:
 
 ---
 
-**Remember:** All your data stays on your device. We never collect, store, or transmit your Instagram data.
+**Remember:** All your data stays on your device. We never collect, store, or transmit your Instagram data. Now in 10 languages! 🌍

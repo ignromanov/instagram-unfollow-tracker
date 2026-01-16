@@ -7,6 +7,102 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-01-14
+
+### Added
+
+- **i18n Meta Tags Localization**: Dynamic title/description per language
+  - og:locale localization (es_ES, ru_RU, de_DE, ar_SA, etc.)
+  - og:locale:alternate for all supported languages
+  - Localized OG images with `?lang=` parameter
+- **Arabic Language (RTL)**: 10th language with full RTL support
+- **System Theme Toggle**: 3-way theme (light/dark/system)
+- **Error Handling**: ErrorBoundary, 404 page, RouteErrorPage
+- **Rescue Plan Banner**: Collapsible banner with progressive disclosure
+
+### Changed
+
+- Language now determined from URL (single source of truth)
+- LanguageSwitcher uses full page reload for correct SSG meta
+- Centralized language config in `src/config/languages.ts`
+
+### Fixed
+
+- React hooks order violation in rescue-plan component
+- Turkish Unicode characters for brand consistency
+- Hydration mismatch in useI18nReady hook
+
+## [1.4.0] - 2026-01-12
+
+### Added
+
+- **Wizard Improvements**: Calendar reminder, deep links (`/wizard/step/N`)
+- **GitHub Link**: Source code link in footer
+- **Page Loading States**: Skeleton loaders for better UX
+
+### Changed
+
+- Removed V2 architecture (steps, journey state)
+- Renamed HeaderV2 to Header
+- Migrated from pnpm to npm
+
+### Fixed
+
+- Navigation to use path-based URLs
+- CSP for BuyMeCoffee widget and Facebook Meta Pixel
+
+## [1.3.0] - 2026-01-11
+
+### Added
+
+- **SSG with Path-based Routing**: 80 pre-rendered pages (10 languages × 8 routes)
+- **Web Worker Filtering**: IndexedDBFilterEngine off main thread via Comlink
+- **PWA Support**: vite-plugin-pwa with 176 precached entries
+- **Self-hosted Fonts**: @fontsource for Inter and Plus Jakarta Sans (LCP -400ms)
+- **Dynamic OG Images**: @vercel/og Edge Function for social sharing
+- **BreadcrumbSchema**: JSON-LD for rich SERP display
+- **Comprehensive SEO Audit**: P0/P1/P2 optimizations for Product Hunt launch
+
+### Performance
+
+- INP improved: 350ms → 180ms (Web Worker)
+- LCP improved: -400ms (self-hosted fonts)
+- Bundle reduced: -12KB (dynamic i18n, Radix chunks)
+
+## [1.2.0] - 2026-01-10
+
+### Added
+
+- **9 Languages**: Spanish, Russian, German, Portuguese, Turkish, Hindi, Indonesian, Japanese
+- **Automatic Language Detection**: Browser language detection with SEO hreflang tags
+- **FAQ Section**: 7 FAQs with Schema.org FAQPage structured data
+- **HowTo Section**: 10-step guide with Schema.org HowTo markup
+
+### Changed
+
+- Improved test coverage from 78% to 92%
+- Added comprehensive i18n test suite
+
+## [1.1.0] - 2026-01-07
+
+### Added
+
+- **Sample Data Mode**: Try without uploading personal data (`/sample` route)
+- **Diagnostic Error Screen**: Rich error UI for upload failures with specific fix instructions
+- **Guided Journey Flow**: Hash navigation with mobile optimization
+- **BuyMeACoffee Widget**: Donation support integration
+
+### Changed
+
+- Redesigned FilterChips, Footer, FAQ, HowTo components
+- Updated color palette and typography
+- Added tracking opt-out for analytics
+
+### Fixed
+
+- Smart error diagnostics for JSON format issues
+- Memory leaks in component lifecycle
+
 ## [1.0.0] - 2025-10-09
 
 ### Added
