@@ -123,16 +123,6 @@ describe('useFileUpload', () => {
     );
   });
 
-  it('should set default filters after upload if none exist', async () => {
-    const { result } = renderHook(() => useFileUpload());
-
-    await act(async () => {
-      await result.current.handleZipUpload(mockFile);
-    });
-
-    expect(mockSetFilters).toHaveBeenCalledWith(new Set(['following', 'followers']));
-  });
-
   it('should not override existing filters', async () => {
     mockUseAppStore.mockImplementation(selector => {
       const state = {

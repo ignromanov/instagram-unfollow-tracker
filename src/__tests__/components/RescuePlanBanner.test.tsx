@@ -43,7 +43,7 @@ describe('RescuePlanBanner', () => {
   });
 
   const defaultProps = {
-    filterCounts: { 'not-following-back': 50 },
+    filterCounts: { unfollowed: 50 },
     totalCount: 100, // 50% unfollowed -> critical severity
     showDelay: 1000, // 1 second delay for testing
   };
@@ -121,7 +121,7 @@ describe('RescuePlanBanner', () => {
   it('should render correct severity style (critical)', () => {
     // 15% is threshold for critical often, but let's ensure it hits
     const props = {
-      filterCounts: { 'not-following-back': 200 },
+      filterCounts: { unfollowed: 200 },
       totalCount: 1000,
       showDelay: 0,
     };

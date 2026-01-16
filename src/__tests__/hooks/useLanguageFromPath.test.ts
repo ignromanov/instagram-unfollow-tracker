@@ -612,12 +612,12 @@ describe('useLanguageFromPath', () => {
       expect(esLink?.getAttribute('href')).toBe('https://safeunfollow.app/es/wizard');
     });
 
-    it('should remove existing hreflang tags before adding new ones', () => {
-      // Add some existing tags
+    it('should replace existing hreflang tags with correct ones', () => {
+      // Add some existing tags with wrong href
       const existingLink = document.createElement('link');
       existingLink.rel = 'alternate';
       existingLink.setAttribute('hreflang', 'fr');
-      existingLink.href = 'https://example.com/fr';
+      existingLink.href = 'https://example.com/fr'; // Wrong URL
       document.head.appendChild(existingLink);
 
       mockUseLocation.mockReturnValue({
@@ -635,8 +635,10 @@ describe('useLanguageFromPath', () => {
 
       renderHook(() => useLanguageFromPath());
 
+      // Old tag should be replaced with correct href
       const frLink = document.querySelector('link[hreflang="fr"]');
-      expect(frLink).toBeNull();
+      expect(frLink).not.toBeNull();
+      expect(frLink?.getAttribute('href')).toBe('https://safeunfollow.app/fr/wizard');
     });
 
     it('should update hreflang tags when path changes', () => {

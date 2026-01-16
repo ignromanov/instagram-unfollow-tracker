@@ -9,33 +9,33 @@
  */
 
 export const SUPPORTED_LANGUAGES = [
-  'en',
-  'es',
-  'pt',
-  'hi',
-  'id',
-  'tr',
-  'ja',
-  'ru',
-  'de',
-  'ar',
-  'fr',
+  'en', // Default language (always first)
+  'ar', // العربية
+  'de', // Deutsch
+  'es', // Español
+  'fr', // Français
+  'hi', // हिन्दी
+  'id', // Indonesia
+  'ja', // 日本語
+  'pt', // Português
+  'ru', // Русский
+  'tr', // Türkçe
 ] as const;
 
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 export const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {
   en: 'English',
+  ar: 'العربية',
+  de: 'Deutsch',
   es: 'Español',
-  pt: 'Português',
+  fr: 'Français',
   hi: 'हिन्दी',
   id: 'Indonesia',
-  tr: 'Türkçe',
   ja: '日本語',
+  pt: 'Português',
   ru: 'Русский',
-  de: 'Deutsch',
-  ar: 'العربية',
-  fr: 'Français',
+  tr: 'Türkçe',
 };
 
 /** RTL languages that require dir="rtl" attribute */
@@ -51,16 +51,16 @@ export const DEFAULT_LANGUAGE: SupportedLanguage = 'en';
  */
 export const LOCALE_CODES: Record<SupportedLanguage, string> = {
   en: 'en_US',
+  ar: 'ar_SA',
+  de: 'de_DE',
   es: 'es_ES',
+  fr: 'fr_FR',
+  hi: 'hi_IN',
+  id: 'id_ID',
+  ja: 'ja_JP',
   pt: 'pt_BR',
   ru: 'ru_RU',
-  de: 'de_DE',
-  hi: 'hi_IN',
-  ja: 'ja_JP',
   tr: 'tr_TR',
-  id: 'id_ID',
-  ar: 'ar_SA',
-  fr: 'fr_FR',
 };
 
 /**

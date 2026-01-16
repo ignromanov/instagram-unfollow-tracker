@@ -47,6 +47,24 @@ vi.mock('@/components/Hero', () => ({
   ),
 }));
 
+vi.mock('@/components/DiagnosticErrorScreen', () => ({
+  DiagnosticErrorScreen: ({
+    errorMessage,
+    onTryAgain,
+    onOpenWizard,
+  }: {
+    errorMessage: string;
+    onTryAgain: () => void;
+    onOpenWizard: () => void;
+  }) => (
+    <div data-testid="diagnostic-error-screen">
+      <div data-testid="error-message">{errorMessage}</div>
+      <button onClick={onTryAgain}>Try Again</button>
+      <button onClick={onOpenWizard}>{heroEN.buttons.getGuide}</button>
+    </div>
+  ),
+}));
+
 // Mock react-router-dom
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
@@ -141,7 +159,7 @@ describe('ResultsPage', () => {
       expect(screen.queryByTestId('account-list-section')).not.toBeInTheDocument();
     });
 
-    it('should render Hero when upload status is error', () => {
+    it('should render DiagnosticErrorScreen when upload status is error', () => {
       mockUseInstagramData.mockReturnValue({
         uploadState: { status: 'error', error: 'Failed to parse', fileName: null },
         fileMetadata: null,
@@ -149,7 +167,9 @@ describe('ResultsPage', () => {
 
       render(<ResultsPage />);
 
-      expect(screen.getByTestId('hero-fallback')).toBeInTheDocument();
+      expect(screen.getByTestId('diagnostic-error-screen')).toBeInTheDocument();
+      expect(screen.getByTestId('error-message')).toHaveTextContent('Failed to parse');
+      expect(screen.queryByTestId('hero-fallback')).not.toBeInTheDocument();
     });
 
     it('should render Hero when upload status is loading', () => {
@@ -225,6 +245,44 @@ describe('ResultsPage', () => {
       await user.click(screen.getByText(heroEN.buttons.getGuide));
 
       expect(mockNavigate).toHaveBeenCalledWith('/es/wizard');
+    });
+  });
+
+  describe('navigation - DiagnosticErrorScreen handlers', () => {
+    beforeEach(() => {
+      mockUseInstagramData.mockReturnValue({
+        uploadState: { status: 'error', error: 'Upload failed', fileName: null },
+        fileMetadata: null,
+      });
+    });
+
+    it('should navigate to upload when Try Again is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ResultsPage />);
+
+      await user.click(screen.getByText('Try Again'));
+
+      expect(mockNavigate).toHaveBeenCalledWith('/upload');
+    });
+
+    it('should navigate to wizard when Open Wizard is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ResultsPage />);
+
+      await user.click(screen.getByText(heroEN.buttons.getGuide));
+
+      expect(mockNavigate).toHaveBeenCalledWith('/wizard');
+    });
+
+    it('should use language prefix in error navigation', async () => {
+      mockUseLanguagePrefix.mockReturnValue('/de');
+
+      const user = userEvent.setup();
+      render(<ResultsPage />);
+
+      await user.click(screen.getByText('Try Again'));
+
+      expect(mockNavigate).toHaveBeenCalledWith('/de/upload');
     });
   });
 

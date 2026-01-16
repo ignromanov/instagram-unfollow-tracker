@@ -38,11 +38,11 @@
   "badges": {
     "followers": "Abonnés",
     "following": "Abonnements",
-    "unfollowed": "Désabonnés",
+    "unfollowed": "Récemment désabonnés",
     "notFollowingBack": "Ne vous suivent pas",
     "mutuals": "Mutuels",
     "notFollowedBack": "Vous ne suivez pas en retour",
-    "pending": "En attente",
+    "pending": "Demande en attente",
     "permanent": "En attente (permanent)",
     "restricted": "Restreint",
     "close": "Ami proche",
@@ -106,10 +106,10 @@
     "recommended": "Recommandé",
     "tryTool": "Essayer {{name}}",
     "price": {
-      "freeTrial7": "7 jours gratuits",
-      "freeTrial14": "14 jours gratuits",
-      "freePlan": "Plan gratuit",
-      "freeContacts": "1K gratuits",
+      "freeTrial7": "Essai gratuit 7 jours",
+      "freeTrial14": "Essai gratuit 14 jours",
+      "freePlan": "Plan gratuit disponible",
+      "freeContacts": "Gratuit jusqu'à 1K contacts",
       "freeForever": "Gratuit pour toujours"
     },
     "social": {

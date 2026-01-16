@@ -12,11 +12,11 @@
   "badges": {
     "followers": "Abonnés",
     "following": "Abonnements",
-    "unfollowed": "Désabonnés",
+    "unfollowed": "Récemment désabonnés",
     "notFollowingBack": "Ne vous suivent pas",
     "mutuals": "Mutuels",
     "notFollowedBack": "Vous ne suivez pas en retour",
-    "pending": "En attente",
+    "pending": "Demande en attente",
     "permanent": "En attente (permanent)",
     "restricted": "Restreint",
     "close": "Ami proche",
@@ -61,7 +61,7 @@
   },
   "cta": {
     "title": "Commencez votre analyse privée aujourd'hui",
-    "subtitle": "Rejoignez des milliers d'utilisateurs qui suivent leurs abonnés sans risquer leurs comptes.",
+    "subtitle": "Rejoignez des milliers d'utilisateurs soucieux de leur vie privée qui suivent leurs abonnés sans risquer leurs comptes.",
     "getStarted": "Commencer",
     "trySample": "Essayer la démo",
     "tagline": "100% Gratuit • Sans connexion • Confidentialité garantie"
