@@ -44,31 +44,31 @@ All processing happens **100% locally** in your browser. Your data never leaves 
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="assets/scr-full-mac.png" alt="Instagram Unfollow Tracker - Full Interface" width="100%" />
-  <p><em>Full interface with filtering, search, and account list</em></p>
+  <img src="assets/hero.png" alt="Instagram Unfollow Tracker - Landing Page" width="100%" />
+  <p><em>Clean landing page with clear call-to-action</em></p>
 </div>
 
 <div align="center">
-  <img src="assets/scr-drop-data-mac.png" alt="Drag and drop your Instagram data" width="100%" />
-  <p><em>Drag and drop your Instagram ZIP file to get started</em></p>
+  <img src="assets/upload-zip.png" alt="Upload your Instagram ZIP file" width="100%" />
+  <p><em>Drag and drop upload with pre-upload checklist</em></p>
+</div>
+
+<div align="center">
+  <img src="assets/analysis-result.png" alt="Analysis Results - Filter and search accounts" width="100%" />
+  <p><em>Analysis results with smart filters and account badges</em></p>
 </div>
 
 <details>
 <summary>📱 <strong>View Mobile Screenshots</strong></summary>
 
 <div align="center">
-  <img src="assets/scr-full-mobile.png" alt="Mobile view - Full interface" width="375" />
-  <p><em>Responsive mobile interface</em></p>
+  <img src="assets/upload-zip-mobile.png" alt="Mobile view - Upload screen" width="375" />
+  <p><em>Mobile-optimized file upload</em></p>
 </div>
 
 <div align="center">
-  <img src="assets/scr-drop-data-mobile.png" alt="Mobile view - Upload screen" width="375" />
-  <p><em>Mobile file upload</em></p>
-</div>
-
-<div align="center">
-  <img src="assets/scr-processing-mobile.png" alt="Mobile view - Processing data" width="375" />
-  <p><em>Fast processing with progress indicator</em></p>
+  <img src="assets/close-friend-mobile.png" alt="Mobile view - Close Friends filter" width="375" />
+  <p><em>Filter by Close Friends and other badges on mobile</em></p>
 </div>
 
 </details>
