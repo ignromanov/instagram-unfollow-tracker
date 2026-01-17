@@ -49,7 +49,7 @@ export default defineConfig({
     beastiesOptions: {
       // Inline critical CSS and @font-face rules
       inlineFonts: true,     // Inline @font-face rules to resolve font URLs
-      preloadFonts: true,    // Add preload hints for fonts
+      preloadFonts: false,   // DISABLED: We add language-aware preloads in ssg-meta-injector.ts
       preload: "swap",       // Font display strategy
     },
 

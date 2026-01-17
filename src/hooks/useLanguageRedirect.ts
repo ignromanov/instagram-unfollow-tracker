@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import { detectBrowserLanguage, NON_ENGLISH_LANGUAGES } from '@/config/languages';
@@ -9,7 +9,7 @@ const VISITED_KEY = 'unfollow-radar-visited';
 /**
  * Redirect from language-less paths to user's preferred language
  *
- * Uses useLayoutEffect to redirect BEFORE paint — user won't see wrong content.
+ * Uses useEffect to redirect after mount — waits for hydration to complete.
  *
  * Flow:
  * 1. If URL already has language prefix → do nothing (explicit choice)
@@ -30,8 +30,8 @@ export function useLanguageRedirect(): void {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // useLayoutEffect runs synchronously before paint
-  useLayoutEffect(() => {
+  // useEffect runs after mount and hydration check
+  useEffect(() => {
     // Wait for BOTH mount and store hydration to avoid hydration mismatch
     if (!mounted || !_hasHydrated) return;
 

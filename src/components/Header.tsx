@@ -158,7 +158,7 @@ export function Header({
                   : theme === 'light'
                     ? t('theme.dark')
                     : t('theme.light')
-                : ''
+                : undefined
             }
             aria-label={
               mounted
@@ -167,7 +167,7 @@ export function Header({
                   : theme === 'light'
                     ? t('theme.dark')
                     : t('theme.light')
-                : ''
+                : undefined
             }
           >
             {/* Wrap children in span with suppressHydrationWarning (shallow!) */}
