@@ -110,17 +110,21 @@ export async function injectLocalizedMeta(
   renderedHTML: string,
   rootDir: string
 ): Promise<string> {
+  // Normalize route to always start with /
+  // vite-react-ssg may pass routes without leading slash (e.g., "results" instead of "/results")
+  const normalizedRoute = route.startsWith('/') ? route : `/${route}`;
+
   // Normalize route for canonical URL
-  const canonicalPath = route === '/' ? '' : route.replace(/\/$/, '');
+  const canonicalPath = normalizedRoute === '/' ? '' : normalizedRoute.replace(/\/$/, '');
   const canonicalUrl = `${BASE_URL}${canonicalPath || '/'}`;
 
   // Get base path without language prefix for hreflang
   const langPrefixPattern = createLanguagePrefixRegex();
-  const basePath = route.replace(langPrefixPattern, '/') || '/';
+  const basePath = normalizedRoute.replace(langPrefixPattern, '/') || '/';
   const normalizedBasePath = basePath === '/' ? '' : basePath;
 
   // Extract language from route
-  const langMatch = route.match(langPrefixPattern);
+  const langMatch = normalizedRoute.match(langPrefixPattern);
   const currentLang = langMatch ? langMatch[1] : 'en';
 
   // Load localized meta tags
