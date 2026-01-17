@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 
 const BMC_STORAGE_KEY = 'bmc_widget_shown_v1';
 const BMC_SCRIPT_ID = 'bmc-script';
@@ -32,9 +32,15 @@ export function BuyMeCoffeeWidget({
   autoCollapseAfter = 10000,
   skipStorageCheck = false,
 }: BuyMeCoffeeWidgetProps) {
+  // Prevent hydration mismatch - this component is client-only
+  const [mounted, setMounted] = useState(false);
   const hasExpandedRef = useRef(false);
   const expandTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const collapseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const cleanup = useCallback(() => {
     // Clear timers
@@ -65,6 +71,9 @@ export function BuyMeCoffeeWidget({
   }, []);
 
   useEffect(() => {
+    // Don't run until mounted (client-side only)
+    if (!mounted) return;
+
     if (!show) {
       cleanup();
       return;
@@ -110,7 +119,7 @@ export function BuyMeCoffeeWidget({
 
     // Cleanup on unmount or when show changes to false
     return cleanup;
-  }, [show, expandDelay, autoCollapseAfter, skipStorageCheck, cleanup]);
+  }, [mounted, show, expandDelay, autoCollapseAfter, skipStorageCheck, cleanup]);
 
   return null;
 }

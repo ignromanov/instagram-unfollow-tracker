@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
 import { detectBrowserLanguage, NON_ENGLISH_LANGUAGES } from '@/config/languages';
@@ -26,10 +26,14 @@ export function useLanguageRedirect(): void {
   const location = useLocation();
   const { language, setLanguage, _hasHydrated } = useAppStore();
 
+  // Prevent redirect during SSR/hydration - wait until client is mounted
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // useLayoutEffect runs synchronously before paint
   useLayoutEffect(() => {
-    // Wait for store hydration (language loaded from localStorage)
-    if (!_hasHydrated) return;
+    // Wait for BOTH mount and store hydration to avoid hydration mismatch
+    if (!mounted || !_hasHydrated) return;
 
     // Check if path already has language prefix
     const hasLangPrefix = NON_ENGLISH_LANGUAGES.some(
@@ -58,5 +62,5 @@ export function useLanguageRedirect(): void {
       const newPath = `/${targetLanguage}${location.pathname}`;
       window.location.href = newPath;
     }
-  }, [location.pathname, language, setLanguage, _hasHydrated]);
+  }, [mounted, location.pathname, language, setLanguage, _hasHydrated]);
 }

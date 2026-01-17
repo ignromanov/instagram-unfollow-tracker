@@ -11,9 +11,13 @@ import { Logo } from './Logo';
 export function Footer() {
   const { t } = useTranslation('common');
   const prefix = useLanguagePrefix();
+
+  // Prevent hydration mismatch - localStorage is unknown on server
+  const [mounted, setMounted] = useState(false);
   const [isOptedOut, setIsOptedOut] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     setIsOptedOut(isTrackingOptedOut());
   }, []);
 
@@ -83,12 +87,20 @@ export function Footer() {
               <button
                 onClick={handleTrackingToggle}
                 className={`cursor-pointer hover:text-primary transition-colors py-2 px-1 flex items-center gap-1.5 ${
-                  isOptedOut ? 'text-emerald-500' : ''
+                  mounted && isOptedOut ? 'text-emerald-500' : ''
                 }`}
-                title={isOptedOut ? t('footer.trackingDisabled') : t('footer.trackingEnabled')}
+                title={
+                  mounted && isOptedOut ? t('footer.trackingDisabled') : t('footer.trackingEnabled')
+                }
+                suppressHydrationWarning
               >
-                {isOptedOut ? <Eye size={14} /> : <EyeOff size={14} />}
-                {isOptedOut ? t('footer.trackingOff') : t('footer.dontTrackMe')}
+                {/* Wrap children in spans with suppressHydrationWarning (shallow!) */}
+                <span suppressHydrationWarning>
+                  {mounted && isOptedOut ? <Eye size={14} /> : <EyeOff size={14} />}
+                </span>
+                <span suppressHydrationWarning>
+                  {mounted && isOptedOut ? t('footer.trackingOff') : t('footer.dontTrackMe')}
+                </span>
               </button>
               <a
                 href="https://github.com/ignromanov/instagram-unfollow-tracker"

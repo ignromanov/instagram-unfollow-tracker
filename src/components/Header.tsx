@@ -13,32 +13,12 @@ import {
 } from '@/components/ui/alert-dialog';
 import { AppState } from '@/core/types';
 import { analytics } from '@/lib/analytics';
-import {
-  Globe,
-  LayoutDashboard,
-  Moon,
-  ShieldCheck,
-  Sun,
-  SunMoon,
-  Trash2,
-  Upload,
-} from 'lucide-react';
+import { LayoutDashboard, Moon, ShieldCheck, Sun, SunMoon, Trash2, Upload } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Lazy load LanguageSwitcher for code splitting
-const LanguageSwitcher = lazy(() =>
-  import('./LanguageSwitcher').then(m => ({ default: m.LanguageSwitcher }))
-);
-
-function LanguageSwitcherSkeleton() {
-  return (
-    <div className="p-2.5 rounded-2xl text-zinc-400">
-      <Globe size={20} />
-    </div>
-  );
-}
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface HeaderProps {
   hasData?: boolean;
@@ -164,14 +144,13 @@ export function Header({
           <div className="w-[1px] h-6 md:h-8 bg-border" />
 
           {/* Language Switcher */}
-          <Suspense fallback={<LanguageSwitcherSkeleton />}>
-            <LanguageSwitcher />
-          </Suspense>
+          <LanguageSwitcher />
 
           {/* Theme Toggle */}
           <button
             onClick={handleThemeToggle}
             className="cursor-pointer p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
+            suppressHydrationWarning
             title={
               mounted
                 ? theme === 'system'
@@ -191,16 +170,18 @@ export function Header({
                 : ''
             }
           >
-            {/* Render placeholder before mount to avoid hydration mismatch */}
-            {!mounted ? (
-              <div className="w-5 h-5" />
-            ) : theme === 'system' ? (
-              <SunMoon size={20} />
-            ) : theme === 'light' ? (
-              <Moon size={20} />
-            ) : (
-              <Sun size={20} />
-            )}
+            {/* Wrap children in span with suppressHydrationWarning (shallow!) */}
+            <span suppressHydrationWarning>
+              {!mounted ? (
+                <div className="w-5 h-5" />
+              ) : theme === 'system' ? (
+                <SunMoon size={20} />
+              ) : theme === 'light' ? (
+                <Moon size={20} />
+              ) : (
+                <Sun size={20} />
+              )}
+            </span>
           </button>
         </div>
       </div>
