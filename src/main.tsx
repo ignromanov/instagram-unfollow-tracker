@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ViteReactSSG } from 'vite-react-ssg';
 import { routes } from './routes';
 import { initI18n } from './locales';

@@ -147,10 +147,12 @@ export function Header({
           <LanguageSwitcher />
 
           {/* Theme Toggle */}
+          {/* HYDRATION FIX: Always render the same icon (SunMoon) during SSR and initial mount.
+              After mount, we can show the correct icon based on theme.
+              This avoids structural mismatch (div vs svg). */}
           <button
             onClick={handleThemeToggle}
             className="cursor-pointer p-2.5 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
-            suppressHydrationWarning
             title={
               mounted
                 ? theme === 'system'
@@ -158,7 +160,7 @@ export function Header({
                   : theme === 'light'
                     ? t('theme.dark')
                     : t('theme.light')
-                : undefined
+                : t('theme.system')
             }
             aria-label={
               mounted
@@ -167,21 +169,17 @@ export function Header({
                   : theme === 'light'
                     ? t('theme.dark')
                     : t('theme.light')
-                : undefined
+                : t('theme.system')
             }
           >
-            {/* Wrap children in span with suppressHydrationWarning (shallow!) */}
-            <span suppressHydrationWarning>
-              {!mounted ? (
-                <div className="w-5 h-5" />
-              ) : theme === 'system' ? (
-                <SunMoon size={20} />
-              ) : theme === 'light' ? (
-                <Moon size={20} />
-              ) : (
-                <Sun size={20} />
-              )}
-            </span>
+            {/* Default to SunMoon icon for SSR, then switch after mount */}
+            {!mounted || theme === 'system' ? (
+              <SunMoon size={20} />
+            ) : theme === 'light' ? (
+              <Moon size={20} />
+            ) : (
+              <Sun size={20} />
+            )}
           </button>
         </div>
       </div>

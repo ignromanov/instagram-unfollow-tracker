@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Hydration Debugger Utility
  *
@@ -155,7 +156,7 @@ export function HydrationDebugger({ name, children, detailed = false }: Hydratio
     const currentHtml = containerRef.current.innerHTML;
 
     // Use MutationObserver to detect when React updates the DOM
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver(_mutations => {
       if (hasCheckedRef.current) {
         observer.disconnect();
         return;
