@@ -94,6 +94,7 @@ export default function handler(request: Request) {
 
   const html = {
     type: 'div',
+    key: null,
     props: {
       style: {
         height: '100%',
