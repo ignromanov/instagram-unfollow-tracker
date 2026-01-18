@@ -16,20 +16,21 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA(pwaConfig),
+    // Copy @fontsource font files to /files/ directory
+    // Required because @fontsource CSS references fonts via relative ./files/ paths
+    // Only copy *-wght-normal.woff2 (variable weight, normal style) - reduces 50 → 11 files
     viteStaticCopy({
       targets: [
         {
-          // Copy Inter font files
-          src: 'node_modules/@fontsource-variable/inter/files/*',
+          src: 'node_modules/@fontsource-variable/inter/files/*-wght-normal.woff2',
           dest: 'files'
         },
         {
-          // Copy Plus Jakarta Sans font files
-          src: 'node_modules/@fontsource-variable/plus-jakarta-sans/files/*',
+          src: 'node_modules/@fontsource-variable/plus-jakarta-sans/files/*-wght-normal.woff2',
           dest: 'files'
         }
       ]
-    })
+    }),
   ],
   base: "/",
   // Include font assets from @fontsource packages
@@ -49,8 +50,8 @@ export default defineConfig({
     beastiesOptions: {
       // Inline critical CSS and @font-face rules
       inlineFonts: true,     // Inline @font-face rules to resolve font URLs
-      preloadFonts: true,    // Add preload hints for fonts
-      preload: "swap",       // Font display strategy
+      preloadFonts: false,   // DISABLED: Causes "preloaded but not used" warnings
+      preload: "swap",       // Font display strategy (font-display: swap)
     },
 
     // Include dynamic routes (wizard steps 1-8) for all languages

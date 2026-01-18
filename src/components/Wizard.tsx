@@ -147,8 +147,8 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
 
   return (
     <div className="fixed inset-0 z-[100] bg-background flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between border-b border-border bg-card">
+      {/* Header - Compact */}
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between border-b border-border bg-card">
         <div className="flex items-center gap-4">
           <span className="font-bold text-xs md:text-sm text-zinc-500 uppercase tracking-widest">
             {t('header.stepOf', { current: currentStep, total: WIZARD_STEPS.length })}
@@ -212,7 +212,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
             </div>
 
             {/* Step Info */}
-            <div className="p-8 md:p-12">
+            <div className="p-6 md:p-8">
               <h2
                 className={`text-2xl md:text-3xl font-display font-bold mb-5 leading-tight ${
                   step.isWarning
@@ -228,7 +228,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
 
               {/* External Link Button (step 1) */}
               {step.externalLink && (
-                <>
+                <div className="flex flex-col items-center sm:items-start gap-4">
                   <a
                     href={step.externalLink}
                     target="_blank"
@@ -242,11 +242,15 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
                   {/* Already have file shortcut */}
                   <button
                     onClick={() => navigate(`${prefix}/upload`)}
-                    className="cursor-pointer inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-primary text-primary rounded-2xl font-bold hover:bg-primary/5 active:scale-95 transition-all text-sm md:text-base w-full sm:w-auto mt-4"
+                    className="cursor-pointer inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-primary dark:hover:text-primary transition-colors group"
                   >
                     {t('buttons.alreadyHaveFile')}
+                    <ArrowRight
+                      size={14}
+                      className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                    />
                   </button>
-                </>
+                </div>
               )}
 
               {/* Last step: Calendar reminder button */}
@@ -259,30 +263,32 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
                   {t('calendar.addReminder')}
                 </button>
               )}
+
+              {/* Navigation buttons - inside card */}
+              <div className="flex items-center justify-between mt-8 pt-6 border-t border-border/50">
+                <button
+                  onClick={handleBack}
+                  disabled={isFirstStep}
+                  className={`cursor-pointer flex items-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all ${
+                    isFirstStep
+                      ? 'opacity-0 pointer-events-none'
+                      : 'hover:bg-muted text-muted-foreground'
+                  }`}
+                >
+                  <ArrowLeft size={18} />
+                  <span className="hidden sm:inline">{t('buttons.back')}</span>
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition-all"
+                >
+                  {isLastStep ? t('buttons.done') : t('buttons.next')}
+                  <ArrowRight size={18} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Footer */}
-      <div className="container mx-auto px-4 py-6 border-t border-border flex items-center justify-between bg-card shadow-[0_-10px_20px_oklch(0_0_0_/_0.03)]">
-        <button
-          onClick={handleBack}
-          disabled={isFirstStep}
-          className={`cursor-pointer flex items-center gap-2 px-6 py-4 rounded-2xl font-black text-sm transition-all ${
-            isFirstStep
-              ? 'opacity-0 pointer-events-none'
-              : 'hover:bg-[oklch(0.5_0_0_/_0.05)] text-zinc-500'
-          }`}
-        >
-          <ArrowLeft size={20} /> <span className="hidden sm:inline">{t('buttons.back')}</span>
-        </button>
-        <button
-          onClick={handleNext}
-          className="cursor-pointer flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
-        >
-          {isLastStep ? t('buttons.done') : t('buttons.next')} <ArrowRight size={20} />
-        </button>
       </div>
     </div>
   );

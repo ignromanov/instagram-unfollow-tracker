@@ -6,9 +6,40 @@ import {
   RTL_LANGUAGES,
   getLocaleCode,
   createLanguagePrefixRegex,
+  type SupportedLanguage,
 } from '../src/config/languages.js';
 
 const BASE_URL = 'https://safeunfollow.app';
+
+/**
+ * Font subsets needed for each language (for future reference).
+ *
+ * NOTE: Font preloading is currently DISABLED because:
+ * - @fontsource CSS imports bundle fonts to /assets/ with hashes
+ * - Manual preloads pointed to /files/ (static copies)
+ * - This mismatch caused "preloaded but not used" warnings
+ *
+ * Fonts still load correctly via CSS @font-face rules.
+ * To re-enable preloading, we'd need to either:
+ * 1. Use manual @font-face rules pointing to /files/
+ * 2. Or extract Vite's hashed font URLs at build time
+ */
+const _LANGUAGE_FONT_SUBSETS: Record<SupportedLanguage, string[]> = {
+  en: ['latin'],
+  es: ['latin', 'latin-ext'], // Spanish accents: á, é, í, ñ, ü
+  pt: ['latin', 'latin-ext'], // Portuguese: ã, ç, õ
+  fr: ['latin', 'latin-ext'], // French: é, è, ê, ë, ç
+  de: ['latin', 'latin-ext'], // German: ä, ö, ü, ß
+  ru: ['latin', 'cyrillic', 'cyrillic-ext'], // Russian: cyrillic for Inter, cyrillic-ext for Plus Jakarta Sans
+  ar: ['latin'], // Arabic script not supported, only Latin UI
+  hi: ['latin'], // Devanagari not supported, only Latin UI
+  ja: ['latin'], // Japanese not supported, only Latin UI
+  id: ['latin'], // Indonesian: standard Latin
+  tr: ['latin', 'latin-ext'], // Turkish: ş, ğ, ı, ö, ü, ç
+};
+
+// Suppress unused variable warning - kept for documentation
+void _LANGUAGE_FONT_SUBSETS;
 
 function escapeHtml(text: string): string {
   return text
@@ -39,17 +70,21 @@ export async function injectLocalizedMeta(
   renderedHTML: string,
   rootDir: string
 ): Promise<string> {
+  // Normalize route to always start with /
+  // vite-react-ssg may pass routes without leading slash (e.g., "results" instead of "/results")
+  const normalizedRoute = route.startsWith('/') ? route : `/${route}`;
+
   // Normalize route for canonical URL
-  const canonicalPath = route === '/' ? '' : route.replace(/\/$/, '');
+  const canonicalPath = normalizedRoute === '/' ? '' : normalizedRoute.replace(/\/$/, '');
   const canonicalUrl = `${BASE_URL}${canonicalPath || '/'}`;
 
   // Get base path without language prefix for hreflang
   const langPrefixPattern = createLanguagePrefixRegex();
-  const basePath = route.replace(langPrefixPattern, '/') || '/';
+  const basePath = normalizedRoute.replace(langPrefixPattern, '/') || '/';
   const normalizedBasePath = basePath === '/' ? '' : basePath;
 
   // Extract language from route
-  const langMatch = route.match(langPrefixPattern);
+  const langMatch = normalizedRoute.match(langPrefixPattern);
   const currentLang = langMatch ? langMatch[1] : 'en';
 
   // Load localized meta tags

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAppStore } from '@/lib/store';
@@ -37,6 +38,10 @@ export function LanguageSwitcher() {
   const { setLanguage } = useAppStore();
   const location = useLocation();
 
+  // Prevent hydration mismatch - Radix generates different IDs on server vs client
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // Get currentLanguage from URL synchronously (source of truth)
   const currentLanguage = detectLanguageFromPathname(location.pathname);
 
@@ -54,32 +59,39 @@ export function LanguageSwitcher() {
     window.location.href = newPath || '/';
   };
 
+  // HYDRATION FIX: Use suppressHydrationWarning on the trigger button
+  // Radix adds attributes (id, aria-haspopup, data-state) on client that don't exist in SSG HTML
+  // We can't avoid this mismatch, but we can suppress the warning since it's benign
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
           className="cursor-pointer flex items-center gap-1.5 p-2.5 md:px-3 md:py-2 rounded-2xl hover:bg-[oklch(0.5_0_0_/_0.05)] transition-colors text-zinc-500"
           aria-label={t('language.changeLanguage')}
+          suppressHydrationWarning
         >
           <Globe size={20} />
           <span className="hidden md:inline text-xs font-bold uppercase">{currentLanguage}</span>
           <ChevronDown size={14} className="hidden md:block" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[140px]">
-        {SUPPORTED_LANGUAGES.map(lang => (
-          <DropdownMenuItem
-            key={lang}
-            onClick={() => handleLanguageChange(lang)}
-            className={`cursor-pointer ${
-              currentLanguage === lang ? 'bg-primary/10 text-primary font-bold' : ''
-            }`}
-          >
-            <span className="uppercase text-xs font-bold w-6">{lang}</span>
-            <span className="ml-2">{LANGUAGE_NAMES[lang]}</span>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
+      {/* Only render dropdown content after mount to avoid Radix ID issues */}
+      {mounted && (
+        <DropdownMenuContent align="end" className="min-w-[140px]">
+          {SUPPORTED_LANGUAGES.map(lang => (
+            <DropdownMenuItem
+              key={lang}
+              onClick={() => handleLanguageChange(lang)}
+              className={`cursor-pointer ${
+                currentLanguage === lang ? 'bg-primary/10 text-primary font-bold' : ''
+              }`}
+            >
+              <span className="uppercase text-xs font-bold w-6">{lang}</span>
+              <span className="ml-2">{LANGUAGE_NAMES[lang]}</span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      )}
     </DropdownMenu>
   );
 }

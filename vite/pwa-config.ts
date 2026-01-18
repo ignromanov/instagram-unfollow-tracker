@@ -14,6 +14,7 @@ export const pwaConfig: Partial<VitePWAOptions> = {
     'logo.svg',
   ],
   manifest: {
+    id: '/',
     name: 'Safe Unfollow - Instagram Tracker',
     short_name: 'Safe Unfollow',
     description: 'Check who unfollowed you on Instagram - 100% private, no login required',
@@ -46,6 +47,9 @@ export const pwaConfig: Partial<VitePWAOptions> = {
     globPatterns: ['**/*.{ico,png,svg}'],
     // Don't precache large sample data
     globIgnores: ['**/sample-data.json', '**/assets/**'],
+    // Disable SPA fallback - SSG generates individual HTML files per route
+    // Navigation is handled by runtimeCaching with NetworkFirst strategy
+    navigateFallback: null,
     runtimeCaching: [
       {
         // Cache JS/CSS on-demand (CacheFirst = fast loads after first visit)
@@ -71,34 +75,6 @@ export const pwaConfig: Partial<VitePWAOptions> = {
           expiration: {
             maxEntries: 50,
             maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-          },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-      {
-        urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: 'google-fonts-cache',
-          expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-          },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-      {
-        urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: 'gstatic-fonts-cache',
-          expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
           },
           cacheableResponse: {
             statuses: [0, 200],

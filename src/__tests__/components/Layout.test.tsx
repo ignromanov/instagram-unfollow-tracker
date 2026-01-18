@@ -106,14 +106,6 @@ vi.mock('@/hooks/useInstagramData', () => ({
   useInstagramData: () => mockUseInstagramData,
 }));
 
-vi.mock('@/hooks/useHydration', () => ({
-  useHydration: vi.fn(() => true),
-}));
-
-vi.mock('@/hooks/useI18nReady', () => ({
-  useI18nReady: vi.fn(() => true),
-}));
-
 vi.mock('@/hooks/useLanguageFromPath', () => ({
   useLanguageFromPath: vi.fn(),
 }));
@@ -496,53 +488,9 @@ describe('Layout', () => {
     });
   });
 
-  describe('loading state (hydration)', () => {
-    it('should show loading state when not hydrated', async () => {
-      const { useHydration } = await import('@/hooks/useHydration');
-      const { useI18nReady } = await import('@/hooks/useI18nReady');
-      vi.mocked(useHydration).mockReturnValueOnce(false);
-      vi.mocked(useI18nReady).mockReturnValueOnce(false);
-
-      renderLayout();
-
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
-      expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
-    });
-
-    it('should render header during loading state', async () => {
-      const { useHydration } = await import('@/hooks/useHydration');
-      const { useI18nReady } = await import('@/hooks/useI18nReady');
-      vi.mocked(useHydration).mockReturnValueOnce(false);
-      vi.mocked(useI18nReady).mockReturnValueOnce(false);
-
-      renderLayout();
-
-      expect(screen.getByTestId('header')).toBeInTheDocument();
-    });
-
-    it('should not render footer during loading state', async () => {
-      const { useHydration } = await import('@/hooks/useHydration');
-      const { useI18nReady } = await import('@/hooks/useI18nReady');
-      vi.mocked(useHydration).mockReturnValueOnce(false);
-      vi.mocked(useI18nReady).mockReturnValueOnce(false);
-
-      renderLayout();
-
-      expect(screen.queryByTestId('footer')).not.toBeInTheDocument();
-    });
-
-    it('should show spinner during loading state', async () => {
-      const { useHydration } = await import('@/hooks/useHydration');
-      const { useI18nReady } = await import('@/hooks/useI18nReady');
-      vi.mocked(useHydration).mockReturnValueOnce(false);
-      vi.mocked(useI18nReady).mockReturnValueOnce(false);
-
-      renderLayout();
-
-      const spinner = document.querySelector('.animate-spin');
-      expect(spinner).toBeInTheDocument();
-    });
-  });
+  // NOTE: Loading state tests removed - we no longer use conditional rendering
+  // to avoid React hydration errors #425 and #418. DOM structure is now
+  // consistent between SSG and client-side rendering.
 
   describe('layout structure', () => {
     it('should have min-h-screen class on root container', () => {

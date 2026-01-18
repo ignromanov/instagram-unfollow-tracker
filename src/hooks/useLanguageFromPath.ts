@@ -117,21 +117,27 @@ export function useLanguageFromPath(langFromRoute?: SupportedLanguage): void {
 
   // Sync HTML attributes, meta tags, and i18next with URL language
   useEffect(() => {
-    // Update HTML lang attribute
-    updateHtmlLang(urlLang);
+    // Defer DOM manipulation to AFTER hydration completes
+    // This prevents React from detecting DOM/text mismatches during hydration
+    const timeoutId = setTimeout(() => {
+      // Update HTML lang attribute
+      updateHtmlLang(urlLang);
 
-    // Update hreflang tags for SEO
-    updateHreflangTags(location.pathname);
+      // Update hreflang tags for SEO
+      updateHreflangTags(location.pathname);
 
-    // Update Open Graph locale
-    updateOgLocale(urlLang);
+      // Update Open Graph locale
+      updateOgLocale(urlLang);
 
-    // Update canonical URL
-    updateCanonical(location.pathname);
+      // Update canonical URL
+      updateCanonical(location.pathname);
+    }, 0);
 
-    // Sync i18next with URL (NOT store!)
+    // Sync i18next with URL (NOT store!) - this can run immediately
     if (i18n.language !== urlLang) {
       loadLanguage(urlLang);
     }
+
+    return () => clearTimeout(timeoutId);
   }, [urlLang, location.pathname]);
 }

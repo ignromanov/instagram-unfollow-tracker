@@ -1,24 +1,19 @@
-import { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FAQSection } from '@/components/FAQSection';
+import { FooterCTA } from '@/components/FooterCTA';
 import { Hero } from '@/components/Hero';
+import { HowToSection } from '@/components/HowToSection';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 
-// Lazy load below-the-fold sections for code splitting
-const HowToSection = lazy(() =>
-  import('@/components/HowToSection').then(m => ({ default: m.HowToSection }))
-);
-const FAQSection = lazy(() =>
-  import('@/components/FAQSection').then(m => ({ default: m.FAQSection }))
-);
-const FooterCTA = lazy(() =>
-  import('@/components/FooterCTA').then(m => ({ default: m.FooterCTA }))
-);
-
-function SectionSkeleton() {
-  return <div className="h-96 animate-pulse rounded-lg bg-muted/30" />;
-}
+// NOTE: Removed lazy() loading for SSG compatibility.
+// Lazy loading with Suspense causes hydration mismatch:
+// - SSG renders fallback skeleton
+// - Client renders full content
+// - React detects mismatch → errors #418, #425
+// These sections contain SEO-critical structured data (HowTo, FAQ schemas)
+// and must be in the initial HTML for search engines.
 
 /**
  * Home page (landing)
@@ -58,15 +53,9 @@ export function Component() {
         onContinue={handleContinue}
       />
       <div className="animate-in fade-in duration-1000">
-        <Suspense fallback={<SectionSkeleton />}>
-          <HowToSection onStart={handleStartGuide} />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <FAQSection />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <FooterCTA onStart={handleStartGuide} onSample={handleLoadSample} />
-        </Suspense>
+        <HowToSection onStart={handleStartGuide} />
+        <FAQSection />
+        <FooterCTA onStart={handleStartGuide} onSample={handleLoadSample} />
       </div>
     </>
   );

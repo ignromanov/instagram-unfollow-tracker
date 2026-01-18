@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/react';
 import i18n from 'i18next';
-import { Suspense, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { BreadcrumbSchema } from '@/components/BreadcrumbSchema';
@@ -9,11 +9,8 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { OrganizationSchema } from '@/components/OrganizationSchema';
-import { PageLoader } from '@/components/PageLoader';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AppState } from '@/core/types';
-import { useHydration } from '@/hooks/useHydration';
-import { useI18nReady } from '@/hooks/useI18nReady';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
@@ -65,9 +62,12 @@ function getActiveScreen(pathname: string): AppState {
 export function Layout({ lang }: LayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const hasHydrated = useHydration();
-  const isI18nReady = useI18nReady();
   const { uploadState, handleClearData, fileMetadata } = useInstagramData();
+
+  // Client-mounted check (prevents hydration mismatch)
+  // Effects run AFTER hydration, so this is safe
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   // SSG: Switch language synchronously BEFORE rendering
   // This works because during SSG all language resources are preloaded
@@ -90,7 +90,9 @@ export function Layout({ lang }: LayoutProps) {
   // Determine text direction for RTL languages (Arabic, etc.)
   const isRTL = lang ? RTL_LANGUAGES.includes(lang) : false;
 
-  const hasResults = uploadState.status === 'success' && fileMetadata !== null;
+  // Guard with mounted to prevent hydration mismatch
+  // SSG renders with hasResults=false, client updates after mount
+  const hasResults = mounted && uploadState.status === 'success' && fileMetadata !== null;
   const activeScreen = getActiveScreen(location.pathname);
 
   // Determine current screen for BMC widget
@@ -117,74 +119,50 @@ export function Layout({ lang }: LayoutProps) {
     navigate(`${prefix}/`);
   };
 
-  // Show loading:
-  // - Hero: only wait for i18n (no store dependency)
-  // - Other pages: wait for both i18n and Zustand hydration
-  const isHero = activeScreen === AppState.HERO;
-  const showLoading = isHero ? !isI18nReady : !hasHydrated || !isI18nReady;
-
   return (
     <ErrorBoundary>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-        {/* Loading state - only for pages that need store data */}
-        {showLoading ? (
-          <div className="min-h-screen bg-background flex flex-col">
-            <Header />
-            <main className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-                <p className="text-muted-foreground">Loading...</p>
-              </div>
-            </main>
-          </div>
-        ) : (
-          <div
-            dir={isRTL ? 'rtl' : 'ltr'}
-            className="min-h-screen bg-background flex flex-col transition-colors duration-300"
+        <div
+          dir={isRTL ? 'rtl' : 'ltr'}
+          className="min-h-screen bg-background flex flex-col transition-colors duration-300"
+          suppressHydrationWarning
+        >
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:inset-inline-start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
           >
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:inset-inline-start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
-            >
-              Skip to main content
-            </a>
+            Skip to main content
+          </a>
 
-            <Header
-              hasData={hasResults}
-              activeScreen={activeScreen}
-              onViewResults={handleViewResults}
-              onUpload={handleUpload}
-              onLogoClick={handleLogoClick}
-              onClear={handleClear}
-            />
+          <Header
+            hasData={hasResults}
+            activeScreen={activeScreen}
+            onViewResults={handleViewResults}
+            onUpload={handleUpload}
+            onLogoClick={handleLogoClick}
+            onClear={handleClear}
+          />
 
-            <main id="main-content" className="flex-1 container mx-auto px-4">
-              {isHero ? (
-                <Outlet />
-              ) : (
-                <Suspense fallback={<PageLoader />}>
-                  <Outlet />
-                </Suspense>
-              )}
-            </main>
+          <main id="main-content" className="flex-1 container mx-auto px-4">
+            <Outlet />
+          </main>
 
-            <Footer />
+          <Footer />
 
-            {/* BMC Widget - shows only on results pages, auto-open disabled */}
-            <BuyMeCoffeeWidget
-              show={isResultsPage}
-              expandDelay={999999999}
-              autoCollapseAfter={10000}
-              skipStorageCheck={location.pathname.endsWith('/sample')}
-            />
+          {/* BMC Widget - shows only on results pages, auto-open disabled */}
+          <BuyMeCoffeeWidget
+            show={isResultsPage}
+            expandDelay={999999999}
+            autoCollapseAfter={10000}
+            skipStorageCheck={location.pathname.endsWith('/sample')}
+          />
 
-            <Analytics />
+          <Analytics />
 
-            {/* Structured data for SEO */}
-            <BreadcrumbSchema />
-            <OrganizationSchema />
-          </div>
-        )}
+          {/* Structured data for SEO */}
+          <BreadcrumbSchema />
+          <OrganizationSchema />
+        </div>
       </ThemeProvider>
     </ErrorBoundary>
   );
