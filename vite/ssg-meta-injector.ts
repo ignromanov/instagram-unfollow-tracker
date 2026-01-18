@@ -12,16 +12,19 @@ import {
 const BASE_URL = 'https://safeunfollow.app';
 
 /**
- * Font subsets needed for each language.
- * Only these subsets will be preloaded — others will be removed.
+ * Font subsets needed for each language (for future reference).
  *
- * Inter supports: cyrillic-ext, cyrillic, greek-ext, greek, vietnamese, latin-ext, latin
- * Plus Jakarta Sans supports: cyrillic-ext, vietnamese, latin-ext, latin
+ * NOTE: Font preloading is currently DISABLED because:
+ * - @fontsource CSS imports bundle fonts to /assets/ with hashes
+ * - Manual preloads pointed to /files/ (static copies)
+ * - This mismatch caused "preloaded but not used" warnings
  *
- * Note: Arabic (ar), Hindi (hi), Japanese (ja) scripts are NOT supported by these fonts.
- * Browser will use system fallback fonts for non-Latin scripts.
+ * Fonts still load correctly via CSS @font-face rules.
+ * To re-enable preloading, we'd need to either:
+ * 1. Use manual @font-face rules pointing to /files/
+ * 2. Or extract Vite's hashed font URLs at build time
  */
-const LANGUAGE_FONT_SUBSETS: Record<SupportedLanguage, string[]> = {
+const _LANGUAGE_FONT_SUBSETS: Record<SupportedLanguage, string[]> = {
   en: ['latin'],
   es: ['latin', 'latin-ext'], // Spanish accents: á, é, í, ñ, ü
   pt: ['latin', 'latin-ext'], // Portuguese: ã, ç, õ
@@ -35,51 +38,8 @@ const LANGUAGE_FONT_SUBSETS: Record<SupportedLanguage, string[]> = {
   tr: ['latin', 'latin-ext'], // Turkish: ş, ğ, ı, ö, ü, ç
 };
 
-/**
- * Generate font preload links for the language-specific subsets.
- * This prevents loading ~200KB of unnecessary fonts (e.g., Cyrillic on Portuguese pages).
- *
- * We generate preloads instead of filtering because Beasties runs AFTER onPageRendered hook.
- */
-function generateFontPreloads(lang: SupportedLanguage): string {
-  const neededSubsets = LANGUAGE_FONT_SUBSETS[lang] || ['latin'];
-  const preloads: string[] = [];
-
-  // Inter font files needed for each subset
-  const interSubsets: Record<string, string> = {
-    latin: 'inter-latin-wght-normal.woff2',
-    'latin-ext': 'inter-latin-ext-wght-normal.woff2',
-    cyrillic: 'inter-cyrillic-wght-normal.woff2',
-    'cyrillic-ext': 'inter-cyrillic-ext-wght-normal.woff2',
-    greek: 'inter-greek-wght-normal.woff2',
-    'greek-ext': 'inter-greek-ext-wght-normal.woff2',
-    vietnamese: 'inter-vietnamese-wght-normal.woff2',
-  };
-
-  // Plus Jakarta Sans font files (fewer subsets available)
-  const plusJakartaSubsets: Record<string, string> = {
-    latin: 'plus-jakarta-sans-latin-wght-normal.woff2',
-    'latin-ext': 'plus-jakarta-sans-latin-ext-wght-normal.woff2',
-    'cyrillic-ext': 'plus-jakarta-sans-cyrillic-ext-wght-normal.woff2',
-    vietnamese: 'plus-jakarta-sans-vietnamese-wght-normal.woff2',
-  };
-
-  // Generate preload links for needed subsets
-  for (const subset of neededSubsets) {
-    if (interSubsets[subset]) {
-      preloads.push(
-        `<link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="./files/${interSubsets[subset]}">`
-      );
-    }
-    if (plusJakartaSubsets[subset]) {
-      preloads.push(
-        `<link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="./files/${plusJakartaSubsets[subset]}">`
-      );
-    }
-  }
-
-  return preloads.join('\n    ');
-}
+// Suppress unused variable warning - kept for documentation
+void _LANGUAGE_FONT_SUBSETS;
 
 function escapeHtml(text: string): string {
   return text
@@ -158,13 +118,8 @@ export async function injectLocalizedMeta(
     .map(locale => `<meta property="og:locale:alternate" content="${locale}"/>`)
     .join('\n    ');
 
-  // Generate language-aware font preloads (only subsets needed for this language)
-  const fontPreloads = generateFontPreloads(currentLang as SupportedLanguage);
-
   // SEO tags to inject before </head>
   const seoTags = `
-    <!-- SSG: Language-aware font preloads -->
-    ${fontPreloads}
     <!-- SSG SEO: canonical, hreflang, og:locale -->
     ${canonicalLink}
     ${hreflangLinks}
