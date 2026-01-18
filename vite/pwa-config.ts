@@ -47,6 +47,9 @@ export const pwaConfig: Partial<VitePWAOptions> = {
     globPatterns: ['**/*.{ico,png,svg}'],
     // Don't precache large sample data
     globIgnores: ['**/sample-data.json', '**/assets/**'],
+    // Disable SPA fallback - SSG generates individual HTML files per route
+    // Navigation is handled by runtimeCaching with NetworkFirst strategy
+    navigateFallback: null,
     runtimeCaching: [
       {
         // Cache JS/CSS on-demand (CacheFirst = fast loads after first visit)
