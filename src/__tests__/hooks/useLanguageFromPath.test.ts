@@ -31,6 +31,7 @@ describe('useLanguageFromPath', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
 
     // Reset DOM for each test
     document.head.innerHTML = '';
@@ -57,6 +58,11 @@ describe('useLanguageFromPath', () => {
 
     // Reset i18n mock
     (i18n as any).language = 'en';
+  });
+
+  afterEach(() => {
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 
   describe('language detection from path', () => {
@@ -465,6 +471,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       expect(document.documentElement.lang).toBe('es');
     });
@@ -484,6 +491,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       expect(document.documentElement.lang).toBe('ru');
     });
@@ -503,6 +511,7 @@ describe('useLanguageFromPath', () => {
       });
 
       const { rerender } = renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       expect(document.documentElement.lang).toBe('es');
 
@@ -516,6 +525,7 @@ describe('useLanguageFromPath', () => {
       });
 
       rerender();
+      vi.runAllTimers();
 
       expect(document.documentElement.lang).toBe('ru');
     });
@@ -537,6 +547,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const hreflangLinks = document.querySelectorAll('link[rel="alternate"][hreflang]');
       expect(hreflangLinks.length).toBeGreaterThan(0);
@@ -557,6 +568,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const xDefault = document.querySelector('link[hreflang="x-default"]');
       expect(xDefault).toBeTruthy();
@@ -578,6 +590,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const enLink = document.querySelector('link[hreflang="en"]');
       expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/wizard');
@@ -604,6 +617,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const enLink = document.querySelector('link[hreflang="en"]');
       expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/wizard');
@@ -634,6 +648,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       // Old tag should be replaced with correct href
       const frLink = document.querySelector('link[hreflang="fr"]');
@@ -656,6 +671,7 @@ describe('useLanguageFromPath', () => {
       });
 
       const { rerender } = renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       let enLink = document.querySelector('link[hreflang="en"]');
       expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/wizard');
@@ -670,6 +686,7 @@ describe('useLanguageFromPath', () => {
       });
 
       rerender();
+      vi.runAllTimers();
 
       enLink = document.querySelector('link[hreflang="en"]');
       expect(enLink?.getAttribute('href')).toBe('https://safeunfollow.app/upload');
@@ -692,6 +709,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const ogLocale = document.querySelector('meta[property="og:locale"]');
       expect(ogLocale?.getAttribute('content')).toBe('en_US');
@@ -712,6 +730,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const ogLocale = document.querySelector('meta[property="og:locale"]');
       expect(ogLocale?.getAttribute('content')).toBe('es_ES');
@@ -732,6 +751,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const ogLocale = document.querySelector('meta[property="og:locale"]');
       expect(ogLocale?.getAttribute('content')).toBe('ru_RU');
@@ -752,6 +772,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const ogLocale = document.querySelector('meta[property="og:locale"]');
       expect(ogLocale?.getAttribute('content')).toBe('pt_BR');
@@ -778,6 +799,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       const ogLocaleTags = document.querySelectorAll('meta[property="og:locale"]');
       expect(ogLocaleTags.length).toBe(1);
@@ -807,6 +829,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       expect(canonical.getAttribute('href')).toBe('https://safeunfollow.app/');
     });
@@ -832,6 +855,7 @@ describe('useLanguageFromPath', () => {
       });
 
       renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       expect(canonical.getAttribute('href')).toBe('https://safeunfollow.app/es/wizard');
     });
@@ -987,6 +1011,7 @@ describe('useLanguageFromPath', () => {
       (i18n as any).language = 'es';
 
       const { rerender } = renderHook(() => useLanguageFromPath());
+      vi.runAllTimers();
 
       expect(document.documentElement.lang).toBe('es');
 
@@ -1000,6 +1025,7 @@ describe('useLanguageFromPath', () => {
       });
 
       rerender();
+      vi.runAllTimers();
 
       // HTML lang should update based on URL, not store
       expect(document.documentElement.lang).toBe('ru');
