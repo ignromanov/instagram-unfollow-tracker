@@ -10,7 +10,6 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { OrganizationSchema } from '@/components/OrganizationSchema';
 import { ThemeProvider } from '@/components/theme-provider';
-import { HydrationDebugger } from '@/lib/hydration-debugger';
 import { AppState } from '@/core/types';
 import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
@@ -135,26 +134,20 @@ export function Layout({ lang }: LayoutProps) {
             Skip to main content
           </a>
 
-          <HydrationDebugger name="Header" detailed>
-            <Header
-              hasData={hasResults}
-              activeScreen={activeScreen}
-              onViewResults={handleViewResults}
-              onUpload={handleUpload}
-              onLogoClick={handleLogoClick}
-              onClear={handleClear}
-            />
-          </HydrationDebugger>
+          <Header
+            hasData={hasResults}
+            activeScreen={activeScreen}
+            onViewResults={handleViewResults}
+            onUpload={handleUpload}
+            onLogoClick={handleLogoClick}
+            onClear={handleClear}
+          />
 
           <main id="main-content" className="flex-1 container mx-auto px-4">
-            <HydrationDebugger name="PageContent" detailed>
-              <Outlet />
-            </HydrationDebugger>
+            <Outlet />
           </main>
 
-          <HydrationDebugger name="Footer" detailed>
-            <Footer />
-          </HydrationDebugger>
+          <Footer />
 
           {/* BMC Widget - shows only on results pages, auto-open disabled */}
           <BuyMeCoffeeWidget
