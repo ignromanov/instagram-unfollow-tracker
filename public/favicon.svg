@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SafeUnfollow.app Header Logo
+  - Rounded square with brand gradient (135deg)
+  - ShieldCheck icon from Lucide (white)
+
+  OKLCH colors converted to hex:
+  - oklch(0.6 0.18 264) → #5B6BE0 (purple-blue)
+  - oklch(0.65 0.22 285) → #9B5DE5 (purple)
+  - oklch(0.65 0.2 340) → #E05B9B (pink)
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Brand gradient: 135deg diagonal -->
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5B6BE0" />
+      <stop offset="50%" stop-color="#9B5DE5" />
+      <stop offset="100%" stop-color="#E05B9B" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded rectangle background -->
+  <rect x="16" y="16" width="480" height="480" rx="96" ry="96" fill="url(#brandGradient)" />
+
+  <!-- ShieldCheck icon (Lucide) - centered and scaled -->
+  <!-- Original viewBox: 0 0 24 24, scaled to fit ~280px centered in 512px -->
+  <g transform="translate(116, 116) scale(11.67)" fill="none" stroke="white" stroke-width="2.5"
+    stroke-linecap="round" stroke-linejoin="round">
+    <!-- Shield path -->
+    <path
+      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+    <!-- Checkmark path -->
+    <path d="m9 12 2 2 4-4" />
+  </g>
+</svg>
