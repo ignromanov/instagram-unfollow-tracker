@@ -145,6 +145,8 @@ export type AnalyticsEventName = (typeof AnalyticsEvents)[keyof typeof Analytics
 type LinkType =
   | 'github'
   | 'docs'
+  | 'docs-troubleshooting'
+  | 'docs-accessibility'
   | 'license'
   | 'meta_accounts'
   | 'privacy-policy'

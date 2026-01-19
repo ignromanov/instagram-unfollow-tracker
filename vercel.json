@@ -16,6 +16,16 @@
       ],
       "destination": "https://safeunfollow.app/:path*",
       "permanent": true
+    },
+    {
+      "source": "/assets/scr-full-mac.png",
+      "destination": "/docs/assets/analysis-result.png",
+      "permanent": true
+    },
+    {
+      "source": "/assets/scr-drop-data-mac.png",
+      "destination": "/docs/assets/upload-zip.png",
+      "permanent": true
     }
   ],
   "rewrites": [

@@ -79,6 +79,24 @@ export function Footer() {
                 {t('footer.docs')}
               </a>
               <a
+                href="https://safeunfollow.app/docs/troubleshooting"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
+                onClick={() => analytics.linkClick('docs-troubleshooting')}
+              >
+                {t('footer.troubleshooting')}
+              </a>
+              <a
+                href="https://safeunfollow.app/docs/accessibility"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
+                onClick={() => analytics.linkClick('docs-accessibility')}
+              >
+                {t('footer.accessibility')}
+              </a>
+              <a
                 href="mailto:hello@safeunfollow.app"
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
               >
