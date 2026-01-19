@@ -54,8 +54,7 @@ last_updated: 2026-01-16
 - ✅ **Open source** — MIT license, full transparency
 
 ### Analytics (Privacy-Respecting)
-- ✅ **Umami Analytics** — Anonymous usage statistics (no personal data)
-- ✅ **Vercel Analytics** — Performance monitoring only
+- ✅ **Umami Analytics** — Anonymous usage statistics (no personal data, GDPR-compliant)
 
 ---
 

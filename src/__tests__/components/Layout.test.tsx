@@ -5,11 +5,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock @vercel/analytics
-vi.mock('@vercel/analytics/react', () => ({
-  Analytics: () => null,
-}));
-
 // Mock analytics
 vi.mock('@/lib/analytics', () => ({
   analytics: {

@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/react';
 import i18n from 'i18next';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -160,8 +159,6 @@ export function Layout({ lang }: LayoutProps) {
             autoCollapseAfter={10000}
             skipStorageCheck={location.pathname.endsWith('/sample')}
           />
-
-          <Analytics />
 
           {/* Structured data for SEO */}
           <BreadcrumbSchema />

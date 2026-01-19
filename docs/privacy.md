@@ -47,8 +47,7 @@ last_updated: 2026-01-16
 
 ### ✅ Privacy-Respecting Analytics
 We use minimal, privacy-focused analytics to improve the app:
-- **Umami Analytics** — anonymous page view counts, no personal data
-- **Vercel Analytics** — performance monitoring only (load times, errors)
+- **Umami Analytics** — anonymous page view counts, no personal data, GDPR-compliant
 
 **What we track:**
 - Page views (anonymous counts)
@@ -82,7 +81,7 @@ We use minimal, privacy-focused analytics to improve the app:
 
 ### Network Activity
 - **Initial Load**: Downloads the app files (HTML, CSS, JavaScript)
-- **Analytics**: Minimal anonymous requests to Umami/Vercel (page views only)
+- **Analytics**: Minimal anonymous requests to Umami (page views only)
 - **No Data Upload**: Your Instagram data is NEVER sent anywhere
 
 ## Your Rights
@@ -103,9 +102,8 @@ We use minimal, privacy-focused analytics to improve the app:
 
 ### Vercel Hosting
 - The live app is hosted on Vercel (safeunfollow.app)
-- Vercel may collect standard web server logs
-- We use Vercel Analytics for performance monitoring only
-- No personal Instagram data is collected
+- Vercel may collect standard web server logs (IP addresses, timestamps)
+- No personal Instagram data is collected or transmitted
 
 ### Self-Hosting
 If you deploy your own version:
