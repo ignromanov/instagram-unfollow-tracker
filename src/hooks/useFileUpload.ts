@@ -1,4 +1,5 @@
 import type { ParseWarning } from '@/core/types';
+import { mapWarningToDiagnosticCode } from '@/core/types';
 import { analytics } from '@/lib/analytics';
 import { isValidZipFile } from '@/lib/file-validation';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
@@ -79,7 +80,7 @@ export function useFileUpload() {
             parseWarnings: [notZipWarning],
           });
 
-          analytics.fileUploadError('', 'NOT_ZIP');
+          analytics.uploadErrorByCode('', 'NOT_ZIP', notZipWarning.message);
           throw new Error(notZipWarning.message);
         }
 
@@ -203,8 +204,9 @@ export function useFileUpload() {
 
         const errorMessage = err instanceof Error ? err.message : 'Failed to parse ZIP';
 
-        // Track error
-        analytics.fileUploadError(fileHash, errorMessage);
+        // Track granular error by code
+        const errorCode = mapWarningToDiagnosticCode(errorMessage.split(':')[0]);
+        analytics.uploadErrorByCode(fileHash, errorCode, errorMessage);
 
         setUploadInfo({
           currentFileName: file.name,

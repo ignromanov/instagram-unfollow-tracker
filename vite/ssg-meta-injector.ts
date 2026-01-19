@@ -128,7 +128,7 @@ export async function injectLocalizedMeta(
     ${alternateLocales}
   `;
 
-  // OG image URL - using static image (same for all languages)
+  // OG image URL - static image for all languages (API doesn't work with Vercel SSG)
   const ogImageUrl = `${BASE_URL}/og-image.png`;
 
   // Replace all meta tags in HTML

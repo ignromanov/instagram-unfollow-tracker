@@ -106,6 +106,25 @@ export const AnalyticsEvents = {
   DIAGNOSTIC_ERROR_RETRY: 'diagnostic_error_retry',
   DIAGNOSTIC_ERROR_HELP: 'diagnostic_error_help',
 
+  // V5: Granular Upload Errors
+  UPLOAD_ERROR_NOT_ZIP: 'upload_error_not_zip',
+  UPLOAD_ERROR_HTML_FORMAT: 'upload_error_html_format',
+  UPLOAD_ERROR_NOT_INSTAGRAM: 'upload_error_not_instagram',
+  UPLOAD_ERROR_INCOMPLETE: 'upload_error_incomplete',
+  UPLOAD_ERROR_NO_DATA: 'upload_error_no_data',
+  UPLOAD_ERROR_MISSING_FOLLOWING: 'upload_error_missing_following',
+  UPLOAD_ERROR_MISSING_FOLLOWERS: 'upload_error_missing_followers',
+  UPLOAD_ERROR_UNKNOWN: 'upload_error_unknown',
+
+  // V5: Session & Engagement
+  TIME_ON_RESULTS: 'time_on_results',
+  SESSION_DURATION: 'session_duration',
+  RETURN_UPLOAD: 'return_upload',
+
+  // V5: Mobile-specific
+  FILE_PICKER_OPEN: 'file_picker_open',
+  FILE_PICKER_CANCEL: 'file_picker_cancel',
+
   // V3: FAQ
   FAQ_EXPAND: 'faq_expand',
 
@@ -443,5 +462,61 @@ export const analytics = {
       status,
       message: message.slice(0, 200),
     });
+  },
+
+  // V5: Granular Upload Errors
+  uploadErrorByCode: (
+    fileHash: string,
+    code: import('@/core/types').DiagnosticErrorCode,
+    errorMessage?: string
+  ) => {
+    const eventMap: Record<
+      import('@/core/types').DiagnosticErrorCode,
+      (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents]
+    > = {
+      NOT_ZIP: AnalyticsEvents.UPLOAD_ERROR_NOT_ZIP,
+      HTML_FORMAT: AnalyticsEvents.UPLOAD_ERROR_HTML_FORMAT,
+      NOT_INSTAGRAM_EXPORT: AnalyticsEvents.UPLOAD_ERROR_NOT_INSTAGRAM,
+      INCOMPLETE_EXPORT: AnalyticsEvents.UPLOAD_ERROR_INCOMPLETE,
+      NO_DATA_FILES: AnalyticsEvents.UPLOAD_ERROR_NO_DATA,
+      MISSING_FOLLOWING: AnalyticsEvents.UPLOAD_ERROR_MISSING_FOLLOWING,
+      MISSING_FOLLOWERS: AnalyticsEvents.UPLOAD_ERROR_MISSING_FOLLOWERS,
+      UNKNOWN: AnalyticsEvents.UPLOAD_ERROR_UNKNOWN,
+    };
+    trackEvent(eventMap[code], { file_hash: fileHash });
+    // Keep legacy event for backward compatibility
+    analytics.fileUploadError(fileHash, `${code}: ${errorMessage ?? ''}`);
+  },
+
+  // V5: Session & Engagement
+  timeOnResults: (seconds: number, accountCount: number, actionsCount: number) => {
+    trackEvent(AnalyticsEvents.TIME_ON_RESULTS, {
+      time_seconds: Math.round(seconds),
+      account_count: accountCount,
+      actions_count: actionsCount,
+    });
+  },
+
+  sessionDuration: (seconds: number, pagesViewed: number) => {
+    trackEvent(AnalyticsEvents.SESSION_DURATION, {
+      duration_seconds: Math.round(seconds),
+      pages_viewed: pagesViewed,
+    });
+  },
+
+  returnUpload: (fileHashPrefix: string, daysSinceLastUpload: number) => {
+    trackEvent(AnalyticsEvents.RETURN_UPLOAD, {
+      file_hash_prefix: fileHashPrefix.slice(0, 8),
+      days_since_last: daysSinceLastUpload,
+    });
+  },
+
+  // V5: Mobile-specific
+  filePickerOpen: (source: 'click' | 'drag') => {
+    trackEvent(AnalyticsEvents.FILE_PICKER_OPEN, { source });
+  },
+
+  filePickerCancel: () => {
+    trackEvent(AnalyticsEvents.FILE_PICKER_CANCEL);
   },
 };
