@@ -42,6 +42,10 @@ export const pwaConfig: Partial<VitePWAOptions> = {
     ],
   },
   workbox: {
+    // Force immediate SW activation (no waiting for tab close)
+    // This ensures new deployments take effect immediately
+    skipWaiting: true,
+    clientsClaim: true,
     // Minimal precache: only icons for PWA install prompt
     // Everything else uses runtime caching to avoid 100+ requests on first visit
     globPatterns: ['**/*.{ico,png,svg}'],

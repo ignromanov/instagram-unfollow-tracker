@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FAQSection } from '@/components/FAQSection';
@@ -25,6 +26,25 @@ export function Component() {
   const { uploadState, fileMetadata } = useInstagramData();
 
   const hasResults = uploadState.status === 'success' && fileMetadata !== null;
+
+  // Prefetch wizard chunk on idle for instant navigation
+  useEffect(() => {
+    const prefetchWizard = () => {
+      import('./WizardPage').catch(() => {
+        // Ignore prefetch errors (network, etc.)
+      });
+    };
+
+    // Use requestIdleCallback for non-blocking prefetch
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(prefetchWizard, { timeout: 3000 });
+      return () => window.cancelIdleCallback(id);
+    } else {
+      // Fallback: setTimeout after 2 seconds
+      const id = setTimeout(prefetchWizard, 2000);
+      return () => clearTimeout(id);
+    }
+  }, []);
 
   const handleStartGuide = (stepIndex?: number) => {
     const step = stepIndex !== undefined ? stepIndex + 1 : 1;
