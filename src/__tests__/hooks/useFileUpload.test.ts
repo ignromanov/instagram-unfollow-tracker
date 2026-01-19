@@ -16,6 +16,8 @@ vi.mock('@/lib/analytics', () => ({
     fileUploadStart: vi.fn(),
     fileUploadSuccess: vi.fn(),
     fileUploadError: vi.fn(),
+    uploadErrorByCode: vi.fn(),
+    returnUpload: vi.fn(),
     linkClick: vi.fn(),
   },
 }));

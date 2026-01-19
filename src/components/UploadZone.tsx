@@ -4,7 +4,7 @@ import type { ParseWarning } from '@/core/types';
 import { analytics } from '@/lib/analytics';
 import { AlertCircle, ArrowLeft, CheckCircle2, Info, Loader2, Upload } from 'lucide-react';
 import type React from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DiagnosticErrorScreen } from './DiagnosticErrorScreen';
 
@@ -33,6 +33,34 @@ export function UploadZone({
   const { t } = useTranslation('upload');
   const [isDragOver, setIsDragOver] = useState(false);
   const [showDiagnostic, setShowDiagnostic] = useState(true);
+
+  // Track file picker open/cancel for mobile analytics
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const pickerOpenedRef = useRef(false);
+
+  // Handle file picker cancel detection via window focus
+  useEffect(() => {
+    const handleWindowFocus = () => {
+      if (pickerOpenedRef.current) {
+        // Small delay to allow change event to fire first
+        setTimeout(() => {
+          if (pickerOpenedRef.current) {
+            // Picker was opened but no file selected = cancelled
+            analytics.filePickerCancel();
+            pickerOpenedRef.current = false;
+          }
+        }, 300);
+      }
+    };
+
+    window.addEventListener('focus', handleWindowFocus);
+    return () => window.removeEventListener('focus', handleWindowFocus);
+  }, []);
+
+  const handleFileInputClick = useCallback(() => {
+    pickerOpenedRef.current = true;
+    analytics.filePickerOpen('click');
+  }, []);
 
   // Check if we have a critical error that should show diagnostic screen
   const hasCriticalError = useMemo(() => {
@@ -72,6 +100,9 @@ export function UploadZone({
 
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      // Reset picker state - file was selected (not cancelled)
+      pickerOpenedRef.current = false;
+
       const file = e.target.files?.[0];
       if (file) {
         analytics.uploadClick();
@@ -144,9 +175,11 @@ export function UploadZone({
             `}
           >
             <input
+              ref={fileInputRef}
               type="file"
               accept=".zip"
               onChange={handleFileInput}
+              onClick={handleFileInputClick}
               className="absolute inset-0 cursor-pointer opacity-0"
               disabled={isProcessing}
               aria-label={t('zone.ariaLabel')}

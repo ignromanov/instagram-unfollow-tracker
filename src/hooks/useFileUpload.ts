@@ -11,6 +11,36 @@ import { useParseWorker } from './useParseWorker';
 // Upload rate limiting (ms)
 const UPLOAD_DEBOUNCE_MS = 1000;
 
+// localStorage key for tracking return uploads
+const LAST_UPLOAD_KEY = 'analytics_last_upload';
+
+/**
+ * Check if this is a return upload and track it
+ */
+function trackReturnUploadIfApplicable(fileHash: string): void {
+  const lastUpload = localStorage.getItem(LAST_UPLOAD_KEY);
+
+  if (lastUpload) {
+    try {
+      const { hash: lastHash, timestamp } = JSON.parse(lastUpload) as {
+        hash: string;
+        timestamp: number;
+      };
+
+      // Only track if different file (hash changed)
+      if (lastHash !== fileHash) {
+        const daysSince = Math.floor((Date.now() - timestamp) / (1000 * 60 * 60 * 24));
+        analytics.returnUpload(fileHash, daysSince);
+      }
+    } catch {
+      // Invalid stored data, ignore
+    }
+  }
+
+  // Store current upload info
+  localStorage.setItem(LAST_UPLOAD_KEY, JSON.stringify({ hash: fileHash, timestamp: Date.now() }));
+}
+
 export function useFileUpload() {
   const abortControllerRef = useRef<AbortController | null>(null);
   const lastUploadRef = useRef<number>(0);
@@ -197,6 +227,9 @@ export function useFileUpload() {
           performance.now() - startTime,
           false
         );
+
+        // Track return upload (user uploading new data)
+        trackReturnUploadIfApplicable(resultFileHash);
       } catch (err) {
         if (abortControllerRef.current?.signal.aborted) {
           return; // Don't show error for cancelled uploads
@@ -205,7 +238,7 @@ export function useFileUpload() {
         const errorMessage = err instanceof Error ? err.message : 'Failed to parse ZIP';
 
         // Track granular error by code
-        const errorCode = mapWarningToDiagnosticCode(errorMessage.split(':')[0]);
+        const errorCode = mapWarningToDiagnosticCode(errorMessage.split(':')[0] ?? 'UNKNOWN');
         analytics.uploadErrorByCode(fileHash, errorCode, errorMessage);
 
         setUploadInfo({

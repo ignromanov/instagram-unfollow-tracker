@@ -15,6 +15,7 @@ import { useInstagramData } from '@/hooks/useInstagramData';
 import { useLanguageFromPath } from '@/hooks/useLanguageFromPath';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 import { useLanguageRedirect } from '@/hooks/useLanguageRedirect';
+import { useSessionDuration } from '@/hooks/useSessionDuration';
 import { analytics } from '@/lib/analytics';
 import { RTL_LANGUAGES, type SupportedLanguage } from '@/locales';
 
@@ -83,6 +84,9 @@ export function Layout({ lang }: LayoutProps) {
   // Redirect from language-less paths to user's preferred language
   // Uses useLayoutEffect to redirect BEFORE paint
   useLanguageRedirect();
+
+  // Track session duration for engagement analytics
+  useSessionDuration();
 
   // Get language prefix for navigation
   const prefix = useLanguagePrefix();

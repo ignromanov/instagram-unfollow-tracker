@@ -17,6 +17,7 @@ import { RescuePlanBanner } from './RescuePlanBanner';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAccountFiltering } from '@/hooks/useAccountFiltering';
 import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
+import { useTimeOnResults } from '@/hooks/useTimeOnResults';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -58,12 +59,16 @@ export function AccountListSection({
 
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+  // Track time on results for engagement analytics
+  const { trackAction } = useTimeOnResults(accountCount, hasLoadedData);
+
   // Apply sort order to filtered indices
   const sortedIndices = sortOrder === 'desc' ? [...filteredIndices].reverse() : filteredIndices;
 
   const handleClearFilters = () => {
     setFilters(new Set());
     setQuery('');
+    trackAction();
   };
 
   const handleStatCardClick = (badgeType: string) => {
@@ -74,6 +79,7 @@ export function AccountListSection({
       newFilters.add(badgeType as any);
     }
     setFilters(newFilters);
+    trackAction();
   };
 
   // Calculate stat card values

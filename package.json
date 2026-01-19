@@ -29,6 +29,7 @@
     "dev": "vite",
     "build": "tsc -b && vite-react-ssg build && npm run generate:sitemap",
     "generate:sitemap": "npx tsx scripts/generate-sitemap.ts",
+    "setup:umami": "npx tsx scripts/setup-umami.ts",
     "build:spa": "tsc -b && vite build",
     "build:all": "npm run build && cd docs && bundle install && bundle exec jekyll build -d ../dist/docs",
     "test": "vitest run --reporter=verbose",
