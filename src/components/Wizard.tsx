@@ -183,13 +183,13 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
                 : 'border-border bg-card'
             }`}
           >
-            {/* Image */}
-            <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative aspect-[4/3]">
+            {/* Image - width-first, height auto, aligned to bottom */}
+            <div className="bg-[oklch(0.5_0_0_/_0.05)] overflow-hidden relative flex items-end">
               {step.visual ? (
                 <ResponsiveGif
                   basePath={step.visual}
                   alt={t(`steps.${currentStep}.alt` as any)}
-                  className="w-full h-full block object-cover"
+                  className="w-full h-auto block"
                   loading="lazy"
                 />
               ) : (
@@ -198,7 +198,7 @@ export function Wizard({ initialStep = 1, onComplete, onCancel }: WizardProps) {
                   alt={t(`steps.${currentStep}.alt` as any)}
                   width={800}
                   height={600}
-                  className="w-full h-full block object-cover"
+                  className="w-full h-auto block"
                   loading="lazy"
                   decoding="async"
                 />

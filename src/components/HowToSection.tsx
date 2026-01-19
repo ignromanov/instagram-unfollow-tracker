@@ -146,11 +146,11 @@ export function HowToSection({ onStart }: HowToSectionProps) {
                     {step.description}
                   </p>
                   {step.visual && (
-                    <div className="rounded-3xl md:rounded-4xl overflow-hidden border border-border shadow-md max-w-xl mt-6 group-hover:border-primary/30 transition-all aspect-[4/3]">
+                    <div className="rounded-3xl md:rounded-4xl overflow-hidden border border-border shadow-md max-w-xl mt-6 group-hover:border-primary/30 transition-all flex items-end">
                       <ResponsiveGif
                         basePath={step.visual}
                         alt={step.title}
-                        className="w-full h-full grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 object-cover"
+                        className="w-full h-auto grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
                         loading="lazy"
                       />
                     </div>

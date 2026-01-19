@@ -19,7 +19,7 @@ interface ResponsiveGifProps {
 export function ResponsiveGif({
   basePath,
   alt,
-  className = 'w-full h-full object-cover',
+  className = 'w-full h-auto block',
   loading = 'lazy',
 }: ResponsiveGifProps) {
   return (
