@@ -108,7 +108,7 @@ This is normal and expected:
 - Contribute improvements back
 
 ### Is there a roadmap for new features?
-Yes! See [Project Roadmap](roadmap/) for upcoming features. Already live:
+Yes! See [Project Roadmap](/docs/roadmap/) for upcoming features. Already live:
 - ✅ **PWA support** — install as app, works offline
 - ✅ **11 languages** — including Arabic with RTL support
 - ✅ **3-way theme** — light/dark/system
@@ -163,7 +163,7 @@ Yes! Join our [GitHub Discussions](https://github.com/ignromanov/instagram-unfol
 - Development updates
 
 ### How often is the app updated?
-Updates are released regularly based on community feedback and development progress. Check the [roadmap](roadmap/) for upcoming features.
+Updates are released regularly based on community feedback and development progress. Check the [roadmap](/docs/roadmap/) for upcoming features.
 
 ### Can I suggest new features?
 Absolutely! We welcome feature suggestions. Please use [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions) to share your ideas.
