@@ -50,16 +50,20 @@ export const pwaConfig: Partial<VitePWAOptions> = {
     // Disable SPA fallback - SSG generates individual HTML files per route
     // Navigation is handled by runtimeCaching with NetworkFirst strategy
     navigateFallback: null,
+    // CRITICAL: Clean up old caches when SW updates (prevents duplicate JS loading)
+    cleanupOutdatedCaches: true,
     runtimeCaching: [
       {
-        // Cache JS/CSS on-demand (CacheFirst = fast loads after first visit)
+        // Cache JS/CSS on-demand with StaleWhileRevalidate
+        // Returns cache immediately, updates in background
+        // Better than CacheFirst for frequently deployed apps
         urlPattern: /\.(?:js|css|woff2)$/,
-        handler: 'CacheFirst',
+        handler: 'StaleWhileRevalidate',
         options: {
-          cacheName: 'static-assets',
+          cacheName: 'static-assets-v2',
           expiration: {
-            maxEntries: 100,
-            maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+            maxEntries: 60,
+            maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days (reduced from 30)
           },
           cacheableResponse: {
             statuses: [0, 200],
