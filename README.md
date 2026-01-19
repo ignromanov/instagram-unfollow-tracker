@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/logo.png" width="100" height="100" alt="Logo">
+  <img src="./public/logo.svg" width="100" height="100" alt="Logo">
   <h1>Instagram Unfollow Tracker</h1>
 </div>
 
