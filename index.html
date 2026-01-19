@@ -3,6 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CRITICAL: Language redirect MUST be first script - before any other resources load -->
+    <script>
+      (function() {
+        var VISITED_KEY = 'unfollow-radar-visited';
+        var STORE_KEY = 'unfollow-radar-store';
+        var NON_EN_LANGS = ['es','ru','de','fr','pt','it','ja','ko','ar'];
+
+        // Skip if path already has language prefix
+        var path = location.pathname;
+        for (var i = 0; i < NON_EN_LANGS.length; i++) {
+          var prefix = '/' + NON_EN_LANGS[i];
+          if (path === prefix || path.startsWith(prefix + '/')) return;
+        }
+
+        try {
+          // Skip if already visited - use stored language preference
+          if (localStorage.getItem(VISITED_KEY)) {
+            var store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+            var storedLang = store.state && store.state.language;
+            if (storedLang && storedLang !== 'en' && NON_EN_LANGS.indexOf(storedLang) !== -1) {
+              location.href = '/' + storedLang + path;
+            }
+            return;
+          }
+
+          // First visit: detect browser language
+          var browserLang = (navigator.language || '').split('-')[0].toLowerCase();
+          if (browserLang && browserLang !== 'en' && NON_EN_LANGS.indexOf(browserLang) !== -1) {
+            localStorage.setItem(VISITED_KEY, 'true');
+            location.href = '/' + browserLang + path;
+          }
+        } catch (e) {
+          // localStorage unavailable (private mode) - continue with English
+        }
+      })();
+    </script>
+
     <!-- Meta tags below are replaced by vite.config.ts onPageRendered for each language -->
     <meta name="description" content="Check who unfollowed you on Instagram without login. Upload your ZIP file, see unfollowers instantly. 100% free, privacy-first, handles 1M+ accounts." />
     <meta name="keywords" content="instagram unfollow tracker, who unfollowed me instagram, instagram followers analysis, instagram unfollow app, instagram mutual followers" />
@@ -100,43 +138,6 @@
           "https://github.com/ignromanov/instagram-unfollow-tracker"
         ]
       }
-    </script>
-
-    <!-- Early language redirect - runs BEFORE React loads to avoid hydration mismatch -->
-    <script>
-      (function() {
-        var VISITED_KEY = 'unfollow-radar-visited';
-        var STORE_KEY = 'unfollow-radar-store';
-        var NON_EN_LANGS = ['es','ru','de','fr','pt','it','ja','ko','ar'];
-
-        // Skip if path already has language prefix
-        var path = location.pathname;
-        for (var i = 0; i < NON_EN_LANGS.length; i++) {
-          var prefix = '/' + NON_EN_LANGS[i];
-          if (path === prefix || path.startsWith(prefix + '/')) return;
-        }
-
-        try {
-          // Skip if already visited - use stored language preference
-          if (localStorage.getItem(VISITED_KEY)) {
-            var store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
-            var storedLang = store.state && store.state.language;
-            if (storedLang && storedLang !== 'en' && NON_EN_LANGS.indexOf(storedLang) !== -1) {
-              location.href = '/' + storedLang + path;
-            }
-            return;
-          }
-
-          // First visit: detect browser language
-          var browserLang = (navigator.language || '').split('-')[0].toLowerCase();
-          if (browserLang && browserLang !== 'en' && NON_EN_LANGS.indexOf(browserLang) !== -1) {
-            localStorage.setItem(VISITED_KEY, 'true');
-            location.href = '/' + browserLang + path;
-          }
-        } catch (e) {
-          // localStorage unavailable (private mode) - continue with English
-        }
-      })();
     </script>
   </head>
 
