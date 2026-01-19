@@ -123,19 +123,19 @@ function htmlPathToUrlPath(htmlPath: string): string {
     return "/";
   }
 
-  // Handle lang.html (e.g., es.html -> /es/)
+  // Handle lang.html (e.g., es.html -> /es)
   const langMatch = relativePath.match(/^([a-z]{2})\.html$/);
   if (langMatch && SUPPORTED_LANGUAGES.includes(langMatch[1] as Language)) {
-    return `/${langMatch[1]}/`;
+    return `/${langMatch[1]}`;
   }
 
   // Handle nested paths: es/wizard.html -> /es/wizard
   // Remove .html extension
   const withoutExt = relativePath.replace(/\.html$/, "");
 
-  // Handle index files in subdirs: es/index.html -> /es/
+  // Handle index files in subdirs: es/index.html -> /es
   if (withoutExt.endsWith("/index")) {
-    return "/" + withoutExt.replace(/\/index$/, "") + "/";
+    return "/" + withoutExt.replace(/\/index$/, "");
   }
 
   return "/" + withoutExt;
@@ -176,9 +176,9 @@ function buildUrl(basePath: string, lang: Language): string {
   if (lang === "en") {
     return `${BASE_URL}${basePath}`;
   }
-  // /wizard -> /es/wizard, / -> /es/
+  // /wizard -> /es/wizard, / -> /es
   if (basePath === "/") {
-    return `${BASE_URL}/${lang}/`;
+    return `${BASE_URL}/${lang}`;
   }
   return `${BASE_URL}/${lang}${basePath}`;
 }
@@ -307,6 +307,17 @@ function main(): void {
     }
   }
 
+  // Add docs pages (English only, hosted via GitHub Pages/Jekyll)
+  // These are built separately and served at /docs/*
+  for (const docsPath of ENGLISH_ONLY_PATHS) {
+    const url = buildUrl(docsPath, "en");
+    const key = `en:${docsPath}`;
+    if (!basePathsSet.has(key)) {
+      basePathsSet.add(key);
+      urlEntries.push({ url, basePath: docsPath, lang: "en" });
+    }
+  }
+
   // Sort: English first, then by path
   urlEntries.sort((a, b) => {
     if (a.lang === "en" && b.lang !== "en") return -1;
@@ -336,10 +347,12 @@ ${entries.join("\n\n")}
   // Summary
   const basePaths = new Set(urlEntries.map((e) => e.basePath));
   const dynamicCount = DYNAMIC_ROUTES.length * SUPPORTED_LANGUAGES.length;
+  const docsCount = ENGLISH_ONLY_PATHS.length;
   console.log(`✅ Sitemap generated: dist/sitemap.xml`);
   console.log(`   Total URLs: ${urlEntries.length}`);
-  console.log(`   - Static pages: ${urlEntries.length - dynamicCount}`);
+  console.log(`   - Static pages: ${urlEntries.length - dynamicCount - docsCount}`);
   console.log(`   - Dynamic routes (wizard steps): ${dynamicCount}`);
+  console.log(`   - Docs pages (English only): ${docsCount}`);
   console.log(`   Base paths: ${Array.from(basePaths).join(", ")}`);
   console.log(`   Languages: ${SUPPORTED_LANGUAGES.join(", ")}`);
   console.log(`✅ robots.txt generated: dist/robots.txt`);
