@@ -49,7 +49,23 @@ function escapeHtml(text: string): string {
     .replace(/>/g, '&gt;');
 }
 
-function loadMetaJson(lang: string, rootDir: string): Record<string, string> {
+/**
+ * Special meta tags for 404 page (not in meta.json)
+ */
+const NOT_FOUND_META: Record<string, string> = {
+  title: 'Page Not Found | Instagram Unfollow Tracker',
+  description: "The page you're looking for doesn't exist. It might have been moved or deleted.",
+  ogTitle: 'Page Not Found',
+  keywords: '404, not found, instagram unfollow tracker',
+  twitterDescription: "The page you're looking for doesn't exist.",
+};
+
+function loadMetaJson(lang: string, rootDir: string, route: string): Record<string, string> {
+  // Special handling for 404 page
+  if (route === '/404' || route.endsWith('/404')) {
+    return NOT_FOUND_META;
+  }
+
   try {
     const metaPath = path.join(rootDir, 'src', 'locales', lang, 'meta.json');
     const content = fs.readFileSync(metaPath, 'utf-8');
@@ -87,8 +103,8 @@ export async function injectLocalizedMeta(
   const langMatch = normalizedRoute.match(langPrefixPattern);
   const currentLang = langMatch ? langMatch[1] : 'en';
 
-  // Load localized meta tags
-  const metaTags = loadMetaJson(currentLang, rootDir);
+  // Load localized meta tags (with special handling for 404)
+  const metaTags = loadMetaJson(currentLang, rootDir, normalizedRoute);
   const escapedTitle = escapeHtml(metaTags.title || 'Instagram Unfollowers');
   const escapedDescription = escapeHtml(metaTags.description || '');
   const escapedKeywords = escapeHtml(metaTags.keywords || '');

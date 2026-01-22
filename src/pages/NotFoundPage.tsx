@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { Search, Home } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -8,20 +7,17 @@ import { useLanguagePrefix } from '@/hooks/useLanguagePrefix';
 /**
  * NotFoundPage - 404 page for unknown routes
  *
- * Shows when user navigates to non-existent route
+ * Shows when user navigates to non-existent route.
+ * Uses <a href> instead of <button onClick> to work before React hydration
+ * (important for Vercel's static 404.html fallback).
  */
 export function Component() {
-  const navigate = useNavigate();
   const prefix = useLanguagePrefix();
 
   // Track 404 page views
   useEffect(() => {
     analytics.pageView('404', undefined);
   }, []);
-
-  const handleGoHome = () => {
-    navigate(`${prefix}/`);
-  };
 
   return (
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center p-4">
@@ -46,45 +42,36 @@ export function Component() {
             The page you're looking for doesn't exist. It might have been moved or deleted.
           </p>
 
-          {/* Action */}
-          <button
-            onClick={handleGoHome}
-            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary px-8 py-4 text-base font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg"
+          {/* Action - using <a> for pre-hydration functionality */}
+          <a
+            href={`${prefix}/`}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-8 py-4 text-base font-bold text-white transition-all hover:bg-primary/90 hover:shadow-lg"
           >
             <Home size={20} />
             Go to Home
-          </button>
+          </a>
         </div>
 
-        {/* Helpful links */}
+        {/* Helpful links - using <a> for pre-hydration functionality */}
         <div className="mt-8 rounded-3xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/40">
           <h4 className="mb-4 text-xs font-black uppercase tracking-widest text-zinc-900 dark:text-white">
             Helpful Links
           </h4>
           <ul className="space-y-2 text-sm font-medium text-zinc-600 dark:text-zinc-400">
             <li>
-              <button
-                onClick={() => navigate(`${prefix}/wizard`)}
-                className="hover:text-primary transition-colors cursor-pointer"
-              >
+              <a href={`${prefix}/wizard`} className="hover:text-primary transition-colors">
                 → How to get Instagram data
-              </button>
+              </a>
             </li>
             <li>
-              <button
-                onClick={() => navigate(`${prefix}/upload`)}
-                className="hover:text-primary transition-colors cursor-pointer"
-              >
+              <a href={`${prefix}/upload`} className="hover:text-primary transition-colors">
                 → Upload your data
-              </button>
+              </a>
             </li>
             <li>
-              <button
-                onClick={() => navigate(`${prefix}/sample`)}
-                className="hover:text-primary transition-colors cursor-pointer"
-              >
+              <a href={`${prefix}/sample`} className="hover:text-primary transition-colors">
                 → Try with sample data
-              </button>
+              </a>
             </li>
           </ul>
         </div>

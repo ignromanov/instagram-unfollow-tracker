@@ -54,7 +54,7 @@ export default defineConfig({
       preload: "swap",       // Font display strategy (font-display: swap)
     },
 
-    // Include dynamic routes (wizard steps 1-8) for all languages
+    // Include dynamic routes (wizard steps 1-8, 404) for all languages
     includedRoutes(paths) {
       const wizardSteps = Array.from({ length: 8 }, (_, i) => i + 1);
       const dynamicRoutes: string[] = [];
@@ -64,11 +64,15 @@ export default defineConfig({
         dynamicRoutes.push(`/wizard/step/${step}`);
       });
 
-      // Add wizard steps for other languages (from shared config)
+      // Add 404 page for Vercel static fallback
+      dynamicRoutes.push('/404');
+
+      // Add wizard steps and 404 for other languages (from shared config)
       SUPPORTED_LANGUAGES.filter(lang => lang !== 'en').forEach(lang => {
         wizardSteps.forEach(step => {
           dynamicRoutes.push(`/${lang}/wizard/step/${step}`);
         });
+        // Note: 404 only needs English version - Vercel uses single 404.html
       });
 
       return [...paths, ...dynamicRoutes];
@@ -78,6 +82,7 @@ export default defineConfig({
     async onPageRendered(route, renderedHTML) {
       return injectLocalizedMeta(route, renderedHTML, __dirname);
     },
+    // Note: vite-react-ssg generates 404.html directly at dist root (Vercel convention)
   },
   build: buildConfig,
 });

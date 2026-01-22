@@ -45,6 +45,7 @@ export const routes: RouteRecord[] = [
       { path: 'sample', element: <SamplePage /> },
       { path: 'privacy', element: <PrivacyPage /> },
       { path: 'terms', element: <TermsPage /> },
+      { path: '404', element: <NotFoundPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
@@ -64,6 +65,7 @@ export const routes: RouteRecord[] = [
         { path: 'sample', element: <SamplePage /> },
         { path: 'privacy', element: <PrivacyPage /> },
         { path: 'terms', element: <TermsPage /> },
+        { path: '404', element: <NotFoundPage /> },
         { path: '*', element: <NotFoundPage /> },
       ],
     })
