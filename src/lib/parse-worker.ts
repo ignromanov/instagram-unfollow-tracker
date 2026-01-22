@@ -3,6 +3,7 @@
 
 import { buildAccountBadgeIndex } from '@/core/badges';
 import { parseInstagramZipFile } from '@/core/parsers/instagram';
+import { classifyErrorMessage } from './error-classifier';
 import { generateFileHash } from './indexeddb/indexeddb-cache';
 import { indexedDBService } from './indexeddb/indexeddb-service';
 import { buildAllSearchIndexes } from './search-index';
@@ -54,11 +55,12 @@ self.onmessage = async (
 
     // Check if we have enough data to continue
     if (!parseResult.hasMinimalData) {
-      const error = parseResult.warnings.find(w => w.severity === 'error');
-      // Send error with warnings and discovery for DiagnosticErrorScreen
+      const errorWarning = parseResult.warnings.find(w => w.severity === 'error');
+      // Send error with code, warnings and discovery for DiagnosticErrorScreen
       self.postMessage({
         type: 'error',
-        error: error?.message ?? 'Could not parse Instagram data',
+        code: errorWarning?.code ?? 'NO_DATA_FILES',
+        error: errorWarning?.message ?? 'Could not parse Instagram data',
         warnings: parseResult.warnings,
         discovery: parseResult.discovery,
       });
@@ -68,19 +70,39 @@ self.onmessage = async (
     // Build account badge index from parsed data
     const unified = buildAccountBadgeIndex(parseResult.data);
 
-    // Save file metadata
-    await indexedDBService.saveFileMetadata({
-      fileHash,
-      fileName: file.name,
-      fileSize: file.size,
-      uploadDate: new Date(),
-      accountCount: unified.length,
-      lastAccessed: Date.now(),
-      version: 2,
-    });
+    // Save file metadata and accounts with IndexedDB error handling
+    try {
+      await indexedDBService.saveFileMetadata({
+        fileHash,
+        fileName: file.name,
+        fileSize: file.size,
+        uploadDate: new Date(),
+        accountCount: unified.length,
+        lastAccessed: Date.now(),
+        version: 2,
+      });
 
-    // Store all accounts at once (optimized bulk mode)
-    await indexedDBService.storeAllAccounts(fileHash, unified);
+      // Store all accounts at once (optimized bulk mode)
+      await indexedDBService.storeAllAccounts(fileHash, unified);
+    } catch (dbError) {
+      const errorMessage = dbError instanceof Error ? dbError.message : 'Database error';
+      let code = 'INDEXEDDB_ERROR';
+
+      if (dbError instanceof DOMException) {
+        if (dbError.name === 'QuotaExceededError' || dbError.code === 22) {
+          code = 'QUOTA_EXCEEDED';
+        } else if (dbError.name === 'NotAllowedError') {
+          code = 'IDB_PERMISSION_DENIED';
+        }
+      }
+
+      self.postMessage({
+        type: 'error',
+        code,
+        error: errorMessage,
+      });
+      return;
+    }
 
     // Build search indexes in background (optional, non-blocking)
     // This runs after sending the result so UI is responsive
@@ -108,10 +130,14 @@ self.onmessage = async (
       discovery: parseResult.discovery,
     });
   } catch (error) {
-    // Send error result
+    // Send error result with classified code
+    const errorMessage = error instanceof Error ? error.message : 'Unknown parsing error';
+    const errorCode = classifyErrorMessage(errorMessage);
+
     self.postMessage({
       type: 'error',
-      error: error instanceof Error ? error.message : 'Unknown parsing error',
+      code: errorCode,
+      error: errorMessage,
     });
   }
 };

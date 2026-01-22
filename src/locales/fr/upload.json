@@ -41,7 +41,11 @@
         "title": "Mauvais fichier",
         "description": "Téléversez le fichier .zip, pas un dossier ou des fichiers extraits"
       }
-    }
+    },
+    "reportIssue": "Signaler ce problème sur GitHub",
+    "copyDetails": "Copier les détails de l'erreur",
+    "copied": "Copié !",
+    "errorCode": "Code d'erreur"
   },
   "waiting": {
     "title": "En attente d'Instagram...",

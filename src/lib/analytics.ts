@@ -105,6 +105,8 @@ export const AnalyticsEvents = {
   DIAGNOSTIC_ERROR_VIEW: 'diagnostic_error_view',
   DIAGNOSTIC_ERROR_RETRY: 'diagnostic_error_retry',
   DIAGNOSTIC_ERROR_HELP: 'diagnostic_error_help',
+  DIAGNOSTIC_ERROR_REPORT_ISSUE: 'diagnostic_error_report_issue',
+  DIAGNOSTIC_ERROR_COPY_DETAILS: 'diagnostic_error_copy_details',
 
   // V5: Granular Upload Errors
   UPLOAD_ERROR_NOT_ZIP: 'upload_error_not_zip',
@@ -115,6 +117,24 @@ export const AnalyticsEvents = {
   UPLOAD_ERROR_MISSING_FOLLOWING: 'upload_error_missing_following',
   UPLOAD_ERROR_MISSING_FOLLOWERS: 'upload_error_missing_followers',
   UPLOAD_ERROR_UNKNOWN: 'upload_error_unknown',
+
+  // V6: Extended Upload Errors
+  UPLOAD_ERROR_CORRUPTED_ZIP: 'upload_error_corrupted_zip',
+  UPLOAD_ERROR_ZIP_ENCRYPTED: 'upload_error_zip_encrypted',
+  UPLOAD_ERROR_EMPTY_FILE: 'upload_error_empty_file',
+  UPLOAD_ERROR_FILE_TOO_LARGE: 'upload_error_file_too_large',
+  UPLOAD_ERROR_JSON_PARSE: 'upload_error_json_parse',
+  UPLOAD_ERROR_INVALID_STRUCTURE: 'upload_error_invalid_structure',
+  UPLOAD_ERROR_TIMEOUT: 'upload_error_timeout',
+  UPLOAD_ERROR_WORKER_INIT: 'upload_error_worker_init',
+  UPLOAD_ERROR_WORKER_CRASHED: 'upload_error_worker_crashed',
+  UPLOAD_ERROR_INDEXEDDB: 'upload_error_indexeddb',
+  UPLOAD_ERROR_QUOTA: 'upload_error_quota',
+  UPLOAD_ERROR_IDB_NOT_SUPPORTED: 'upload_error_idb_not_supported',
+  UPLOAD_ERROR_IDB_PERMISSION: 'upload_error_idb_permission',
+  UPLOAD_ERROR_CANCELLED: 'upload_error_cancelled',
+  UPLOAD_ERROR_CRYPTO: 'upload_error_crypto',
+  UPLOAD_ERROR_NETWORK: 'upload_error_network',
 
   // V5: Session & Engagement
   TIME_ON_RESULTS: 'time_on_results',
@@ -377,6 +397,18 @@ export const analytics = {
     });
   },
 
+  diagnosticErrorReportIssue: (code: string) => {
+    trackEvent(AnalyticsEvents.DIAGNOSTIC_ERROR_REPORT_ISSUE, {
+      error_code: code,
+    });
+  },
+
+  diagnosticErrorCopyDetails: (code: string) => {
+    trackEvent(AnalyticsEvents.DIAGNOSTIC_ERROR_COPY_DETAILS, {
+      error_code: code,
+    });
+  },
+
   // V3: FAQ
   faqExpand: (questionId: number, questionText: string) => {
     trackEvent(AnalyticsEvents.FAQ_EXPAND, {
@@ -476,6 +508,7 @@ export const analytics = {
       import('@/core/types').DiagnosticErrorCode,
       (typeof AnalyticsEvents)[keyof typeof AnalyticsEvents]
     > = {
+      // Existing
       NOT_ZIP: AnalyticsEvents.UPLOAD_ERROR_NOT_ZIP,
       HTML_FORMAT: AnalyticsEvents.UPLOAD_ERROR_HTML_FORMAT,
       NOT_INSTAGRAM_EXPORT: AnalyticsEvents.UPLOAD_ERROR_NOT_INSTAGRAM,
@@ -483,9 +516,34 @@ export const analytics = {
       NO_DATA_FILES: AnalyticsEvents.UPLOAD_ERROR_NO_DATA,
       MISSING_FOLLOWING: AnalyticsEvents.UPLOAD_ERROR_MISSING_FOLLOWING,
       MISSING_FOLLOWERS: AnalyticsEvents.UPLOAD_ERROR_MISSING_FOLLOWERS,
+      // New - ZIP/File
+      CORRUPTED_ZIP: AnalyticsEvents.UPLOAD_ERROR_CORRUPTED_ZIP,
+      ZIP_ENCRYPTED: AnalyticsEvents.UPLOAD_ERROR_ZIP_ENCRYPTED,
+      EMPTY_FILE: AnalyticsEvents.UPLOAD_ERROR_EMPTY_FILE,
+      FILE_TOO_LARGE: AnalyticsEvents.UPLOAD_ERROR_FILE_TOO_LARGE,
+      // New - Parsing
+      JSON_PARSE_ERROR: AnalyticsEvents.UPLOAD_ERROR_JSON_PARSE,
+      INVALID_DATA_STRUCTURE: AnalyticsEvents.UPLOAD_ERROR_INVALID_STRUCTURE,
+      // New - Worker
+      WORKER_TIMEOUT: AnalyticsEvents.UPLOAD_ERROR_TIMEOUT,
+      WORKER_INIT_ERROR: AnalyticsEvents.UPLOAD_ERROR_WORKER_INIT,
+      WORKER_CRASHED: AnalyticsEvents.UPLOAD_ERROR_WORKER_CRASHED,
+      // New - Storage
+      INDEXEDDB_ERROR: AnalyticsEvents.UPLOAD_ERROR_INDEXEDDB,
+      QUOTA_EXCEEDED: AnalyticsEvents.UPLOAD_ERROR_QUOTA,
+      IDB_NOT_SUPPORTED: AnalyticsEvents.UPLOAD_ERROR_IDB_NOT_SUPPORTED,
+      IDB_PERMISSION_DENIED: AnalyticsEvents.UPLOAD_ERROR_IDB_PERMISSION,
+      // New - Other
+      UPLOAD_CANCELLED: AnalyticsEvents.UPLOAD_ERROR_CANCELLED,
+      CRYPTO_NOT_AVAILABLE: AnalyticsEvents.UPLOAD_ERROR_CRYPTO,
+      NETWORK_ERROR: AnalyticsEvents.UPLOAD_ERROR_NETWORK,
+      // Fallback
       UNKNOWN: AnalyticsEvents.UPLOAD_ERROR_UNKNOWN,
     };
-    trackEvent(eventMap[code], { file_hash: fileHash });
+    trackEvent(eventMap[code], {
+      file_hash: fileHash,
+      error_message: errorMessage?.slice(0, 100) ?? '',
+    });
     // Keep legacy event for backward compatibility
     analytics.fileUploadError(fileHash, `${code}: ${errorMessage ?? ''}`);
   },

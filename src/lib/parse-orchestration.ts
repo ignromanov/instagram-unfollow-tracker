@@ -9,6 +9,13 @@ import { parseInstagramZipFile } from '@/core/parsers/instagram';
 import { indexedDBService } from './indexeddb/indexeddb-service';
 import { logger } from './logger';
 
+/** Extended error with structured data */
+interface ParseErrorData {
+  code?: string;
+  warnings?: ParseWarning[];
+  discovery?: FileDiscovery;
+}
+
 // Worker timeout constant (ms)
 const WORKER_PROCESSING_TIMEOUT_MS = 60000;
 
@@ -37,7 +44,9 @@ export async function parseWithWorker(
     // Add timeout to detect infinite loading
     const timeoutId = setTimeout(() => {
       worker.removeEventListener('message', handleMessage);
-      reject(new Error('Worker timeout: Processing took too long'));
+      const error = new Error('Worker timeout: Processing took too long') as Error & ParseErrorData;
+      error.code = 'WORKER_TIMEOUT';
+      reject(error);
     }, WORKER_PROCESSING_TIMEOUT_MS);
 
     const handleMessage = (e: MessageEvent) => {
@@ -70,7 +79,13 @@ export async function parseWithWorker(
       } else if (e.data?.type === 'error') {
         clearTimeout(timeoutId);
         worker.removeEventListener('message', handleMessage);
-        reject(new Error(e.data.error));
+
+        const error = new Error(e.data.error) as Error & ParseErrorData;
+        error.code = e.data.code ?? 'UNKNOWN';
+        error.warnings = e.data.warnings;
+        error.discovery = e.data.discovery;
+
+        reject(error);
       }
     };
 
@@ -98,8 +113,13 @@ export async function parseOnMainThread(
 
   // Check if we have enough data to continue
   if (!parseResult.hasMinimalData) {
-    const error = parseResult.warnings.find(w => w.severity === 'error');
-    throw new Error(error?.message ?? 'Could not parse Instagram data');
+    const errorWarning = parseResult.warnings.find(w => w.severity === 'error');
+    const error = new Error(errorWarning?.message ?? 'Could not parse Instagram data') as Error &
+      ParseErrorData;
+    error.code = errorWarning?.code ?? 'NO_DATA_FILES';
+    error.warnings = parseResult.warnings;
+    error.discovery = parseResult.discovery;
+    throw error;
   }
 
   const unified = buildAccountBadgeIndex(parseResult.data);
@@ -108,18 +128,35 @@ export async function parseOnMainThread(
     throw new Error('Upload cancelled');
   }
 
-  // Save to IndexedDB
-  await indexedDBService.saveFileMetadata({
-    fileHash: fileHash,
-    fileName: file.name,
-    fileSize: file.size,
-    uploadDate: new Date(),
-    accountCount: unified.length,
-    lastAccessed: Date.now(),
-    version: 2,
-  });
+  // Save to IndexedDB with error handling
+  try {
+    await indexedDBService.saveFileMetadata({
+      fileHash: fileHash,
+      fileName: file.name,
+      fileSize: file.size,
+      uploadDate: new Date(),
+      accountCount: unified.length,
+      lastAccessed: Date.now(),
+      version: 2,
+    });
 
-  await indexedDBService.storeAllAccounts(fileHash, unified);
+    await indexedDBService.storeAllAccounts(fileHash, unified);
+  } catch (dbError) {
+    const error = new Error(
+      dbError instanceof Error ? dbError.message : 'Failed to save data'
+    ) as Error & ParseErrorData;
+
+    if (
+      dbError instanceof DOMException &&
+      (dbError.name === 'QuotaExceededError' || dbError.code === 22)
+    ) {
+      error.code = 'QUOTA_EXCEEDED';
+    } else {
+      error.code = 'INDEXEDDB_ERROR';
+    }
+
+    throw error;
+  }
 
   return {
     fileHash,

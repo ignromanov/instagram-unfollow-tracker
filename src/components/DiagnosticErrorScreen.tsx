@@ -5,14 +5,17 @@ import { createDiagnosticError, mapWarningToDiagnosticCode } from '@/core/types'
 import {
   AlertTriangle,
   ArrowLeft,
+  Check,
   Code2,
+  Copy,
+  ExternalLink,
   FileArchive,
   FileQuestion,
   FileX2,
   FolderX,
   RefreshCw,
 } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { analytics } from '@/lib/analytics';
 
@@ -29,6 +32,74 @@ export interface DiagnosticErrorScreenProps {
   onOpenWizard?: () => void;
   /** Callback to go back */
   onBack?: () => void;
+}
+
+/**
+ * Error codes that warrant GitHub issue reporting.
+ * User-fixable errors (NOT_ZIP, HTML_FORMAT) don't need issue reports.
+ */
+const REPORTABLE_ERROR_CODES: Set<DiagnosticErrorCode> = new Set([
+  'CORRUPTED_ZIP',
+  'JSON_PARSE_ERROR',
+  'INVALID_DATA_STRUCTURE',
+  'WORKER_TIMEOUT',
+  'WORKER_INIT_ERROR',
+  'WORKER_CRASHED',
+  'INDEXEDDB_ERROR',
+  'IDB_NOT_SUPPORTED',
+  'IDB_PERMISSION_DENIED',
+  'CRYPTO_NOT_AVAILABLE',
+  'UNKNOWN',
+]);
+
+function shouldShowReportIssue(code: DiagnosticErrorCode): boolean {
+  return REPORTABLE_ERROR_CODES.has(code);
+}
+
+/**
+ * Generates a pre-filled GitHub issue URL for error reporting.
+ */
+function generateGitHubIssueUrl(error: DiagnosticError): string {
+  const repo = 'ignromanov/instagram-unfollow-tracker';
+  const title = encodeURIComponent(`[Bug] Upload error: ${error.code}`);
+
+  const body = encodeURIComponent(`## Error Details
+
+- **Error Code**: \`${error.code}\`
+- **Error Title**: ${error.title}
+- **Error Message**: ${error.message}
+
+## Environment
+
+- **Browser**: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}
+- **Timestamp**: ${new Date().toISOString()}
+
+## Steps to Reproduce
+
+1. Uploaded Instagram data export ZIP file
+2. Got error: ${error.code}
+
+## Expected Behavior
+
+File should be processed successfully.
+
+## Additional Context
+
+<!-- Add any other context about the problem here -->
+`);
+
+  return `https://github.com/${repo}/issues/new?title=${title}&body=${body}&labels=bug,upload-error`;
+}
+
+/**
+ * Generates error details string for clipboard.
+ */
+function generateErrorDetails(error: DiagnosticError): string {
+  return `Error Code: ${error.code}
+Title: ${error.title}
+Message: ${error.message}
+Browser: ${typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown'}
+Timestamp: ${new Date().toISOString()}`;
 }
 
 /** Get icon component for error type */
@@ -102,21 +173,47 @@ export function DiagnosticErrorScreen({
 
   const colors = getColorScheme(diagnosticError.severity);
   const Icon = getErrorIcon(diagnosticError.icon);
+  const [copied, setCopied] = useState(false);
+
+  // Memoize GitHub URL to avoid recalculating on every render
+  const gitHubIssueUrl = useMemo(() => generateGitHubIssueUrl(diagnosticError), [diagnosticError]);
+
+  const showReportIssue = useMemo(
+    () => shouldShowReportIssue(diagnosticError.code),
+    [diagnosticError.code]
+  );
 
   // Track error view on mount
   useEffect(() => {
     analytics.diagnosticErrorView(diagnosticError.code);
   }, [diagnosticError.code]);
 
-  const handleTryAgain = () => {
+  const handleTryAgain = useCallback(() => {
     analytics.diagnosticErrorRetry(diagnosticError.code);
     onTryAgain?.();
-  };
+  }, [diagnosticError.code, onTryAgain]);
 
-  const handleOpenWizard = () => {
+  const handleOpenWizard = useCallback(() => {
     analytics.diagnosticErrorHelp(diagnosticError.code);
     onOpenWizard?.();
-  };
+  }, [diagnosticError.code, onOpenWizard]);
+
+  const handleReportIssue = useCallback(() => {
+    analytics.diagnosticErrorReportIssue(diagnosticError.code);
+  }, [diagnosticError.code]);
+
+  const handleCopyDetails = useCallback(async () => {
+    try {
+      const details = generateErrorDetails(diagnosticError);
+      await navigator.clipboard.writeText(details);
+      setCopied(true);
+      analytics.diagnosticErrorCopyDetails(diagnosticError.code);
+      // Reset copied state after 2 seconds
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API may fail in some contexts
+    }
+  }, [diagnosticError]);
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 md:py-16">
@@ -179,6 +276,41 @@ export function DiagnosticErrorScreen({
             >
               {t('diagnostic.showMistakes')}
             </button>
+          )}
+        </div>
+
+        {/* Report Issue and Error Code Section */}
+        <div className="mt-6 flex flex-col items-start gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-700 sm:flex-row sm:items-center sm:justify-between">
+          {/* Error code badge with copy button */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-zinc-400 dark:text-zinc-500">
+              {t('diagnostic.errorCode')}:
+            </span>
+            <code className="rounded bg-zinc-100 px-2 py-1 font-mono text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              {diagnosticError.code}
+            </code>
+            <button
+              onClick={handleCopyDetails}
+              className="rounded p-1 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+              title={copied ? t('diagnostic.copied') : t('diagnostic.copyDetails')}
+              aria-label={t('diagnostic.copyDetails')}
+            >
+              {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+            </button>
+          </div>
+
+          {/* Report Issue link (only for reportable errors) */}
+          {showReportIssue && (
+            <a
+              href={gitHubIssueUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleReportIssue}
+              className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+            >
+              <ExternalLink size={14} />
+              {t('diagnostic.reportIssue')}
+            </a>
           )}
         </div>
       </div>

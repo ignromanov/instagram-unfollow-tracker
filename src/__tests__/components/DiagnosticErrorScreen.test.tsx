@@ -14,6 +14,8 @@ vi.mock('@/lib/analytics', () => ({
     diagnosticErrorView: vi.fn(),
     diagnosticErrorRetry: vi.fn(),
     diagnosticErrorHelp: vi.fn(),
+    diagnosticErrorReportIssue: vi.fn(),
+    diagnosticErrorCopyDetails: vi.fn(),
   },
 }));
 
@@ -303,6 +305,133 @@ describe('DiagnosticErrorScreen', () => {
       expect(screen.getByRole('heading', { level: 2 })).toBeInTheDocument();
       expect(screen.getByText(uploadEN.diagnostic.howToFix)).toBeInTheDocument();
       expect(screen.getByText(uploadEN.diagnostic.tryAgain)).toBeInTheDocument();
+    });
+  });
+
+  describe('Report Issue functionality', () => {
+    const reportableErrors: DiagnosticErrorCode[] = [
+      'CORRUPTED_ZIP',
+      'JSON_PARSE_ERROR',
+      'INVALID_DATA_STRUCTURE',
+      'WORKER_TIMEOUT',
+      'WORKER_INIT_ERROR',
+      'WORKER_CRASHED',
+      'INDEXEDDB_ERROR',
+      'IDB_NOT_SUPPORTED',
+      'IDB_PERMISSION_DENIED',
+      'CRYPTO_NOT_AVAILABLE',
+      'UNKNOWN',
+    ];
+
+    const userFixableErrors: DiagnosticErrorCode[] = [
+      'NOT_ZIP',
+      'HTML_FORMAT',
+      'NOT_INSTAGRAM_EXPORT',
+      'INCOMPLETE_EXPORT',
+      'NO_DATA_FILES',
+      'MISSING_FOLLOWING',
+      'MISSING_FOLLOWERS',
+      'ZIP_ENCRYPTED',
+      'EMPTY_FILE',
+      'FILE_TOO_LARGE',
+      'QUOTA_EXCEEDED',
+      'UPLOAD_CANCELLED',
+      'NETWORK_ERROR',
+    ];
+
+    it.each(reportableErrors)('should show Report Issue link for %s', errorCode => {
+      render(<DiagnosticErrorScreen errorCode={errorCode} />);
+
+      expect(screen.getByText(uploadEN.diagnostic.reportIssue)).toBeInTheDocument();
+    });
+
+    it.each(userFixableErrors)('should NOT show Report Issue for %s', errorCode => {
+      render(<DiagnosticErrorScreen errorCode={errorCode} />);
+
+      expect(screen.queryByText(uploadEN.diagnostic.reportIssue)).not.toBeInTheDocument();
+    });
+
+    it('should generate correct GitHub issue URL', () => {
+      render(<DiagnosticErrorScreen errorCode="UNKNOWN" />);
+
+      const link = screen.getByText(uploadEN.diagnostic.reportIssue);
+      expect(link).toHaveAttribute('href', expect.stringContaining('github.com'));
+      expect(link).toHaveAttribute('href', expect.stringContaining('UNKNOWN'));
+      expect(link).toHaveAttribute('href', expect.stringContaining('issues/new'));
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+  });
+
+  describe('Error code display', () => {
+    it('should display error code badge', () => {
+      render(<DiagnosticErrorScreen errorCode="CORRUPTED_ZIP" />);
+
+      expect(screen.getByText('CORRUPTED_ZIP')).toBeInTheDocument();
+      expect(screen.getByText(uploadEN.diagnostic.errorCode + ':')).toBeInTheDocument();
+    });
+
+    it('should display copy button', () => {
+      render(<DiagnosticErrorScreen errorCode="WORKER_TIMEOUT" />);
+
+      const copyButton = screen.getByLabelText(uploadEN.diagnostic.copyDetails);
+      expect(copyButton).toBeInTheDocument();
+    });
+
+    it('should copy error details to clipboard', async () => {
+      const mockClipboard = { writeText: vi.fn().mockResolvedValue(undefined) };
+      Object.assign(navigator, { clipboard: mockClipboard });
+
+      render(<DiagnosticErrorScreen errorCode="WORKER_TIMEOUT" />);
+
+      const copyButton = screen.getByLabelText(uploadEN.diagnostic.copyDetails);
+      await fireEvent.click(copyButton);
+
+      expect(mockClipboard.writeText).toHaveBeenCalledWith(
+        expect.stringContaining('WORKER_TIMEOUT')
+      );
+      expect(mockClipboard.writeText).toHaveBeenCalledWith(
+        expect.stringContaining('Processing Timeout')
+      );
+    });
+  });
+
+  describe('new error codes render correctly', () => {
+    const newErrorCodes: DiagnosticErrorCode[] = [
+      'CORRUPTED_ZIP',
+      'ZIP_ENCRYPTED',
+      'EMPTY_FILE',
+      'FILE_TOO_LARGE',
+      'JSON_PARSE_ERROR',
+      'INVALID_DATA_STRUCTURE',
+      'WORKER_TIMEOUT',
+      'WORKER_INIT_ERROR',
+      'WORKER_CRASHED',
+      'INDEXEDDB_ERROR',
+      'QUOTA_EXCEEDED',
+      'IDB_NOT_SUPPORTED',
+      'IDB_PERMISSION_DENIED',
+      'UPLOAD_CANCELLED',
+      'CRYPTO_NOT_AVAILABLE',
+      'NETWORK_ERROR',
+    ];
+
+    it.each(newErrorCodes)('should render %s error with all elements', errorCode => {
+      const { container } = render(
+        <DiagnosticErrorScreen
+          errorCode={errorCode}
+          onTryAgain={mockOnTryAgain}
+          onOpenWizard={mockOnOpenWizard}
+        />
+      );
+
+      expect(container).toBeInTheDocument();
+      // Should have error code displayed
+      expect(screen.getByText(errorCode)).toBeInTheDocument();
+      // Should have copy button
+      expect(screen.getByLabelText(uploadEN.diagnostic.copyDetails)).toBeInTheDocument();
+      // Should have how to fix section
+      expect(screen.getByText(uploadEN.diagnostic.howToFix)).toBeInTheDocument();
     });
   });
 });

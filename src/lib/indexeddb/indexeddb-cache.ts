@@ -85,15 +85,42 @@ class IndexedDBCache {
 
 export const dbCache = new IndexedDBCache();
 
+/** Error with diagnostic code for structured error handling */
+interface CodedError extends Error {
+  code?: string;
+}
+
 /**
  * Generate file hash for caching
  * Uses first 1MB of file for fast hash generation
  */
 export async function generateFileHash(file: File): Promise<string> {
-  const buffer = await file.arrayBuffer();
-  // Hash first 1MB for performance, or entire file if smaller
-  const hashSize = Math.min(buffer.byteLength, 1024 * 1024);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', buffer.slice(0, hashSize));
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  // Check crypto API availability
+  if (!globalThis.crypto?.subtle?.digest) {
+    const error: CodedError = new Error('Crypto API not available');
+    error.code = 'CRYPTO_NOT_AVAILABLE';
+    throw error;
+  }
+
+  // Check for empty file
+  if (file.size === 0) {
+    const error: CodedError = new Error('File is empty');
+    error.code = 'EMPTY_FILE';
+    throw error;
+  }
+
+  try {
+    const buffer = await file.arrayBuffer();
+    // Hash first 1MB for performance, or entire file if smaller
+    const hashSize = Math.min(buffer.byteLength, 1024 * 1024);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer.slice(0, hashSize));
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch (err) {
+    const error: CodedError = new Error(
+      `Failed to hash file: ${err instanceof Error ? err.message : 'Unknown'}`
+    );
+    error.code = 'CORRUPTED_ZIP';
+    throw error;
+  }
 }

@@ -1,6 +1,7 @@
 'use client';
 
-import type { ParseWarning } from '@/core/types';
+import type { DiagnosticErrorCode, ParseWarning } from '@/core/types';
+import { ALL_DIAGNOSTIC_ERROR_CODES, createDiagnosticError } from '@/core/types';
 import { analytics } from '@/lib/analytics';
 import { AlertCircle, ArrowLeft, CheckCircle2, Info, Loader2, Upload } from 'lucide-react';
 import type React from 'react';
@@ -33,6 +34,9 @@ export function UploadZone({
   const { t } = useTranslation('upload');
   const [isDragOver, setIsDragOver] = useState(false);
   const [showDiagnostic, setShowDiagnostic] = useState(true);
+
+  // Dev mode: preview any error state
+  const [devErrorCode, setDevErrorCode] = useState<DiagnosticErrorCode | null>(null);
 
   // Track file picker open/cancel for mobile analytics
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,6 +71,25 @@ export function UploadZone({
     if (!parseWarnings?.length) return false;
     return parseWarnings.some(w => w.severity === 'error');
   }, [parseWarnings]);
+
+  // Generate mock warnings for dev preview
+  const devParseWarnings = useMemo(() => {
+    if (!import.meta.env.DEV || !devErrorCode) return null;
+
+    const diagnostic = createDiagnosticError(devErrorCode);
+    return [
+      {
+        code: devErrorCode,
+        message: diagnostic.message,
+        severity: diagnostic.severity,
+        fix: diagnostic.fix,
+      },
+    ] as ParseWarning[];
+  }, [devErrorCode]);
+
+  // Use dev warnings if in dev preview mode
+  const effectiveWarnings = devParseWarnings ?? parseWarnings;
+  const effectiveHasCriticalError = devParseWarnings ? true : hasCriticalError;
 
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -113,18 +136,33 @@ export function UploadZone({
   );
 
   const handleTryAgain = useCallback(() => {
+    if (devErrorCode) {
+      // Dev mode: reset to upload zone
+      setDevErrorCode(null);
+    }
     setShowDiagnostic(false);
-  }, []);
+  }, [devErrorCode]);
 
-  // Show diagnostic error screen for critical errors
-  if (hasCriticalError && showDiagnostic && !isProcessing) {
+  // Show diagnostic error screen for critical errors (or dev preview)
+  if (effectiveHasCriticalError && showDiagnostic && !isProcessing) {
     return (
-      <DiagnosticErrorScreen
-        parseWarnings={parseWarnings}
-        onTryAgain={handleTryAgain}
-        onOpenWizard={onOpenWizard}
-        onBack={onBack}
-      />
+      <>
+        <DiagnosticErrorScreen
+          parseWarnings={effectiveWarnings}
+          onTryAgain={handleTryAgain}
+          onOpenWizard={onOpenWizard}
+          onBack={onBack}
+        />
+
+        {/* Dev mode: Error selector overlay */}
+        {import.meta.env.DEV && (
+          <DevErrorSelector
+            currentCode={devErrorCode}
+            onSelect={setDevErrorCode}
+            onClose={() => setDevErrorCode(null)}
+          />
+        )}
+      </>
     );
   }
 
@@ -276,6 +314,92 @@ export function UploadZone({
             )}
           </div>
         </div>
+      </div>
+
+      {/* Dev mode: Show error preview button */}
+      {import.meta.env.DEV && !devErrorCode && (
+        <div className="fixed bottom-4 left-4 z-50">
+          <button
+            onClick={() => setDevErrorCode('NOT_ZIP')}
+            className="rounded-lg border border-zinc-700 bg-zinc-900/95 px-4 py-2 text-xs font-medium text-zinc-400 shadow-xl backdrop-blur transition-colors hover:bg-zinc-800 hover:text-zinc-200"
+          >
+            🔧 Dev: Preview Errors ({ALL_DIAGNOSTIC_ERROR_CODES.length})
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Dev-only floating panel to switch between error states.
+ * Allows testing all error screens with real Try Again / Show Wizard actions.
+ */
+function DevErrorSelector({
+  currentCode,
+  onSelect,
+  onClose,
+}: {
+  currentCode: DiagnosticErrorCode | null;
+  onSelect: (code: DiagnosticErrorCode | null) => void;
+  onClose: () => void;
+}) {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  if (!import.meta.env.DEV) return null;
+
+  return (
+    <div className="fixed bottom-4 left-4 z-50 max-w-xs">
+      <div className="rounded-xl border border-zinc-700 bg-zinc-900/95 shadow-2xl backdrop-blur">
+        {/* Header */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex w-full items-center justify-between px-4 py-3 text-left"
+        >
+          <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+            🔧 Dev: Error Preview
+          </span>
+          <span className="text-xs text-zinc-500">
+            {currentCode ?? 'none'} • {ALL_DIAGNOSTIC_ERROR_CODES.length} types
+          </span>
+        </button>
+
+        {/* Error list */}
+        {isExpanded && (
+          <div className="border-t border-zinc-800 p-3">
+            <div className="mb-3 grid max-h-[40vh] grid-cols-2 gap-1 overflow-y-auto">
+              {ALL_DIAGNOSTIC_ERROR_CODES.map(code => (
+                <button
+                  key={code}
+                  onClick={() => onSelect(code)}
+                  className={`rounded px-2 py-1.5 text-left text-xs transition-colors ${
+                    currentCode === code
+                      ? 'bg-blue-600 font-medium text-white'
+                      : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+                  }`}
+                >
+                  {code.replace(/_/g, ' ')}
+                </button>
+              ))}
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-2 border-t border-zinc-800 pt-3">
+              <button
+                onClick={onClose}
+                className="flex-1 rounded bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 hover:bg-zinc-700"
+              >
+                Clear Preview
+              </button>
+            </div>
+
+            {/* Hint */}
+            <p className="mt-2 text-[10px] text-zinc-500">
+              Click error type to preview. Use &quot;Try Again&quot; and &quot;Show Wizard&quot;
+              buttons to test actions.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

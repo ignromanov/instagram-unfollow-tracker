@@ -559,4 +559,164 @@ describe('Diagnostic Error Mapping', () => {
       expect(error.message).toBe('An unexpected error occurred while processing your file.');
     });
   });
+
+  describe('createDiagnosticError - new error codes', () => {
+    const newErrorCodes = [
+      'CORRUPTED_ZIP',
+      'ZIP_ENCRYPTED',
+      'EMPTY_FILE',
+      'FILE_TOO_LARGE',
+      'JSON_PARSE_ERROR',
+      'INVALID_DATA_STRUCTURE',
+      'WORKER_TIMEOUT',
+      'WORKER_INIT_ERROR',
+      'WORKER_CRASHED',
+      'INDEXEDDB_ERROR',
+      'QUOTA_EXCEEDED',
+      'IDB_NOT_SUPPORTED',
+      'IDB_PERMISSION_DENIED',
+      'UPLOAD_CANCELLED',
+      'CRYPTO_NOT_AVAILABLE',
+      'NETWORK_ERROR',
+    ] as const;
+
+    it.each(newErrorCodes)('should create diagnostic error for %s', code => {
+      const error = createDiagnosticError(code);
+
+      expect(error.code).toBe(code);
+      expect(error.title).toBeDefined();
+      expect(error.title.length).toBeGreaterThan(0);
+      expect(error.message).toBeDefined();
+      expect(error.message.length).toBeGreaterThan(0);
+      expect(error.fix).toBeDefined();
+      expect(error.fix.length).toBeGreaterThan(0);
+      expect(error.icon).toBeDefined();
+      expect(['error', 'warning']).toContain(error.severity);
+    });
+
+    it.each(newErrorCodes)('should allow custom message override for %s', code => {
+      const customMessage = 'Custom error message for testing';
+      const error = createDiagnosticError(code, customMessage);
+
+      expect(error.message).toBe(customMessage);
+      // Other fields should remain default
+      expect(error.code).toBe(code);
+      expect(error.title).toBeDefined();
+    });
+
+    describe('specific error details', () => {
+      it('should have correct details for CORRUPTED_ZIP', () => {
+        const error = createDiagnosticError('CORRUPTED_ZIP');
+
+        expect(error.title).toBe('Corrupted ZIP File');
+        expect(error.icon).toBe('zip');
+        expect(error.severity).toBe('error');
+        expect(error.message).toContain('damaged');
+      });
+
+      it('should have correct details for ZIP_ENCRYPTED', () => {
+        const error = createDiagnosticError('ZIP_ENCRYPTED');
+
+        expect(error.title).toBe('Password-Protected ZIP');
+        expect(error.icon).toBe('zip');
+        expect(error.severity).toBe('error');
+      });
+
+      it('should have correct details for EMPTY_FILE', () => {
+        const error = createDiagnosticError('EMPTY_FILE');
+
+        expect(error.title).toBe('Empty File');
+        expect(error.icon).toBe('file');
+        expect(error.message).toContain('0 bytes');
+      });
+
+      it('should have correct details for FILE_TOO_LARGE', () => {
+        const error = createDiagnosticError('FILE_TOO_LARGE');
+
+        expect(error.title).toBe('File Too Large');
+        expect(error.message).toContain('500MB');
+      });
+
+      it('should have correct details for JSON_PARSE_ERROR', () => {
+        const error = createDiagnosticError('JSON_PARSE_ERROR');
+
+        expect(error.title).toBe('Invalid Data Format');
+        expect(error.message).toContain('JSON');
+      });
+
+      it('should have correct details for WORKER_TIMEOUT', () => {
+        const error = createDiagnosticError('WORKER_TIMEOUT');
+
+        expect(error.title).toBe('Processing Timeout');
+        expect(error.message).toContain('60 seconds');
+      });
+
+      it('should have correct details for WORKER_CRASHED', () => {
+        const error = createDiagnosticError('WORKER_CRASHED');
+
+        expect(error.title).toBe('Processing Crashed');
+        expect(error.severity).toBe('error');
+      });
+
+      it('should have correct details for QUOTA_EXCEEDED', () => {
+        const error = createDiagnosticError('QUOTA_EXCEEDED');
+
+        expect(error.title).toBe('Storage Full');
+        expect(error.fix).toContain('Clear');
+      });
+
+      it('should have correct details for IDB_NOT_SUPPORTED', () => {
+        const error = createDiagnosticError('IDB_NOT_SUPPORTED');
+
+        expect(error.title).toBe('Storage Not Available');
+        expect(error.fix).toContain('incognito');
+      });
+
+      it('should have correct details for UPLOAD_CANCELLED', () => {
+        const error = createDiagnosticError('UPLOAD_CANCELLED');
+
+        expect(error.title).toBe('Upload Cancelled');
+        expect(error.severity).toBe('warning');
+      });
+
+      it('should have correct details for CRYPTO_NOT_AVAILABLE', () => {
+        const error = createDiagnosticError('CRYPTO_NOT_AVAILABLE');
+
+        expect(error.title).toBe('Security Feature Unavailable');
+        expect(error.message).toContain('crypto.subtle');
+      });
+
+      it('should have correct details for NETWORK_ERROR', () => {
+        const error = createDiagnosticError('NETWORK_ERROR');
+
+        expect(error.title).toBe('Network Error');
+        expect(error.fix).toContain('internet connection');
+      });
+    });
+  });
+
+  describe('mapWarningToDiagnosticCode - new codes', () => {
+    const newMappings = [
+      ['CORRUPTED_ZIP', 'CORRUPTED_ZIP'],
+      ['ZIP_ENCRYPTED', 'ZIP_ENCRYPTED'],
+      ['EMPTY_FILE', 'EMPTY_FILE'],
+      ['FILE_TOO_LARGE', 'FILE_TOO_LARGE'],
+      ['JSON_PARSE_ERROR', 'JSON_PARSE_ERROR'],
+      ['INVALID_DATA_STRUCTURE', 'INVALID_DATA_STRUCTURE'],
+      ['WORKER_TIMEOUT', 'WORKER_TIMEOUT'],
+      ['WORKER_INIT_ERROR', 'WORKER_INIT_ERROR'],
+      ['WORKER_CRASHED', 'WORKER_CRASHED'],
+      ['INDEXEDDB_ERROR', 'INDEXEDDB_ERROR'],
+      ['QUOTA_EXCEEDED', 'QUOTA_EXCEEDED'],
+      ['IDB_NOT_SUPPORTED', 'IDB_NOT_SUPPORTED'],
+      ['IDB_PERMISSION_DENIED', 'IDB_PERMISSION_DENIED'],
+      ['UPLOAD_CANCELLED', 'UPLOAD_CANCELLED'],
+      ['CRYPTO_NOT_AVAILABLE', 'CRYPTO_NOT_AVAILABLE'],
+      ['NETWORK_ERROR', 'NETWORK_ERROR'],
+    ] as const;
+
+    it.each(newMappings)('should map %s to %s', (input, expected) => {
+      expect(mapWarningToDiagnosticCode(input)).toBe(expected);
+    });
+  });
 });

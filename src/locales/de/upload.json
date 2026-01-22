@@ -41,7 +41,11 @@
         "title": "Falsche Datei",
         "description": "Lade die .zip-Datei hoch, nicht einen Ordner oder entpackte Dateien"
       }
-    }
+    },
+    "reportIssue": "Problem auf GitHub melden",
+    "copyDetails": "Fehlerdetails kopieren",
+    "copied": "Kopiert!",
+    "errorCode": "Fehlercode"
   },
   "waiting": {
     "title": "Warten auf Instagram...",

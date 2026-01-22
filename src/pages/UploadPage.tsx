@@ -34,7 +34,9 @@ export function Component() {
   };
 
   const handleBack = () => {
-    navigate(`${prefix}/wizard`);
+    // Use browser history to go back to the actual previous page
+    // (could be / if user clicked "I have my file", or /wizard if from guide)
+    navigate(-1);
   };
 
   const handleOpenWizard = () => {

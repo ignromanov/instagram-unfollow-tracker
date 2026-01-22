@@ -41,7 +41,11 @@
         "title": "間違ったファイル",
         "description": "フォルダや展開したファイルではなく、.zipファイルをアップロードしてください"
       }
-    }
+    },
+    "reportIssue": "GitHubでこの問題を報告",
+    "copyDetails": "エラー詳細をコピー",
+    "copied": "コピーしました！",
+    "errorCode": "エラーコード"
   },
   "waiting": {
     "title": "Instagramを待っています...",

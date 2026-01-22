@@ -1,6 +1,6 @@
-import type { ParseWarning } from '@/core/types';
-import { mapWarningToDiagnosticCode } from '@/core/types';
+import type { FileDiscovery, ParseWarning } from '@/core/types';
 import { analytics } from '@/lib/analytics';
+import { extractErrorCode } from '@/lib/error-classifier';
 import { isValidZipFile } from '@/lib/file-validation';
 import { dbCache, generateFileHash } from '@/lib/indexeddb/indexeddb-cache';
 import { parseOnMainThread, parseWithWorker } from '@/lib/parse-orchestration';
@@ -231,20 +231,29 @@ export function useFileUpload() {
         // Track return upload (user uploading new data)
         trackReturnUploadIfApplicable(resultFileHash);
       } catch (err) {
+        // Track cancelled uploads but don't show error
         if (abortControllerRef.current?.signal.aborted) {
-          return; // Don't show error for cancelled uploads
+          analytics.uploadErrorByCode(fileHash, 'UPLOAD_CANCELLED');
+          return;
         }
 
         const errorMessage = err instanceof Error ? err.message : 'Failed to parse ZIP';
 
-        // Track granular error by code
-        const errorCode = mapWarningToDiagnosticCode(errorMessage.split(':')[0] ?? 'UNKNOWN');
+        // Extract code from structured error or classify by text
+        const errorCode = extractErrorCode(err);
+
+        // Extract warnings and discovery if available
+        const warnings = (err as { warnings?: ParseWarning[] }).warnings;
+        const discovery = (err as { discovery?: FileDiscovery }).discovery;
+
         analytics.uploadErrorByCode(fileHash, errorCode, errorMessage);
 
         setUploadInfo({
           currentFileName: file.name,
           uploadStatus: 'error',
           uploadError: errorMessage,
+          parseWarnings: warnings,
+          fileDiscovery: discovery,
         });
         throw err;
       }

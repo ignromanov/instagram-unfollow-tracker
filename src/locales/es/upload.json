@@ -41,7 +41,11 @@
         "title": "Archivo incorrecto",
         "description": "Sube el archivo .zip, no una carpeta o archivos extraídos"
       }
-    }
+    },
+    "reportIssue": "Reportar este problema en GitHub",
+    "copyDetails": "Copiar detalles del error",
+    "copied": "¡Copiado!",
+    "errorCode": "Código de error"
   },
   "waiting": {
     "title": "Esperando a Instagram...",

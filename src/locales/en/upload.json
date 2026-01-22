@@ -41,7 +41,11 @@
         "title": "Wrong file",
         "description": "Upload the .zip file, not a folder or extracted files"
       }
-    }
+    },
+    "reportIssue": "Report this issue on GitHub",
+    "copyDetails": "Copy error details",
+    "copied": "Copied!",
+    "errorCode": "Error code"
   },
   "waiting": {
     "title": "Waiting for Instagram...",

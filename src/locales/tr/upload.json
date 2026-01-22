@@ -41,7 +41,11 @@
         "title": "Yanlış dosya",
         "description": ".zip dosyasını yükle, klasör veya çıkarılmış dosyaları değil"
       }
-    }
+    },
+    "reportIssue": "Bu sorunu GitHub'da bildir",
+    "copyDetails": "Hata detaylarını kopyala",
+    "copied": "Kopyalandı!",
+    "errorCode": "Hata kodu"
   },
   "waiting": {
     "title": "Instagram bekleniyor...",

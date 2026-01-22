@@ -281,14 +281,13 @@ describe('generateFileHash', () => {
     expect(hash).toMatch(/^[0-9a-f]{64}$/);
   });
 
-  it('should handle empty files', async () => {
+  it('should throw EMPTY_FILE error for empty files', async () => {
     const emptyFile = new File([], 'empty.zip', { type: 'application/zip' });
 
-    const hash = await generateFileHash(emptyFile);
-
-    expect(hash).toMatch(/^[0-9a-f]{64}$/);
-    // SHA-256 of empty string is known
-    expect(hash).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+    await expect(generateFileHash(emptyFile)).rejects.toMatchObject({
+      message: 'File is empty',
+      code: 'EMPTY_FILE',
+    });
   });
 
   it('should handle binary content', async () => {

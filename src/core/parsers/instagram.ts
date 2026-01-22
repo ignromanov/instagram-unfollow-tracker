@@ -55,7 +55,35 @@ export async function parseFollowersJson(jsonText: string): Promise<string[]> {
 
 // eslint-disable-next-line complexity -- Parser naturally has high complexity due to multiple file format checks and error paths
 export async function parseInstagramZipFile(file: File): Promise<ParseResult> {
-  const zip = await JSZip.loadAsync(file);
+  // Try to load ZIP with error handling for corrupted files
+  let zip: JSZip;
+  try {
+    zip = await JSZip.loadAsync(file);
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    let code = 'CORRUPTED_ZIP';
+    let message = 'Failed to read ZIP file';
+
+    if (errorMessage.toLowerCase().includes('encrypted')) {
+      code = 'ZIP_ENCRYPTED';
+      message = 'ZIP file is password-protected';
+    }
+
+    return {
+      data: createEmptyParsedAll(),
+      warnings: [
+        {
+          code,
+          message: `${message}: ${errorMessage}`,
+          severity: 'error',
+          fix: 'Try re-downloading your data from Instagram Settings.',
+        },
+      ],
+      discovery: { format: 'unknown', isInstagramExport: false, files: [] },
+      hasMinimalData: false,
+    };
+  }
+
   const allFiles = Object.keys(zip.files ?? {});
   const analysis = analyzeZipStructure(allFiles);
 

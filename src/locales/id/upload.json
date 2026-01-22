@@ -41,7 +41,11 @@
         "title": "File salah",
         "description": "Unggah file .zip, bukan folder atau file yang sudah diekstrak"
       }
-    }
+    },
+    "reportIssue": "Laporkan masalah ini di GitHub",
+    "copyDetails": "Salin detail error",
+    "copied": "Tersalin!",
+    "errorCode": "Kode error"
   },
   "waiting": {
     "title": "Menunggu Instagram...",

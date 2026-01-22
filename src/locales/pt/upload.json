@@ -41,7 +41,11 @@
         "title": "Arquivo errado",
         "description": "Envie o arquivo .zip, não uma pasta ou arquivos extraídos"
       }
-    }
+    },
+    "reportIssue": "Reportar problema no GitHub",
+    "copyDetails": "Copiar detalhes do erro",
+    "copied": "Copiado!",
+    "errorCode": "Código do erro"
   },
   "waiting": {
     "title": "Aguardando o Instagram...",
