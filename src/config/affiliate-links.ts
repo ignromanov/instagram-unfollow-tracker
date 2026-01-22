@@ -15,9 +15,8 @@ export const AFFILIATE_LINKS = {
   /** VistaCreate - Design tool (ex-Crello) */
   vistacreate: 'https://tracking.crello.com/SH17v',
 
-  // TODO: Uncomment when affiliate programs approve
-  // /** Predis.ai - AI content generation */
-  // predis: 'https://predis.ai/?ref=safeunfollow',
+  /** Predis.ai - AI content generation */
+  predis: 'https://predis.ai?ref=safeunfollow',
 
   // /** ManyChat - Instagram DM automation */
   // manychat: 'https://manychat.com/?ref=safeunfollow',

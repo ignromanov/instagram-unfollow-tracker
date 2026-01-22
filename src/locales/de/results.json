@@ -58,7 +58,7 @@
   },
   "rescue": {
     "critical": {
-      "title": "Du hast {{unfollowedPercent}}% verloren — so holst du sie zurück",
+      "title": "Du hast {{unfollowedPercent}}% verloren — erhole dich in 7 Tagen",
       "subtitle": {
         "influencer": "Mit {{count}}+ Followern trifft jeder Verlust deine Reichweite. Erhole dich in 7 Tagen:",
         "power": "Du bist im Top-Tier — smarte Creator erholen sich schnell mit diesen Tools:",
@@ -97,6 +97,9 @@
     },
     "dismiss": "Vielleicht später",
     "disclaimer": "Handverlesene Tools, die wir empfehlen. Affiliate-Links finanzieren kostenlose Updates — keine Kosten für dich.",
+    "urgency": {
+      "critical": "Jetzt handeln — Engagement sinkt 40% nach 48 Stunden"
+    },
     "ariaLabel": "Empfohlene Tools zur Verbesserung deiner Instagram-Präsenz",
     "badges": {
       "popular": "Beliebt",
@@ -104,7 +107,7 @@
       "new": "Neu"
     },
     "recommended": "Empfohlen",
-    "tryTool": "{{name}} testen",
+    "tryTool": "Mein {{name}} Test sichern",
     "price": {
       "freeTrial7": "7 Tage gratis",
       "freeTrial14": "14 Tage gratis",

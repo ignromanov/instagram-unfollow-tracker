@@ -58,7 +58,7 @@
   },
   "rescue": {
     "critical": {
-      "title": "{{unfollowedPercent}}%を失いました — 回復方法はこちら",
+      "title": "{{unfollowedPercent}}%を失いました — 7日で回復しましょう",
       "subtitle": {
         "influencer": "{{count}}+フォロワーでは、各損失がリーチに影響。7日で回復：",
         "power": "トップティアにいます — スマートなクリエイターはこれで素早く回復：",
@@ -97,6 +97,9 @@
     },
     "dismiss": "後で",
     "disclaimer": "厳選したおすすめツール。アフィリエイトリンクは無料アップデートを支援 — あなたへの追加費用なし。",
+    "urgency": {
+      "critical": "今すぐ行動 — 48時間後にエンゲージメントが40%低下"
+    },
     "ariaLabel": "Instagramプレゼンスを向上させるおすすめツール",
     "badges": {
       "popular": "人気",
@@ -104,7 +107,7 @@
       "new": "新着"
     },
     "recommended": "おすすめ",
-    "tryTool": "{{name}}を試す",
+    "tryTool": "{{name}}の無料体験を始める",
     "price": {
       "freeTrial7": "7日間無料",
       "freeTrial14": "14日間無料",

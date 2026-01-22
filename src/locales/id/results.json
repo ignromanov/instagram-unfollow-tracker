@@ -58,7 +58,7 @@
   },
   "rescue": {
     "critical": {
-      "title": "Anda kehilangan {{unfollowedPercent}}% — begini cara pulih",
+      "title": "Anda kehilangan {{unfollowedPercent}}% — pulih dalam 7 hari",
       "subtitle": {
         "influencer": "Dengan {{count}}+ pengikut, setiap kehilangan mempengaruhi jangkauan. Pulih dalam 7 hari:",
         "power": "Anda di tier teratas — kreator cerdas pulih cepat dengan ini:",
@@ -97,6 +97,9 @@
     },
     "dismiss": "Mungkin nanti",
     "disclaimer": "Tools pilihan yang kami rekomendasikan. Tautan afiliasi mendanai pembaruan gratis — tanpa biaya tambahan untuk Anda.",
+    "urgency": {
+      "critical": "Bertindak sekarang — engagement turun 40% setelah 48 jam"
+    },
     "ariaLabel": "Tools yang direkomendasikan untuk meningkatkan kehadiran Instagram Anda",
     "badges": {
       "popular": "Populer",
@@ -104,7 +107,7 @@
       "new": "Baru"
     },
     "recommended": "Direkomendasikan",
-    "tryTool": "Coba {{name}}",
+    "tryTool": "Dapatkan Trial {{name}} Saya",
     "price": {
       "freeTrial7": "7 hari gratis",
       "freeTrial14": "14 hari gratis",

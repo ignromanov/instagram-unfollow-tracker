@@ -77,9 +77,9 @@ export function getSegmentKey(segment: UserSegment): SegmentKey {
  * - Growth: Let them explore first
  */
 export const SHOW_DELAY_BY_SEVERITY: Record<LossSeverity, number> = {
-  critical: 15000, // 15s - urgent
-  warning: 25000, // 25s - analyzing
-  growth: 40000, // 40s - exploring
+  critical: 5000, // 5s - strike while emotion is hot (loss aversion peak)
+  warning: 15000, // 15s - time to process the data
+  growth: 30000, // 30s - let them explore first
 };
 
 /**

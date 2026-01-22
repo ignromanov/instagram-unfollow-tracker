@@ -1,6 +1,4 @@
-import { Video, BarChart3, Palette } from 'lucide-react';
-// TODO: Uncomment when affiliate programs approve
-// import { Sparkles, MessageSquare, Calendar } from 'lucide-react';
+import { Video, BarChart3, Palette, Sparkles } from 'lucide-react';
 
 import { AFFILIATE_LINKS } from '@/config/affiliate-links';
 import type { RescueTool, UserSegment, SegmentKey } from './types';
@@ -51,21 +49,21 @@ export const RESCUE_TOOLS: Record<string, RescueTool> = {
     pricing: 'freemium',
     priceKey: 'rescue.price.freeForever',
     socialKey: 'rescue.social.designs10m',
-    badge: 'new',
+    // No badge - "Free forever" in trust signals is sufficient
   },
-  // TODO: Uncomment when affiliate programs approve
-  // predis: {
-  //   id: 'predis',
-  //   name: 'Predis.ai',
-  //   descKey: 'rescue.tools.predis',
-  //   icon: Sparkles,
-  //   url: AFFILIATE_LINKS.predis,
-  //   color: 'text-blue-500',
-  //   category: 'content',
-  //   pricing: 'freemium',
-  //   priceKey: 'rescue.price.freePlan',
-  //   socialKey: 'rescue.social.posts1m',
-  // },
+  predis: {
+    id: 'predis',
+    name: 'Predis.ai',
+    descKey: 'rescue.tools.predis',
+    icon: Sparkles,
+    url: AFFILIATE_LINKS.predis,
+    color: 'text-blue-500',
+    category: 'content',
+    pricing: 'freemium',
+    priceKey: 'rescue.price.freePlan',
+    socialKey: 'rescue.social.posts1m',
+    badge: 'popular', // AI content generation is trending
+  },
   // manychat: {
   //   id: 'manychat',
   //   name: 'ManyChat',
@@ -110,32 +108,37 @@ export const RESCUE_TOOLS: Record<string, RescueTool> = {
  * Tool selection matrix: maps segment to recommended tools (ordered by priority)
  *
  * Logic:
- * - Critical: Focus on content recovery (submagic for viral content)
+ * - Critical: Focus on content recovery (predis/submagic for fast content)
  * - Warning: Focus on optimization (metricool for analytics)
  * - Growth: Focus on scaling (balanced approach)
+ *
+ * Predis.ai positioning:
+ * - Best for users who need to create content quickly (AI-powered)
+ * - Complements Submagic (video) with posts/carousels
+ * - Strong for critical/warning where content velocity matters
  */
 const TOOL_MATRIX: Record<SegmentKey, string[]> = {
-  // Critical - content recovery focus (submagic first for viral content)
-  critical_influencer: ['submagic', 'vistacreate', 'metricool'],
-  critical_power: ['submagic', 'vistacreate', 'metricool'],
-  critical_regular: ['vistacreate', 'submagic', 'metricool'],
-  critical_casual: ['vistacreate', 'submagic', 'metricool'],
+  // Critical - content recovery focus (AI content first for fast recovery)
+  critical_influencer: ['predis', 'submagic', 'metricool'],
+  critical_power: ['predis', 'submagic', 'metricool'],
+  critical_regular: ['predis', 'vistacreate', 'metricool'],
+  critical_casual: ['vistacreate', 'predis', 'metricool'],
 
-  // Warning - optimization focus (metricool first for analytics)
-  warning_influencer: ['metricool', 'vistacreate', 'submagic'],
-  warning_power: ['metricool', 'vistacreate', 'submagic'],
-  warning_regular: ['vistacreate', 'metricool', 'submagic'],
-  warning_casual: ['vistacreate', 'metricool', 'submagic'],
+  // Warning - optimization focus (analytics + content balance)
+  warning_influencer: ['metricool', 'predis', 'submagic'],
+  warning_power: ['metricool', 'predis', 'submagic'],
+  warning_regular: ['predis', 'metricool', 'vistacreate'],
+  warning_casual: ['vistacreate', 'predis', 'metricool'],
 
-  // Growth - scaling focus (metricool first for growth tracking)
-  growth_influencer: ['metricool', 'vistacreate', 'submagic'],
-  growth_power: ['metricool', 'vistacreate', 'submagic'],
-  growth_regular: ['vistacreate', 'metricool', 'submagic'],
-  growth_casual: ['vistacreate', 'submagic', 'metricool'],
+  // Growth - scaling focus (AI content for consistent posting)
+  growth_influencer: ['metricool', 'predis', 'submagic'],
+  growth_power: ['predis', 'metricool', 'submagic'],
+  growth_regular: ['predis', 'vistacreate', 'metricool'],
+  growth_casual: ['vistacreate', 'predis', 'metricool'],
 };
 
 /** Default tools if segment not found */
-const DEFAULT_TOOLS = ['vistacreate', 'metricool', 'submagic'];
+const DEFAULT_TOOLS = ['predis', 'metricool', 'vistacreate'];
 
 /**
  * Get recommended tools for a user segment

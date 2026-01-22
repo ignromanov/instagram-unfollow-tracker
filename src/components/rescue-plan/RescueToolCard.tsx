@@ -69,8 +69,8 @@ export function RescueToolCard({ tool, index, onToolClick, onToolHover }: Rescue
 
       {/* Content area - grows to fill space */}
       <div className="flex-grow">
-        {/* Tool header */}
-        <div className="flex items-center gap-3 mb-2 mt-2">
+        {/* Tool header with pricing inline */}
+        <div className="flex items-center gap-3 mb-1 mt-2">
           <tool.icon
             className={`w-5 h-5 ${tool.color} group-hover:scale-110 transition-transform`}
           />
@@ -79,16 +79,17 @@ export function RescueToolCard({ tool, index, onToolClick, onToolHover }: Rescue
           </span>
         </div>
 
+        {/* Trust signals - moved up for visibility */}
+        <div className="flex items-center gap-2 text-xs mb-2">
+          <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+            {t(tool.priceKey as any)}
+          </span>
+          <span className="text-zinc-300 dark:text-zinc-600">•</span>
+          <span className="text-zinc-400">{t(tool.socialKey as any)}</span>
+        </div>
+
         {/* Description */}
         <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{t(tool.descKey as any)}</p>
-      </div>
-
-      {/* Trust signals - fixed height row */}
-      <div className="flex items-center justify-between text-xs mb-3 gap-2">
-        <span className="text-emerald-600 dark:text-emerald-400 font-semibold whitespace-nowrap">
-          {t(tool.priceKey as any)}
-        </span>
-        <span className="text-zinc-400 whitespace-nowrap">{t(tool.socialKey as any)}</span>
       </div>
 
       {/* CTA Button - always at bottom */}

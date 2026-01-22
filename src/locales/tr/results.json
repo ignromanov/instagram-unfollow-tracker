@@ -58,7 +58,7 @@
   },
   "rescue": {
     "critical": {
-      "title": "%{{unfollowedPercent}} kaybettiniz — işte nasıl kurtarırsınız",
+      "title": "%{{unfollowedPercent}} kaybettiniz — 7 günde kurtarın",
       "subtitle": {
         "influencer": "{{count}}+ takipçiyle her kayıp erişiminizi etkiler. 7 günde kurtarın:",
         "power": "Üst seviyedesiniz — akıllı içerik üreticileri bunlarla hızla toparlanır:",
@@ -97,6 +97,9 @@
     },
     "dismiss": "Belki sonra",
     "disclaimer": "Önerdiğimiz el yapımı seçilmiş araçlar. Ortaklık bağlantıları ücretsiz güncellemeleri finanse eder — size ekstra maliyet yok.",
+    "urgency": {
+      "critical": "Şimdi harekete geçin — etkileşim 48 saat sonra %40 düşer"
+    },
     "ariaLabel": "Instagram varlığınızı geliştirmek için önerilen araçlar",
     "badges": {
       "popular": "Popüler",
@@ -104,7 +107,7 @@
       "new": "Yeni"
     },
     "recommended": "Önerilen",
-    "tryTool": "{{name}} Dene",
+    "tryTool": "{{name}} Denememi Al",
     "price": {
       "freeTrial7": "7 gün ücretsiz",
       "freeTrial14": "14 gün ücretsiz",

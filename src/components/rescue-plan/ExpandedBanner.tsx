@@ -79,8 +79,18 @@ export function ExpandedBanner({
           </div>
         </div>
 
+        {/* Urgency element for critical severity */}
+        {segment.severity === 'critical' && (
+          <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl mb-4 border border-orange-200 dark:border-orange-800">
+            <AlertTriangle className="w-4 h-4 text-orange-600 animate-pulse" />
+            <span className="text-sm font-semibold text-orange-700 dark:text-orange-400">
+              {t('rescue.urgency.critical')}
+            </span>
+          </div>
+        )}
+
         {/* Tools grid */}
-        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-[1.3fr_1fr_1fr] gap-4 max-w-4xl mx-auto">
           {tools.map((tool, index) => (
             <RescueToolCard
               key={tool.id}
