@@ -1,6 +1,6 @@
-import { Video, BarChart3 } from 'lucide-react';
+import { Video, BarChart3, Palette } from 'lucide-react';
 // TODO: Uncomment when affiliate programs approve
-// import { Sparkles, MessageSquare, Palette, Calendar } from 'lucide-react';
+// import { Sparkles, MessageSquare, Calendar } from 'lucide-react';
 
 import { AFFILIATE_LINKS } from '@/config/affiliate-links';
 import type { RescueTool, UserSegment, SegmentKey } from './types';
@@ -39,6 +39,19 @@ export const RESCUE_TOOLS: Record<string, RescueTool> = {
     priceKey: 'rescue.price.freePlan',
     socialKey: 'rescue.social.users200k',
     // No badge - "Free Plan" already shown in trust signals
+  },
+  vistacreate: {
+    id: 'vistacreate',
+    name: 'VistaCreate',
+    descKey: 'rescue.tools.vistacreate',
+    icon: Palette,
+    url: AFFILIATE_LINKS.vistacreate,
+    color: 'text-cyan-500',
+    category: 'design',
+    pricing: 'freemium',
+    priceKey: 'rescue.price.freeForever',
+    socialKey: 'rescue.social.designs10m',
+    badge: 'new',
   },
   // TODO: Uncomment when affiliate programs approve
   // predis: {
@@ -103,26 +116,26 @@ export const RESCUE_TOOLS: Record<string, RescueTool> = {
  */
 const TOOL_MATRIX: Record<SegmentKey, string[]> = {
   // Critical - content recovery focus (submagic first for viral content)
-  critical_influencer: ['submagic', 'metricool'],
-  critical_power: ['submagic', 'metricool'],
-  critical_regular: ['submagic', 'metricool'],
-  critical_casual: ['submagic', 'metricool'],
+  critical_influencer: ['submagic', 'vistacreate', 'metricool'],
+  critical_power: ['submagic', 'vistacreate', 'metricool'],
+  critical_regular: ['vistacreate', 'submagic', 'metricool'],
+  critical_casual: ['vistacreate', 'submagic', 'metricool'],
 
   // Warning - optimization focus (metricool first for analytics)
-  warning_influencer: ['metricool', 'submagic'],
-  warning_power: ['metricool', 'submagic'],
-  warning_regular: ['metricool', 'submagic'],
-  warning_casual: ['metricool', 'submagic'],
+  warning_influencer: ['metricool', 'vistacreate', 'submagic'],
+  warning_power: ['metricool', 'vistacreate', 'submagic'],
+  warning_regular: ['vistacreate', 'metricool', 'submagic'],
+  warning_casual: ['vistacreate', 'metricool', 'submagic'],
 
   // Growth - scaling focus (metricool first for growth tracking)
-  growth_influencer: ['metricool', 'submagic'],
-  growth_power: ['metricool', 'submagic'],
-  growth_regular: ['metricool', 'submagic'],
-  growth_casual: ['submagic', 'metricool'],
+  growth_influencer: ['metricool', 'vistacreate', 'submagic'],
+  growth_power: ['metricool', 'vistacreate', 'submagic'],
+  growth_regular: ['vistacreate', 'metricool', 'submagic'],
+  growth_casual: ['vistacreate', 'submagic', 'metricool'],
 };
 
 /** Default tools if segment not found */
-const DEFAULT_TOOLS = ['submagic', 'metricool'];
+const DEFAULT_TOOLS = ['vistacreate', 'metricool', 'submagic'];
 
 /**
  * Get recommended tools for a user segment

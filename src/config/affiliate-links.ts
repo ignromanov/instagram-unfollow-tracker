@@ -12,15 +12,15 @@ export const AFFILIATE_LINKS = {
   /** Metricool - Analytics and scheduling */
   metricool: 'https://f.mtr.cool/CHZTJD',
 
+  /** VistaCreate - Design tool (ex-Crello) */
+  vistacreate: 'https://tracking.crello.com/SH17v',
+
   // TODO: Uncomment when affiliate programs approve
   // /** Predis.ai - AI content generation */
   // predis: 'https://predis.ai/?ref=safeunfollow',
 
   // /** ManyChat - Instagram DM automation */
   // manychat: 'https://manychat.com/?ref=safeunfollow',
-
-  // /** VistaCreate - Design tool (ex-Crello) */
-  // vistacreate: 'https://create.vista.com/?ref=safeunfollow',
 
   // /** Later - Social media scheduling */
   // later: 'https://later.com/?ref=safeunfollow',

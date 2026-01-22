@@ -14,6 +14,7 @@ export type {
   RescueTool,
   SegmentKey,
   SeverityStyle,
+  ToolBadge,
 } from './types';
 
 // Segmentation
@@ -28,3 +29,6 @@ export {
 
 // Tools
 export { RESCUE_TOOLS, getToolsForSegment, getAllTools } from './tools';
+
+// i18n Keys
+export { getTitleKey, getSubtitleKey } from './i18n-keys';
