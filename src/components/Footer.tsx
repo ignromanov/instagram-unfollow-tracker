@@ -31,29 +31,29 @@ export function Footer() {
   };
 
   return (
-    <footer className="mt-12 md:mt-20 border-t border-border bg-surface py-10 md:py-14">
+    <footer className="mt-12 lg:mt-20 border-t border-border bg-surface py-10 lg:py-14">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-20">
           {/* Logo & Description */}
-          <div className="text-center md:text-left">
-            <div className="font-bold text-2xl mb-6 flex items-center justify-center md:justify-start gap-4 group">
+          <div className="text-center lg:text-left">
+            <div className="font-bold text-2xl mb-6 flex items-center justify-center lg:justify-start gap-4 group">
               <Logo
                 size={56}
-                className="md:w-16 md:h-16 shadow-2xl group-hover:rotate-12 transition-transform"
+                className="lg:w-16 lg:h-16 shadow-2xl group-hover:rotate-12 transition-transform"
               />
-              <span className="text-3xl md:text-5xl font-display font-extrabold tracking-tight leading-none">
+              <span className="text-3xl lg:text-5xl font-display font-extrabold tracking-tight leading-none">
                 SafeUnfollow<span className="text-primary">.app</span>
               </span>
             </div>
-            <p className="text-zinc-500 dark:text-zinc-400 max-w-sm text-base md:text-lg leading-relaxed font-medium mx-auto md:mx-0">
+            <p className="text-zinc-500 dark:text-zinc-400 max-w-sm text-base lg:text-lg leading-relaxed font-medium mx-auto lg:mx-0">
               {t('footer.description')}
             </p>
           </div>
 
           {/* Links & Support */}
-          <div className="flex flex-col items-center md:items-end gap-8">
+          <div className="flex flex-col items-center lg:items-end gap-8">
             {/* Navigation Links */}
-            <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-12 gap-y-6 text-xs md:text-sm font-black uppercase tracking-widest text-zinc-400">
+            <div className="flex flex-wrap items-center justify-center lg:justify-end gap-x-12 gap-y-6 text-xs lg:text-sm font-black uppercase tracking-widest text-zinc-400">
               <Link
                 to={`${prefix}/privacy`}
                 className="hover:text-primary transition-colors py-2 px-1 cursor-pointer"
@@ -133,15 +133,15 @@ export function Footer() {
             </div>
 
             {/* BuyMeaCoffee Section */}
-            <div className="bg-[oklch(0.5_0_0_/_0.03)] p-6 md:p-8 rounded-3xl border border-border flex flex-col items-center gap-5 shadow-sm w-full md:w-auto">
-              <p className="text-xs md:text-sm font-black text-zinc-500 uppercase tracking-widest leading-none">
+            <div className="bg-[oklch(0.5_0_0_/_0.03)] p-6 lg:p-8 rounded-3xl border border-border flex flex-col items-center gap-5 shadow-sm w-full lg:w-auto">
+              <p className="text-xs lg:text-sm font-black text-zinc-500 uppercase tracking-widest leading-none">
                 {t('footer.keepItFree')}
               </p>
               <a
                 href="https://www.buymeacoffee.com/ignromanov"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 px-10 py-5 bg-primary text-primary-foreground rounded-2xl font-black text-sm md:text-lg shadow-xl hover:scale-105 active:scale-95 transition-all w-full md:w-auto justify-center cursor-pointer"
+                className="group flex items-center gap-4 px-10 py-5 bg-primary text-primary-foreground rounded-2xl font-black text-sm lg:text-lg shadow-xl hover:scale-105 active:scale-95 transition-all w-full lg:w-auto justify-center cursor-pointer"
                 onClick={() => analytics.linkClick('buy-me-coffee')}
               >
                 <Shield size={22} className="fill-current" />
@@ -152,15 +152,15 @@ export function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border pt-6 text-sm text-zinc-400 font-bold">
+        <div className="mt-8 lg:mt-10 flex flex-col lg:flex-row items-center justify-between gap-4 border-t border-border pt-6 text-sm text-zinc-400 font-bold">
           <div className="flex items-center gap-2">
             {t('footer.madeWithLove')}{' '}
             <Heart size={16} className="text-rose-500 fill-current animate-pulse" />{' '}
             {t('footer.forTheCommunity')}
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-10">
+          <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-10">
             <span>{t('footer.copyright')}</span>
-            <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-border" />
+            <span className="hidden lg:block w-1.5 h-1.5 rounded-full bg-border" />
             <span className="text-primary opacity-90 uppercase tracking-tighter">
               {t('footer.license')}
             </span>
