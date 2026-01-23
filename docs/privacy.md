@@ -127,11 +127,11 @@ If you deploy your own version:
 ## Contact & Questions
 
 ### Privacy Questions
-- **GitHub Issues**: [Report privacy concerns](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Security**: See [SECURITY.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/SECURITY.md) for security-related issues
+- **GitHub Issues**: [Report privacy concerns](https://github.com/ignromanov/safe-unfollow/issues)
+- **Security**: See [SECURITY.md](https://github.com/ignromanov/safe-unfollow/blob/main/SECURITY.md) for security-related issues
 
 ### Verification
-- **Source Code**: [GitHub Repository](https://github.com/ignromanov/instagram-unfollow-tracker)
+- **Source Code**: [GitHub Repository](https://github.com/ignromanov/safe-unfollow)
 - **Live Demo**: [Try the app](https://safeunfollow.app)
 
 ## Changes to This Policy

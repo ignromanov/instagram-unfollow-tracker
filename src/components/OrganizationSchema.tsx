@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 
 const BASE_URL = 'https://safeunfollow.app';
-const GITHUB_URL = 'https://github.com/ignromanov/instagram-unfollow-tracker';
+const GITHUB_URL = 'https://github.com/ignromanov/safe-unfollow';
 
 /**
  * Organization and SoftwareApplication schema for SEO

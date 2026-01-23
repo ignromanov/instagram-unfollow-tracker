@@ -112,7 +112,7 @@ Instagram Unfollow Tracker is designed to be accessible to all users, including 
 ## Reporting Accessibility Issues
 
 ### How to Report
-- **GitHub Issues**: [Report accessibility issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
+- **GitHub Issues**: [Report accessibility issues](https://github.com/ignromanov/safe-unfollow/issues)
 - **Label**: Use the "accessibility" label when reporting
 - **Details**: Include your browser, screen reader, and specific issue
 
@@ -138,8 +138,8 @@ Instagram Unfollow Tracker is designed to be accessible to all users, including 
 ## Contact & Support
 
 ### Accessibility Questions
-- **GitHub Issues**: [Ask accessibility questions](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Discussions**: [Community discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
+- **GitHub Issues**: [Ask accessibility questions](https://github.com/ignromanov/safe-unfollow/issues)
+- **Discussions**: [Community discussions](https://github.com/ignromanov/safe-unfollow/discussions)
 
 ### Accessibility Testing
 We welcome feedback from users with disabilities. If you encounter accessibility barriers, please report them so we can improve the experience for everyone.

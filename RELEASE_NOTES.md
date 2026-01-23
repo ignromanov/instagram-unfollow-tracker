@@ -120,8 +120,8 @@ We're excited to announce **v1.5.0** — a major internationalization milestone 
 None at this time! If you encounter any issues:
 
 - Check [Troubleshooting Guide](docs/troubleshooting.md)
-- Search [existing issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- [Report a new issue](https://github.com/ignromanov/instagram-unfollow-tracker/issues/new/choose)
+- Search [existing issues](https://github.com/ignromanov/safe-unfollow/issues)
+- [Report a new issue](https://github.com/ignromanov/safe-unfollow/issues/new/choose)
 
 ## 🔮 What's Next
 
@@ -137,9 +137,9 @@ See our [Roadmap](docs/roadmap.md) for the full list.
 
 **Try it now:** [safeunfollow.app](https://safeunfollow.app)
 
-**Source code:** [github.com/ignromanov/instagram-unfollow-tracker](https://github.com/ignromanov/instagram-unfollow-tracker)
+**Source code:** [github.com/ignromanov/safe-unfollow](https://github.com/ignromanov/safe-unfollow)
 
-**Questions?** Check the [FAQ](docs/faq.md) or [open an issue](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
+**Questions?** Check the [FAQ](docs/faq.md) or [open an issue](https://github.com/ignromanov/safe-unfollow/issues)
 
 ---
 

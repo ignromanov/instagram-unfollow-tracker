@@ -151,7 +151,7 @@ export function TermsOfService({ onBack }: TermsOfServiceProps) {
             use, copy, modify, and distribute the software in accordance with the license terms. The
             source code is available at{' '}
             <a
-              href="https://github.com/ignromanov/instagram-unfollow-tracker"
+              href="https://github.com/ignromanov/safe-unfollow"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

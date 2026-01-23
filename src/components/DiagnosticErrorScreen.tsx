@@ -60,7 +60,7 @@ function shouldShowReportIssue(code: DiagnosticErrorCode): boolean {
  * Generates a pre-filled GitHub issue URL for error reporting.
  */
 function generateGitHubIssueUrl(error: DiagnosticError): string {
-  const repo = 'ignromanov/instagram-unfollow-tracker';
+  const repo = 'ignromanov/safe-unfollow';
   const title = encodeURIComponent(`[Bug] Upload error: ${error.code}`);
 
   const body = encodeURIComponent(`## Error Details

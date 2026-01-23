@@ -96,9 +96,9 @@ This is normal and expected:
 ## Development & Support
 
 ### How to contribute or report a bug?
-- **Issues**: [GitHub Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Pull Requests**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md)
-- **Security**: For security matters, see [SECURITY.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/SECURITY.md)
+- **Issues**: [GitHub Issues](https://github.com/ignromanov/safe-unfollow/issues)
+- **Pull Requests**: See [CONTRIBUTING.md](https://github.com/ignromanov/safe-unfollow/blob/main/CONTRIBUTING.md)
+- **Security**: For security matters, see [SECURITY.md](https://github.com/ignromanov/safe-unfollow/blob/main/SECURITY.md)
 
 ### Can I modify the code for my needs?
 **Absolutely!** The project is open source (MIT license). You can:
@@ -150,13 +150,13 @@ The app is available in **11 languages**: English, Spanish, Russian, German, Por
 ## Community & Support
 
 ### How can I contribute to the project?
-- **Code contributions**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md)
-- **Bug reports**: [GitHub Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Feature requests**: [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
+- **Code contributions**: See [CONTRIBUTING.md](https://github.com/ignromanov/safe-unfollow/blob/main/CONTRIBUTING.md)
+- **Bug reports**: [GitHub Issues](https://github.com/ignromanov/safe-unfollow/issues)
+- **Feature requests**: [GitHub Discussions](https://github.com/ignromanov/safe-unfollow/discussions)
 - **Documentation**: Help improve guides and add examples
 
 ### Is there a community or forum?
-Yes! Join our [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions) for:
+Yes! Join our [GitHub Discussions](https://github.com/ignromanov/safe-unfollow/discussions) for:
 - Feature discussions
 - User support
 - Community tips and tricks
@@ -166,4 +166,4 @@ Yes! Join our [GitHub Discussions](https://github.com/ignromanov/instagram-unfol
 Updates are released regularly based on community feedback and development progress. Check the [roadmap](/docs/roadmap/) for upcoming features.
 
 ### Can I suggest new features?
-Absolutely! We welcome feature suggestions. Please use [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions) to share your ideas.
+Absolutely! We welcome feature suggestions. Please use [GitHub Discussions](https://github.com/ignromanov/safe-unfollow/discussions) to share your ideas.

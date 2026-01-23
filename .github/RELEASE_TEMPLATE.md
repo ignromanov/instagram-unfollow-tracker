@@ -71,8 +71,8 @@ Visit [safeunfollow.app](https://safeunfollow.app)
 **Local Development:**
 
 ```bash
-git clone https://github.com/ignromanov/instagram-unfollow-tracker.git
-cd instagram-unfollow-tracker
+git clone https://github.com/ignromanov/safe-unfollow.git
+cd safe-unfollow
 npm install
 npm run dev
 ```
@@ -99,7 +99,7 @@ Thank you to everyone who contributed to this release!
 - **[Full Changelog](../CHANGELOG.md#XYZ)**
 - **[Migration Guide](../docs/migration-guide.md)** (if applicable)
 - **[Documentation](../README.md#documentation)**
-- **[Report Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)**
+- **[Report Issues](https://github.com/ignromanov/safe-unfollow/issues)**
 
 ---
 

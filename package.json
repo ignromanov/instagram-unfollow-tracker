@@ -1,5 +1,5 @@
 {
-  "name": "instagram-unfollow-tracker",
+  "name": "safe-unfollow",
   "private": true,
   "version": "1.5.0",
   "type": "module",
@@ -19,10 +19,10 @@
   "homepage": "https://safeunfollow.app",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ignromanov/instagram-unfollow-tracker.git"
+    "url": "git+https://github.com/ignromanov/safe-unfollow.git"
   },
   "bugs": {
-    "url": "https://github.com/ignromanov/instagram-unfollow-tracker/issues"
+    "url": "https://github.com/ignromanov/safe-unfollow/issues"
   },
   "license": "MIT",
   "scripts": {

@@ -169,7 +169,7 @@ export function PrivacyPolicy({ onBack }: PrivacyPolicyProps) {
             Our code is open source under the MIT license. You can audit exactly what the
             application does at{' '}
             <a
-              href="https://github.com/ignromanov/instagram-unfollow-tracker"
+              href="https://github.com/ignromanov/safe-unfollow"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"

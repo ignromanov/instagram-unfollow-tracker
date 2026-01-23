@@ -18,7 +18,7 @@ If you found a bug, please:
 
 1. Check the [Troubleshooting Guide](https://safeunfollow.app/docs/troubleshooting) first
 2. Check the [FAQ](https://safeunfollow.app/docs/faq) for common issues
-3. Search existing [issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
+3. Search existing [issues](https://github.com/ignromanov/safe-unfollow/issues)
 4. Create a new bug report with:
    - Clear description of the problem
    - Steps to reproduce
@@ -30,7 +30,7 @@ If you found a bug, please:
 Have an idea for improvement?
 
 1. Check the [roadmap](https://safeunfollow.app/docs/roadmap)
-2. Search existing [feature requests](https://github.com/ignromanov/instagram-unfollow-tracker/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+2. Search existing [feature requests](https://github.com/ignromanov/safe-unfollow/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 3. Create a new feature request with:
    - Clear description of the feature
    - Use cases and benefits
@@ -43,7 +43,7 @@ Need help with something?
 1. Check the [User Guide](https://safeunfollow.app/docs/user-guide) for step-by-step instructions
 2. Check the [Troubleshooting Guide](https://safeunfollow.app/docs/troubleshooting) for common issues
 3. Check the [FAQ](https://safeunfollow.app/docs/faq) for quick answers
-4. Search existing [questions](https://github.com/ignromanov/instagram-unfollow-tracker/issues?q=is%3Aissue+is%3Aopen+label%3Aquestion)
+4. Search existing [questions](https://github.com/ignromanov/safe-unfollow/issues?q=is%3Aissue+is%3Aopen+label%3Aquestion)
 5. Ask a new question with:
    - Clear description of what you need help with
    - What you've already tried
@@ -106,9 +106,9 @@ Help us test the app:
 ## Quick Links
 
 - **Live Demo**: [https://safeunfollow.app](https://safeunfollow.app)
-- **Source Code**: [https://github.com/ignromanov/instagram-unfollow-tracker](https://github.com/ignromanov/instagram-unfollow-tracker)
-- **Issues**: [https://github.com/ignromanov/instagram-unfollow-tracker/issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Discussions**: [https://github.com/ignromanov/instagram-unfollow-tracker/discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
+- **Source Code**: [https://github.com/ignromanov/safe-unfollow](https://github.com/ignromanov/safe-unfollow)
+- **Issues**: [https://github.com/ignromanov/safe-unfollow/issues](https://github.com/ignromanov/safe-unfollow/issues)
+- **Discussions**: [https://github.com/ignromanov/safe-unfollow/discussions](https://github.com/ignromanov/safe-unfollow/discussions)
 
 ---
 

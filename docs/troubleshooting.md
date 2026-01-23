@@ -181,7 +181,7 @@ Report issues if:
 - You've tried all troubleshooting steps
 
 ### How to Report Issues
-1. **GitHub Issues**: [Create an issue](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
+1. **GitHub Issues**: [Create an issue](https://github.com/ignromanov/safe-unfollow/issues)
 2. **Include details**:
    - Browser and version
    - Operating system
@@ -197,7 +197,7 @@ Report issues if:
 - **Steps**: What you did before the issue occurred
 
 ### Community Support
-- **GitHub Discussions**: [Ask questions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
+- **GitHub Discussions**: [Ask questions](https://github.com/ignromanov/safe-unfollow/discussions)
 - **FAQ**: Check [Frequently Asked Questions](/docs/faq/)
 - **User Guide**: See [User Guide](/docs/user-guide/)
 

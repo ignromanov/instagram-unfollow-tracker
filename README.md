@@ -142,8 +142,8 @@ Visit the live demo: **[safeunfollow.app](https://safeunfollow.app)**
 ### Run locally
 
 ```bash
-git clone https://github.com/ignromanov/instagram-unfollow-tracker.git
-cd instagram-unfollow-tracker
+git clone https://github.com/ignromanov/safe-unfollow.git
+cd safe-unfollow
 npm install
 npm run dev
 ```

@@ -144,10 +144,7 @@ describe('TermsOfService', () => {
 
       const githubLink = screen.getByRole('link', { name: 'GitHub' });
       expect(githubLink).toBeInTheDocument();
-      expect(githubLink).toHaveAttribute(
-        'href',
-        'https://github.com/ignromanov/instagram-unfollow-tracker'
-      );
+      expect(githubLink).toHaveAttribute('href', 'https://github.com/ignromanov/safe-unfollow');
       expect(githubLink).toHaveAttribute('target', '_blank');
       expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
     });

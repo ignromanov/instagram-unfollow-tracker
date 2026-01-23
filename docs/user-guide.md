@@ -114,8 +114,8 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 
 ### Getting Help
 - **FAQ**: Check [Frequently Asked Questions](/docs/faq/)
-- **Issues**: Report bugs on [GitHub Issues](https://github.com/ignromanov/instagram-unfollow-tracker/issues)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/ignromanov/instagram-unfollow-tracker/discussions)
+- **Issues**: Report bugs on [GitHub Issues](https://github.com/ignromanov/safe-unfollow/issues)
+- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/ignromanov/safe-unfollow/discussions)
 
 ## Privacy & Security
 
@@ -151,7 +151,7 @@ Instagram Unfollow Tracker is a privacy-focused tool that analyzes your Instagra
 - **Suggest features**: Share your ideas
 - **Contribute code**: Help develop new features
 
-**📖 How to contribute**: See [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md)
+**📖 How to contribute**: See [CONTRIBUTING.md](https://github.com/ignromanov/safe-unfollow/blob/main/CONTRIBUTING.md)
 
 ---
 

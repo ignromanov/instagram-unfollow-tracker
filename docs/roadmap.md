@@ -176,7 +176,7 @@ last_updated: 2026-01-16
 
 ## Contributing
 
-Want to help with development? See our [CONTRIBUTING.md](https://github.com/ignromanov/instagram-unfollow-tracker/blob/main/CONTRIBUTING.md) guide.
+Want to help with development? See our [CONTRIBUTING.md](https://github.com/ignromanov/safe-unfollow/blob/main/CONTRIBUTING.md) guide.
 
 ### Priority Areas for Contributors
 1. **CSV/JSON export** — High impact, well-defined scope

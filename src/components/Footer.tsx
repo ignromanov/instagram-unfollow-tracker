@@ -121,7 +121,7 @@ export function Footer() {
                 </span>
               </button>
               <a
-                href="https://github.com/ignromanov/instagram-unfollow-tracker"
+                href="https://github.com/ignromanov/safe-unfollow"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-colors py-2 px-1 flex items-center gap-1.5 cursor-pointer"

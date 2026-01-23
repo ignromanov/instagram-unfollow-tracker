@@ -183,9 +183,7 @@ describe('OrganizationSchema', () => {
       const scripts = container.querySelectorAll('script[type="application/ld+json"]');
       const organizationSchema = JSON.parse(scripts[0].textContent!);
 
-      expect(organizationSchema.sameAs).toEqual([
-        'https://github.com/ignromanov/instagram-unfollow-tracker',
-      ]);
+      expect(organizationSchema.sameAs).toEqual(['https://github.com/ignromanov/safe-unfollow']);
     });
 
     it('should include organization description', () => {
