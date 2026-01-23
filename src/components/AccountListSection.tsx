@@ -60,7 +60,8 @@ export function AccountListSection({
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Track time on results for engagement analytics
-  const { trackAction } = useTimeOnResults(accountCount, hasLoadedData);
+  // V7: trackClick collects badge click data for aggregated summary event
+  const { trackAction, trackClick } = useTimeOnResults(accountCount, hasLoadedData);
 
   // Apply sort order to filtered indices
   const sortedIndices = sortOrder === 'desc' ? [...filteredIndices].reverse() : filteredIndices;
@@ -222,6 +223,7 @@ export function AccountListSection({
             hasLoadedData={hasLoadedData}
             isLoading={isFiltering}
             onClearFilters={handleClearFilters}
+            onAccountClick={trackClick}
           />
         </div>
       </div>

@@ -3,7 +3,10 @@ import { useCallback, useEffect, useRef } from 'react';
 
 /**
  * Track time spent on results page and user engagement.
- * Fires analytics event on unmount or when page becomes hidden.
+ * Fires analytics events on unmount or when page becomes hidden.
+ *
+ * V7: Extended to track profile clicks with badge aggregation.
+ * Sends both timeOnResults and resultsClicksSummary events.
  *
  * @param accountCount - Total number of accounts being viewed
  * @param isActive - Whether the results are currently being displayed
@@ -11,14 +14,25 @@ import { useCallback, useEffect, useRef } from 'react';
 export function useTimeOnResults(accountCount: number, isActive: boolean) {
   const startTimeRef = useRef<number | null>(null);
   const actionsCountRef = useRef(0);
+  const clicksCountRef = useRef(0);
+  const badgeClicksRef = useRef<Record<string, number>>({});
   const hasFiredRef = useRef(false);
 
-  // Track user actions (filter, search, click)
+  // Track user actions (filter, search, etc.)
   const trackAction = useCallback(() => {
     actionsCountRef.current += 1;
   }, []);
 
-  // Fire the analytics event
+  // Track profile clicks with badge types (for aggregation)
+  const trackClick = useCallback((badges: string[]) => {
+    clicksCountRef.current += 1;
+    actionsCountRef.current += 1;
+    badges.forEach(badge => {
+      badgeClicksRef.current[badge] = (badgeClicksRef.current[badge] || 0) + 1;
+    });
+  }, []);
+
+  // Fire the analytics events
   const fireEvent = useCallback(() => {
     if (hasFiredRef.current || startTimeRef.current === null) {
       return;
@@ -29,6 +43,16 @@ export function useTimeOnResults(accountCount: number, isActive: boolean) {
     // Only fire if user spent meaningful time (>5 seconds)
     if (timeSpent >= 5) {
       analytics.timeOnResults(timeSpent, accountCount, actionsCountRef.current);
+
+      // V7: Send aggregated click summary (only if there were clicks)
+      if (clicksCountRef.current > 0) {
+        analytics.resultsClicksSummary({
+          totalClicks: clicksCountRef.current,
+          badgeClicks: badgeClicksRef.current,
+          timeSpentSeconds: timeSpent,
+        });
+      }
+
       hasFiredRef.current = true;
     }
   }, [accountCount]);
@@ -41,6 +65,8 @@ export function useTimeOnResults(accountCount: number, isActive: boolean) {
     // Start tracking
     startTimeRef.current = Date.now();
     actionsCountRef.current = 0;
+    clicksCountRef.current = 0;
+    badgeClicksRef.current = {};
     hasFiredRef.current = false;
 
     // Handle visibility change (user switches tab)
@@ -59,5 +85,5 @@ export function useTimeOnResults(accountCount: number, isActive: boolean) {
     };
   }, [isActive, fireEvent]);
 
-  return { trackAction };
+  return { trackAction, trackClick };
 }

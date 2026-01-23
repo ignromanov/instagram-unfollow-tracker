@@ -60,8 +60,9 @@ export const AnalyticsEvents = {
   // Search
   SEARCH_PERFORM: 'search_perform',
 
-  // Account interactions
-  ACCOUNT_CLICK: 'account_click',
+  // Account interactions (V7: optimized with sampling)
+  PROFILE_CLICK: 'profile_click',
+  RESULTS_CLICKS_SUMMARY: 'results_clicks_summary',
 
   // Help
   HELP_OPEN: 'help_open',
@@ -88,9 +89,6 @@ export const AnalyticsEvents = {
   WIZARD_BACK_CLICK: 'wizard_back_click',
   WIZARD_CANCEL: 'wizard_cancel',
   WIZARD_EXTERNAL_LINK_CLICK: 'wizard_external_link_click',
-
-  // V2: Results
-  EXTERNAL_PROFILE_CLICK: 'external_profile_click',
 
   // V3: Funnel / Page Views
   PAGE_VIEW: 'page_view',
@@ -266,10 +264,28 @@ export const analytics = {
     });
   },
 
-  // Account click
-  accountClick: (badgeCount: number) => {
-    trackEvent(AnalyticsEvents.ACCOUNT_CLICK, {
-      badge_count: badgeCount,
+  // V7: Profile click with sampling (replaces accountClick + externalProfileClick)
+  // Only 10% of clicks are tracked to reduce Umami quota usage
+  profileClick: (badges: string[]) => {
+    // Sampling: track only 10% of clicks
+    if (Math.random() > 0.1) return;
+
+    trackEvent(AnalyticsEvents.PROFILE_CLICK, {
+      badge_types: badges.join(','),
+      badge_count: badges.length,
+    });
+  },
+
+  // V7: Aggregated click summary sent on page leave
+  resultsClicksSummary: (stats: {
+    totalClicks: number;
+    badgeClicks: Record<string, number>;
+    timeSpentSeconds: number;
+  }) => {
+    trackEvent(AnalyticsEvents.RESULTS_CLICKS_SUMMARY, {
+      total_clicks: stats.totalClicks,
+      badge_clicks: JSON.stringify(stats.badgeClicks),
+      time_spent: Math.round(stats.timeSpentSeconds),
     });
   },
 
@@ -343,13 +359,6 @@ export const analytics = {
 
   wizardExternalLinkClick: (stepId: number) => {
     trackEvent(AnalyticsEvents.WIZARD_EXTERNAL_LINK_CLICK, { step_id: stepId });
-  },
-
-  // V2: Results
-  externalProfileClick: (username: string) => {
-    trackEvent(AnalyticsEvents.EXTERNAL_PROFILE_CLICK, {
-      username_hash: username.slice(0, 2) + '***', // Privacy: only prefix
-    });
   },
 
   // V3: Funnel / Page Views

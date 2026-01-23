@@ -38,12 +38,11 @@ vi.mock('@/lib/store', () => ({
   }),
 }));
 
-// Mock analytics
+// Mock analytics (V7: updated to use profileClick instead of accountClick/externalProfileClick)
 vi.mock('@/lib/analytics', () => ({
   analytics: {
     resultsScrollDepth: vi.fn(),
-    accountClick: vi.fn(),
-    externalProfileClick: vi.fn(),
+    profileClick: vi.fn(),
   },
 }));
 
@@ -123,7 +122,15 @@ describe('AccountList Virtual List', () => {
 
   it('should handle external links correctly and track analytics', () => {
     const accountIndices = [0];
-    render(<AccountList {...defaultProps} accountIndices={accountIndices} hasLoadedData={true} />);
+    const mockOnAccountClick = vi.fn();
+    render(
+      <AccountList
+        {...defaultProps}
+        accountIndices={accountIndices}
+        hasLoadedData={true}
+        onAccountClick={mockOnAccountClick}
+      />
+    );
 
     // Find links to Instagram profiles
     const profileLinks = screen.getAllByRole('link');
@@ -132,10 +139,10 @@ describe('AccountList Virtual List', () => {
     expect(firstUsernameLink).toBeDefined();
     expect(firstUsernameLink).toHaveAttribute('href', 'https://instagram.com/test_user_0');
 
-    // Click link to verify analytics
+    // Click link to verify analytics (V7: uses profileClick with badge types)
     fireEvent.click(firstUsernameLink!);
-    expect(analytics.accountClick).toHaveBeenCalledWith(1); // 1 badge
-    expect(analytics.externalProfileClick).toHaveBeenCalledWith('test_user_0');
+    expect(analytics.profileClick).toHaveBeenCalledWith(['following']); // badge types array
+    expect(mockOnAccountClick).toHaveBeenCalledWith(['following']); // aggregation callback
   });
 
   it('should display badges correctly', () => {

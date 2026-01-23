@@ -157,12 +157,30 @@ describe('Analytics', () => {
         });
       });
 
-      it('should track account click', () => {
-        analytics.accountClick(3);
+      it('should track profile click with badge types (V7)', () => {
+        // Mock Math.random to ensure the sampling passes
+        const originalRandom = Math.random;
+        Math.random = () => 0.05; // 5% < 10% threshold, so event fires
 
-        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.ACCOUNT_CLICK, {
-          badge_count: 3,
+        analytics.profileClick(['unfollowed', 'notFollowingBack']);
+
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.PROFILE_CLICK, {
+          badge_types: 'unfollowed,notFollowingBack',
+          badge_count: 2,
         });
+
+        Math.random = originalRandom;
+      });
+
+      it('should skip profile click when sampling excludes (V7)', () => {
+        const originalRandom = Math.random;
+        Math.random = () => 0.5; // 50% > 10% threshold, so event is skipped
+
+        analytics.profileClick(['following']);
+
+        expect(windowSpy.umami.track).not.toHaveBeenCalled();
+
+        Math.random = originalRandom;
       });
 
       it('should track help modal open with source', () => {
@@ -260,11 +278,17 @@ describe('Analytics', () => {
         );
       });
 
-      it('should track external profile click with privacy hash', () => {
-        analytics.externalProfileClick('john_doe_123');
+      it('should track results clicks summary (V7)', () => {
+        analytics.resultsClicksSummary({
+          totalClicks: 15,
+          badgeClicks: { unfollowed: 8, notFollowingBack: 7 },
+          timeSpentSeconds: 45.6,
+        });
 
-        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.EXTERNAL_PROFILE_CLICK, {
-          username_hash: 'jo***', // Privacy: only first 2 chars
+        expect(windowSpy.umami.track).toHaveBeenCalledWith(AnalyticsEvents.RESULTS_CLICKS_SUMMARY, {
+          total_clicks: 15,
+          badge_clicks: '{"unfollowed":8,"notFollowingBack":7}',
+          time_spent: 46, // Rounded
         });
       });
 
@@ -514,7 +538,8 @@ describe('Analytics', () => {
       expect(AnalyticsEvents.FILTER_TOGGLE).toBe('filter_toggle');
       expect(AnalyticsEvents.FILTER_CLEAR_ALL).toBe('filter_clear_all');
       expect(AnalyticsEvents.SEARCH_PERFORM).toBe('search_perform');
-      expect(AnalyticsEvents.ACCOUNT_CLICK).toBe('account_click');
+      expect(AnalyticsEvents.PROFILE_CLICK).toBe('profile_click'); // V7
+      expect(AnalyticsEvents.RESULTS_CLICKS_SUMMARY).toBe('results_clicks_summary'); // V7
       expect(AnalyticsEvents.HELP_OPEN).toBe('help_open');
       expect(AnalyticsEvents.LINK_CLICK).toBe('link_click');
       expect(AnalyticsEvents.HERO_CTA_GUIDE).toBe('hero_cta_guide');
@@ -529,7 +554,6 @@ describe('Analytics', () => {
       expect(AnalyticsEvents.WIZARD_BACK_CLICK).toBe('wizard_back_click');
       expect(AnalyticsEvents.WIZARD_CANCEL).toBe('wizard_cancel');
       expect(AnalyticsEvents.WIZARD_EXTERNAL_LINK_CLICK).toBe('wizard_external_link_click');
-      expect(AnalyticsEvents.EXTERNAL_PROFILE_CLICK).toBe('external_profile_click');
     });
   });
 

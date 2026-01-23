@@ -24,6 +24,8 @@ export interface AccountListProps {
   isLoading?: boolean;
   /** Callback to clear all filters */
   onClearFilters?: () => void;
+  /** V7: Callback to track account click with badges for aggregation */
+  onAccountClick?: (badges: string[]) => void;
 }
 
 export const AccountList = memo(function AccountList({
@@ -32,6 +34,7 @@ export const AccountList = memo(function AccountList({
   accountIndices,
   hasLoadedData,
   onClearFilters,
+  onAccountClick,
 }: AccountListProps) {
   const { t } = useTranslation('results');
   const parentRef = useRef<HTMLDivElement>(null);
@@ -117,10 +120,16 @@ export const AccountList = memo(function AccountList({
     );
   }
 
+  // V7: Track profile click with badge types (sampling + aggregation)
   const trackAccountClick = (account: AccountBadges) => {
-    const badgeCount = Object.values(account.badges).filter(Boolean).length;
-    analytics.accountClick(badgeCount);
-    analytics.externalProfileClick(account.username);
+    const activeBadges = (Object.entries(account.badges) as [BadgeKey, boolean][])
+      .filter(([, active]) => active)
+      .map(([key]) => key);
+
+    // Sampled event (10% of clicks)
+    analytics.profileClick(activeBadges);
+    // Aggregation callback (all clicks)
+    onAccountClick?.(activeBadges);
   };
 
   const SkeletonItem = () => (
