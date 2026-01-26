@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import i18n from 'i18next';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -163,6 +164,9 @@ export function Layout({ lang }: LayoutProps) {
           {/* Structured data for SEO */}
           <BreadcrumbSchema />
           <OrganizationSchema />
+
+          {/* Vercel Analytics - privacy-friendly page view tracking */}
+          <Analytics />
         </div>
       </ThemeProvider>
     </ErrorBoundary>
