@@ -8,8 +8,7 @@ export const pwaConfig: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   includeAssets: [
     'favicon.ico',
-    'favicon-16x16.png',
-    'favicon-32x32.png',
+    'favicon.svg',
     'favicon-96x96.png',
     'apple-touch-icon.png',
     'android-chrome-192x192.png',
